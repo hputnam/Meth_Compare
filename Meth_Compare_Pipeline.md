@@ -1,3 +1,15 @@
+# Methods
+## RRBS Library Prep
+https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/RRBS-Meth-Comp/
+
+## MBDBS Enrichment
+https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/MBD-Meth-Comp/
+
+## WGBS and MBDBS Library Prep
+https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/WGBS-MC-1/
+https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/meth-comp-PMS/
+https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/Redos-PMS/
+
 # Coral WGBS MBD-BS and RRBS data
 
 Bismark Bisulfite Mapper VX “ map bisulfite treated sequencing reads to a genome of interest and perform methylation calls in a single step”
@@ -200,6 +212,8 @@ Rationale for internal conversion efficiency
 
 # Extract Methylation
 ``bismark_methylation_extractor --gzip -p --ignore_r2 2 --bedGraph --zero_based --no_overlap --multicore 20 --buffer_size 20G --cytosine_report --report --genome_folder /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  /home/hputnam/Meth_Compare/DeDup/``
+
+
 
 
 
