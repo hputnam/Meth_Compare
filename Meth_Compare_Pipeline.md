@@ -27,7 +27,7 @@ https://www.ncbi.nlm.nih.gov/assembly/GCF_003627195.1
 ``mkdir Lambda_Genome`` 
 ``cd Lambda_Genome`` 
 
-``scp -P 2292  /Users/hputnam/Downloads/Lambda_MG1655_genome.tar hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
+``scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
 ``
 
 #### Mcapitata 
@@ -122,7 +122,7 @@ b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
 # Checking Sequence Quality
 nohup fastqc /home/hputnam/Meth_Compare/RAW/*fastq.gz
 
-scp -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/QC/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare
+scp -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/QC/raw_qc/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare
 
 ## Trimming and cleaning reads with TrimGalore
 https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
@@ -181,30 +181,26 @@ multiqc .
 scp -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/cleaned_reads/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare
 ```
 
+Rationale for internal conversion efficiency
 "Because only 5mC in a CpG site should still remain as cytosine following bisulfite treatment, the percentage of remaining non-CpG cytosines typically is inversely proportional to the conversion efficiency. Therefore, examining any remaining C at these non-CpG sites is known as a bisulfite treatment control."
 
 # Mapping to determine conversion efficiency
 
-#### MBD_BS
+#### MBD_BS LAMBDA
 * Set for non-directional
 * minimum alignment score function L,0,-0.6
-``nohup bismark --genome /home/hputnam/Meth_Compare/GENOME/Mcap_Genome --bowtie2 / --non_directional --score_min L,0,-0.6 -1 /home/hputnam/Meth_Compare/cleaned_reads/Meth18_R1_001_val_1.fq.gz -2 /home/hputnam/Meth_Compare/cleaned_reads/Meth18_R2_001_val_2.fq.gz`` 
+``nohup bismark --genome /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  --bowtie2 / --non_directional --score_min L,0,-0.6 -1 /home/hputnam/Meth_Compare/cleaned_reads/X.fq.gz -2 /home/hputnam/Meth_Compare/cleaned_reads/X.fq.gz`` 
+
 
 # Deduplication
 
 ### MBD_BS Deduplicating
- ``deduplicate_bismark /home/hputnam/Meth_Compare/Mapped/Meth18_R1_001_val_1_bismark_bt2_pe.bam
+ ``deduplicate_bismark /home/hputnam/Meth_Compare/Mapped/X.bam
  ``
 
 # Extract Methylation
 ``bismark_methylation_extractor --gzip -p --ignore_r2 2 --bedGraph --zero_based --no_overlap --multicore 20 --buffer_size 20G --cytosine_report --report --genome_folder /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  /home/hputnam/Meth_Compare/DeDup/``
 
-
-
-
-
-
-nohup bowtie2 -x Mcap -q -1 /home/hputnam/Meth_Compare/cleaned_reads/Meth18_R1_001_val_1.fq.gz -2 /home/hputnam/Meth_Compare/cleaned_reads/Meth18_R2_001_val_2.fq.gz -S M18_Mcap_Test.sam
 
 
 
