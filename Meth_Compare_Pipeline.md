@@ -42,6 +42,15 @@ https://www.ncbi.nlm.nih.gov/assembly/GCF_003627195.1
 ``scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
 ``
 
+# Pdamicornis genome
+
+http://pdam.reefgenomics.org/download/
+
+``mkdir Pdam_Genome`` 
+``cd Pdam_Genome`` 
+
+```wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz```
+
 #### Mcapitata 
 ``bismark_genome_preparation Mcap_Genome`` 
 
@@ -209,6 +218,8 @@ Rationale for internal conversion efficiency
 ### MBD_BS Deduplicating
  ``deduplicate_bismark /home/hputnam/Meth_Compare/Mapped/X.bam
  ``
+ 
+ ### WGBS Deduplication
 
 # Extract Methylation
 ``bismark_methylation_extractor --gzip -p --ignore_r2 2 --bedGraph --zero_based --no_overlap --multicore 20 --buffer_size 20G --cytosine_report --report --genome_folder /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  /home/hputnam/Meth_Compare/DeDup/``
