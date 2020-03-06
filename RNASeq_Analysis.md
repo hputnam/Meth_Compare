@@ -1,4 +1,5 @@
-#Required Programs
+# Required Programs
+
 fastqc 
 multiqc  
 fastp  
@@ -7,34 +8,54 @@ hisat2
 stringtie 
 
 
-`git clone https://github.com/gpertea/stringtie`  
-`cd stringtie`  
-`make release`  
-`make test`  
+`git clone https://github.com/gpertea/stringtie`
 
-#Load raw sequence files onto server
-`mkdir raw`  
+`cd stringtie`
 
+`make release`
 
-#QC raw files
-`mkdir fastqc_raw`  
-`cd fastqc_raw`  
-`fastqc raw/*.fastq.gz`  
+`make test`
 
 
-#Trimming
-`mkdir cleaned_reads'  
+# Load raw sequence files onto server
+
+`mkdir raw`
 
 
+# QC raw files
+
+`mkdir fastqc_raw`
+
+`cd fastqc_raw`
+
+`fastqc raw/*.fastq.gz`
+
+
+# Trimming
+
+`mkdir cleaned_reads`
+
+
+```shell
 sh -c 'for file in "Sample1" "Sample2" "Sample3" "Sample4" "Sample5" "Sample6" 
 do
-fastp --in1 ${file}_R1.fastq.gz --in2 ${file}_R2.fastq.gz --out1 ../cleaned_reads/${file}_R1_clean.fastq.gz --out2 ../cleaned_reads/${file}_R2_clean.fastq.gz --failed_out ../cleaned_reads/${file}_failed.txt --qualified_quality_phred 20 --unqualified_percent_limit 10 --length_required 100 detect_adapter_for_pe --cut_right cut_right_window_size 5 cut_right_mean_quality 20
-done'
+fastp \
+--in1 ${file}_R1.fastq.gz \
+--in2 ${file}_R2.fastq.gz \
+--out1 ../cleaned_reads/${file}_R1_clean.fastq.gz \
+--out2 ../cleaned_reads/${file}_R2_clean.fastq.gz \
+--failed_out ../cleaned_reads/${file}_failed.txt \
+--qualified_quality_phred 20 \
+--unqualified_percent_limit 10 \
+--length_required 100 detect_adapter_for_pe \
+--cut_right cut_right_window_size 5 cut_right_mean_quality 20
+done
+```
 
 
-#QC trimmed files
+# QC trimmed files
 
-`fastqc cleaned_reads/*.fastq.gz`  
+`fastqc cleaned_reads/*.fastq.gz`
 
 
 
@@ -44,6 +65,7 @@ done'
 - Alignment of clean reads to the reference genome
 
 Create a subdirectory within data for HISAT2
+
 ```
 mkdir hisat2
 cd hisat2
@@ -83,7 +105,7 @@ Align your reads to the index files. We will do this by writing a script we will
 ```
 nano McapHISAT2.sh
 ```
-```
+```shell
 ##!/bin/bash
 
 #Specify working directory
@@ -107,6 +129,7 @@ done
 ```
 
 Now, make the file executable by the user (you) and run the script.
+
 ```
 chmod u+x McapHISAT2.sh
 ./McapHISAT2.sh
@@ -129,7 +152,8 @@ For our assembly, we will have to run StringTie twice. The first run will be a r
 #### Reference-guided assembly with novel transcript discovery
 
 First, create and enter into StringTie directory. Then create a symbolic link to our reference genome and copy our BAM files to a special directory inside our stringtie directory. This is where our output GTF files will live too.
-```
+
+```shell
 mkdir ../stringtie
 cd stringtie
 ln -s ../ref/Mcap.GFFannotation.gff ./
@@ -150,7 +174,8 @@ Create the StringTie reference-guided assembly script, ```McapStringTie-assembly
 cd stringtie
 nano ./McapStringTie-assembly-to-ref.sh
 ```
-```
+
+```shell
 ##!/bin/bash
 
 #Specify working directory
@@ -170,6 +195,7 @@ done
 ```
 
 Now, make the file executable by the user and run the script.
+
 ```
 chmod u+x McapStringTie-assembly-to-ref.sh
 ./McapStringTie-assembly-to-ref.sh
@@ -216,6 +242,7 @@ Move all of the gffcompare output files to the output directory. We are most int
 ```
 mv ./merged.* ../../ouput
 ```
+
 ```
 scp -P xxxx echille@kitt.uri.edu:<path_to_output>/merged.stats /Users/user/<path_to_local_directory>
 ```
@@ -236,7 +263,8 @@ Create the StringTie merged GTF-guided assembly script, ```McapStringTie-assembl
 pwd
 nano ./McapStringTie-assembly-to-merged.sh
 ```
-```
+
+```shell
 ##!/bin/bash
 
 #StringTie reference-guided assembly
