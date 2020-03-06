@@ -26,30 +26,40 @@ requires bowtie2, samtools, perl, trimmomatic
 * multiqc
 
 ## Obtain Genome files and Run Bismark Genome preparation
-``mkdir GENOME``  
-``cd GENOME``
-``mkdir Mcap_Genome`` 
-``cd Mcap_Genome`` 
-``wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`` 
-``mkdir Pact_Genome`` 
-``cd Pact_Genome`` 
-``wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar ``
+`mkdir GENOME`
+
+`cd GENOME`
+
+`mkdir Mcap_Genome`
+
+`cd Mcap_Genome`
+
+`wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`
+
+`mkdir Pact_Genome`
+
+`cd Pact_Genome`
+
+`wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar `
 
 https://www.ncbi.nlm.nih.gov/assembly/GCF_003627195.1
-``mkdir Lambda_Genome`` 
-``cd Lambda_Genome`` 
 
-``scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
-``
+`mkdir Lambda_Genome`
+
+`cd Lambda_Genome`
+
+`scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
+`
 
 # Pdamicornis genome
 
 http://pdam.reefgenomics.org/download/
 
-``mkdir Pdam_Genome`` 
-``cd Pdam_Genome`` 
+`mkdir Pdam_Genome`
 
-```wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz```
+`cd Pdam_Genome`
+
+`wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
 
 #### Mcapitata 
 ``bismark_genome_preparation Mcap_Genome`` 
