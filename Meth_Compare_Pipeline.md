@@ -236,3 +236,7 @@ Rationale for internal conversion efficiency
 
 
 
+scp -P 2292 hputnam@kitt.uri.edu:/RAID_STORAGE2/hputnam/20191010_HoloInt_Compare /Users/hputnam/Desktop
+
+
+
