@@ -8,18 +8,17 @@ hisat2
 stringtie 
 
 
-`git clone https://github.com/gpertea/stringtie`
 
-`cd stringtie`
+# Main Folder
 
-`make release`
+`mkdir RiboDep_RNASeq`
 
-`make test`
+`mkdir ref`
+`cd ref`
+`wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`
 
-
-# Load raw sequence files onto server
-
-`mkdir raw`
+# Link Raw from RAID2
+#### File location ```/RAID_STORAGE2/hputnam/20191010_HoloInt_Compare```
 
 
 # QC raw files
@@ -28,36 +27,41 @@ stringtie
 
 `cd fastqc_raw`
 
-`fastqc raw/*.fastq.gz`
+`fastqc /RAID_STORAGE2/hputnam/20191010_HoloInt_Compare/*.fastq.gz  -o /home/hputnam/Meth_Compare/RiboDep_RNASeq/fastqc_raw`
 
+`multiqc .`
 
 # Trimming
 
 `mkdir cleaned_reads`
 
 
-```shell
+```
 sh -c 'for file in "Sample1" "Sample2" "Sample3" "Sample4" "Sample5" "Sample6" 
 do
 fastp \
---in1 ${file}_R1.fastq.gz \
---in2 ${file}_R2.fastq.gz \
---out1 ../cleaned_reads/${file}_R1_clean.fastq.gz \
---out2 ../cleaned_reads/${file}_R2_clean.fastq.gz \
---failed_out ../cleaned_reads/${file}_failed.txt \
+--in1 /RAID_STORAGE2/hputnam/20191010_HoloInt_Compare/${file}_R1.fastq.gz \
+--in2 /RAID_STORAGE2/hputnam/20191010_HoloInt_Compare/${file}_R2.fastq.gz \
+--out1 ${file}_R1_clean.fastq.gz \
+--out2 ${file}_R2_clean.fastq.gz \
+--failed_out cleaned_reads/${file}_failed.txt \
 --qualified_quality_phred 20 \
 --unqualified_percent_limit 10 \
---length_required 100 detect_adapter_for_pe \
+--length_required 50 detect_adapter_for_pe \
 --cut_right cut_right_window_size 5 cut_right_mean_quality 20
-done
+done'
 ```
 
 
 # QC trimmed files
 
-`fastqc cleaned_reads/*.fastq.gz`
+`fastqc *.fastq.gz`
 
+`multiqc .`
 
+scp -r -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/RiboDep_RNASeq/fastqc_raw/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare/RNASeq
+
+scp -r -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/RiboDep_RNASeq/cleaned_reads/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare/RNASeq
 
 *HISAT2 is a fast and sensitive alignment program for mapping next-generation DNA and RNA sequencing reads to a reference genome.*
 
@@ -66,10 +70,10 @@ done
 
 Create a subdirectory within data for HISAT2
 
-```
-mkdir hisat2
-cd hisat2
-```
+
+`mkdir hisat2`  
+
+
 
 #### Index the reference genome
 
@@ -82,7 +86,7 @@ Index the reference genome in the reference directory.
 
 ```
 cd ref
-hisat2-build -f ../ref/Mcap.genome_assembly.fa.gz ./Mcap_ref
+hisat2-build -f Mcap.genome_assembly.fa.gz ./Mcap_ref
 ```
 
 #### Alignment of clean reads to the reference genome
