@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="http://gannet.fish.washington.edu/seashell/snaps/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="All" path="/Users/sr320/Documents/GitHub/Meth_Compare/genome-feature-files/0307_1400-igv_session.xml" version="8">
+    <Panel height="72" name="FeaturePanel" width="1133">
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.8690476190476191"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
