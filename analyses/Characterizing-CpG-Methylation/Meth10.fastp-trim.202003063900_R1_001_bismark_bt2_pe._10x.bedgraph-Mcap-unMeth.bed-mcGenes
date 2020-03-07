@@ -1,0 +1,1969 @@
+4	2291633	2291635	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291633	2291635	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+4	2291699	2291701	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291699	2291701	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+4	2291722	2291724	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291722	2291724	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+4	2291750	2291752	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291750	2291752	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+4	2291757	2291759	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291757	2291759	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+4	2291759	2291761	4	AUGUSTUS	gene	2287083	2295982	0.49	+	.	g22430
+4	2291759	2291761	4	AUGUSTUS	intron	2287749	2295805	0.49	+	.	transcript_id "g22430.t1"; gene_id "g22430";
+9	23768	23770	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23768	23770	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+9	23774	23776	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23774	23776	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+9	23787	23789	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23787	23789	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+9	23821	23823	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23821	23823	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+9	23824	23826	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23824	23826	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+9	23827	23829	9	AUGUSTUS	gene	23704	24276	1	+	.	g23074
+9	23827	23829	9	AUGUSTUS	CDS	23704	24276	1	+	0	transcript_id "g23074.t1"; gene_id "g23074";
+10	1079598	1079600	10	GeMoMa	gene	1077631	1079685	.	+	.	ID=adi2mcaRNA34008_R0;ref-gene=gene25976;AA=612;score=2531;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.5904;minCov=0;avgCov=0.8072;iAA=0.704;start=M;stop=*
+15	1922724	1922726	15	AUGUSTUS	gene	1922587	1923210	0.94	-	.	g24198
+15	1922724	1922726	15	AUGUSTUS	CDS	1922587	1923210	0.94	-	0	transcript_id "g24198.t1"; gene_id "g24198";
+15	1922735	1922737	15	AUGUSTUS	gene	1922587	1923210	0.94	-	.	g24198
+15	1922735	1922737	15	AUGUSTUS	CDS	1922587	1923210	0.94	-	0	transcript_id "g24198.t1"; gene_id "g24198";
+17	482524	482526	17	AUGUSTUS	intron	481428	483248	1	+	.	transcript_id "g24354.t1"; gene_id "g24354";
+17	482524	482526	17	AUGUSTUS	gene	416992	504620	0.3	+	.	g24354
+17	482540	482542	17	AUGUSTUS	intron	481428	483248	1	+	.	transcript_id "g24354.t1"; gene_id "g24354";
+17	482540	482542	17	AUGUSTUS	gene	416992	504620	0.3	+	.	g24354
+18	183961	183963	18	AUGUSTUS	gene	183841	184452	1	+	.	g24459
+18	183961	183963	18	AUGUSTUS	CDS	183841	184452	1	+	0	transcript_id "g24459.t1"; gene_id "g24459";
+18	183990	183992	18	AUGUSTUS	gene	183841	184452	1	+	.	g24459
+18	183990	183992	18	AUGUSTUS	CDS	183841	184452	1	+	0	transcript_id "g24459.t1"; gene_id "g24459";
+18	1377871	1377873	18	AUGUSTUS	gene	1376021	1383857	0.06	+	.	g24542
+18	1377871	1377873	18	AUGUSTUS	intron	1376182	1378446	0.15	+	.	transcript_id "g24542.t1"; gene_id "g24542";
+18	1377886	1377888	18	AUGUSTUS	gene	1376021	1383857	0.06	+	.	g24542
+18	1377886	1377888	18	AUGUSTUS	intron	1376182	1378446	0.15	+	.	transcript_id "g24542.t1"; gene_id "g24542";
+18	1383569	1383571	18	AUGUSTUS	CDS	1383411	1383857	0.56	+	0	transcript_id "g24542.t1"; gene_id "g24542";
+18	1383569	1383571	18	AUGUSTUS	gene	1376021	1383857	0.06	+	.	g24542
+20	479563	479565	20	GeMoMa	gene	479454	484362	.	-	.	ID=adi2mcaRNA7330_R7;ref-gene=gene5527;AA=229;score=479;tae=1;tde=0.5;tie=0.5;minSplitReads=0;tpc=0.8675;minCov=0;avgCov=139.0451;iAA=0.4723;start=M;stop=*
+20	479565	479567	20	GeMoMa	gene	479454	484362	.	-	.	ID=adi2mcaRNA7330_R7;ref-gene=gene5527;AA=229;score=479;tae=1;tde=0.5;tie=0.5;minSplitReads=0;tpc=0.8675;minCov=0;avgCov=139.0451;iAA=0.4723;start=M;stop=*
+20	479610	479612	20	GeMoMa	gene	479454	484362	.	-	.	ID=adi2mcaRNA7330_R7;ref-gene=gene5527;AA=229;score=479;tae=1;tde=0.5;tie=0.5;minSplitReads=0;tpc=0.8675;minCov=0;avgCov=139.0451;iAA=0.4723;start=M;stop=*
+27	1831964	1831966	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1831964	1831966	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1831993	1831995	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1831993	1831995	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832012	1832014	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832012	1832014	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832018	1832020	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832018	1832020	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832046	1832048	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832046	1832048	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832075	1832077	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832075	1832077	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832085	1832087	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832085	1832087	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832089	1832091	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832089	1832091	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832094	1832096	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832094	1832096	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832100	1832102	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832100	1832102	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832128	1832130	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832128	1832130	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832142	1832144	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832142	1832144	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832157	1832159	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832157	1832159	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832167	1832169	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832167	1832169	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832176	1832178	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832176	1832178	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+27	1832182	1832184	27	AUGUSTUS	gene	1816406	1836820	0.09	-	.	g26013
+27	1832182	1832184	27	AUGUSTUS	intron	1830510	1836099	0.51	-	.	transcript_id "g26013.t1"; gene_id "g26013";
+30	1600115	1600117	30	AUGUSTUS	intron	1599057	1600333	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600115	1600117	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600117	1600119	30	AUGUSTUS	intron	1599057	1600333	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600117	1600119	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600131	1600133	30	AUGUSTUS	intron	1599057	1600333	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600131	1600133	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600163	1600165	30	AUGUSTUS	intron	1599057	1600333	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600163	1600165	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600520	1600522	30	AUGUSTUS	CDS	1600334	1600618	1	-	2	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600520	1600522	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600543	1600545	30	AUGUSTUS	CDS	1600334	1600618	1	-	2	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600543	1600545	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600580	1600582	30	AUGUSTUS	CDS	1600334	1600618	1	-	2	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600580	1600582	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600584	1600586	30	AUGUSTUS	CDS	1600334	1600618	1	-	2	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600584	1600586	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600590	1600592	30	AUGUSTUS	CDS	1600334	1600618	1	-	2	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600590	1600592	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600667	1600669	30	AUGUSTUS	intron	1600619	1601895	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600667	1600669	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600745	1600747	30	AUGUSTUS	intron	1600619	1601895	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600745	1600747	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600925	1600927	30	AUGUSTUS	intron	1600619	1601895	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600925	1600927	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1600945	1600947	30	AUGUSTUS	intron	1600619	1601895	1	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1600945	1600947	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1612281	1612283	30	AUGUSTUS	intron	1602181	1613526	0.94	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1612281	1612283	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+30	1612291	1612293	30	AUGUSTUS	intron	1602181	1613526	0.94	-	.	transcript_id "g26481.t1"; gene_id "g26481";
+30	1612291	1612293	30	AUGUSTUS	gene	1520744	1614036	0.49	-	.	g26481
+33	1653667	1653669	33	AUGUSTUS	gene	1652398	1653806	0.77	+	.	g26909
+33	1653667	1653669	33	AUGUSTUS	CDS	1653407	1653806	0.94	+	1	transcript_id "g26909.t1"; gene_id "g26909";
+33	1653670	1653672	33	AUGUSTUS	gene	1652398	1653806	0.77	+	.	g26909
+33	1653670	1653672	33	AUGUSTUS	CDS	1653407	1653806	0.94	+	1	transcript_id "g26909.t1"; gene_id "g26909";
+41	374375	374377	41	AUGUSTUS	gene	372063	374577	1	-	.	g27838
+41	374375	374377	41	AUGUSTUS	CDS	373890	374577	1	-	0	transcript_id "g27838.t1"; gene_id "g27838";
+41	374396	374398	41	AUGUSTUS	gene	372063	374577	1	-	.	g27838
+41	374396	374398	41	AUGUSTUS	CDS	373890	374577	1	-	0	transcript_id "g27838.t1"; gene_id "g27838";
+57	456852	456854	57	GeMoMa	gene	434982	465311	.	-	.	ID=adi2mcaRNA20940_R0;ref-gene=gene16037;AA=379;score=1311;tae=0.5;tde=0.75;tie=0.5;minSplitReads=0;tpc=0.6816;minCov=0;avgCov=37.6438;iAA=0.6196;start=S;stop=*
+57	456856	456858	57	GeMoMa	gene	434982	465311	.	-	.	ID=adi2mcaRNA20940_R0;ref-gene=gene16037;AA=379;score=1311;tae=0.5;tde=0.75;tie=0.5;minSplitReads=0;tpc=0.6816;minCov=0;avgCov=37.6438;iAA=0.6196;start=S;stop=*
+57	456885	456887	57	GeMoMa	gene	434982	465311	.	-	.	ID=adi2mcaRNA20940_R0;ref-gene=gene16037;AA=379;score=1311;tae=0.5;tde=0.75;tie=0.5;minSplitReads=0;tpc=0.6816;minCov=0;avgCov=37.6438;iAA=0.6196;start=S;stop=*
+57	456894	456896	57	GeMoMa	gene	434982	465311	.	-	.	ID=adi2mcaRNA20940_R0;ref-gene=gene16037;AA=379;score=1311;tae=0.5;tde=0.75;tie=0.5;minSplitReads=0;tpc=0.6816;minCov=0;avgCov=37.6438;iAA=0.6196;start=S;stop=*
+59	479178	479180	59	AUGUSTUS	CDS	479141	479609	0.58	+	0	transcript_id "g29850.t1"; gene_id "g29850";
+59	479178	479180	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	479253	479255	59	AUGUSTUS	CDS	479141	479609	0.58	+	0	transcript_id "g29850.t1"; gene_id "g29850";
+59	479253	479255	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	479268	479270	59	AUGUSTUS	CDS	479141	479609	0.58	+	0	transcript_id "g29850.t1"; gene_id "g29850";
+59	479268	479270	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	479614	479616	59	AUGUSTUS	intron	479610	479689	0.71	+	.	transcript_id "g29850.t1"; gene_id "g29850";
+59	479614	479616	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	479729	479731	59	AUGUSTUS	CDS	479690	479871	0.71	+	2	transcript_id "g29850.t1"; gene_id "g29850";
+59	479729	479731	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	480705	480707	59	AUGUSTUS	intron	480487	481768	0.83	+	.	transcript_id "g29850.t1"; gene_id "g29850";
+59	480705	480707	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	480753	480755	59	AUGUSTUS	intron	480487	481768	0.83	+	.	transcript_id "g29850.t1"; gene_id "g29850";
+59	480753	480755	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	480760	480762	59	AUGUSTUS	intron	480487	481768	0.83	+	.	transcript_id "g29850.t1"; gene_id "g29850";
+59	480760	480762	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+59	480795	480797	59	AUGUSTUS	intron	480487	481768	0.83	+	.	transcript_id "g29850.t1"; gene_id "g29850";
+59	480795	480797	59	AUGUSTUS	gene	476568	513997	0.02	+	.	g29850
+91	1184802	1184804	91	AUGUSTUS	gene	1184685	1186229	0.28	+	.	g33125
+91	1184802	1184804	91	AUGUSTUS	CDS	1184685	1184915	0.29	+	0	transcript_id "g33125.t1"; gene_id "g33125";
+94	468044	468046	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468044	468046	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468240	468242	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468240	468242	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468275	468277	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468275	468277	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468293	468295	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468293	468295	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468335	468337	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468335	468337	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468353	468355	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468353	468355	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468786	468788	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468786	468788	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468792	468794	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468792	468794	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468796	468798	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468796	468798	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468820	468822	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468820	468822	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468841	468843	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468841	468843	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+94	468901	468903	94	AUGUSTUS	gene	467189	485084	0.19	+	.	g33350
+94	468901	468903	94	AUGUSTUS	intron	467192	480658	1	+	.	transcript_id "g33350.t1"; gene_id "g33350";
+101	953269	953271	101	AUGUSTUS	gene	951391	954481	1	+	.	g33897
+101	953269	953271	101	AUGUSTUS	intron	952496	954166	1	+	.	transcript_id "g33897.t1"; gene_id "g33897";
+101	953307	953309	101	AUGUSTUS	gene	951391	954481	1	+	.	g33897
+101	953307	953309	101	AUGUSTUS	intron	952496	954166	1	+	.	transcript_id "g33897.t1"; gene_id "g33897";
+102	1143285	1143287	102	AUGUSTUS	CDS	1143014	1143485	0.61	-	1	transcript_id "g34017.t1"; gene_id "g34017";
+102	1143285	1143287	102	AUGUSTUS	gene	1143014	1151298	0.07	-	.	g34017
+102	1143346	1143348	102	AUGUSTUS	CDS	1143014	1143485	0.61	-	1	transcript_id "g34017.t1"; gene_id "g34017";
+102	1143346	1143348	102	AUGUSTUS	gene	1143014	1151298	0.07	-	.	g34017
+105	775801	775803	105	GeMoMa	gene	775661	779930	.	+	.	ID=adi2mcaRNA28123_R2;ref-gene=gene21447;AA=230;score=865;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6783;minCov=0;avgCov=3.558;iAA=0.7283;start=M;stop=*
+105	775809	775811	105	GeMoMa	gene	775661	779930	.	+	.	ID=adi2mcaRNA28123_R2;ref-gene=gene21447;AA=230;score=865;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6783;minCov=0;avgCov=3.558;iAA=0.7283;start=M;stop=*
+107	1143262	1143264	107	AUGUSTUS	gene	1139308	1163010	0.5	-	.	g34551
+107	1143262	1143264	107	AUGUSTUS	intron	1139322	1147994	1	-	.	transcript_id "g34551.t1"; gene_id "g34551";
+107	1143274	1143276	107	AUGUSTUS	gene	1139308	1163010	0.5	-	.	g34551
+107	1143274	1143276	107	AUGUSTUS	intron	1139322	1147994	1	-	.	transcript_id "g34551.t1"; gene_id "g34551";
+107	1143302	1143304	107	AUGUSTUS	gene	1139308	1163010	0.5	-	.	g34551
+107	1143302	1143304	107	AUGUSTUS	intron	1139322	1147994	1	-	.	transcript_id "g34551.t1"; gene_id "g34551";
+107	1143309	1143311	107	AUGUSTUS	gene	1139308	1163010	0.5	-	.	g34551
+107	1143309	1143311	107	AUGUSTUS	intron	1139322	1147994	1	-	.	transcript_id "g34551.t1"; gene_id "g34551";
+107	1143342	1143344	107	AUGUSTUS	gene	1139308	1163010	0.5	-	.	g34551
+107	1143342	1143344	107	AUGUSTUS	intron	1139322	1147994	1	-	.	transcript_id "g34551.t1"; gene_id "g34551";
+120	662668	662670	120	GeMoMa	gene	649369	690454	.	-	.	ID=adi2mcaRNA19558_R1;ref-gene=gene14975;AA=657;score=1275;tae=0.2258;tde=0.2903;tie=0.2258;minSplitReads=0;tpc=0.8153;minCov=0;avgCov=10.2009;iAA=0.4834;start=M;stop=*
+120	662723	662725	120	GeMoMa	gene	649369	690454	.	-	.	ID=adi2mcaRNA19558_R1;ref-gene=gene14975;AA=657;score=1275;tae=0.2258;tde=0.2903;tie=0.2258;minSplitReads=0;tpc=0.8153;minCov=0;avgCov=10.2009;iAA=0.4834;start=M;stop=*
+120	662738	662740	120	GeMoMa	gene	649369	690454	.	-	.	ID=adi2mcaRNA19558_R1;ref-gene=gene14975;AA=657;score=1275;tae=0.2258;tde=0.2903;tie=0.2258;minSplitReads=0;tpc=0.8153;minCov=0;avgCov=10.2009;iAA=0.4834;start=M;stop=*
+120	662751	662753	120	GeMoMa	gene	649369	690454	.	-	.	ID=adi2mcaRNA19558_R1;ref-gene=gene14975;AA=657;score=1275;tae=0.2258;tde=0.2903;tie=0.2258;minSplitReads=0;tpc=0.8153;minCov=0;avgCov=10.2009;iAA=0.4834;start=M;stop=*
+135	6120	6122	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6120	6122	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+135	6131	6133	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6131	6133	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+135	6138	6140	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6138	6140	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+135	6146	6148	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6146	6148	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+135	6186	6188	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6186	6188	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+135	6195	6197	135	AUGUSTUS	gene	1619	10638	0.13	+	.	g36829
+135	6195	6197	135	AUGUSTUS	intron	4920	10374	0.26	+	.	transcript_id "g36829.t1"; gene_id "g36829";
+161	888985	888987	161	AUGUSTUS	gene	887972	894174	0.12	+	.	g38942
+161	888985	888987	161	AUGUSTUS	intron	888077	890448	0.2	+	.	transcript_id "g38942.t1"; gene_id "g38942";
+161	889050	889052	161	AUGUSTUS	gene	887972	894174	0.12	+	.	g38942
+161	889050	889052	161	AUGUSTUS	intron	888077	890448	0.2	+	.	transcript_id "g38942.t1"; gene_id "g38942";
+161	893139	893141	161	AUGUSTUS	gene	887972	894174	0.12	+	.	g38942
+161	893139	893141	161	AUGUSTUS	CDS	893070	893203	1	+	0	transcript_id "g38942.t1"; gene_id "g38942";
+161	893443	893445	161	AUGUSTUS	gene	887972	894174	0.12	+	.	g38942
+161	893443	893445	161	AUGUSTUS	intron	893204	893693	1	+	.	transcript_id "g38942.t1"; gene_id "g38942";
+161	907021	907023	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907037	907039	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907068	907070	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907107	907109	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907141	907143	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907188	907190	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907193	907195	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907212	907214	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907281	907283	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907303	907305	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907321	907323	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907377	907379	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907386	907388	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907389	907391	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907397	907399	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907424	907426	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907678	907680	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907685	907687	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907746	907748	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907753	907755	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907767	907769	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907769	907771	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907779	907781	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907793	907795	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907823	907825	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907879	907881	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	907925	907927	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908030	908032	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908084	908086	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908100	908102	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908138	908140	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908170	908172	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908193	908195	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908206	908208	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908210	908212	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908247	908249	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908297	908299	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908319	908321	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908322	908324	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908332	908334	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908343	908345	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908349	908351	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908354	908356	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908360	908362	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908429	908431	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908442	908444	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908444	908446	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908487	908489	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908489	908491	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908498	908500	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908568	908570	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908613	908615	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908619	908621	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908635	908637	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908639	908641	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	908647	908649	161	GeMoMa	gene	906993	908673	.	-	.	ID=adi2mcaRNA19427_R5;ref-gene=gene14872;AA=528;score=816;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7475;minCov=0;avgCov=3.0145;iAA=0.335;start=M;stop=*
+161	911324	911326	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911324	911326	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911340	911342	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911340	911342	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911346	911348	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911346	911348	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911360	911362	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911360	911362	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911370	911372	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911370	911372	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911375	911377	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911375	911377	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911379	911381	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911379	911381	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911539	911541	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911539	911541	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911565	911567	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911565	911567	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+161	911577	911579	161	AUGUSTUS	gene	911282	911590	0.93	+	.	g38945
+161	911577	911579	161	AUGUSTUS	CDS	911282	911590	0.93	+	0	transcript_id "g38945.t1"; gene_id "g38945";
+163	147276	147278	163	AUGUSTUS	gene	147201	147566	0.96	-	.	g39074
+163	147276	147278	163	AUGUSTUS	CDS	147201	147566	0.96	-	0	transcript_id "g39074.t1"; gene_id "g39074";
+163	468971	468973	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	468982	468984	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469179	469181	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469238	469240	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469358	469360	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469381	469383	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469383	469385	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469394	469396	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469424	469426	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469515	469517	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469868	469870	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469873	469875	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469884	469886	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469909	469911	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469911	469913	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469929	469931	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469962	469964	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469987	469989	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	469997	469999	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470020	470022	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470022	470024	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470035	470037	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470075	470077	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470106	470108	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470111	470113	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470157	470159	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470746	470748	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470761	470763	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	470782	470784	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471307	471309	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471353	471355	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471395	471397	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471686	471688	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471749	471751	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471762	471764	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471793	471795	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471799	471801	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471817	471819	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471836	471838	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471873	471875	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471909	471911	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471918	471920	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471932	471934	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471992	471994	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	471995	471997	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472413	472415	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472432	472434	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472445	472447	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472464	472466	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472502	472504	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472510	472512	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472514	472516	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472589	472591	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472598	472600	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472603	472605	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472614	472616	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472664	472666	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472675	472677	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472679	472681	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472712	472714	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472724	472726	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472726	472728	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472728	472730	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+163	472875	472877	163	GeMoMa	gene	430322	504600	.	-	.	ID=adi2mcaRNA3629_R0;ref-gene=gene2739;AA=454;score=1719;tae=0.9286;tde=0.9286;tie=0.6429;minSplitReads=0;tpc=0.967;minCov=0;avgCov=19.6285;iAA=0.714;start=M;stop=*
+190	841072	841074	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841072	841074	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841112	841114	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841112	841114	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841116	841118	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841116	841118	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841120	841122	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841120	841122	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841129	841131	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841129	841131	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841141	841143	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841141	841143	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841152	841154	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841152	841154	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841164	841166	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841164	841166	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841188	841190	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841188	841190	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841228	841230	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841228	841230	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841257	841259	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841257	841259	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841304	841306	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841304	841306	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841344	841346	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841344	841346	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841348	841350	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841348	841350	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841352	841354	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841352	841354	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841361	841363	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841361	841363	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841373	841375	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841373	841375	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841384	841386	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841384	841386	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841396	841398	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841396	841398	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841420	841422	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841420	841422	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841460	841462	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841460	841462	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841468	841470	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841468	841470	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841477	841479	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841477	841479	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841489	841491	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841489	841491	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841500	841502	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841500	841502	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841512	841514	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841512	841514	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841536	841538	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841536	841538	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841576	841578	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841576	841578	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841580	841582	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841580	841582	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841584	841586	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841584	841586	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841593	841595	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841593	841595	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+190	841605	841607	190	AUGUSTUS	intron	839416	846457	1	-	.	transcript_id "g41122.t1"; gene_id "g41122";
+190	841605	841607	190	AUGUSTUS	gene	834882	856537	0.99	-	.	g41122
+194	20687	20689	194	GeMoMa	gene	11274	30405	.	+	.	ID=adi2mcaRNA560_R4;ref-gene=gene409;AA=659;score=1561;tae=0.1429;tde=0.2857;tie=0.1429;minSplitReads=0;tpc=0.9605;minCov=0;avgCov=33.8594;iAA=0.502;start=M;stop=*
+194	40171	40173	194	AUGUSTUS	gene	39514	44362	0.77	-	.	g41303
+194	40171	40173	194	AUGUSTUS	CDS	39514	40352	0.77	-	2	transcript_id "g41303.t1"; gene_id "g41303";
+196	509397	509399	196	AUGUSTUS	gene	509321	521946	0.18	-	.	g41488
+196	509397	509399	196	AUGUSTUS	CDS	509321	516733	0.96	-	0	transcript_id "g41488.t1"; gene_id "g41488";
+196	509424	509426	196	AUGUSTUS	gene	509321	521946	0.18	-	.	g41488
+196	509424	509426	196	AUGUSTUS	CDS	509321	516733	0.96	-	0	transcript_id "g41488.t1"; gene_id "g41488";
+196	509451	509453	196	AUGUSTUS	gene	509321	521946	0.18	-	.	g41488
+196	509451	509453	196	AUGUSTUS	CDS	509321	516733	0.96	-	0	transcript_id "g41488.t1"; gene_id "g41488";
+196	509478	509480	196	AUGUSTUS	gene	509321	521946	0.18	-	.	g41488
+196	509478	509480	196	AUGUSTUS	CDS	509321	516733	0.96	-	0	transcript_id "g41488.t1"; gene_id "g41488";
+196	509505	509507	196	AUGUSTUS	gene	509321	521946	0.18	-	.	g41488
+196	509505	509507	196	AUGUSTUS	CDS	509321	516733	0.96	-	0	transcript_id "g41488.t1"; gene_id "g41488";
+197	641545	641547	197	GeMoMa	gene	641352	642164	.	+	.	ID=adi2mcaRNA36949_R0;ref-gene=gene28325;AA=148;score=591;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0;minCov=0;avgCov=0;iAA=0.8204;start=K;stop=*
+220	920955	920957	220	AUGUSTUS	gene	920750	921580	0.98	+	.	g43258
+220	920955	920957	220	AUGUSTUS	CDS	920750	921580	0.98	+	0	transcript_id "g43258.t1"; gene_id "g43258";
+220	921518	921520	220	AUGUSTUS	gene	920750	921580	0.98	+	.	g43258
+220	921518	921520	220	AUGUSTUS	CDS	920750	921580	0.98	+	0	transcript_id "g43258.t1"; gene_id "g43258";
+220	921543	921545	220	AUGUSTUS	gene	920750	921580	0.98	+	.	g43258
+220	921543	921545	220	AUGUSTUS	CDS	920750	921580	0.98	+	0	transcript_id "g43258.t1"; gene_id "g43258";
+240	104531	104533	240	GeMoMa	gene	87256	112760	.	-	.	ID=adi2mcaRNA10974_R4;ref-gene=gene8348;AA=605;score=541;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.5802;minCov=0;avgCov=2.4226;iAA=0.2544;start=I;stop=*
+240	104611	104613	240	GeMoMa	gene	87256	112760	.	-	.	ID=adi2mcaRNA10974_R4;ref-gene=gene8348;AA=605;score=541;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.5802;minCov=0;avgCov=2.4226;iAA=0.2544;start=I;stop=*
+240	104627	104629	240	GeMoMa	gene	87256	112760	.	-	.	ID=adi2mcaRNA10974_R4;ref-gene=gene8348;AA=605;score=541;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.5802;minCov=0;avgCov=2.4226;iAA=0.2544;start=I;stop=*
+244	142041	142043	244	GeMoMa	gene	140077	156876	.	-	.	ID=adi2mcaRNA37405_R5;ref-gene=gene28698;AA=424;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7618;minCov=0;avgCov=8.8153;iAA=0.3163;start=M;stop=*
+244	142080	142082	244	GeMoMa	gene	140077	156876	.	-	.	ID=adi2mcaRNA37405_R5;ref-gene=gene28698;AA=424;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7618;minCov=0;avgCov=8.8153;iAA=0.3163;start=M;stop=*
+244	150593	150595	244	GeMoMa	gene	140077	156876	.	-	.	ID=adi2mcaRNA37405_R5;ref-gene=gene28698;AA=424;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7618;minCov=0;avgCov=8.8153;iAA=0.3163;start=M;stop=*
+244	150667	150669	244	GeMoMa	gene	140077	156876	.	-	.	ID=adi2mcaRNA37405_R5;ref-gene=gene28698;AA=424;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7618;minCov=0;avgCov=8.8153;iAA=0.3163;start=M;stop=*
+244	153731	153733	244	GeMoMa	gene	140077	156876	.	-	.	ID=adi2mcaRNA37405_R5;ref-gene=gene28698;AA=424;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.7618;minCov=0;avgCov=8.8153;iAA=0.3163;start=M;stop=*
+247	769372	769374	247	AUGUSTUS	gene	769026	770327	0.99	+	.	g44891
+247	769372	769374	247	AUGUSTUS	CDS	769026	770327	0.99	+	0	transcript_id "g44891.t1"; gene_id "g44891";
+254	813370	813372	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813370	813372	254	AUGUSTUS	CDS	813237	813483	1	+	0	transcript_id "g45356.t1"; gene_id "g45356";
+254	813383	813385	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813383	813385	254	AUGUSTUS	CDS	813237	813483	1	+	0	transcript_id "g45356.t1"; gene_id "g45356";
+254	813400	813402	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813400	813402	254	AUGUSTUS	CDS	813237	813483	1	+	0	transcript_id "g45356.t1"; gene_id "g45356";
+254	813442	813444	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813442	813444	254	AUGUSTUS	CDS	813237	813483	1	+	0	transcript_id "g45356.t1"; gene_id "g45356";
+254	813667	813669	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813667	813669	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	813697	813699	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813697	813699	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	813702	813704	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813702	813704	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	813710	813712	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813710	813712	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	813727	813729	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	813727	813729	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	814028	814030	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	814028	814030	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	814214	814216	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	814214	814216	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	814322	814324	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	814322	814324	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	814376	814378	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	814376	814378	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	814410	814412	254	AUGUSTUS	gene	813237	815053	0.99	+	.	g45356
+254	814410	814412	254	AUGUSTUS	intron	813484	814523	1	+	.	transcript_id "g45356.t1"; gene_id "g45356";
+254	816019	816021	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816019	816021	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816022	816024	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816022	816024	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816066	816068	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816066	816068	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816082	816084	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816082	816084	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816088	816090	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816088	816090	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816133	816135	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816133	816135	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816137	816139	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816137	816139	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816179	816181	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816179	816181	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816193	816195	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816193	816195	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816212	816214	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816212	816214	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816214	816216	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816214	816216	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816218	816220	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816218	816220	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816257	816259	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816257	816259	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816299	816301	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816299	816301	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816341	816343	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816341	816343	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816358	816360	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816358	816360	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816369	816371	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816369	816371	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816377	816379	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816377	816379	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816382	816384	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816382	816384	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816404	816406	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816404	816406	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816471	816473	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816471	816473	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816491	816493	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816491	816493	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816495	816497	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816495	816497	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816531	816533	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816531	816533	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816550	816552	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816550	816552	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816601	816603	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816601	816603	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816615	816617	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816615	816617	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816624	816626	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816624	816626	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816786	816788	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816786	816788	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816804	816806	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816804	816806	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816824	816826	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816824	816826	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816840	816842	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816840	816842	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816868	816870	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816868	816870	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816908	816910	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816908	816910	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816922	816924	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816922	816924	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816941	816943	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816941	816943	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	816954	816956	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	816954	816956	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817022	817024	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817022	817024	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817057	817059	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817057	817059	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817069	817071	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817069	817071	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817085	817087	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817085	817087	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817092	817094	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817092	817094	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817115	817117	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817115	817117	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817127	817129	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817127	817129	254	AUGUSTUS	CDS	815914	817142	1	+	0	transcript_id "g45357.t1"; gene_id "g45357";
+254	817157	817159	254	AUGUSTUS	gene	815914	817968	1	+	.	g45357
+254	817157	817159	254	AUGUSTUS	intron	817143	817397	1	+	.	transcript_id "g45357.t1"; gene_id "g45357";
+291	497477	497479	291	AUGUSTUS	gene	486851	498157	0.93	+	.	g47405
+291	497477	497479	291	AUGUSTUS	intron	489067	497974	1	+	.	transcript_id "g47405.t1"; gene_id "g47405";
+291	497518	497520	291	AUGUSTUS	gene	486851	498157	0.93	+	.	g47405
+291	497518	497520	291	AUGUSTUS	intron	489067	497974	1	+	.	transcript_id "g47405.t1"; gene_id "g47405";
+292	7722	7724	292	AUGUSTUS	gene	7502	9176	0.72	-	.	g47426
+292	7722	7724	292	AUGUSTUS	CDS	7502	8399	0.73	-	1	transcript_id "g47426.t1"; gene_id "g47426";
+298	506529	506531	298	AUGUSTUS	gene	501487	506636	0.48	+	.	g47802
+298	506529	506531	298	AUGUSTUS	CDS	506229	506636	0.84	+	0	transcript_id "g47802.t1"; gene_id "g47802";
+298	506560	506562	298	AUGUSTUS	gene	501487	506636	0.48	+	.	g47802
+298	506560	506562	298	AUGUSTUS	CDS	506229	506636	0.84	+	0	transcript_id "g47802.t1"; gene_id "g47802";
+309	689449	689451	309	AUGUSTUS	intron	689205	691050	1	+	.	transcript_id "g48504.t1"; gene_id "g48504";
+309	689449	689451	309	AUGUSTUS	gene	679663	691197	1	+	.	g48504
+309	689459	689461	309	AUGUSTUS	intron	689205	691050	1	+	.	transcript_id "g48504.t1"; gene_id "g48504";
+309	689459	689461	309	AUGUSTUS	gene	679663	691197	1	+	.	g48504
+309	689480	689482	309	AUGUSTUS	intron	689205	691050	1	+	.	transcript_id "g48504.t1"; gene_id "g48504";
+309	689480	689482	309	AUGUSTUS	gene	679663	691197	1	+	.	g48504
+309	689488	689490	309	AUGUSTUS	intron	689205	691050	1	+	.	transcript_id "g48504.t1"; gene_id "g48504";
+309	689488	689490	309	AUGUSTUS	gene	679663	691197	1	+	.	g48504
+309	689496	689498	309	AUGUSTUS	intron	689205	691050	1	+	.	transcript_id "g48504.t1"; gene_id "g48504";
+309	689496	689498	309	AUGUSTUS	gene	679663	691197	1	+	.	g48504
+325	583911	583913	325	AUGUSTUS	gene	583432	587179	0.47	-	.	g49333
+325	583911	583913	325	AUGUSTUS	CDS	583432	584182	1	-	1	transcript_id "g49333.t1"; gene_id "g49333";
+365	384813	384815	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384813	384815	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384835	384837	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384835	384837	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384866	384868	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384866	384868	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384876	384878	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384876	384878	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384883	384885	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384883	384885	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384927	384929	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384927	384929	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+365	384943	384945	365	AUGUSTUS	intron	384459	386298	0.22	+	.	transcript_id "g51479.t1"; gene_id "g51479";
+365	384943	384945	365	AUGUSTUS	gene	379702	397372	0.01	+	.	g51479
+372	204456	204458	372	GeMoMa	gene	196241	207940	.	+	.	ID=adi2mcaRNA19210_R6;ref-gene=gene14714;AA=303;score=1284;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.0803;minCov=0;avgCov=0.1034;iAA=0.7925;start=M;stop=*
+375	81005	81007	375	AUGUSTUS	gene	77935	81094	0.27	-	.	g51965
+375	81005	81007	375	AUGUSTUS	CDS	80979	81094	0.42	-	0	transcript_id "g51965.t1"; gene_id "g51965";
+375	81012	81014	375	AUGUSTUS	gene	77935	81094	0.27	-	.	g51965
+375	81012	81014	375	AUGUSTUS	CDS	80979	81094	0.42	-	0	transcript_id "g51965.t1"; gene_id "g51965";
+375	81038	81040	375	AUGUSTUS	gene	77935	81094	0.27	-	.	g51965
+375	81038	81040	375	AUGUSTUS	CDS	80979	81094	0.42	-	0	transcript_id "g51965.t1"; gene_id "g51965";
+375	81049	81051	375	AUGUSTUS	gene	77935	81094	0.27	-	.	g51965
+375	81049	81051	375	AUGUSTUS	CDS	80979	81094	0.42	-	0	transcript_id "g51965.t1"; gene_id "g51965";
+375	86082	86084	375	AUGUSTUS	gene	85274	86244	0.82	+	.	g51966
+375	86082	86084	375	AUGUSTUS	CDS	85965	86244	1	+	1	transcript_id "g51966.t1"; gene_id "g51966";
+382	420582	420584	382	AUGUSTUS	intron	417890	420953	1	-	.	transcript_id "g52466.t1"; gene_id "g52466";
+382	420582	420584	382	AUGUSTUS	gene	412186	441455	0.94	-	.	g52466
+382	420613	420615	382	AUGUSTUS	intron	417890	420953	1	-	.	transcript_id "g52466.t1"; gene_id "g52466";
+382	420613	420615	382	AUGUSTUS	gene	412186	441455	0.94	-	.	g52466
+389	616729	616731	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	616729	616731	389	AUGUSTUS	CDS	616618	616853	0.77	+	0	transcript_id "g52775.t1"; gene_id "g52775";
+389	616757	616759	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	616757	616759	389	AUGUSTUS	CDS	616618	616853	0.77	+	0	transcript_id "g52775.t1"; gene_id "g52775";
+389	616799	616801	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	616799	616801	389	AUGUSTUS	CDS	616618	616853	0.77	+	0	transcript_id "g52775.t1"; gene_id "g52775";
+389	617076	617078	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	617076	617078	389	AUGUSTUS	intron	616854	617882	0.86	+	.	transcript_id "g52775.t1"; gene_id "g52775";
+389	618197	618199	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	618197	618199	389	AUGUSTUS	intron	618005	618493	0.48	+	.	transcript_id "g52775.t1"; gene_id "g52775";
+389	618221	618223	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	618221	618223	389	AUGUSTUS	intron	618005	618493	0.48	+	.	transcript_id "g52775.t1"; gene_id "g52775";
+389	618307	618309	389	AUGUSTUS	gene	616618	620095	0.38	+	.	g52775
+389	618307	618309	389	AUGUSTUS	intron	618005	618493	0.48	+	.	transcript_id "g52775.t1"; gene_id "g52775";
+395	87091	87093	395	AUGUSTUS	intron	83830	88646	1	-	.	transcript_id "g53077.t1"; gene_id "g53077";
+395	87091	87093	395	AUGUSTUS	gene	762	91482	0.18	-	.	g53077
+406	359079	359081	406	AUGUSTUS	gene	356599	359402	0.52	-	.	g53634
+406	359079	359081	406	AUGUSTUS	CDS	358834	359402	0.87	-	0	transcript_id "g53634.t1"; gene_id "g53634";
+409	607858	607860	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607858	607860	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607888	607890	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607888	607890	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607918	607920	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607918	607920	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607921	607923	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607921	607923	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607932	607934	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607932	607934	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607960	607962	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607960	607962	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607995	607997	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607995	607997	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	607998	608000	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	607998	608000	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	608024	608026	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	608024	608026	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	608034	608036	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	608034	608036	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	608124	608126	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	608124	608126	409	AUGUSTUS	CDS	607703	608226	1	-	2	transcript_id "g53802.t1"; gene_id "g53802";
+409	608422	608424	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	608422	608424	409	AUGUSTUS	intron	608227	608427	0.96	-	.	transcript_id "g53802.t1"; gene_id "g53802";
+409	608428	608430	409	AUGUSTUS	gene	607703	608479	0.96	-	.	g53802
+409	608428	608430	409	AUGUSTUS	CDS	608428	608479	0.96	-	0	transcript_id "g53802.t1"; gene_id "g53802";
+418	126325	126327	418	AUGUSTUS	intron	125106	127418	0.95	-	.	transcript_id "g54184.t1"; gene_id "g54184";
+418	126325	126327	418	AUGUSTUS	gene	108069	133959	0.21	-	.	g54184
+418	126366	126368	418	AUGUSTUS	intron	125106	127418	0.95	-	.	transcript_id "g54184.t1"; gene_id "g54184";
+418	126366	126368	418	AUGUSTUS	gene	108069	133959	0.21	-	.	g54184
+418	135019	135021	418	AUGUSTUS	gene	134316	135188	0.62	-	.	g54185
+418	135019	135021	418	AUGUSTUS	CDS	134316	135188	0.62	-	0	transcript_id "g54185.t1"; gene_id "g54185";
+418	445915	445917	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	445915	445917	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	445965	445967	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	445965	445967	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	445980	445982	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	445980	445982	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446025	446027	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446025	446027	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446029	446031	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446029	446031	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446093	446095	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446093	446095	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446108	446110	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446108	446110	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446111	446113	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446111	446113	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446118	446120	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446118	446120	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446147	446149	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446147	446149	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446169	446171	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446169	446171	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446254	446256	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446254	446256	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446278	446280	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446278	446280	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446380	446382	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446380	446382	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446388	446390	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446388	446390	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	446400	446402	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	446400	446402	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+418	448871	448873	418	AUGUSTUS	intron	445129	450064	1	+	.	transcript_id "g54212.t1"; gene_id "g54212";
+418	448871	448873	418	AUGUSTUS	gene	416746	455573	0.52	+	.	g54212
+449	224073	224075	449	AUGUSTUS	CDS	223778	224669	1	-	1	transcript_id "g55544.t1"; gene_id "g55544";
+449	224073	224075	449	AUGUSTUS	gene	219923	238279	1	-	.	g55544
+464	413036	413038	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413036	413038	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413071	413073	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413071	413073	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413106	413108	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413106	413108	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413141	413143	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413141	413143	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413176	413178	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413176	413178	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413211	413213	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413211	413213	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413246	413248	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413246	413248	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413281	413283	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413281	413283	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413316	413318	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413316	413318	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413351	413353	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413351	413353	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413386	413388	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413386	413388	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413421	413423	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413421	413423	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413456	413458	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413456	413458	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413491	413493	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413491	413493	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413526	413528	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413526	413528	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+464	413561	413563	464	AUGUSTUS	CDS	411698	413586	0.4	+	2	transcript_id "g56121.t1"; gene_id "g56121";
+464	413561	413563	464	AUGUSTUS	gene	403598	413586	0.28	+	.	g56121
+473	542344	542346	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542344	542346	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542467	542469	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542467	542469	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542486	542488	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542486	542488	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542498	542500	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542498	542500	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542501	542503	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542501	542503	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542504	542506	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542504	542506	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542513	542515	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542513	542515	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542519	542521	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542519	542521	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542669	542671	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542669	542671	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542675	542677	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542675	542677	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	542798	542800	473	AUGUSTUS	gene	541051	542864	0.26	+	.	g56509
+473	542798	542800	473	AUGUSTUS	CDS	542335	542864	0.66	+	2	transcript_id "g56509.t1"; gene_id "g56509";
+473	543757	543759	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543766	543768	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543774	543776	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543789	543791	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543798	543800	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543811	543813	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543834	543836	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543837	543839	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543869	543871	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543881	543883	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543897	543899	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543903	543905	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543946	543948	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	543950	543952	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544424	544426	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544426	544428	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544433	544435	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544487	544489	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544593	544595	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544611	544613	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	544646	544648	473	GeMoMa	gene	543729	545773	.	+	.	ID=adi2mcaRNA19427_R9;ref-gene=gene14872;AA=450;score=561;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.8215;minCov=0;avgCov=60.2081;iAA=0.3092;start=M;stop=*
+473	554857	554859	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554857	554859	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554866	554868	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554866	554868	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554878	554880	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554878	554880	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554892	554894	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554892	554894	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554900	554902	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554900	554902	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554902	554904	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554902	554904	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554910	554912	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554910	554912	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554912	554914	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554912	554914	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554971	554973	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554971	554973	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	554997	554999	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	554997	554999	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555023	555025	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555023	555025	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555046	555048	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555046	555048	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555082	555084	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555082	555084	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555553	555555	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555553	555555	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555561	555563	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555561	555563	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555652	555654	473	AUGUSTUS	intron	554784	555837	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	555652	555654	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	555864	555866	473	AUGUSTUS	CDS	555838	555870	1	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	555864	555866	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	556110	556112	473	AUGUSTUS	intron	555871	556295	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	556110	556112	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	556538	556540	473	AUGUSTUS	intron	556329	556752	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	556538	556540	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	556779	556781	473	AUGUSTUS	CDS	556753	556785	1	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	556779	556781	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557303	557305	473	AUGUSTUS	intron	557228	557545	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	557303	557305	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557309	557311	473	AUGUSTUS	intron	557228	557545	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	557309	557311	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557330	557332	473	AUGUSTUS	intron	557228	557545	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	557330	557332	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557388	557390	473	AUGUSTUS	intron	557228	557545	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	557388	557390	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557480	557482	473	AUGUSTUS	intron	557228	557545	1	+	.	transcript_id "g56511.t1"; gene_id "g56511";
+473	557480	557482	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557634	557636	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557634	557636	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557650	557652	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557650	557652	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557658	557660	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557658	557660	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557688	557690	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557688	557690	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557693	557695	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557693	557695	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557709	557711	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557709	557711	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557714	557716	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557714	557716	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557727	557729	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557727	557729	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557733	557735	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557733	557735	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	557844	557846	473	AUGUSTUS	CDS	557546	557877	0.83	+	2	transcript_id "g56511.t1"; gene_id "g56511";
+473	557844	557846	473	AUGUSTUS	gene	554774	557877	0.83	+	.	g56511
+473	560366	560368	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560366	560368	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560375	560377	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560375	560377	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560379	560381	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560379	560381	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560455	560457	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560455	560457	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560465	560467	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560465	560467	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560477	560479	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560477	560479	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560486	560488	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560486	560488	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560514	560516	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560514	560516	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560534	560536	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560534	560536	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560537	560539	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560537	560539	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560562	560564	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560562	560564	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560580	560582	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560580	560582	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560627	560629	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560627	560629	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560633	560635	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560633	560635	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560696	560698	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560696	560698	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560728	560730	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560728	560730	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560732	560734	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560732	560734	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560735	560737	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560735	560737	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560751	560753	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560751	560753	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560759	560761	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560759	560761	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560774	560776	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560774	560776	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560780	560782	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560780	560782	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560784	560786	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560784	560786	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560804	560806	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560804	560806	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560807	560809	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560807	560809	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560814	560816	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560814	560816	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560837	560839	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560837	560839	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560841	560843	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560841	560843	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560848	560850	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560848	560850	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560872	560874	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560872	560874	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560888	560890	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560888	560890	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560898	560900	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560898	560900	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560903	560905	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560903	560905	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560925	560927	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560925	560927	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560936	560938	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560936	560938	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560943	560945	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560943	560945	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560948	560950	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560948	560950	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560951	560953	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560951	560953	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560963	560965	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560963	560965	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560975	560977	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560975	560977	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	560988	560990	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	560988	560990	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561000	561002	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561000	561002	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561065	561067	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561065	561067	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561095	561097	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561095	561097	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561119	561121	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561119	561121	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561159	561161	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561159	561161	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561178	561180	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561178	561180	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561183	561185	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561183	561185	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561202	561204	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561202	561204	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561215	561217	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561215	561217	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561256	561258	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561256	561258	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561258	561260	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561258	561260	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561272	561274	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561272	561274	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561281	561283	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561281	561283	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561302	561304	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561302	561304	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561304	561306	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561304	561306	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561324	561326	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561324	561326	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561332	561334	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561332	561334	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561346	561348	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561346	561348	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561350	561352	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561350	561352	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561368	561370	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561368	561370	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561371	561373	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561371	561373	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561373	561375	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561373	561375	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561384	561386	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561384	561386	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561391	561393	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561391	561393	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561395	561397	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561395	561397	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561451	561453	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561451	561453	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561455	561457	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561455	561457	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561461	561463	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561461	561463	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561479	561481	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561479	561481	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561492	561494	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561492	561494	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561551	561553	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561551	561553	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561563	561565	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561563	561565	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561570	561572	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561570	561572	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561578	561580	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561578	561580	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561647	561649	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561647	561649	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561669	561671	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561669	561671	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561691	561693	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561691	561693	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561695	561697	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561695	561697	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561711	561713	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561711	561713	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561724	561726	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561724	561726	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561740	561742	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561740	561742	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561815	561817	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561815	561817	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561821	561823	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561821	561823	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561846	561848	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561846	561848	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561863	561865	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561863	561865	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561883	561885	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561883	561885	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561885	561887	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561885	561887	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561896	561898	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561896	561898	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561909	561911	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561909	561911	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561942	561944	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561942	561944	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	561979	561981	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	561979	561981	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562092	562094	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562092	562094	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562094	562096	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562094	562096	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562143	562145	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562143	562145	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562176	562178	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562176	562178	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562205	562207	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562205	562207	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562213	562215	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562213	562215	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562218	562220	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562218	562220	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562230	562232	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562230	562232	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562238	562240	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562238	562240	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562245	562247	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562245	562247	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562279	562281	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562279	562281	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562333	562335	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562333	562335	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562362	562364	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562362	562364	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562376	562378	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562376	562378	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562393	562395	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562393	562395	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562400	562402	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562400	562402	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562418	562420	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562418	562420	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562421	562423	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562421	562423	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562446	562448	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562446	562448	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562480	562482	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562480	562482	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562499	562501	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562499	562501	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+473	562502	562504	473	AUGUSTUS	gene	560305	562521	0.81	-	.	g56512
+473	562502	562504	473	AUGUSTUS	CDS	560305	562521	0.81	-	0	transcript_id "g56512.t1"; gene_id "g56512";
+489	428625	428627	489	GeMoMa	gene	426253	438919	.	-	.	ID=adi2mcaRNA9026_R0;ref-gene=gene6836;AA=485;score=2138;tae=0.75;tde=0.75;tie=0.5;minSplitReads=0;tpc=0.9649;minCov=0;avgCov=7.3732;iAA=0.8249;start=M;stop=*
+520	96832	96834	520	GeMoMa	gene	78132	172210	.	+	.	ID=adi2mcaRNA33595_R2;ref-gene=gene25672;AA=754;score=2066;tae=0.0833;tde=0.0833;tie=0;minSplitReads=0;tpc=0.3134;minCov=0;avgCov=1.7723;iAA=0.533;start=M;stop=*
+520	96838	96840	520	GeMoMa	gene	78132	172210	.	+	.	ID=adi2mcaRNA33595_R2;ref-gene=gene25672;AA=754;score=2066;tae=0.0833;tde=0.0833;tie=0;minSplitReads=0;tpc=0.3134;minCov=0;avgCov=1.7723;iAA=0.533;start=M;stop=*
+520	96842	96844	520	GeMoMa	gene	78132	172210	.	+	.	ID=adi2mcaRNA33595_R2;ref-gene=gene25672;AA=754;score=2066;tae=0.0833;tde=0.0833;tie=0;minSplitReads=0;tpc=0.3134;minCov=0;avgCov=1.7723;iAA=0.533;start=M;stop=*
+524	522381	522383	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522381	522383	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522399	522401	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522399	522401	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522423	522425	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522423	522425	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522435	522437	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522435	522437	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522450	522452	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522450	522452	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522475	522477	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522475	522477	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522501	522503	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522501	522503	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522510	522512	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522510	522512	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522555	522557	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522555	522557	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522591	522593	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522591	522593	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522600	522602	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522600	522602	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522603	522605	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522603	522605	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522638	522640	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522638	522640	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522663	522665	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522663	522665	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	522687	522689	524	AUGUSTUS	gene	521936	523027	0.82	+	.	g58659
+524	522687	522689	524	AUGUSTUS	CDS	521936	523027	0.82	+	0	transcript_id "g58659.t1"; gene_id "g58659";
+524	524466	524468	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524466	524468	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524511	524513	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524511	524513	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524553	524555	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524553	524555	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524556	524558	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524556	524558	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524559	524561	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524559	524561	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524594	524596	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524594	524596	524	AUGUSTUS	CDS	523232	524596	0.63	+	0	transcript_id "g58660.t1"; gene_id "g58660";
+524	524619	524621	524	AUGUSTUS	intron	524597	524722	0.73	+	.	transcript_id "g58660.t1"; gene_id "g58660";
+524	524619	524621	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524661	524663	524	AUGUSTUS	intron	524597	524722	0.73	+	.	transcript_id "g58660.t1"; gene_id "g58660";
+524	524661	524663	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+524	524703	524705	524	AUGUSTUS	intron	524597	524722	0.73	+	.	transcript_id "g58660.t1"; gene_id "g58660";
+524	524703	524705	524	AUGUSTUS	gene	523232	524965	0.62	+	.	g58660
+526	364164	364166	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364164	364166	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364167	364169	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364167	364169	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364179	364181	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364179	364181	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364194	364196	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364194	364196	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364216	364218	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364216	364218	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364226	364228	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364226	364228	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364233	364235	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364233	364235	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	364278	364280	526	AUGUSTUS	CDS	364006	364433	1	+	1	transcript_id "g58774.t1"; gene_id "g58774";
+526	364278	364280	526	AUGUSTUS	gene	344565	366102	0.44	+	.	g58774
+526	372299	372301	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372299	372301	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	372303	372305	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372303	372305	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	372357	372359	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372357	372359	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	372360	372362	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372360	372362	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	372388	372390	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372388	372390	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	372420	372422	526	AUGUSTUS	intron	372020	372707	0.83	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	372420	372422	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373200	373202	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373200	373202	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373212	373214	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373212	373214	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373216	373218	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373216	373218	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373231	373233	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373231	373233	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373235	373237	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373235	373237	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	373240	373242	526	AUGUSTUS	intron	372834	373494	1	+	.	transcript_id "g58777.t1"; gene_id "g58777";
+526	373240	373242	526	AUGUSTUS	gene	371791	406128	0.29	+	.	g58777
+526	568932	568934	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	568932	568934	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	568956	568958	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	568956	568958	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	568965	568967	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	568965	568967	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	568976	568978	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	568976	568978	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	568992	568994	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	568992	568994	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569016	569018	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	569016	569018	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569059	569061	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	569059	569061	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569078	569080	526	AUGUSTUS	CDS	568910	569124	0.99	+	0	transcript_id "g58794.t1"; gene_id "g58794";
+526	569078	569080	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569326	569328	526	AUGUSTUS	intron	569125	569559	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	569326	569328	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569341	569343	526	AUGUSTUS	intron	569125	569559	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	569341	569343	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569348	569350	526	AUGUSTUS	intron	569125	569559	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	569348	569350	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569351	569353	526	AUGUSTUS	intron	569125	569559	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	569351	569353	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569387	569389	526	AUGUSTUS	intron	569125	569559	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	569387	569389	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569935	569937	526	AUGUSTUS	CDS	569560	569987	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	569935	569937	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569946	569948	526	AUGUSTUS	CDS	569560	569987	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	569946	569948	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	569975	569977	526	AUGUSTUS	CDS	569560	569987	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	569975	569977	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570433	570435	526	AUGUSTUS	intron	569988	570488	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	570433	570435	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570458	570460	526	AUGUSTUS	intron	569988	570488	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	570458	570460	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570473	570475	526	AUGUSTUS	intron	569988	570488	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	570473	570475	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570513	570515	526	AUGUSTUS	CDS	570489	570614	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	570513	570515	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570545	570547	526	AUGUSTUS	CDS	570489	570614	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	570545	570547	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570561	570563	526	AUGUSTUS	CDS	570489	570614	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	570561	570563	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570581	570583	526	AUGUSTUS	CDS	570489	570614	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	570581	570583	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570643	570645	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	570643	570645	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	570650	570652	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	570650	570652	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571162	571164	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571162	571164	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571176	571178	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571176	571178	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571202	571204	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571202	571204	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571211	571213	526	AUGUSTUS	intron	570615	571231	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571211	571213	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571241	571243	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571241	571243	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571250	571252	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571250	571252	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571280	571282	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571280	571282	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571289	571291	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571289	571291	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571364	571366	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571364	571366	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571378	571380	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571378	571380	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571391	571393	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571391	571393	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571401	571403	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571401	571403	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571404	571406	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571404	571406	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571416	571418	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571416	571418	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571442	571444	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571442	571444	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571466	571468	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571466	571468	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571486	571488	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571486	571488	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571502	571504	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571502	571504	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571569	571571	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571569	571571	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571605	571607	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571605	571607	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571624	571626	526	AUGUSTUS	CDS	571232	571634	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	571624	571626	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571639	571641	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571639	571641	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571649	571651	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571649	571651	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571669	571671	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571669	571671	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571701	571703	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571701	571703	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571751	571753	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571751	571753	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571760	571762	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571760	571762	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571762	571764	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571762	571764	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571769	571771	526	AUGUSTUS	intron	571635	571778	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	571769	571771	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571793	571795	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571793	571795	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571817	571819	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571817	571819	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571825	571827	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571825	571827	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571845	571847	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571845	571847	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571856	571858	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571856	571858	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571877	571879	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571877	571879	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571907	571909	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571907	571909	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571923	571925	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571923	571925	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571937	571939	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571937	571939	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571940	571942	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571940	571942	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571967	571969	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571967	571969	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571989	571991	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571989	571991	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	571999	572001	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	571999	572001	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572006	572008	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572006	572008	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572051	572053	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572051	572053	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572093	572095	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572093	572095	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572150	572152	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572150	572152	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572154	572156	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572154	572156	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572165	572167	526	AUGUSTUS	CDS	571779	572206	1	+	1	transcript_id "g58794.t1"; gene_id "g58794";
+526	572165	572167	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572288	572290	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572288	572290	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572386	572388	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572386	572388	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572438	572440	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572438	572440	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572470	572472	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572470	572472	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572580	572582	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572580	572582	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572665	572667	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572665	572667	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572705	572707	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572705	572707	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572723	572725	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572723	572725	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572729	572731	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572729	572731	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572808	572810	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572808	572810	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572810	572812	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572810	572812	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572850	572852	526	AUGUSTUS	intron	572207	572865	1	+	.	transcript_id "g58794.t1"; gene_id "g58794";
+526	572850	572852	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+526	572890	572892	526	AUGUSTUS	CDS	572866	572991	1	+	2	transcript_id "g58794.t1"; gene_id "g58794";
+526	572890	572892	526	AUGUSTUS	gene	568910	574047	0.99	+	.	g58794
+540	335211	335213	540	AUGUSTUS	intron	330840	335296	0.98	-	.	transcript_id "g59323.t1"; gene_id "g59323";
+540	335211	335213	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	335253	335255	540	AUGUSTUS	intron	330840	335296	0.98	-	.	transcript_id "g59323.t1"; gene_id "g59323";
+540	335253	335255	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	335283	335285	540	AUGUSTUS	intron	330840	335296	0.98	-	.	transcript_id "g59323.t1"; gene_id "g59323";
+540	335283	335285	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	335303	335305	540	AUGUSTUS	CDS	335297	335721	0.95	-	1	transcript_id "g59323.t1"; gene_id "g59323";
+540	335303	335305	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	336978	336980	540	AUGUSTUS	CDS	336618	337296	0.28	-	2	transcript_id "g59323.t1"; gene_id "g59323";
+540	336978	336980	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	337050	337052	540	AUGUSTUS	CDS	336618	337296	0.28	-	2	transcript_id "g59323.t1"; gene_id "g59323";
+540	337050	337052	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	337084	337086	540	AUGUSTUS	CDS	336618	337296	0.28	-	2	transcript_id "g59323.t1"; gene_id "g59323";
+540	337084	337086	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+540	337424	337426	540	AUGUSTUS	intron	337297	337593	0.21	-	.	transcript_id "g59323.t1"; gene_id "g59323";
+540	337424	337426	540	AUGUSTUS	gene	299016	339629	0.06	-	.	g59323
+542	427504	427506	542	AUGUSTUS	gene	424412	428578	0.47	+	.	g59455
+542	427504	427506	542	AUGUSTUS	intron	424583	428194	0.64	+	.	transcript_id "g59455.t1"; gene_id "g59455";
+542	427506	427508	542	AUGUSTUS	gene	424412	428578	0.47	+	.	g59455
+542	427506	427508	542	AUGUSTUS	intron	424583	428194	0.64	+	.	transcript_id "g59455.t1"; gene_id "g59455";
+542	427529	427531	542	AUGUSTUS	gene	424412	428578	0.47	+	.	g59455
+542	427529	427531	542	AUGUSTUS	intron	424583	428194	0.64	+	.	transcript_id "g59455.t1"; gene_id "g59455";
+542	427545	427547	542	AUGUSTUS	gene	424412	428578	0.47	+	.	g59455
+542	427545	427547	542	AUGUSTUS	intron	424583	428194	0.64	+	.	transcript_id "g59455.t1"; gene_id "g59455";
+543	217270	217272	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217270	217272	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217277	217279	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217277	217279	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217299	217301	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217299	217301	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217306	217308	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217306	217308	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217328	217330	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217328	217330	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217335	217337	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217335	217337	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217364	217366	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217364	217366	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	217392	217394	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	217392	217394	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	218940	218942	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	218940	218942	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	218969	218971	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	218969	218971	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	218998	219000	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	218998	219000	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	219027	219029	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	219027	219029	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	219056	219058	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	219056	219058	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	219085	219087	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	219085	219087	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	219984	219986	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	219984	219986	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223261	223263	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223261	223263	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223377	223379	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223377	223379	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223406	223408	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223406	223408	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223830	223832	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223830	223832	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223859	223861	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223859	223861	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223888	223890	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223888	223890	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+543	223917	223919	543	AUGUSTUS	CDS	215344	223996	0.58	-	2	transcript_id "g59494.t1"; gene_id "g59494";
+543	223917	223919	543	AUGUSTUS	gene	205844	224750	0.27	-	.	g59494
+553	494021	494023	553	AUGUSTUS	gene	489916	494763	0.18	+	.	g60004
+553	494021	494023	553	AUGUSTUS	intron	490119	494591	0.22	+	.	transcript_id "g60004.t1"; gene_id "g60004";
+592	147515	147517	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147515	147517	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+592	147524	147526	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147524	147526	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+592	147536	147538	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147536	147538	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+592	147557	147559	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147557	147559	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+592	147578	147580	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147578	147580	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+592	147599	147601	592	AUGUSTUS	intron	147024	150276	1	-	.	transcript_id "g61276.t1"; gene_id "g61276";
+592	147599	147601	592	AUGUSTUS	gene	111909	165881	0.47	-	.	g61276
+655	329897	329899	655	AUGUSTUS	intron	328819	329956	1	-	.	transcript_id "g63367.t1"; gene_id "g63367";
+655	329897	329899	655	AUGUSTUS	gene	310777	332566	0.29	-	.	g63367
+655	329935	329937	655	AUGUSTUS	intron	328819	329956	1	-	.	transcript_id "g63367.t1"; gene_id "g63367";
+655	329935	329937	655	AUGUSTUS	gene	310777	332566	0.29	-	.	g63367
+655	329945	329947	655	AUGUSTUS	intron	328819	329956	1	-	.	transcript_id "g63367.t1"; gene_id "g63367";
+655	329945	329947	655	AUGUSTUS	gene	310777	332566	0.29	-	.	g63367
+655	329950	329952	655	AUGUSTUS	intron	328819	329956	1	-	.	transcript_id "g63367.t1"; gene_id "g63367";
+655	329950	329952	655	AUGUSTUS	gene	310777	332566	0.29	-	.	g63367
+655	329991	329993	655	AUGUSTUS	CDS	329957	330093	0.99	-	0	transcript_id "g63367.t1"; gene_id "g63367";
+655	329991	329993	655	AUGUSTUS	gene	310777	332566	0.29	-	.	g63367
+664	311213	311215	664	AUGUSTUS	gene	311211	311930	0.65	-	.	g63739
+664	311213	311215	664	AUGUSTUS	CDS	311211	311930	0.65	-	0	transcript_id "g63739.t1"; gene_id "g63739";
+664	311216	311218	664	AUGUSTUS	gene	311211	311930	0.65	-	.	g63739
+664	311216	311218	664	AUGUSTUS	CDS	311211	311930	0.65	-	0	transcript_id "g63739.t1"; gene_id "g63739";
+678	293393	293395	678	AUGUSTUS	gene	277038	294508	0.88	+	.	g64271
+678	293393	293395	678	AUGUSTUS	intron	278333	293954	1	+	.	transcript_id "g64271.t1"; gene_id "g64271";
+703	190614	190616	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	190614	190616	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	190651	190653	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	190651	190653	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	190688	190690	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	190688	190690	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	190692	190694	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	190692	190694	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191477	191479	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191477	191479	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191491	191493	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191491	191493	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191501	191503	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191501	191503	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191521	191523	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191521	191523	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191528	191530	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191528	191530	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+703	191561	191563	703	AUGUSTUS	gene	184911	195701	0.86	+	.	g65093
+703	191561	191563	703	AUGUSTUS	intron	185355	194312	0.86	+	.	transcript_id "g65093.t1"; gene_id "g65093";
+763	3031	3033	763	AUGUSTUS	gene	2730	3065	0.74	+	.	g66924
+763	3031	3033	763	AUGUSTUS	CDS	2730	3065	0.74	+	0	transcript_id "g66924.t1"; gene_id "g66924";
+765	85013	85015	765	GeMoMa	gene	83659	112984	.	+	.	ID=adi2mcaRNA33100_R4;ref-gene=gene25321;AA=346;score=335;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.5077;minCov=0;avgCov=1.4171;iAA=0.2753;start=L;stop=*
+879	22412	22414	879	AUGUSTUS	gene	21291	22826	0.87	+	.	g70249
+879	22412	22414	879	AUGUSTUS	CDS	21291	22826	0.87	+	0	transcript_id "g70249.t1"; gene_id "g70249";
+879	22471	22473	879	AUGUSTUS	gene	21291	22826	0.87	+	.	g70249
+879	22471	22473	879	AUGUSTUS	CDS	21291	22826	0.87	+	0	transcript_id "g70249.t1"; gene_id "g70249";
+925	257384	257386	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	257384	257386	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	257695	257697	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	257695	257697	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	257919	257921	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	257919	257921	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	257986	257988	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	257986	257988	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	258357	258359	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	258357	258359	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	258434	258436	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	258434	258436	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	258618	258620	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	258618	258620	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	259752	259754	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	259752	259754	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	259774	259776	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	259774	259776	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	259812	259814	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	259812	259814	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	260151	260153	925	AUGUSTUS	gene	257372	261964	0.4	+	.	g71515
+925	260151	260153	925	AUGUSTUS	CDS	257372	261306	0.4	+	0	transcript_id "g71515.t1"; gene_id "g71515";
+925	275182	275184	925	GeMoMa	gene	274996	277628	.	+	.	ID=adi2mcaRNA30982_R2;ref-gene=gene23717;AA=866;score=2302;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.9904;minCov=0;avgCov=74.6016;iAA=0.5428;start=M;stop=*
+925	276015	276017	925	GeMoMa	gene	274996	277628	.	+	.	ID=adi2mcaRNA30982_R2;ref-gene=gene23717;AA=866;score=2302;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.9904;minCov=0;avgCov=74.6016;iAA=0.5428;start=M;stop=*
+947	107589	107591	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	107589	107591	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	107678	107680	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	107678	107680	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108346	108348	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108346	108348	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108407	108409	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108407	108409	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108587	108589	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108587	108589	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108745	108747	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108745	108747	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108769	108771	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108769	108771	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108781	108783	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108781	108783	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108836	108838	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108836	108838	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108868	108870	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108868	108870	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108925	108927	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108925	108927	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	108984	108986	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	108984	108986	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109020	109022	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109020	109022	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109043	109045	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109043	109045	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109065	109067	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109065	109067	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109068	109070	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109068	109070	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109093	109095	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109093	109095	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109142	109144	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109142	109144	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109169	109171	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109169	109171	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109216	109218	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109216	109218	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109220	109222	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109220	109222	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109246	109248	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109246	109248	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109277	109279	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109277	109279	947	AUGUSTUS	intron	107377	109304	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109318	109320	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109318	109320	947	AUGUSTUS	CDS	109305	109408	0.98	-	2	transcript_id "g418.t1"; gene_id "g418";
+947	109327	109329	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109327	109329	947	AUGUSTUS	CDS	109305	109408	0.98	-	2	transcript_id "g418.t1"; gene_id "g418";
+947	109382	109384	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109382	109384	947	AUGUSTUS	CDS	109305	109408	0.98	-	2	transcript_id "g418.t1"; gene_id "g418";
+947	109393	109395	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109393	109395	947	AUGUSTUS	CDS	109305	109408	0.98	-	2	transcript_id "g418.t1"; gene_id "g418";
+947	109453	109455	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109453	109455	947	AUGUSTUS	intron	109409	109525	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109467	109469	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109467	109469	947	AUGUSTUS	intron	109409	109525	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109487	109489	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109487	109489	947	AUGUSTUS	intron	109409	109525	0.98	-	.	transcript_id "g418.t1"; gene_id "g418";
+947	109549	109551	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109549	109551	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109568	109570	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109568	109570	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109635	109637	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109635	109637	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109645	109647	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109645	109647	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109657	109659	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109657	109659	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109683	109685	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109683	109685	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109709	109711	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109709	109711	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109723	109725	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109723	109725	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109744	109746	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109744	109746	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109747	109749	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109747	109749	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109759	109761	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109759	109761	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109764	109766	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109764	109766	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109784	109786	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109784	109786	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109799	109801	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109799	109801	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109843	109845	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109843	109845	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109847	109849	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109847	109849	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109852	109854	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109852	109854	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109870	109872	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109870	109872	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109876	109878	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109876	109878	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109882	109884	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109882	109884	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	109898	109900	947	AUGUSTUS	gene	106662	109943	0.9	-	.	g418
+947	109898	109900	947	AUGUSTUS	CDS	109526	109943	0.9	-	0	transcript_id "g418.t1"; gene_id "g418";
+947	113133	113135	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113133	113135	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113139	113141	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113139	113141	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113172	113174	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113172	113174	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113184	113186	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113184	113186	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113207	113209	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113207	113209	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113210	113212	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113210	113212	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113242	113244	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113242	113244	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113250	113252	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113250	113252	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	113254	113256	947	AUGUSTUS	gene	112358	113635	0.88	+	.	g419
+947	113254	113256	947	AUGUSTUS	CDS	113009	113635	0.99	+	0	transcript_id "g419.t1"; gene_id "g419";
+947	114183	114185	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114183	114185	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114190	114192	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114190	114192	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114194	114196	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114194	114196	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114225	114227	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114225	114227	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114231	114233	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114231	114233	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114260	114262	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114260	114262	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114276	114278	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114276	114278	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114342	114344	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114342	114344	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114547	114549	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114547	114549	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114553	114555	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114553	114555	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114556	114558	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114556	114558	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	114565	114567	947	AUGUSTUS	CDS	114114	114603	0.22	+	0	transcript_id "g420.t1"; gene_id "g420";
+947	114565	114567	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	118874	118876	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	118874	118876	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	118898	118900	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	118898	118900	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	118912	118914	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	118912	118914	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119010	119012	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119010	119012	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119953	119955	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119953	119955	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119955	119957	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119955	119957	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119958	119960	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119958	119960	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119964	119966	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119964	119966	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	119966	119968	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	119966	119968	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120007	120009	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120007	120009	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120012	120014	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120012	120014	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120022	120024	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120022	120024	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120046	120048	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120046	120048	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120091	120093	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120091	120093	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120301	120303	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120301	120303	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120304	120306	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120304	120306	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120330	120332	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120330	120332	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120378	120380	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120378	120380	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120391	120393	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120391	120393	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120420	120422	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120420	120422	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	120454	120456	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	120454	120456	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	121192	121194	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	121192	121194	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	121270	121272	947	AUGUSTUS	gene	114114	123239	0.12	+	.	g420
+947	121270	121272	947	AUGUSTUS	intron	114604	121644	0.2	+	.	transcript_id "g420.t1"; gene_id "g420";
+947	125776	125778	947	AUGUSTUS	gene	125676	126188	1	-	.	g421
+947	125776	125778	947	AUGUSTUS	CDS	125676	126188	1	-	0	transcript_id "g421.t1"; gene_id "g421";
+947	125990	125992	947	AUGUSTUS	gene	125676	126188	1	-	.	g421
+947	125990	125992	947	AUGUSTUS	CDS	125676	126188	1	-	0	transcript_id "g421.t1"; gene_id "g421";
+947	128296	128298	947	AUGUSTUS	gene	126567	129291	0.19	-	.	g422
+947	128296	128298	947	AUGUSTUS	intron	127777	128559	0.75	-	.	transcript_id "g422.t1"; gene_id "g422";
+947	128322	128324	947	AUGUSTUS	gene	126567	129291	0.19	-	.	g422
+947	128322	128324	947	AUGUSTUS	intron	127777	128559	0.75	-	.	transcript_id "g422.t1"; gene_id "g422";
+947	128678	128680	947	AUGUSTUS	gene	126567	129291	0.19	-	.	g422
+947	128678	128680	947	AUGUSTUS	CDS	128560	128863	0.65	-	1	transcript_id "g422.t1"; gene_id "g422";
+947	157017	157019	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157054	157056	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157078	157080	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157119	157121	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157154	157156	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157157	157159	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+947	157350	157352	947	GeMoMa	gene	155937	157553	.	+	.	ID=adi2mcaRNA19427_R8;ref-gene=gene14872;AA=465;score=639;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.2287;minCov=0;avgCov=0.5355;iAA=0.3289;start=M;stop=*
+967	196597	196599	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	196829	196831	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	199803	199805	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	199807	199809	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	199811	199813	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	199820	199822	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+967	199827	199829	967	GeMoMa	gene	194581	201350	.	-	.	ID=adi2mcaRNA38533_R6;ref-gene=gene29625;AA=417;score=640;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.6547;minCov=0;avgCov=19.4165;iAA=0.3669;start=M;stop=*
+1051	173704	173706	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173704	173706	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173708	173710	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173708	173710	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173716	173718	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173716	173718	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173753	173755	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173753	173755	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173771	173773	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173771	173773	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173783	173785	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173783	173785	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1051	173785	173787	1051	AUGUSTUS	intron	171613	176261	1	+	.	transcript_id "g3082.t1"; gene_id "g3082";
+1051	173785	173787	1051	AUGUSTUS	gene	156747	176407	1	+	.	g3082
+1133	208134	208136	1133	AUGUSTUS	gene	207870	208819	0.72	-	.	g4892
+1133	208134	208136	1133	AUGUSTUS	CDS	207870	208163	0.92	-	0	transcript_id "g4892.t1"; gene_id "g4892";
+1133	208172	208174	1133	AUGUSTUS	gene	207870	208819	0.72	-	.	g4892
+1133	208172	208174	1133	AUGUSTUS	intron	208164	208261	0.92	-	.	transcript_id "g4892.t1"; gene_id "g4892";
+1158	38963	38965	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	38963	38965	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	39219	39221	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	39219	39221	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	39231	39233	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	39231	39233	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	39770	39772	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	39770	39772	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	39881	39883	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	39881	39883	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	40147	40149	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	40147	40149	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	40152	40154	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	40152	40154	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	40174	40176	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	40174	40176	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	40189	40191	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	40189	40191	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	40198	40200	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	40198	40200	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41252	41254	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41252	41254	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41271	41273	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41271	41273	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41282	41284	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41282	41284	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41302	41304	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41302	41304	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41305	41307	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41305	41307	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41317	41319	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41317	41319	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41328	41330	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41328	41330	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41334	41336	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41334	41336	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41360	41362	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41360	41362	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	41379	41381	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	41379	41381	1158	AUGUSTUS	CDS	36884	41472	1	-	2	transcript_id "g5322.t1"; gene_id "g5322";
+1158	44551	44553	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	44551	44553	1158	AUGUSTUS	CDS	44178	45135	0.75	-	0	transcript_id "g5322.t1"; gene_id "g5322";
+1158	44604	44606	1158	AUGUSTUS	gene	36884	45135	0.75	-	.	g5322
+1158	44604	44606	1158	AUGUSTUS	CDS	44178	45135	0.75	-	0	transcript_id "g5322.t1"; gene_id "g5322";
+1224	127129	127131	1224	AUGUSTUS	gene	125305	127836	0.24	+	.	g6621
+1224	127129	127131	1224	AUGUSTUS	CDS	126349	127836	0.37	+	0	transcript_id "g6621.t1"; gene_id "g6621";
+1230	173277	173279	1230	AUGUSTUS	gene	161897	202300	0.33	-	.	g6767
+1230	173277	173279	1230	AUGUSTUS	CDS	162701	173835	1	-	2	transcript_id "g6767.t1"; gene_id "g6767";
+1254	100227	100229	1254	AUGUSTUS	intron	98622	101857	0.39	+	.	transcript_id "g7186.t1"; gene_id "g7186";
+1254	100227	100229	1254	AUGUSTUS	gene	97308	102715	0.14	+	.	g7186
+1254	100272	100274	1254	AUGUSTUS	intron	98622	101857	0.39	+	.	transcript_id "g7186.t1"; gene_id "g7186";
+1254	100272	100274	1254	AUGUSTUS	gene	97308	102715	0.14	+	.	g7186
+1321	176766	176768	1321	AUGUSTUS	CDS	176436	176820	0.73	+	0	transcript_id "g8261.t1"; gene_id "g8261";
+1321	176766	176768	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	176794	176796	1321	AUGUSTUS	CDS	176436	176820	0.73	+	0	transcript_id "g8261.t1"; gene_id "g8261";
+1321	176794	176796	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	176826	176828	1321	AUGUSTUS	intron	176821	176988	0.65	+	.	transcript_id "g8261.t1"; gene_id "g8261";
+1321	176826	176828	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	177376	177378	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	177376	177378	1321	AUGUSTUS	intron	177084	182457	0.4	+	.	transcript_id "g8261.t1"; gene_id "g8261";
+1321	177425	177427	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	177425	177427	1321	AUGUSTUS	intron	177084	182457	0.4	+	.	transcript_id "g8261.t1"; gene_id "g8261";
+1321	177431	177433	1321	AUGUSTUS	gene	176436	182649	0.26	+	.	g8261
+1321	177431	177433	1321	AUGUSTUS	intron	177084	182457	0.4	+	.	transcript_id "g8261.t1"; gene_id "g8261";
+1323	87575	87577	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	87575	87577	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	87579	87581	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	87579	87581	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	87619	87621	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	87619	87621	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	87641	87643	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	87641	87643	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	96745	96747	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	96745	96747	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	96765	96767	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	96765	96767	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1323	96773	96775	1323	AUGUSTUS	gene	82249	101054	0.08	-	.	g8309
+1323	96773	96775	1323	AUGUSTUS	intron	87187	99853	0.49	-	.	transcript_id "g8309.t1"; gene_id "g8309";
+1364	165677	165679	1364	AUGUSTUS	intron	159697	166648	1	-	.	transcript_id "g9011.t1"; gene_id "g9011";
+1364	165677	165679	1364	AUGUSTUS	gene	98343	203015	0.52	-	.	g9011
+1382	118667	118669	1382	GeMoMa	gene	113528	154695	.	-	.	ID=adi2mcaRNA23545_R1;ref-gene=gene18042;AA=369;score=1182;tae=0.4286;tde=0.4286;tie=0.2857;minSplitReads=0;tpc=0.8266;minCov=0;avgCov=20.5908;iAA=0.6084;start=M;stop=*
+1382	118714	118716	1382	GeMoMa	gene	113528	154695	.	-	.	ID=adi2mcaRNA23545_R1;ref-gene=gene18042;AA=369;score=1182;tae=0.4286;tde=0.4286;tie=0.2857;minSplitReads=0;tpc=0.8266;minCov=0;avgCov=20.5908;iAA=0.6084;start=M;stop=*
+1382	118718	118720	1382	GeMoMa	gene	113528	154695	.	-	.	ID=adi2mcaRNA23545_R1;ref-gene=gene18042;AA=369;score=1182;tae=0.4286;tde=0.4286;tie=0.2857;minSplitReads=0;tpc=0.8266;minCov=0;avgCov=20.5908;iAA=0.6084;start=M;stop=*
+1397	182123	182125	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	182123	182125	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	182155	182157	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	182155	182157	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	182571	182573	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	182571	182573	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	182603	182605	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	182603	182605	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184531	184533	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184531	184533	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184563	184565	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184563	184565	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184595	184597	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184595	184597	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184693	184695	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184693	184695	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184725	184727	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184725	184727	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1397	184757	184759	1397	AUGUSTUS	gene	180484	188217	0.85	-	.	g9563
+1397	184757	184759	1397	AUGUSTUS	CDS	180484	188217	0.85	-	0	transcript_id "g9563.t1"; gene_id "g9563";
+1439	128894	128896	1439	AUGUSTUS	gene	112852	131521	0.99	-	.	g10186
+1439	128894	128896	1439	AUGUSTUS	intron	124874	131279	1	-	.	transcript_id "g10186.t1"; gene_id "g10186";
+1443	22391	22393	1443	AUGUSTUS	gene	21592	23986	1	-	.	g10242
+1443	22391	22393	1443	AUGUSTUS	CDS	21592	22568	1	-	2	transcript_id "g10242.t1"; gene_id "g10242";
+1443	22395	22397	1443	AUGUSTUS	gene	21592	23986	1	-	.	g10242
+1443	22395	22397	1443	AUGUSTUS	CDS	21592	22568	1	-	2	transcript_id "g10242.t1"; gene_id "g10242";
+1453	41712	41714	1453	AUGUSTUS	gene	35340	60224	0.92	+	.	g10407
+1453	41712	41714	1453	AUGUSTUS	intron	39621	52155	1	+	.	transcript_id "g10407.t1"; gene_id "g10407";
+1453	41714	41716	1453	AUGUSTUS	gene	35340	60224	0.92	+	.	g10407
+1453	41714	41716	1453	AUGUSTUS	intron	39621	52155	1	+	.	transcript_id "g10407.t1"; gene_id "g10407";
+1483	91371	91373	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91375	91377	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91379	91381	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91414	91416	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91427	91429	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91439	91441	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91442	91444	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91453	91455	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91463	91465	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91471	91473	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91482	91484	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91492	91494	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91518	91520	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91556	91558	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91582	91584	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91950	91952	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	91997	91999	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92000	92002	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92014	92016	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92029	92031	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92076	92078	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92079	92081	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92098	92100	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92140	92142	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1483	92149	92151	1483	GeMoMa	gene	89829	96663	.	+	.	ID=adi2mcaRNA38533_R5;ref-gene=gene29625;AA=458;score=683;tae=0;tde=0;tie=0;minSplitReads=0;tpc=0.3843;minCov=0;avgCov=11.6689;iAA=0.3504;start=M;stop=*
+1518	40290	40292	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40383	40385	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40430	40432	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40436	40438	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40453	40455	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40535	40537	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40543	40545	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40656	40658	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40666	40668	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40687	40689	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40697	40699	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40704	40706	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40943	40945	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	40951	40953	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41025	41027	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41061	41063	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41103	41105	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41105	41107	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41134	41136	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41166	41168	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41270	41272	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1518	41287	41289	1518	GeMoMa	gene	4061	45951	.	+	.	ID=adi2mcaRNA33101_R1;ref-gene=gene25322;AA=309;score=679;tae=0.2;tde=0.2;tie=0.2;minSplitReads=0;tpc=0.6052;minCov=0;avgCov=2.2686;iAA=0.3523;start=Q;stop=*
+1585	122038	122040	1585	AUGUSTUS	intron	120624	123892	1	+	.	transcript_id "g12133.t1"; gene_id "g12133";
+1585	122038	122040	1585	AUGUSTUS	gene	81736	135795	0.07	+	.	g12133
+1585	132665	132667	1585	AUGUSTUS	gene	81736	135795	0.07	+	.	g12133
+1585	132665	132667	1585	AUGUSTUS	intron	129829	133902	1	+	.	transcript_id "g12133.t1"; gene_id "g12133";
+1669	47130	47132	1669	AUGUSTUS	CDS	47028	47324	1	-	2	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47130	47132	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47162	47164	1669	AUGUSTUS	CDS	47028	47324	1	-	2	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47162	47164	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47225	47227	1669	AUGUSTUS	CDS	47028	47324	1	-	2	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47225	47227	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47264	47266	1669	AUGUSTUS	CDS	47028	47324	1	-	2	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47264	47266	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47296	47298	1669	AUGUSTUS	CDS	47028	47324	1	-	2	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47296	47298	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47463	47465	1669	AUGUSTUS	intron	47325	48556	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47463	47465	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47529	47531	1669	AUGUSTUS	intron	47325	48556	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47529	47531	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47572	47574	1669	AUGUSTUS	intron	47325	48556	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47572	47574	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47600	47602	1669	AUGUSTUS	intron	47325	48556	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47600	47602	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	47623	47625	1669	AUGUSTUS	intron	47325	48556	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	47623	47625	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49824	49826	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49824	49826	1669	AUGUSTUS	intron	48855	50057	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	49829	49831	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49829	49831	1669	AUGUSTUS	intron	48855	50057	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	49947	49949	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49947	49949	1669	AUGUSTUS	intron	48855	50057	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	49959	49961	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49959	49961	1669	AUGUSTUS	intron	48855	50057	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1669	49962	49964	1669	AUGUSTUS	gene	37455	80294	0.44	-	.	g13166
+1669	49962	49964	1669	AUGUSTUS	intron	48855	50057	1	-	.	transcript_id "g13166.t1"; gene_id "g13166";
+1679	126798	126800	1679	AUGUSTUS	intron	114138	130100	1	-	.	transcript_id "g13285.t1"; gene_id "g13285";
+1679	126798	126800	1679	AUGUSTUS	gene	83626	131160	0.22	-	.	g13285
+1679	126813	126815	1679	AUGUSTUS	intron	114138	130100	1	-	.	transcript_id "g13285.t1"; gene_id "g13285";
+1679	126813	126815	1679	AUGUSTUS	gene	83626	131160	0.22	-	.	g13285
+1679	126824	126826	1679	AUGUSTUS	intron	114138	130100	1	-	.	transcript_id "g13285.t1"; gene_id "g13285";
+1679	126824	126826	1679	AUGUSTUS	gene	83626	131160	0.22	-	.	g13285
+1679	126826	126828	1679	AUGUSTUS	intron	114138	130100	1	-	.	transcript_id "g13285.t1"; gene_id "g13285";
+1679	126826	126828	1679	AUGUSTUS	gene	83626	131160	0.22	-	.	g13285
+1735	64053	64055	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64053	64055	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1735	64110	64112	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64110	64112	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1735	64121	64123	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64121	64123	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1735	64139	64141	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64139	64141	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1735	64158	64160	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64158	64160	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1735	64700	64702	1735	AUGUSTUS	intron	62708	65150	1	-	.	transcript_id "g14024.t1"; gene_id "g14024";
+1735	64700	64702	1735	AUGUSTUS	gene	60596	79855	0.96	-	.	g14024
+1854	103033	103035	1854	AUGUSTUS	intron	100066	106442	1	-	.	transcript_id "g15408.t1"; gene_id "g15408";
+1854	103033	103035	1854	AUGUSTUS	gene	91156	113994	0.14	-	.	g15408
+1854	103043	103045	1854	AUGUSTUS	intron	100066	106442	1	-	.	transcript_id "g15408.t1"; gene_id "g15408";
+1854	103043	103045	1854	AUGUSTUS	gene	91156	113994	0.14	-	.	g15408
+1854	103058	103060	1854	AUGUSTUS	intron	100066	106442	1	-	.	transcript_id "g15408.t1"; gene_id "g15408";
+1854	103058	103060	1854	AUGUSTUS	gene	91156	113994	0.14	-	.	g15408
+2284	57235	57237	2284	AUGUSTUS	gene	50003	60099	0.78	-	.	g18664
+2284	57235	57237	2284	AUGUSTUS	intron	56238	60073	1	-	.	transcript_id "g18664.t1"; gene_id "g18664";
+2309	6192	6194	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6192	6194	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6195	6197	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6195	6197	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6206	6208	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6206	6208	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6212	6214	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6212	6214	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6224	6226	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6224	6226	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6234	6236	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6234	6236	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	6259	6261	2309	AUGUSTUS	gene	1	6907	0.6	+	.	g18784
+2309	6259	6261	2309	AUGUSTUS	intron	5471	6816	1	+	.	transcript_id "g18784.t1"; gene_id "g18784";
+2309	29690	29692	2309	AUGUSTUS	gene	23812	30722	0.12	-	.	g18787
+2309	29690	29692	2309	AUGUSTUS	intron	28700	30015	1	-	.	transcript_id "g18787.t1"; gene_id "g18787";
+2309	29702	29704	2309	AUGUSTUS	gene	23812	30722	0.12	-	.	g18787
+2309	29702	29704	2309	AUGUSTUS	intron	28700	30015	1	-	.	transcript_id "g18787.t1"; gene_id "g18787";
+2309	29711	29713	2309	AUGUSTUS	gene	23812	30722	0.12	-	.	g18787
+2309	29711	29713	2309	AUGUSTUS	intron	28700	30015	1	-	.	transcript_id "g18787.t1"; gene_id "g18787";
+2309	29738	29740	2309	AUGUSTUS	gene	23812	30722	0.12	-	.	g18787
+2309	29738	29740	2309	AUGUSTUS	intron	28700	30015	1	-	.	transcript_id "g18787.t1"; gene_id "g18787";
+2309	29830	29832	2309	AUGUSTUS	gene	23812	30722	0.12	-	.	g18787
+2309	29830	29832	2309	AUGUSTUS	intron	28700	30015	1	-	.	transcript_id "g18787.t1"; gene_id "g18787";
+2719	1587	1589	2719	GeMoMa	gene	664	3036	.	+	.	ID=adi2mcaRNA16516_R0;ref-gene=gene12642;AA=118;score=116;tae=0.5;tde=0;tie=0;minSplitReads=0;tpc=0.3136;minCov=0;avgCov=12.5819;iAA=0.3356;start=M;stop=*
+2719	1600	1602	2719	GeMoMa	gene	664	3036	.	+	.	ID=adi2mcaRNA16516_R0;ref-gene=gene12642;AA=118;score=116;tae=0.5;tde=0;tie=0;minSplitReads=0;tpc=0.3136;minCov=0;avgCov=12.5819;iAA=0.3356;start=M;stop=*
+2811	28074	28076	2811	AUGUSTUS	intron	23237	30253	1	+	.	transcript_id "g20991.t1"; gene_id "g20991";
+2811	28074	28076	2811	AUGUSTUS	gene	1	30416	0.74	+	.	g20991
+3012	21035	21037	3012	AUGUSTUS	gene	17714	21588	0.99	+	.	g21484
+3012	21035	21037	3012	AUGUSTUS	intron	20506	21170	0.99	+	.	transcript_id "g21484.t1"; gene_id "g21484";
