@@ -7,9 +7,92 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-pulling in bam files for methylKit
-
+#pulling in bam files for methylKit - deduplicated (WGBS and MBD-BS)
 ```{bash}
+wget -r -l1 --no-parent -A "*.cov.gz" \
+https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/ --directory-prefix="../data/"
 
+```
+
+#pulling in bam files for methylKit - non deduplicated (RRBS)
+```{bash}
+wget -r -l1 --no-parent -A "*.cov.gz" \
+https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/ --directory-prefix="../data/"
+
+```
+
+#pulling in bam files for methylKit - non deduplicated (RRBS)
+```{bash}
+gunzip /home/srlab/Git
+```
+
+
+#make a list of sorted bams
+```{r}
+library(methylKit)
+MC_all.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov.gz',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov.gz'
+)
+```
+
+
+
+#The following command reads sorted BAM files and calls methylation percentage per base, and creates a methylRaw object for CpG methylation.
+#NOTE: The treatments here are pointless, just looking for QC one at a time
+```{r}
+myobj_MC.all=methRead(MC_all.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_17","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+
+
+
+##############################
+#READ IN ALL FOR INDIVIDUAL QC
+##############################
+############QC##############
+#can run these on individual samples by changing the sample # in the brackets --looking for PCR bias at right hand of plot, also get mean coverage for each sample
+```{r}
+
+getCoverageStats(myobj_MC.all[[1]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[2]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[3]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[4]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[5]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[6]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[7]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[8]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[9]], plot=T,both.strands=F)
+
+getMethylationStats(myobj_MC.all[[1]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[2]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[3]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[4]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[5]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[6]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[7]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[8]],plot=TRUE,both.strands=FALSE)
+getMethylationStats(myobj_MC.all[[9]],plot=TRUE,both.strands=FALSE)
+```
+
+#filtering to 5x
+```{r}
+
+#################FILTERING###########################
+filtered.myobj=filterByCoverage(myobj_MC.all,lo.count=5)
+
+#################UNITE##############################
+meth<-unite(filtered.myobj)
+nrow(meth)
+head(meth)
+jpeg("~/GitHub/FROGER_methylKit/analyses/QiaCompare/RvMvW_correlationplot.jpg", width = 1000, height = 600)
+getCorrelation(meth,plot=TRUE)
+dev.off()
 ```
 
