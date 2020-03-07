@@ -1,0 +1,15 @@
+---
+title: "Meth_Compare_QiaCompare"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+pulling in bam files for methylKit
+
+```{bash}
+
+```
+
