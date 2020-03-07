@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Session genome="http://gannet.fish.washington.edu/seashell/snaps/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="All" path="/Users/sr320/Documents/GitHub/Meth_Compare/genome-feature-files/0307_1400-igv_session.xml" version="8">
-    <Panel height="72" name="FeaturePanel" width="1133">
+<Session genome="http://gannet.fish.washington.edu/seashell/snaps/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="2:1-3468816" nextAutoscaleGroup="2" path="/Users/sr320/Documents/GitHub/Meth_Compare/genome-feature-files/0307_1400-igv_session.xml" version="8">
+    <Resources>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._10x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._10x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._10x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._5x.bedgraph"/>
+    </Resources>
+    <Panel height="540" name="DataPanel" width="1133">
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._10x.bedgraph" name="Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._10x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._5x.bedgraph" name="Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._10x.bedgraph" name="Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._10x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._5x.bedgraph" name="Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._10x.bedgraph" name="Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._10x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._5x.bedgraph" name="Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+    </Panel>
+    <Panel height="41" name="FeaturePanel" width="1133">
         <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
     </Panel>
-    <PanelLayout dividerFractions="0.8690476190476191"/>
+    <PanelLayout dividerFractions="0.9217687074829932"/>
     <HiddenAttributes>
         <Attribute name="DATA FILE"/>
         <Attribute name="DATA TYPE"/>
