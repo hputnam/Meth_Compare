@@ -311,7 +311,7 @@ nano Pact_sample_list.txt
 prepDE.py -i Pact_sample_list.txt -g Pact_gene_count_matrix.csv -t Pact_transcript_count_matrix.csv
 `
 
-scp -r -P 2292  hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/RiboDep_RNASeq/cleaned_reads/ /Users/hputnam/MyProjects/Meth_Compare/RNASeq
+scp -r -P 2292  hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/RiboDep_RNASeq/cleaned_reads/ /Users/hputnam/MyProjects/Meth_Compare/RNASeq/
 
 
 
