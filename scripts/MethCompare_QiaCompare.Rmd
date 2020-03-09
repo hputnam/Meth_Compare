@@ -7,47 +7,68 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#pulling in bam files for methylKit - deduplicated (WGBS and MBD-BS)
+
+#library
+```{r}
+library(methylKit)
+setwd("~/GitHub/Meth_Compare")
+```
+
+
+
+#pulling in coverage files for methylKit - deduplicated (WGBS and MBD-BS)
 ```{bash}
 wget -r -l1 --no-parent -A "*.cov.gz" \
 https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/ --directory-prefix="../data/"
 
 ```
 
-#pulling in bam files for methylKit - non deduplicated (RRBS)
+#pulling in coverage files for methylKit - non deduplicated (RRBS)
 ```{bash}
 wget -r -l1 --no-parent -A "*.cov.gz" \
 https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/ --directory-prefix="../data/"
 
 ```
 
-#pulling in bam files for methylKit - non deduplicated (RRBS)
+#unzip
 ```{bash}
-gunzip /home/srlab/Git
+gunzip ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/*cov.gz
 ```
 
+```{bash}
+gunzip ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/*cov.gz
+```
 
-#make a list of sorted bams
+#countlines
+```{bash}
+wc ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/*cov
+```
+
+#countlines
+```{bash}
+wc ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/*cov
+```
+#make a list of cov files
 ```{r}
 library(methylKit)
-MC_all.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov.gz',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov.gz'
-)
+MC_all.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
+
 ```
 
 
 
-#The following command reads sorted BAM files and calls methylation percentage per base, and creates a methylRaw object for CpG methylation.
+#The following command reads Bismark coverage files
 #NOTE: The treatments here are pointless, just looking for QC one at a time
 ```{r}
-myobj_MC.all=methRead(MC_all.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_17","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+myobj_MC.all=methRead(MC_all.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
 ```
 
 
@@ -60,15 +81,15 @@ myobj_MC.all=methRead(MC_all.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mca
 #can run these on individual samples by changing the sample # in the brackets --looking for PCR bias at right hand of plot, also get mean coverage for each sample
 ```{r}
 
-getCoverageStats(myobj_MC.all[[1]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[2]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[3]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[4]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[5]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[6]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[7]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[8]], plot=T,both.strands=F)
-getCoverageStats(myobj_MC.all[[9]], plot=T,both.strands=F)
+getCoverageStats(myobj_MC.all[[1]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[2]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[3]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[4]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[5]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[6]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[7]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[8]], plot=F,both.strands=F)
+getCoverageStats(myobj_MC.all[[9]], plot=F,both.strands=F)
 
 getMethylationStats(myobj_MC.all[[1]],plot=TRUE,both.strands=FALSE)
 getMethylationStats(myobj_MC.all[[2]],plot=TRUE,both.strands=FALSE)
@@ -81,18 +102,175 @@ getMethylationStats(myobj_MC.all[[8]],plot=TRUE,both.strands=FALSE)
 getMethylationStats(myobj_MC.all[[9]],plot=TRUE,both.strands=FALSE)
 ```
 
-#filtering to 5x
+#filtering to 5x for all compared
 ```{r}
 
 #################FILTERING###########################
 filtered.myobj=filterByCoverage(myobj_MC.all,lo.count=5)
 
 #################UNITE##############################
-meth<-unite(filtered.myobj)
+meth<-unite(filtered.myobj, destrand=TRUE)
 nrow(meth)
 head(meth)
-jpeg("~/GitHub/FROGER_methylKit/analyses/QiaCompare/RvMvW_correlationplot.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_all.jpg", width = 1000, height = 600)
 getCorrelation(meth,plot=TRUE)
 dev.off()
 ```
+
+#####################
+#PAIRWISE COMPARISONS
+####################
+
+##WGBS v. MBD
+#make a list of cov files
+```{r}
+library(methylKit)
+MC_WGBCvMBD.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov')
+
+```
+
+
+
+#The following command reads coverage files
+```{r}
+myobj_MC.WGBSvMBD=methRead(MC_WGBCvMBD.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_18"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+
+#filtering to 5x for all compared
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.WGBSvMBD=filterByCoverage(myobj_MC.WGBSvMBD,lo.count=5)
+
+#################UNITE##############################
+meth_WvM<-unite(filtered.myobj.WGBSvMBD, destrand=TRUE)
+nrow(meth_WvM)
+head(meth_WvM)
+jpeg("../analyses/MethCompare_correlation_WGBSvMBD.jpg", width = 1000, height = 600)
+getCorrelation(meth_WvM,plot=TRUE)
+dev.off()
+```
+
+####WGBS v RRBS
+#make a list of cov files
+```{r}
+
+MC_WGBSvRRBS.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
+
+```
+
+
+
+#The following command reads sorted coverage files
+```{r}
+myobj_MC.WGBSvRRBS=methRead(MC_WGBSvRRBS.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 5x for all compared
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.WGBSvRRBS=filterByCoverage(myobj_MC.WGBSvRRBS,lo.count=5)
+
+#################UNITE##############################
+meth_WvR<-unite(filtered.myobj.WGBSvRRBS, destrand=TRUE)
+nrow(meth_WvR)
+head(meth_WvR)
+jpeg("../analyses/MethCompare_correlation_WGBSvRRBS.jpg", width = 1000, height = 600)
+getCorrelation(meth_WvR,plot=TRUE)
+dev.off()
+```
+
+###meth diff to see where these crazy differences are
+```{r}
+#calculate diffs
+myDiff_WvR<-calculateDiffMeth(meth_WvR,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_WvR)
+#flat file of myDiff
+myDiff_WvR.db<-makeMethylDB(myDiff_WvR)
+#sig diffs
+myDiff_WvR_20p <- getMethylDiff(myDiff_WvR, difference = 20, qvalue = 0.01)
+nrow(myDiff_WvR_20p)
+
+```
+
+#make a flat file to compare coverage and such
+```{r}
+meth_WvR.db<-makeMethylDB(meth_WvR)
+```
+
+
+#same as above but - NORMALIZING COVERAGE!
+```{r}
+
+normMC.myobj_WGBSvRRBS <-normalizeCoverage(myobj_MC.WGBSvRRBS, method = "median",
+  chunk.size = 1e+06, save.db = FALSE)
+#################FILTERING###########################
+norm.filtered.myobj.WGBSvRRBS=filterByCoverage(normMC.myobj_WGBSvRRBS,lo.count=5)
+
+#################UNITE##############################
+meth_normWvR<-unite(norm.filtered.myobj.WGBSvRRBS, destrand=TRUE)
+nrow(meth_normWvR)
+head(meth_normWvR)
+jpeg("../analyses/MethCompare_correlation_normalizedWGBSvRRBS.jpg", width = 1000, height = 600)
+getCorrelation(meth_normWvR,plot=TRUE)
+dev.off()
+```
+
+
+############
+#MBD v RRBS ---this is with 100 million reads
+###########
+
+#make a list of cov files
+```{r}
+library(methylKit)
+MC_MBDvRRBS.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
+'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
+
+```
+
+
+
+#The following command reads sorted coverage files
+```{r}
+myobj_MC.MBDvRRBS=methRead(MC_MBDvRRBS.list, sample.id = list("Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+
+#filtering to 5x for all compared
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.MBDvRRBS=filterByCoverage(myobj_MC.MBDvRRBS,lo.count=5)
+
+#################UNITE##############################
+meth_MvR<-unite(filtered.myobj.MBDvRRBS, destrand=TRUE)
+nrow(meth_MvR)
+head(meth_MvR)
+jpeg("../analyses/MethCompare_correlation_MBDvRRBS.jpg", width = 1000, height = 600)
+getCorrelation(meth_MvR,plot=TRUE)
+dev.off()
+```
+
+
+#pulling in coverage files for methylKit - nondeplicated AND --'ignore_r2 2'
+```{bash}
+wget -r -l1 --no-parent -A "*.cov.gz" \
+https://gannet.fish.washington.edu/tmp/nodedup-r2/ --directory-prefix="../data/"
 
