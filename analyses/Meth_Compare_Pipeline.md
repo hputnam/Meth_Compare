@@ -20,8 +20,8 @@ requires bowtie2, samtools, perl, trimmomatic
 
 * Bowtie 2 version X by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)
 * Program: samtools (Tools for alignments in the SAM format) Version: X
-* perl X 
-* Bismark Bisulfite Mapper VX 
+* perl X
+* Bismark Bisulfite Mapper VX
 * Trimmomatic
 * multiqc
 
@@ -61,18 +61,20 @@ http://pdam.reefgenomics.org/download/
 
 `wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
 
-#### Mcapitata 
-``bismark_genome_preparation Mcap_Genome`` 
+#### Mcapitata
+``bismark_genome_preparation Mcap_Genome``
 
-#### Pacuta 
-``bismark_genome_preparation Pact_Genome`` 
+#### Pacuta
+``bismark_genome_preparation Pact_Genome``
 
-#### Lambda 
-``bismark_genome_preparation Lambda_Genome`` 
+#### Lambda
+``bismark_genome_preparation Lambda_Genome``
 
 ## Checking correct transfer of files from sequencer
 
 from Genewiz
+
+```
 63a1cc9e23dcedd71a66dac00f36467d  Meth10_R1_001.fastq.gz
 ac966619cb5a2483870f973b696a38a1  Meth10_R2_001.fastq.gz
 06278c40d97f7a3efdae47218921ac6a  Meth11_R1_001.fastq.gz
@@ -109,9 +111,11 @@ d5199e48ed87773f67c4e3d8d9db3fce  Meth7_R1_001.fastq.gz
 37c495ced527f3e30ae2f3388a9146bf  Meth8_R2_001.fastq.gz
 c8ec0b73721a067729124c043904dc0e  Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
-
+```
 
 URI download
+
+```
 63a1cc9e23dcedd71a66dac00f36467d  Meth10_R1_001.fastq.gz
 ac966619cb5a2483870f973b696a38a1  Meth10_R2_001.fastq.gz
 06278c40d97f7a3efdae47218921ac6a  Meth11_R1_001.fastq.gz
@@ -148,7 +152,7 @@ d5199e48ed87773f67c4e3d8d9db3fce  Meth7_R1_001.fastq.gz
 37c495ced527f3e30ae2f3388a9146bf  Meth8_R2_001.fastq.gz
 c8ec0b73721a067729124c043904dc0e  Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
-
+```
 
 # Checking Sequence Quality and Trimming
 fastp
@@ -301,13 +305,93 @@ done
 # Run multiqc
 ${multiqc} .
 ```
+
+
+Here is the contents of the output directory
+
+```
+[sr320@mox1 20200305_methcompare_fastp_trimming]$ ls
+20200305_methcompare_fastp_trimming.sh	Meth3_R1_001.fastq.gz
+fastq.list.txt				Meth3_R2_001.fastq.gz
+Meth10_R1_001.fastq.gz			Meth4.fastp-trim.202003055221_R1_001.fastq.gz
+Meth10_R2_001.fastq.gz			Meth4.fastp-trim.202003055221_R2_001.fastq.gz
+Meth11_R1_001.fastq.gz			Meth4.fastp-trim.202003055221.report.html
+Meth11_R2_001.fastq.gz			Meth4.fastp-trim.202003055221.report.json
+Meth12_R1_001.fastq.gz			Meth4_R1_001.fastq.gz
+Meth12_R2_001.fastq.gz			Meth4_R2_001.fastq.gz
+Meth13_R1_001.fastq.gz			Meth5.fastp-trim.202003051832_R1_001.fastq.gz
+Meth13_R2_001.fastq.gz			Meth5.fastp-trim.202003051832_R2_001.fastq.gz
+Meth14_R1_001.fastq.gz			Meth5_R1_001.fastq.gz
+Meth14_R2_001.fastq.gz			Meth5_R2_001.fastq.gz
+Meth15_R1_001.fastq.gz			Meth6_R1_001.fastq.gz
+Meth15_R2_001.fastq.gz			Meth6_R2_001.fastq.gz
+Meth16_R1_001.fastq.gz			Meth7_R1_001.fastq.gz
+Meth16_R2_001.fastq.gz			Meth7_R2_001.fastq.gz
+Meth17_R1_001.fastq.gz			Meth8_R1_001.fastq.gz
+Meth17_R2_001.fastq.gz			Meth8_R2_001.fastq.gz
+Meth18_R1_001.fastq.gz			Meth9_R1_001.fastq.gz
+Meth18_R2_001.fastq.gz			Meth9_R2_001.fastq.gz
+Meth1_R1_001.fastq.gz			program_options.log
+Meth1_R2_001.fastq.gz			slurm-2015259.out
+Meth2_R1_001.fastq.gz			system_path.log
+Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
+```
+
+
+---
+
+# Genome preparation
+
+```
+#!/bin/bash
+## Job Name
+#SBATCH --job-name=fr-01
+## Allocation Definition
+#SBATCH --account=srlab
+#SBATCH --partition=srlab
+## Resources
+## Nodes (We only get 1, so this is fixed)
+#SBATCH --nodes=1
+## Walltime (days-hours:minutes:seconds format)
+#SBATCH --time=6-00:00:00
+## Memory per node
+#SBATCH --mem=100G
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=sr320@uw.edu
+## Specify the working directory for this job
+#SBATCH --chdir=/gscratch/scrubbed/sr320/030520-fr01/
+
+# Prepping 3 coral genomes
+
+# Directories and programs
+bismark_dir="/gscratch/srlab/programs/Bismark-0.21.0"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
+reads_dir="/gscratch/srlab/sr320/data/olurida-bs/decomp/"
+#genome_folder="/gscratch/srlab/sr320/data/olurida-genomes/v081/"
+
+source /gscratch/srlab/programs/scripts/paths.sh
+
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+/gscratch/srlab/sr320/data/froger/Mcap_Genome/
+
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+/gscratch/srlab/sr320/data/froger/Pact_Genome/
+```
+
+
 # Mapping
 
+
+
+
+
 # Methylation Extract
-
-
-
-
-
-
-
