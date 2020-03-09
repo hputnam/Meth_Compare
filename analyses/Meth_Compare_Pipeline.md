@@ -306,6 +306,38 @@ done
 ${multiqc} .
 ```
 
+
+Here is the contents of the output directory
+
+```
+[sr320@mox1 20200305_methcompare_fastp_trimming]$ ls
+20200305_methcompare_fastp_trimming.sh	Meth3_R1_001.fastq.gz
+fastq.list.txt				Meth3_R2_001.fastq.gz
+Meth10_R1_001.fastq.gz			Meth4.fastp-trim.202003055221_R1_001.fastq.gz
+Meth10_R2_001.fastq.gz			Meth4.fastp-trim.202003055221_R2_001.fastq.gz
+Meth11_R1_001.fastq.gz			Meth4.fastp-trim.202003055221.report.html
+Meth11_R2_001.fastq.gz			Meth4.fastp-trim.202003055221.report.json
+Meth12_R1_001.fastq.gz			Meth4_R1_001.fastq.gz
+Meth12_R2_001.fastq.gz			Meth4_R2_001.fastq.gz
+Meth13_R1_001.fastq.gz			Meth5.fastp-trim.202003051832_R1_001.fastq.gz
+Meth13_R2_001.fastq.gz			Meth5.fastp-trim.202003051832_R2_001.fastq.gz
+Meth14_R1_001.fastq.gz			Meth5_R1_001.fastq.gz
+Meth14_R2_001.fastq.gz			Meth5_R2_001.fastq.gz
+Meth15_R1_001.fastq.gz			Meth6_R1_001.fastq.gz
+Meth15_R2_001.fastq.gz			Meth6_R2_001.fastq.gz
+Meth16_R1_001.fastq.gz			Meth7_R1_001.fastq.gz
+Meth16_R2_001.fastq.gz			Meth7_R2_001.fastq.gz
+Meth17_R1_001.fastq.gz			Meth8_R1_001.fastq.gz
+Meth17_R2_001.fastq.gz			Meth8_R2_001.fastq.gz
+Meth18_R1_001.fastq.gz			Meth9_R1_001.fastq.gz
+Meth18_R2_001.fastq.gz			Meth9_R2_001.fastq.gz
+Meth1_R1_001.fastq.gz			program_options.log
+Meth1_R2_001.fastq.gz			slurm-2015259.out
+Meth2_R1_001.fastq.gz			system_path.log
+Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
+```
+
+
 ---
 
 # Genome preparation
