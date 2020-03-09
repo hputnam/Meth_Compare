@@ -1,4 +1,4 @@
-# Methods
+# Library Prep Methods
 ## RRBS Library Prep
 https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/RRBS-Meth-Comp/
 
@@ -151,92 +151,6 @@ b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
 
 
 # Checking Sequence Quality
-nohup fastqc /home/hputnam/Meth_Compare/RAW/*fastq.gz
-
-scp -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/QC/raw_qc/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare
-
-## Trimming and cleaning reads with TrimGalore
-https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/
-
-mkdir RRBS_cleaned
-
-### Trim RRBS
-```
-nohup sh -c 'for file in "Meth4" "Meth5" "Meth6"  "Meth13" "Meth14" "Meth15"
-do
-/home/hputnam/prog/TrimGalore-0.6.4/trim_galore \
---rrbs \
---non_directional \
---length 50 \
---quality 20 \
---phred33 \
---output_dir /home/hputnam/Meth_Compare/RRBS_cleaned \
---paired \
-/home/hputnam/Meth_Compare/RAW/${file}_R1_001.fastq.gz \
-/home/hputnam/Meth_Compare/RAW/${file}_R2_001.fastq.gz
-done'
-```
-
-### Trim WGBS and MBDBS
-```
-nohup sh -c 'for file in "Meth1" "Meth2" "Meth3"  "Meth7" "Meth8" "Meth9" "Meth10" "Meth11" "Meth12" "Meth16" "Meth17" "Meth18"
-do
-/home/hputnam/prog/TrimGalore-0.6.4/trim_galore \
---length 20 \
---quality 20 \
---phred33 \
---output_dir /home/hputnam/Meth_Compare/cleaned_reads \
---paired \
-/home/hputnam/Meth_Compare/RAW/${file}_R1_001.fastq.gz \
-/home/hputnam/Meth_Compare/RAW/${file}_R2_001.fastq.gz
-done'
-```
-
-### Count Clean reads
-
-```zgrep -c "@A00387" *.fastq.gz```
-
-### Quality control of cleaned sequencing reads (FASTQC)
-https://github.com/s-andrews/FastQC
-
-```
-nohup fastqc Meth*fq.gz
-```
-
-### Using Multiqc to summarize cleaned FastQC results
-https://github.com/ewels/MultiQC
-
-```
-multiqc .
-
-scp -P 2292 hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/cleaned_reads/multiqc_report.html /Users/hputnam/MyProjects/Meth_Compare
-```
-
-Rationale for internal conversion efficiency
-"Because only 5mC in a CpG site should still remain as cytosine following bisulfite treatment, the percentage of remaining non-CpG cytosines typically is inversely proportional to the conversion efficiency. Therefore, examining any remaining C at these non-CpG sites is known as a bisulfite treatment control."
-
-# Mapping to determine conversion efficiency
-
-#### MBD_BS LAMBDA
-* Set for non-directional
-* minimum alignment score function L,0,-0.6
-``nohup bismark --genome /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  --bowtie2 / --non_directional --score_min L,0,-0.6 -1 /home/hputnam/Meth_Compare/cleaned_reads/X.fq.gz -2 /home/hputnam/Meth_Compare/cleaned_reads/X.fq.gz`` 
-
-
-# Deduplication
-
-### MBD_BS Deduplicating
- ``deduplicate_bismark /home/hputnam/Meth_Compare/Mapped/X.bam
- ``
- 
- ### WGBS Deduplication
-
-# Extract Methylation
-``bismark_methylation_extractor --gzip -p --ignore_r2 2 --bedGraph --zero_based --no_overlap --multicore 20 --buffer_size 20G --cytosine_report --report --genome_folder /home/hputnam/Meth_Compare/GENOME/Lambda_Genome  /home/hputnam/Meth_Compare/DeDup/``
-
-
-
-scp -P 2292 hputnam@kitt.uri.edu:/RAID_STORAGE2/hputnam/20191010_HoloInt_Compare /Users/hputnam/Desktop
 
 
 
