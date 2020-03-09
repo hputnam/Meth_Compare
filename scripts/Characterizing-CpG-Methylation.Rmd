@@ -21,32 +21,65 @@ sessionInfo()
 
 ## Import data
 
-```{r}
-cpgMethylation <- read.delim("../analyses/Characterizing-CpG-Methylation/FILE", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylation) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylation) #Confirm import
-```
+### *M. capitata*
 
-## Create figure
+#### Sample 1
 
 ```{r}
-RColorBrewer::display.brewer.all() #Show all RColorBrewer palettes. I will choose greens.
-plotColors <- rev(RColorBrewer::brewer.pal(5, "GnBu")) #Create a color palette for the barplots. Use 5 green-blue shades from RColorBrewer. Reverse theorder so the darkest shade is used first.
-barplot(t(t(proportionData)),
-        col = plotColors) #See what plot looks like with new scheme
-barplot(t(t(proportionData)),
-        col = dichromat(plotColors)) #Check that the plot colors will be easy to interpret for those with color blindess
+cpgMethylationWGBS1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationWGBS1) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationWGBS1) #Confirm import
 ```
 
 ```{r}
-#pdf("2019-04-10-5x-CpG-Frequency-Distribution.pdf", width = 11, height = 8.5)
-hist(x = cpgMethylation$methylation, axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i") #Create base plot
-axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+cpgMethylationRRBS1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationRRBS1) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationRRBS1) #Confirm import
+```
+
+```{r}
+cpgMethylationMBD1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationMBD1) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationMBD1) #Confirm import
+```
+
+#### Sample 2
+
+#### Sample 3
+
+## Create individual figures for Sample 1
+
+```{r}
+hist(x = cpgMethylationWGBS1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
+#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
+#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
 mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
-#dev.off()
 ```
+
+```{r}
+hist(x = cpgMethylationRRBS1$methylation, axes = TRUE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
+#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
+#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+```
+
+```{r}
+hist(x = cpgMethylationMBD1$methylation, axes = TRUE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
+#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
+#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+```
+
+## Create composite figure for sample 1
+
+## Create composite figure for sample 2
+
+## Create composite figure for sample 3
+
+## Create multipanel figure with all samples
 
 # Methylation island characteristics
 
