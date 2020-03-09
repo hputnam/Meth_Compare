@@ -1,0 +1,72 @@
+---
+title: "Chacterizing CpG Methylation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this script, I'll create figures to characterize CpG methylation in my *C. virginica* gonad samples. I will use a list of CpGs with at least 5x coverage in any samples. I'll also calculate relevant statistics for methylation islands.
+
+**MOVE CODE TO ANALYSIS DIRECTORY `2019-03-18-Characterizing-CpG-Methylation` BEFORE PROCEEDING.**
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# All 10x CpGs
+
+## Import data
+
+```{r}
+cpgMethylation <- read.delim("../analyses/Characterizing-CpG-Methylation/FILE", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylation) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylation) #Confirm import
+```
+
+## Create figure
+
+```{r}
+RColorBrewer::display.brewer.all() #Show all RColorBrewer palettes. I will choose greens.
+plotColors <- rev(RColorBrewer::brewer.pal(5, "GnBu")) #Create a color palette for the barplots. Use 5 green-blue shades from RColorBrewer. Reverse theorder so the darkest shade is used first.
+barplot(t(t(proportionData)),
+        col = plotColors) #See what plot looks like with new scheme
+barplot(t(t(proportionData)),
+        col = dichromat(plotColors)) #Check that the plot colors will be easy to interpret for those with color blindess
+```
+
+```{r}
+#pdf("2019-04-10-5x-CpG-Frequency-Distribution.pdf", width = 11, height = 8.5)
+hist(x = cpgMethylation$methylation, axes = FALSE, xlab = "", ylab = "", main = "", col = plotColors[2], xaxs = "i", yaxs = "i") #Create base plot
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+#dev.off()
+```
+
+# Methylation island characteristics
+
+## Import data
+
+```{r}
+methylationIslands <- read.delim("../analyses/Characterizing-CpG-Methylation/FILE", header = FALSE) #Import methylation island list
+colnames(methylationIslands) <- c("chr", "MI.start", "MI.end", "mCpGs", "MI.length") #Add column names
+head(methylationIslands) #Confirm file format
+```
+
+## Calculate statistics
+
+```{r}
+range(methylationIslands$mCpGs) #Calculate the range of the number of mCpGs
+median(methylationIslands$mCpGs) #Calculate the median number of mCpGs in an island
+```
+
+```{r}
+range(methylationIslands$MI.length) #Calculate the range MI length
+median(methylationIslands$MI.length) #Calculate the median MI length
+```
+
