@@ -20,8 +20,8 @@ requires bowtie2, samtools, perl, trimmomatic
 
 * Bowtie 2 version X by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)
 * Program: samtools (Tools for alignments in the SAM format) Version: X
-* perl X 
-* Bismark Bisulfite Mapper VX 
+* perl X
+* Bismark Bisulfite Mapper VX
 * Trimmomatic
 * multiqc
 
@@ -61,18 +61,20 @@ http://pdam.reefgenomics.org/download/
 
 `wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
 
-#### Mcapitata 
-``bismark_genome_preparation Mcap_Genome`` 
+#### Mcapitata
+``bismark_genome_preparation Mcap_Genome``
 
-#### Pacuta 
-``bismark_genome_preparation Pact_Genome`` 
+#### Pacuta
+``bismark_genome_preparation Pact_Genome``
 
-#### Lambda 
-``bismark_genome_preparation Lambda_Genome`` 
+#### Lambda
+``bismark_genome_preparation Lambda_Genome``
 
 ## Checking correct transfer of files from sequencer
 
 from Genewiz
+
+```
 63a1cc9e23dcedd71a66dac00f36467d  Meth10_R1_001.fastq.gz
 ac966619cb5a2483870f973b696a38a1  Meth10_R2_001.fastq.gz
 06278c40d97f7a3efdae47218921ac6a  Meth11_R1_001.fastq.gz
@@ -109,9 +111,11 @@ d5199e48ed87773f67c4e3d8d9db3fce  Meth7_R1_001.fastq.gz
 37c495ced527f3e30ae2f3388a9146bf  Meth8_R2_001.fastq.gz
 c8ec0b73721a067729124c043904dc0e  Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
-
+```
 
 URI download
+
+```
 63a1cc9e23dcedd71a66dac00f36467d  Meth10_R1_001.fastq.gz
 ac966619cb5a2483870f973b696a38a1  Meth10_R2_001.fastq.gz
 06278c40d97f7a3efdae47218921ac6a  Meth11_R1_001.fastq.gz
@@ -148,7 +152,7 @@ d5199e48ed87773f67c4e3d8d9db3fce  Meth7_R1_001.fastq.gz
 37c495ced527f3e30ae2f3388a9146bf  Meth8_R2_001.fastq.gz
 c8ec0b73721a067729124c043904dc0e  Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
-
+```
 
 # Checking Sequence Quality and Trimming
 fastp
@@ -301,13 +305,13 @@ done
 # Run multiqc
 ${multiqc} .
 ```
+
+---
+
 # Mapping
 
+
+
+
+
 # Methylation Extract
-
-
-
-
-
-
-
