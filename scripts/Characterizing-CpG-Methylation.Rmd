@@ -51,33 +51,35 @@ head(cpgMethylationMBD1) #Confirm import
 
 ```{r}
 hist(x = cpgMethylationWGBS1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
-#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+03, 4e+03, 6e+03), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x1,000)", line = 2.5, cex = 1.5) #Add y-axis label
+```
+
+```{r}
+hist(x = cpgMethylationRRBS1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i", ylim = c(0, 12e+05)) #Create base plot
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6", "8", "10", "12"), at = c(0, 2e+05, 4e+05, 6e+05, 8e+05, 10e+05, 12e+05), cex.axis = 1.2) #add y-axis
 mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
 ```
 
 ```{r}
-hist(x = cpgMethylationRRBS1$methylation, axes = TRUE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
-#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
+hist(x = cpgMethylationMBD1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i", ylim = c(0, 4e+03)) #Create base plot
+axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
 mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
-mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4"), at = c(0, 2e+03, 4e+03), cex.axis = 1.2) #add y-axis
+mtext(side = 2, text = "Frequency (x1,000)", line = 2.5, cex = 1.5) #Add y-axis label
 ```
+
+TRY THIS: https://www.statmethods.net/graphs/density.html
 
 ```{r}
-hist(x = cpgMethylationMBD1$methylation, axes = TRUE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
-#axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-#axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+05, 4e+05, 6e+05), cex.axis = 1.2) #add y-axis
-mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+plot(density(cpgMethylationWGBS1$methylation))
+plot(density(cpgMethylationRRBS1$methylation))
+plot(density(cpgMethylationMBD1$methylation))
 ```
-
-## Create composite figure for sample 1
-
-## Create composite figure for sample 2
-
-## Create composite figure for sample 3
 
 ## Create multipanel figure with all samples
 
