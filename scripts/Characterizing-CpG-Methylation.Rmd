@@ -17,7 +17,7 @@ In this script, I'll create figures to characterize CpG methylation in my *C. vi
 sessionInfo()
 ```
 
-# All 10x CpGs
+# CpG distributions
 
 ## Import data
 
@@ -45,43 +45,90 @@ head(cpgMethylationMBD1) #Confirm import
 
 #### Sample 2
 
+```{r}
+cpgMethylationWGBS2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationWGBS2) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationWGBS2) #Confirm import
+```
+
+```{r}
+cpgMethylationRRBS2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationRRBS2) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationRRBS2) #Confirm import
+```
+
+```{r}
+cpgMethylationMBD2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationMBD2) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationMBD2) #Confirm import
+```
+
 #### Sample 3
 
-## Create individual figures for Sample 1
-
 ```{r}
-hist(x = cpgMethylationWGBS1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i") #Create base plot
-axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6"), at = c(0, 2e+03, 4e+03, 6e+03), cex.axis = 1.2) #add y-axis
-mtext(side = 2, text = "Frequency (x1,000)", line = 2.5, cex = 1.5) #Add y-axis label
+cpgMethylationWGBS3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationWGBS3) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationWGBS3) #Confirm import
 ```
 
 ```{r}
-hist(x = cpgMethylationRRBS1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i", ylim = c(0, 12e+05)) #Create base plot
-axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4", "6", "8", "10", "12"), at = c(0, 2e+05, 4e+05, 6e+05, 8e+05, 10e+05, 12e+05), cex.axis = 1.2) #add y-axis
-mtext(side = 2, text = "Frequency (x100,000)", line = 2.5, cex = 1.5) #Add y-axis label
+cpgMethylationRRBS3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationRRBS3) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationRRBS3) #Confirm import
 ```
 
 ```{r}
-hist(x = cpgMethylationMBD1$methylation, axes = FALSE, xlab = "", ylab = "", main = "", xaxs = "i", yaxs = "i", ylim = c(0, 4e+03)) #Create base plot
-axis(side = 1, col = "grey80", at = seq(from = 0, to = 100, by = 10), cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "Methylation (%)", line = 3, cex = 1.5) #Add x-axis label
-axis(side = 2, col = "grey80", las = 2, labels = c("0", "2", "4"), at = c(0, 2e+03, 4e+03), cex.axis = 1.2) #add y-axis
-mtext(side = 2, text = "Frequency (x1,000)", line = 2.5, cex = 1.5) #Add y-axis label
+cpgMethylationMBD3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
+colnames(cpgMethylationMBD3) <- c("chromosome", "start", "end", "methylation") #Add column names
+head(cpgMethylationMBD3) #Confirm import
 ```
 
-TRY THIS: https://www.statmethods.net/graphs/density.html
+## Create individual figures to test options
+
+```{r}
+hist(cpgMethylationWGBS1$methylation)
+hist(cpgMethylationRRBS1$methylation)
+hist(cpgMethylationMBD1$methylation)
+
+hist(cpgMethylationWGBS2$methylation)
+hist(cpgMethylationRRBS2$methylation)
+hist(cpgMethylationMBD2$methylation)
+
+hist(cpgMethylationWGBS3$methylation)
+hist(cpgMethylationRRBS3$methylation)
+hist(cpgMethylationMBD3$methylation)
+```
 
 ```{r}
 plot(density(cpgMethylationWGBS1$methylation))
 plot(density(cpgMethylationRRBS1$methylation))
 plot(density(cpgMethylationMBD1$methylation))
+
+plot(density(cpgMethylationWGBS2$methylation))
+plot(density(cpgMethylationRRBS2$methylation))
+plot(density(cpgMethylationMBD2$methylation))
+
+plot(density(cpgMethylationWGBS3$methylation))
+plot(density(cpgMethylationRRBS3$methylation))
+plot(density(cpgMethylationMBD3$methylation))
 ```
 
 ## Create multipanel figure with all samples
+
+```{r}
+par(mfrow = c(3,3))
+hist(cpgMethylationWGBS1$methylation, main = "")
+hist(cpgMethylationRRBS1$methylation, main = "")
+hist(cpgMethylationMBD1$methylation, main = "")
+
+hist(cpgMethylationWGBS2$methylation, main = "")
+hist(cpgMethylationRRBS2$methylation, main = "")
+hist(cpgMethylationMBD2$methylation, main = "")
+
+hist(cpgMethylationWGBS3$methylation, main = "")
+hist(cpgMethylationRRBS3$methylation, main = "")
+hist(cpgMethylationMBD3$methylation, main = "")
+```
 
 # Methylation island characteristics
 
