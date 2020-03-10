@@ -337,7 +337,88 @@ Meth2_R1_001.fastq.gz			system_path.log
 Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 ```
 
+### TrimGalore
+```
+#!/bin/bash
+## Job Name
+#SBATCH --job-name=TrimGfroger
+## Allocation Definition 
+#SBATCH --account=srlab
+#SBATCH --partition=srlab
+## Resources
+## Nodes 
+#SBATCH --nodes=1
+## Walltime (days-hours:minutes:seconds format)
+#SBATCH --time=4-23:30:00
+## Memory per node
+#SBATCH --mem=500G
+##turn on e-mail notification
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=strigg@uw.edu
+## Specify the working directory for this job
+#SBATCH --chdir=/gscratch/scrubbed/strigg/analyses/20200309
 
+%%bash
+
+#TrimGalore on WGBS and MBD-BS
+/gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
+--output_dir /gscratch/scrubbed/strigg/analyses/20200309/WGBS_MBD \
+--paired \
+--fastqc_args \
+"--outdir /gscratch/scrubbed/strigg/analyses/20200309/WGBS_MBD/FASTQC" \
+--illumina \
+--clip_R1 10 \
+--clip_R2 10 \
+--three_prime_clip_R1 10 \
+--three_prime_clip_R2 10 \
+--path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth11_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth11_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth1_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth3_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth3_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth7_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth7_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth8_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth8_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth16_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth16_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R2_001.fastq.gz 
+
+#TrimGalore on RRBS
+
+/gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
+--output_dir /gscratch/scrubbed/strigg/analyses/20200309/RRBS \
+--fastqc_args \
+"--outdir /gscratch/scrubbed/strigg/analyses/20200309/RRBS/FASTQC" \
+--non_directional \
+--rrbs \
+--paired \
+--path_to_cutadapt /gscratch/srlab/programs/miniconda3/bin/cutadapt \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth13_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth13_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth14_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth14_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth15_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth15_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth4_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth4_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R1_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R2_001.fastq.gz 
+```
 ---
 
 # Genome preparation
