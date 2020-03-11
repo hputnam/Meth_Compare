@@ -154,6 +154,90 @@ c8ec0b73721a067729124c043904dc0e  Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
 ```
 
+Copy to Gannet server
+```
+63a1cc9e23dcedd71a66dac00f36467d  ./Meth10_R1_001.fastq.gz
+ac966619cb5a2483870f973b696a38a1  ./Meth10_R2_001.fastq.gz
+06278c40d97f7a3efdae47218921ac6a  ./Meth11_R1_001.fastq.gz
+07e71cb470c1622ced336478df70204a  ./Meth11_R2_001.fastq.gz
+692992366c6709c1c50419bde55397cb  ./Meth12_R1_001.fastq.gz
+27803c9f39f0456ebc56aaa07620b7c5  ./Meth12_R2_001.fastq.gz
+9988a9eefd526231f6608a4549d2cfa7  ./Meth13_R1_001.fastq.gz
+04db1696a84174d2a146fdd2e2b8a1ca  ./Meth13_R2_001.fastq.gz
+131cb0c436de334bf17c375d49e02977  ./Meth14_R1_001.fastq.gz
+fc7f543911fffce636899e05ec29dee3  ./Meth14_R2_001.fastq.gz
+448f06b9bf1e19ee535ab74ce0f744fa  ./Meth15_R1_001.fastq.gz
+6bd07498df6b72f060b8e2c7ce624e01  ./Meth15_R2_001.fastq.gz
+46a49f6745c7478346f25ed7f509a704  ./Meth16_R1_001.fastq.gz
+a6a1dd2355ce0e6e625c24f23373dc86  ./Meth16_R2_001.fastq.gz
+f0a894a39a8a46d8729cd953c2531035  ./Meth17_R1_001.fastq.gz
+bd0c3257b16d91e181b688d64d7d0b54  ./Meth17_R2_001.fastq.gz
+d1b6b17e76c2634af2d9918f9ef7d9e9  ./Meth18_R1_001.fastq.gz
+e9ad11546163f7e22ed7aa427fa7d0c1  ./Meth18_R2_001.fastq.gz
+2560348651ae8a94fb351d0e54eff54e  ./Meth1_R1_001.fastq.gz
+45faf1e9cbf5a664e5c6818817e85ef1  ./Meth1_R2_001.fastq.gz
+a4963c92a3b6f62f2480f4f4bd72ec8f  ./Meth2_R1_001.fastq.gz
+beac9fbd4b2e460bc7f8375e3e6caaa8  ./Meth2_R2_001.fastq.gz
+1ae956f0fb4023165aaa4c58df9d437c  ./Meth3_R1_001.fastq.gz
+6c6a24173eb24f2db81290b21edf17c0  ./Meth3_R2_001.fastq.gz
+2ad73235560c58d8e68c3f75ada90840  ./Meth4_R1_001.fastq.gz
+ad106065fbdbcf9030cd804296290e18  ./Meth4_R2_001.fastq.gz
+8b966a3413ad40a087dcbf68204e84d6  ./Meth5_R1_001.fastq.gz
+779e2fee610f06fe006c2ef8a4535114  ./Meth5_R2_001.fastq.gz
+e481ea3fd24c09dafdfad82dec5d2d0a  ./Meth6_R1_001.fastq.gz
+3d876fd2cd176450c8a63bf739ac5857  ./Meth6_R2_001.fastq.gz
+d5199e48ed87773f67c4e3d8d9db3fce  ./Meth7_R1_001.fastq.gz
+5d8467eb30d47bb00d8133fa4a743acf  ./Meth7_R2_001.fastq.gz
+9b59ce33ab17158f2fea64f2d0d0ade7  ./Meth8_R1_001.fastq.gz
+37c495ced527f3e30ae2f3388a9146bf  ./Meth8_R2_001.fastq.gz
+c8ec0b73721a067729124c043904dc0e  ./Meth9_R1_001.fastq.gz
+b896f80209fbaaee4ca5316f435839ff  ./Meth9_R2_001.fastq.gz
+```
+
+Copy to Mox 
+```
+63a1cc9e23dcedd71a66dac00f36467d  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R1_001.fastq.gz
+ac966619cb5a2483870f973b696a38a1  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R2_001.fastq.gz
+06278c40d97f7a3efdae47218921ac6a  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth11_R1_001.fastq.gz
+07e71cb470c1622ced336478df70204a  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth11_R2_001.fastq.gz
+692992366c6709c1c50419bde55397cb  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R1_001.fastq.gz
+27803c9f39f0456ebc56aaa07620b7c5  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R2_001.fastq.gz
+9988a9eefd526231f6608a4549d2cfa7  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth13_R1_001.fastq.gz
+04db1696a84174d2a146fdd2e2b8a1ca  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth13_R2_001.fastq.gz
+131cb0c436de334bf17c375d49e02977  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth14_R1_001.fastq.gz
+fc7f543911fffce636899e05ec29dee3  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth14_R2_001.fastq.gz
+448f06b9bf1e19ee535ab74ce0f744fa  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth15_R1_001.fastq.gz
+6bd07498df6b72f060b8e2c7ce624e01  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth15_R2_001.fastq.gz
+46a49f6745c7478346f25ed7f509a704  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth16_R1_001.fastq.gz
+a6a1dd2355ce0e6e625c24f23373dc86  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth16_R2_001.fastq.gz
+f0a894a39a8a46d8729cd953c2531035  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz
+bd0c3257b16d91e181b688d64d7d0b54  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R2_001.fastq.gz
+d1b6b17e76c2634af2d9918f9ef7d9e9  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R1_001.fastq.gz
+e9ad11546163f7e22ed7aa427fa7d0c1  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R2_001.fastq.gz
+2560348651ae8a94fb351d0e54eff54e  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth1_R1_001.fastq.gz
+45faf1e9cbf5a664e5c6818817e85ef1  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth1_R2_001.fastq.gz
+a4963c92a3b6f62f2480f4f4bd72ec8f  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R1_001.fastq.gz
+beac9fbd4b2e460bc7f8375e3e6caaa8  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R2_001.fastq.gz
+1ae956f0fb4023165aaa4c58df9d437c  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth3_R1_001.fastq.gz
+6c6a24173eb24f2db81290b21edf17c0  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth3_R2_001.fastq.gz
+2ad73235560c58d8e68c3f75ada90840  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth4_R1_001.fastq.gz
+ad106065fbdbcf9030cd804296290e18  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth4_R2_001.fastq.gz
+8b966a3413ad40a087dcbf68204e84d6  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R1_001.fastq.gz
+779e2fee610f06fe006c2ef8a4535114  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R2_001.fastq.gz
+e481ea3fd24c09dafdfad82dec5d2d0a  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R1_001.fastq.gz
+3d876fd2cd176450c8a63bf739ac5857  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R2_001.fastq.gz
+d5199e48ed87773f67c4e3d8d9db3fce  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth7_R1_001.fastq.gz
+5d8467eb30d47bb00d8133fa4a743acf  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth7_R2_001.fastq.gz
+9b59ce33ab17158f2fea64f2d0d0ade7  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth8_R1_001.fastq.gz
+37c495ced527f3e30ae2f3388a9146bf  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth8_R2_001.fastq.gz
+c8ec0b73721a067729124c043904dc0e  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R1_001.fastq.gz
+b896f80209fbaaee4ca5316f435839ff  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R2_001.fastq.gz
+
+#ran the code below and it generated no output indicating files on Gannet and Mox are identical
+diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)
+```
+
+
 # Checking Sequence Quality and Trimming
 fastp
 
@@ -351,21 +435,26 @@ Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=4-23:30:00
 ## Memory per node
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 ##turn on e-mail notification
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=strigg@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/strigg/analyses/20200309
+#SBATCH --chdir=/gscratch/scrubbed/strigg/analyses/20200311
 
 %%bash
 
+#run md5 on fastqs to be sure the files in the directory (/gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz) match what was on Gannet (/gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt).
+
+md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
+
 #TrimGalore on WGBS and MBD-BS
 /gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
---output_dir /gscratch/scrubbed/strigg/analyses/20200309/WGBS_MBD \
+--output_dir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD \
 --paired \
 --fastqc_args \
-"--outdir /gscratch/scrubbed/strigg/analyses/20200309/WGBS_MBD/FASTQC" \
+"--outdir /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC \
+--threads 28" \
 --illumina \
 --clip_R1 10 \
 --clip_R2 10 \
@@ -378,6 +467,7 @@ Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth11_R2_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth12_R2_001.fastq.gz \
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth1_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth1_R2_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth2_R2_001.fastq.gz \
@@ -397,11 +487,11 @@ Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R2_001.fastq.gz 
 
 #TrimGalore on RRBS
-
 /gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
---output_dir /gscratch/scrubbed/strigg/analyses/20200309/RRBS \
+--output_dir /gscratch/scrubbed/strigg/analyses/20200311/RRBS \
 --fastqc_args \
-"--outdir /gscratch/scrubbed/strigg/analyses/20200309/RRBS/FASTQC" \
+"--outdir /gscratch/scrubbed/strigg/analyses/20200311/RRBS/FASTQC \
+--threads 28" \
 --non_directional \
 --rrbs \
 --paired \
@@ -418,6 +508,16 @@ Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R2_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R2_001.fastq.gz 
+
+#run multiqc for WGBS and MBD samples
+
+/gscratch/srlab/strigg/bin/anaconda3/bin/multiqc \
+/gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC/.
+
+#run multiqc for RRBS samples
+
+/gscratch/srlab/strigg/bin/anaconda3/bin/multiqc \
+/gscratch/scrubbed/strigg/analyses/20200311/RRBS/FASTQC/.
 ```
 ---
 
