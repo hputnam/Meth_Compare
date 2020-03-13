@@ -302,6 +302,8 @@ done
 -----------------------------------------------------------------------------
 
 
+cd ../../
+
 
 mkdir Pact_tg/dedup
 cp Pact_tg/Meth1*bam Pact_tg/dedup/
