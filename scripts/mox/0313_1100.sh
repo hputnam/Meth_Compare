@@ -210,3 +210,91 @@ done
 
 
 ------------------------
+
+
+cd ../nodedup
+
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedGraph --counts --scaffolds \
+--multicore 14 \
+--buffer_size 75% \
+*.bam
+
+
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+
+
+# Sort files for methylkit and IGV
+
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+
+
+genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
+
+
+find *bismark.cov.gz \
+| xargs basename -s bismark.cov.gz \
+| xargs -I{} ${bismark_dir}/coverage2cytosine \
+--genome_folder ${genome_folder} \
+-o {} \
+--merge_CpG \
+--zero_based \
+{}bismark.cov.gz
+
+
+#creating bedgraphs post merge
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_10x.bedgraph
+done
+
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_5x.bedgraph
+done
+
+
+#creating tab files with raw count for glms
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_10x.tab
+done
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_5x.tab
+done
