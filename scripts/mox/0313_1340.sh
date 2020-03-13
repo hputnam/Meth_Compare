@@ -4,8 +4,8 @@
 ##  This script is meant to align trim galore data to Mcap: TG TEST
 ##  And generate files for downstream analyses
 ## Allocation Definition
-#SBATCH --account=srlab
-#SBATCH --partition=srlab
+#SBATCH --account=coenv
+#SBATCH --partition=coenv
 ## Resources
 ## Nodes (We only get 1, so this is fixed)
 #SBATCH --nodes=1
@@ -16,7 +16,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/$$$$$$
+#SBATCH --chdir=/gscratch/scrubbed/sr320/031320-TG-bs
 
 
 # Directories and programs
@@ -35,23 +35,24 @@ source /gscratch/srlab/programs/scripts/paths.sh
 
 
 
-# Aligning to genomes. Will need trim reads in distinct directories
+# Aligning to genome. Will need trim reads in distinct directories
 # Need to confirm filenames jive with code.
 # AND set output directory
 
 genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
-reads_dir="/gscratch/srlab/sr320/data/froger/trim/Mc/"
+reads_dir="/gscratch/scrubbed/sr320/031320-TG-bs/"
 
 
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
+-u 10000000 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Mcap_tg
 
 
