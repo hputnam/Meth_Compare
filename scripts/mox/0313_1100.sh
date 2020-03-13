@@ -72,27 +72,11 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 
 
 
-reads_dir="/gscratch/srlab/sr320/data/froger/trim/Pa/"
-genome_folder="/gscratch/srlab/sr320/data/froger/Pdam_Genome/"
+# Will want to have directory of trimmed data from both taxa
 
-
-
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
---path_to_bowtie ${bowtie2_dir} \
--genome ${genome_folder} \
--p 4 \
--score_min L,0,-0.6 \
--u 10000000 \
---non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
--o Pdam_full-u1M
-
-
-
-reads_dir="/gscratch/scrubbed/samwhite/outputs/20200305_methcompare_fastp_trimming/"
 genome_folder="/gscratch/srlab/sr320/data/lambda/"
+reads_dir="/gscratch/scrubbed/samwhite/outputs/20200305_methcompare_fastp_trimming/"
+
 
 
 find ${reads_dir}*2020*_R1_001.fastq.gz \
@@ -101,8 +85,128 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
--u 10000000 \
 --non_directional \
 -1 ${reads_dir}{}_R1_001.fastq.gz \
 -2 ${reads_dir}{}_R2_001.fastq.gz \
--o lambda_full-u1M
+-o lambda_tg
+
+
+--------------------------------------------------------
+
+# From here we extract methylation and create downstream amendable files.
+# will split samples into dedup and nodedup directories for reasson
+# First the dedups which in our case would be
+
+
+mkdir Mcap_tg/dedup
+cp Mcap_tg/Meth10*bam Mcap_tg/dedup/
+cp Mcap_tg/Meth11*bam Mcap_tg/dedup/
+cp Mcap_tg/Meth12*bam Mcap_tg/dedup/
+cp Mcap_tg/Meth16*bam Mcap_tg/dedup/
+cp Mcap_tg/Meth17*bam Mcap_tg/dedup/
+cp Mcap_tg/Meth18*bam Mcap_tg/dedup/
+
+mkdir Mcap_tg/nodedup
+cp Mcap_tg/Meth13*bam Mcap_tg/nodedup/
+cp Mcap_tg/Meth14*bam Mcap_tg/nodedup/
+cp Mcap_tg/Meth15*bam Mcap_tg/nodedup/
+
+
+cd Mcap_tg/dedup
+
+
+find *.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${bismark_dir}/deduplicate_bismark \
+--bam \
+--paired \
+{}.bam
+
+
+
+${bismark_dir}/bismark_methylation_extractor \
+--bedGraph --counts --scaffolds \
+--multicore 14 \
+--buffer_size 75% \
+*deduplicated.bam
+
+
+
+# Bismark processing report
+
+${bismark_dir}/bismark2report
+
+#Bismark summary report
+
+${bismark_dir}/bismark2summary
+
+
+
+# Sort files for methylkit and IGV
+
+find *deduplicated.bam | \
+xargs basename -s .bam | \
+xargs -I{} ${samtools} \
+sort --threads 28 {}.bam \
+-o {}.sorted.bam
+
+# Index sorted files for IGV
+# The "-@ 16" below specifies number of CPU threads to use.
+
+find *.sorted.bam | \
+xargs basename -s .sorted.bam | \
+xargs -I{} ${samtools} \
+index -@ 28 {}.sorted.bam
+
+
+genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
+
+
+find *deduplicated.bismark.cov.gz \
+| xargs basename -s deduplicated.bismark.cov.gz \
+| xargs -I{} ${bismark_dir}/coverage2cytosine \
+--genome_folder ${genome_folder} \
+-o {} \
+--merge_CpG \
+--zero_based \
+{}deduplicated.bismark.cov.gz
+
+
+#creating bedgraphs post merge
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_10x.bedgraph
+done
+
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4}}' \
+  > "${STEM}"_5x.bedgraph
+done
+
+
+#creating tab files with raw count for glms
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_10x.tab
+done
+
+
+for f in *merged_CpG_evidence.cov
+do
+  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
+  > "${STEM}"_5x.tab
+done
+
+
+------------------------
