@@ -10,7 +10,7 @@
 ## Nodes (We only get 1, so this is fixed)
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
-#SBATCH --time=5-00:00:00
+#SBATCH --time=10-00:00:00
 ## Memory per node
 #SBATCH --mem=500G
 #SBATCH --mail-type=ALL
