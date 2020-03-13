@@ -12,7 +12,7 @@
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=10-00:00:00
 ## Memory per node
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
