@@ -1,7 +1,7 @@
-﻿Sample Number/Tube Label,CD Index #,Species,Genome Assembly,Plug.ID,GTF
-1,7,Pocillopora acuta,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar,1041,Sample1_merged2.gtf
-2,8,Pocillopora acuta,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar,1471,Sample2_merged2.gtf
-3,15,Pocillopora acuta,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar,1637,Sample3_merged2.gtf
-4,16,Montipora capitata,http://cyanophora.rutgers.edu/montipora/,1101,Sample4_merged2.gtf
-5,23,Montipora capitata,http://cyanophora.rutgers.edu/montipora/,1548,Sample5_merged2.gtf
-6,24,Montipora capitata,http://cyanophora.rutgers.edu/montipora/,1628,Sample6_merged2.gtf
+﻿Sample Number/Tube Label,CD Index #,Species,Plug.ID,GTF,Genome Assembly
+1,7,Pocillopora acuta,PA_1041,Sample1_merged2.gtf,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar
+2,8,Pocillopora acuta,PA_1471,Sample2_merged2.gtf,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar
+3,15,Pocillopora acuta,PA_1637,Sample3_merged2.gtf,http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar
+4,16,Montipora capitata,MC_1101,Sample4_merged2.gtf,http://cyanophora.rutgers.edu/montipora/
+5,23,Montipora capitata,MC_1548,Sample5_merged2.gtf,http://cyanophora.rutgers.edu/montipora/
+6,24,Montipora capitata,MC_1628,Sample6_merged2.gtf,http://cyanophora.rutgers.edu/montipora/
