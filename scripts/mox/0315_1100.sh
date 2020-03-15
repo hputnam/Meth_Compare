@@ -1,22 +1,22 @@
 #!/bin/bash
 ## Job Name
-#SBATCH --job-name=tg-bismark
+#SBATCH --job-name=tg-100g
 ##  This script is meant to align trim galore data to both genomes
 ##  And generate files for downstream analyses
 ## Allocation Definition
-#SBATCH --account=srlab
-#SBATCH --partition=srlab
+#SBATCH --account=coenv
+#SBATCH --partition=coenv
 ## Resources
 ## Nodes (We only get 1, so this is fixed)
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=10-00:00:00
 ## Memory per node
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/031520-TG-bs
+#SBATCH --chdir=/gscratch/scrubbed/sr320/031520-TG-100g
 
 
 # Directories and programs
@@ -43,31 +43,32 @@ genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
 reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Mcap_trim/"
 
 
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Mcap_tg
+
 
 
 genome_folder="/gscratch/srlab/sr320/data/froger/Pact_Genome/"
 reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/"
 
 
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Pact_tg
 
 
@@ -99,7 +100,7 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 # RRBS data does NOT need to be deplicated
 # First the dedups which in our case would be
 
-
+mkdir Mcap_tg
 mkdir Mcap_tg/dedup
 cp Mcap_tg/Meth10*bam Mcap_tg/dedup/
 cp Mcap_tg/Meth11*bam Mcap_tg/dedup/
