@@ -16,7 +16,7 @@
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/$$$$$$
+#SBATCH --chdir=/gscratch/scrubbed/sr320/031520-TG-bs
 
 
 # Directories and programs
@@ -40,7 +40,7 @@ source /gscratch/srlab/programs/scripts/paths.sh
 # AND set output directory
 
 genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
-reads_dir="/gscratch/srlab/sr320/data/froger/trim/Mc/"
+reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Mcap_trim/"
 
 
 find ${reads_dir}*2020*_R1_001.fastq.gz \
@@ -56,7 +56,7 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 
 
 genome_folder="/gscratch/srlab/sr320/data/froger/Pact_Genome/"
-reads_dir="/gscratch/srlab/sr320/data/froger/trim/Pa/"
+reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/"
 
 
 find ${reads_dir}*2020*_R1_001.fastq.gz \
@@ -75,7 +75,7 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 # Will want to have directory of trimmed data from both taxa
 
 genome_folder="/gscratch/srlab/sr320/data/lambda/"
-reads_dir="/gscratch/scrubbed/samwhite/outputs/20200305_methcompare_fastp_trimming/"
+reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/"
 
 
 
@@ -84,6 +84,7 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
+-u 10000000 \
 -score_min L,0,-0.6 \
 --non_directional \
 -1 ${reads_dir}{}_R1_001.fastq.gz \
