@@ -43,31 +43,32 @@ genome_folder="/gscratch/srlab/sr320/data/froger/Mcap_Genome/"
 reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Mcap_trim/"
 
 
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Mcap_tg
+
 
 
 genome_folder="/gscratch/srlab/sr320/data/froger/Pact_Genome/"
 reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/"
 
 
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
+find ${reads_dir}*_R1_001_val_1.fq.gz \
+| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
 -score_min L,0,-0.6 \
 --non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
+-1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+-2 ${reads_dir}{}_R2_001_val_2.fq.gz \
 -o Pact_tg
 
 
@@ -99,7 +100,7 @@ find ${reads_dir}*2020*_R1_001.fastq.gz \
 # RRBS data does NOT need to be deplicated
 # First the dedups which in our case would be
 
-
+mkdir Mcap_tg
 mkdir Mcap_tg/dedup
 cp Mcap_tg/Meth10*bam Mcap_tg/dedup/
 cp Mcap_tg/Meth11*bam Mcap_tg/dedup/
@@ -305,7 +306,7 @@ done
 
 cd ../../
 
-
+mkdir Pact_tg
 mkdir Pact_tg/dedup
 cp Pact_tg/Meth1*bam Pact_tg/dedup/
 cp Pact_tg/Meth2*bam Pact_tg/dedup/
