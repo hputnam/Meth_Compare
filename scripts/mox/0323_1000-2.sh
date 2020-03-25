@@ -125,7 +125,7 @@ index -@ 28 {}.sorted.bam
 
 
 find *deduplicated.bismark.cov.gz \
-| xargs basename -s .deduplicated.bismark.cov.gz \
+| xargs basename -s deduplicated.bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
 --genome_folder ${genome_folder} \
 -o {} \
@@ -214,7 +214,7 @@ index -@ 28 {}.sorted.bam
 
 
 find *bismark.cov.gz \
-| xargs basename -s .bismark.cov.gz \
+| xargs basename -s bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
 --genome_folder ${genome_folder} \
 -o {} \
