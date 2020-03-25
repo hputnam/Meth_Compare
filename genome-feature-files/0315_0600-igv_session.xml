@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="http://gannet.fish.washington.edu/seashell/snaps/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="1:1-3259165" path="/Users/sr320/Documents/GitHub/Meth_Compare/genome-feature-files/0315_0600-igv_session.xml" version="8">
+    <Resources>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph"/>
+        <Resource path="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam"/>
+    </Resources>
+    <Panel height="720" name="DataPanel" width="1133">
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth10_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="10.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth11_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="15.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth12_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="10.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,51,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe.sorted.bam_coverage" name="Meth13_R1_001_val_1_bismark_bt2_pe.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="60.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,51,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe.sorted.bam_coverage" name="Meth14_R1_001_val_1_bismark_bt2_pe.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="60.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="255,51,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe.sorted.bam_coverage" name="Meth15_R1_001_val_1_bismark_bt2_pe.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="60.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth16_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="10.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;11.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth17_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="11.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" name="Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+        <Track altColor="0,0,178" autoScale="true" color="175,175,175" colorScale="ContinuousColorScale;0.0;10.0;255,255,255;175,175,175" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031320-TG-bs/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam_coverage" name="Meth18_R1_001_val_1_bismark_bt2_pe.deduplicated.sorted.bam Coverage" showReference="false" snpThreshold="0.2" sortable="true" visible="true">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="10.0" minimum="0.0" type="LINEAR"/>
+        </Track>
+    </Panel>
+    <Panel height="32" name="FeaturePanel" width="1133">
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.9370748299319728"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
