@@ -69,7 +69,7 @@ cp Pact_C1/Meth7*bam Pact_C1/dedup/
 cp Pact_C1/Meth8*bam Pact_C1/dedup/
 cp Pact_C1/Meth9*bam Pact_C1/dedup/
 
-mkdir Pact_tg/nodedup
+mkdir Pact_C1/nodedup
 cp Pact_C1/Meth4*bam Pact_C1/nodedup/
 cp Pact_C1/Meth5*bam Pact_C1/nodedup/
 cp Pact_C1/Meth6*bam Pact_C1/nodedup/
@@ -125,7 +125,7 @@ index -@ 28 {}.sorted.bam
 
 
 find *deduplicated.bismark.cov.gz \
-| xargs basename -s .deduplicated.bismark.cov.gz \
+| xargs basename -s deduplicated.bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
 --genome_folder ${genome_folder} \
 -o {} \
@@ -214,7 +214,7 @@ index -@ 28 {}.sorted.bam
 
 
 find *bismark.cov.gz \
-| xargs basename -s .bismark.cov.gz \
+| xargs basename -s bismark.cov.gz \
 | xargs -I{} ${bismark_dir}/coverage2cytosine \
 --genome_folder ${genome_folder} \
 -o {} \
