@@ -1,22 +1,22 @@
 #!/bin/bash
 ## Job Name
-#SBATCH --job-name=tg-bismark
+#SBATCH --job-name=tg-100g
 ##  This script is meant to align trim galore data to both genomes
 ##  And generate files for downstream analyses
 ## Allocation Definition
-#SBATCH --account=srlab
-#SBATCH --partition=srlab
+#SBATCH --account=coenv
+#SBATCH --partition=coenv
 ## Resources
 ## Nodes (We only get 1, so this is fixed)
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=10-00:00:00
 ## Memory per node
-#SBATCH --mem=500G
+#SBATCH --mem=100G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/031520-TG-bs
+#SBATCH --chdir=/gscratch/scrubbed/sr320/031520-TG-100g
 
 
 # Directories and programs
@@ -306,7 +306,7 @@ done
 
 cd ../../
 
-mkdir Pact_tg
+
 mkdir Pact_tg/dedup
 cp Pact_tg/Meth1*bam Pact_tg/dedup/
 cp Pact_tg/Meth2*bam Pact_tg/dedup/
