@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Job Name
-#SBATCH --job-name=Pact-C1
+#SBATCH --job-name=Pact-C1-2
 ##  Aligning Pact to C1
 ## Allocation Definition
 #SBATCH --account=coenv
@@ -39,17 +39,17 @@ genome_folder="/gscratch/srlab/sr320/data/froger/C1_Genome/"
 reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/"
 
 
-find ${reads_dir}*_R1_001_val_1.fq.gz \
-| xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
---path_to_bowtie ${bowtie2_dir} \
--genome ${genome_folder} \
--p 4 \
--score_min L,0,-0.6 \
---non_directional \
--1 ${reads_dir}{}_R1_001_val_1.fq.gz \
--2 ${reads_dir}{}_R2_001_val_2.fq.gz \
--o Pact_C1
-
+# find ${reads_dir}*_R1_001_val_1.fq.gz \
+# | xargs basename -s _R1_001_val_1.fq.gz | xargs -I{} ${bismark_dir}/bismark \
+# --path_to_bowtie ${bowtie2_dir} \
+# -genome ${genome_folder} \
+# -p 4 \
+# -score_min L,0,-0.6 \
+# --non_directional \
+# -1 ${reads_dir}{}_R1_001_val_1.fq.gz \
+# -2 ${reads_dir}{}_R2_001_val_2.fq.gz \
+# -o Pact_C1
+#
 
 
 
