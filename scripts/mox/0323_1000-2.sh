@@ -61,120 +61,120 @@ reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/"
 # First the dedups which in our case would be
 
 
-mkdir Pact_C1/dedup
-cp Pact_C1/Meth1*bam Pact_C1/dedup/
-cp Pact_C1/Meth2*bam Pact_C1/dedup/
-cp Pact_C1/Meth3*bam Pact_C1/dedup/
-cp Pact_C1/Meth7*bam Pact_C1/dedup/
-cp Pact_C1/Meth8*bam Pact_C1/dedup/
-cp Pact_C1/Meth9*bam Pact_C1/dedup/
+# mkdir Pact_C1/dedup
+# cp Pact_C1/Meth1*bam Pact_C1/dedup/
+# cp Pact_C1/Meth2*bam Pact_C1/dedup/
+# cp Pact_C1/Meth3*bam Pact_C1/dedup/
+# cp Pact_C1/Meth7*bam Pact_C1/dedup/
+# cp Pact_C1/Meth8*bam Pact_C1/dedup/
+# cp Pact_C1/Meth9*bam Pact_C1/dedup/
 
 mkdir Pact_C1/nodedup
 cp Pact_C1/Meth4*bam Pact_C1/nodedup/
 cp Pact_C1/Meth5*bam Pact_C1/nodedup/
 cp Pact_C1/Meth6*bam Pact_C1/nodedup/
 
+#
+# cd Pact_C1/dedup
+#
+#
+# find *.bam | \
+# xargs basename -s .bam | \
+# xargs -I{} ${bismark_dir}/deduplicate_bismark \
+# --bam \
+# --paired \
+# {}.bam
+#
+#
+#
+# ${bismark_dir}/bismark_methylation_extractor \
+# --bedGraph --counts --scaffolds \
+# --multicore 14 \
+# --buffer_size 75% \
+# *deduplicated.bam
+#
+#
+#
+# # Bismark processing report
+#
+# ${bismark_dir}/bismark2report
+#
+# #Bismark summary report
+#
+# ${bismark_dir}/bismark2summary
+#
+#
+#
+# # Sort files for methylkit and IGV
+#
+# find *deduplicated.bam | \
+# xargs basename -s .bam | \
+# xargs -I{} ${samtools} \
+# sort --threads 28 {}.bam \
+# -o {}.sorted.bam
+#
+# # Index sorted files for IGV
+# # The "-@ 16" below specifies number of CPU threads to use.
+#
+# find *.sorted.bam | \
+# xargs basename -s .sorted.bam | \
+# xargs -I{} ${samtools} \
+# index -@ 28 {}.sorted.bam
+#
+#
+#
+#
+# find *deduplicated.bismark.cov.gz \
+# | xargs basename -s deduplicated.bismark.cov.gz \
+# | xargs -I{} ${bismark_dir}/coverage2cytosine \
+# --genome_folder ${genome_folder} \
+# -o {} \
+# --merge_CpG \
+# --zero_based \
+# {}deduplicated.bismark.cov.gz
+#
+#
+# #creating bedgraphs post merge
+#
+# for f in *merged_CpG_evidence.cov
+# do
+#   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+#   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
+#   > "${STEM}"_10x.bedgraph
+# done
+#
+#
+#
+# for f in *merged_CpG_evidence.cov
+# do
+#   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+#   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4}}' \
+#   > "${STEM}"_5x.bedgraph
+# done
+#
+#
+# #creating tab files with raw count for glms
+#
+# for f in *merged_CpG_evidence.cov
+# do
+#   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+#   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
+#   > "${STEM}"_10x.tab
+# done
+#
+#
+# for f in *merged_CpG_evidence.cov
+# do
+#   STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
+#   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
+#   > "${STEM}"_5x.tab
+# done
+#
+#
+# ------------------------
+#
 
-cd Pact_C1/dedup
-
-
-find *.bam | \
-xargs basename -s .bam | \
-xargs -I{} ${bismark_dir}/deduplicate_bismark \
---bam \
---paired \
-{}.bam
-
-
-
-${bismark_dir}/bismark_methylation_extractor \
---bedGraph --counts --scaffolds \
---multicore 14 \
---buffer_size 75% \
-*deduplicated.bam
-
-
-
-# Bismark processing report
-
-${bismark_dir}/bismark2report
-
-#Bismark summary report
-
-${bismark_dir}/bismark2summary
-
-
-
-# Sort files for methylkit and IGV
-
-find *deduplicated.bam | \
-xargs basename -s .bam | \
-xargs -I{} ${samtools} \
-sort --threads 28 {}.bam \
--o {}.sorted.bam
-
-# Index sorted files for IGV
-# The "-@ 16" below specifies number of CPU threads to use.
-
-find *.sorted.bam | \
-xargs basename -s .sorted.bam | \
-xargs -I{} ${samtools} \
-index -@ 28 {}.sorted.bam
-
-
-
-
-find *deduplicated.bismark.cov.gz \
-| xargs basename -s deduplicated.bismark.cov.gz \
-| xargs -I{} ${bismark_dir}/coverage2cytosine \
---genome_folder ${genome_folder} \
--o {} \
---merge_CpG \
---zero_based \
-{}deduplicated.bismark.cov.gz
-
-
-#creating bedgraphs post merge
-
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4}}' \
-  > "${STEM}"_10x.bedgraph
-done
-
-
-
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4}}' \
-  > "${STEM}"_5x.bedgraph
-done
-
-
-#creating tab files with raw count for glms
-
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 10) {print $1, $2, $3, $4, $5, $6}}' \
-  > "${STEM}"_10x.tab
-done
-
-
-for f in *merged_CpG_evidence.cov
-do
-  STEM=$(basename "${f}" .CpG_report.merged_CpG_evidence.cov)
-  cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
-  > "${STEM}"_5x.tab
-done
-
-
-------------------------
-
-
-cd ../nodedup
+cd Pact_C1/nodedup
 
 
 ${bismark_dir}/bismark_methylation_extractor \
