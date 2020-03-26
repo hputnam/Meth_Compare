@@ -69,7 +69,7 @@ cp Pact_C1/Meth7*bam Pact_C1/dedup/
 cp Pact_C1/Meth8*bam Pact_C1/dedup/
 cp Pact_C1/Meth9*bam Pact_C1/dedup/
 
-mkdir Pact_tg/nodedup
+mkdir Pact_C1/nodedup
 cp Pact_C1/Meth4*bam Pact_C1/nodedup/
 cp Pact_C1/Meth5*bam Pact_C1/nodedup/
 cp Pact_C1/Meth6*bam Pact_C1/nodedup/
