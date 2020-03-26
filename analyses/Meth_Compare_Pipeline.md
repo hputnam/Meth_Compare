@@ -42,7 +42,8 @@ requires bowtie2, samtools, perl, trimmomatic
 
 `wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar `
 
-https://www.ncbi.nlm.nih.gov/assembly/GCF_003627195.1
+### Lambda genome
+https://www.ncbi.nlm.nih.gov/genome/167?genome_assembly_id=161521
 
 `mkdir Lambda_Genome`
 
