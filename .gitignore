@@ -5,3 +5,4 @@ analyses/Characterizing-CpG-Methylation/Meth13.fastp-trim.202003062040_R1_001_bi
 genome-feature-files/Structural_annotation_abintio.gff
 data/*bedgraph
 analyses/10-unionbedg/Mcap_union_5x.bedgraph
+analyses/10-unionbedg/Pact_union_5x.bedgraph
