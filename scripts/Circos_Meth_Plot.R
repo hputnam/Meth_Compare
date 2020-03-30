@@ -5,34 +5,39 @@ library(ComplexHeatmap)
 #https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#customize-chromosome-track
 #The input data for circos.genomicInitialize() is also a data frame with at least three columns. The first column is genomic category (for cytoband data, it is chromosome name), and the next two columns are positions in each genomic category.
 
-cytoband <- read.table("data/Mcap_CpG.gff", sep = "\t", skip=3, header = FALSE,colClasses = c("character","character","character", "numeric",
+cytoband <- read.table("data/Pact_CpG.gff", sep = "\t", skip=3, header = FALSE,colClasses = c("character","character","character", "numeric",
                                                                                                  "numeric",  "numeric", "character", "character", "character"), )
 
-Pact <- read.table("data/Mcap_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+Pact <- read.table("data/Pact_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
 #, colClasses = c("character","numeric","numeric",  "numeric", "numeric",  "numeric", "numeric","numeric",  "numeric", "numeric","numeric",  "numeric"),
 head(Pact)
 str(Pact)
 
 cytoband.df <- cytoband[,c(1,4,5,6,9)]
 str(cytoband.df)
+head(unique(cytoband.df$V1), 20)
 
 cytoband.df <- cytoband.df %>% 
-  filter(V1 == 1| V1 == 2|V1 == 3| V1 == 4| V1 == 5| V1 == 6 | V1 == 7| V1 == 8|V1 == 9| V1 == 10| V1 == 11| V1 == 12
-         |V1 == 13| V1 == 14| V1 == 15| V1 == 16 | V1 == 17| V1 == 18|V1 == 19| V1 == 20)
+  filter(V1 == "scaffold1_cov55"| V1 == "scaffold2_cov51" |V1 == "scaffold3_cov83" | V1 == "scaffold4_cov57" | V1 == "scaffold6_cov64" | V1 == "scaffold7_cov100" | V1 == "scaffold8_cov45"
+         | V1 == "scaffold9_cov118" |V1 == "scaffold10_cov103"| V1 == "scaffold11_cov60" | V1 == "scaffold12_cov67"| V1 == "scaffold13_cov99"
+         |V1 == "scaffold14_cov75"| V1 == "scaffold15_cov110"| V1 == "scaffold16_cov58"| V1 == "scaffold17_cov151"  | V1 == "scaffold18_cov131"| 
+           V1 == "scaffold19_cov103"|V1 == "scaffold20_cov103"| V1 == "scaffold21_cov102")
  
 Pact_union <- Pact %>% 
-  filter(chrom == 1| chrom == 2|chrom == 3| chrom == 4| chrom == 5| chrom == 6 | chrom == 7| chrom == 8|chrom == 9| chrom == 10| chrom == 11| chrom == 12
-         |chrom == 13| chrom == 14| chrom == 15| chrom == 16 | chrom == 17| chrom == 18|chrom == 19| chrom == 20)
+  filter(chrom == "scaffold1_cov55"| chrom == "scaffold2_cov51" |chrom == "scaffold3_cov83" | chrom == "scaffold4_cov57" | chrom == "scaffold6_cov64" | chrom == "scaffold7_cov100" | chrom == "scaffold8_cov45"
+         | chrom == "scaffold9_cov118" |chrom == "scaffold10_cov103"| chrom == "scaffold11_cov60" | chrom == "scaffold12_cov67"| chrom == "scaffold13_cov99"
+         |chrom == "scaffold14_cov75"| chrom == "scaffold15_cov110"| chrom == "scaffold16_cov58"| chrom == "scaffold17_cov151"  | chrom == "scaffold18_cov131"| 
+           chrom == "scaffold19_cov103"|chrom == "scaffold20_cov103"| chrom == "scaffold21_cov102")
 
-Pact_union$X10 <-as.numeric(Pact_union$X10)
-Pact_union$X11 <-as.numeric(Pact_union$X11)
-Pact_union$X12 <-as.numeric(Pact_union$X12)
-Pact_union$X13 <-as.numeric(Pact_union$X13)
-Pact_union$X14 <-as.numeric(Pact_union$X14)
-Pact_union$X15 <-as.numeric(Pact_union$X15)
-Pact_union$X16 <-as.numeric(Pact_union$X16)
-Pact_union$X17 <-as.numeric(Pact_union$X17)
-Pact_union$X18 <-as.numeric(Pact_union$X18)
+Pact_union$X1 <-as.numeric(Pact_union$X1)
+Pact_union$X2 <-as.numeric(Pact_union$X2)
+Pact_union$X3 <-as.numeric(Pact_union$X3)
+Pact_union$X4 <-as.numeric(Pact_union$X4)
+Pact_union$X5 <-as.numeric(Pact_union$X5)
+Pact_union$X6 <-as.numeric(Pact_union$X6)
+Pact_union$X7 <-as.numeric(Pact_union$X7)
+Pact_union$X8 <-as.numeric(Pact_union$X8)
+Pact_union$X9 <-as.numeric(Pact_union$X9)
 
 # Pact.all <- Pact_union
 # 
