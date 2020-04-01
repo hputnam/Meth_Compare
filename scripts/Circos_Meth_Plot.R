@@ -5,30 +5,48 @@ library(ComplexHeatmap)
 #https://jokergoo.github.io/circlize_book/book/initialize-genomic-plot.html#customize-chromosome-track
 #The input data for circos.genomicInitialize() is also a data frame with at least three columns. The first column is genomic category (for cytoband data, it is chromosome name), and the next two columns are positions in each genomic category.
 
-cytoband <- read.table("data/Pact_CpG.gff", sep = "\t", skip=3, header = FALSE,colClasses = c("character","character","character", "numeric",
-                                                                                                 "numeric",  "numeric", "character", "character", "character"), )
+##### POCILLOPORA #####
+#load in all genes gff from a genome
+Pact.cytoband <- read.table("data/Pact.GFFannotation.Genes.gff", sep = "\t",  
+                       header = FALSE,colClasses = c("character","character","character", "numeric",
+                       "numeric",  "numeric", "character", "character", "character") )
 
+#remove extra coloumns from gene gff
+Pact.cytoband.df <- Pact.cytoband[,c(1,4,5,6,9)]
+str(Pact.cytoband.df)
+head(Pact.cytoband.df)
+
+#read in the 5x coverage bedgraph of CpG for all 18 samples, 3 reps x 3 methods x 2 species
 Pact <- read.table("data/Pact_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
-#, colClasses = c("character","numeric","numeric",  "numeric", "numeric",  "numeric", "numeric","numeric",  "numeric", "numeric","numeric",  "numeric"),
 head(Pact)
 str(Pact)
 
-cytoband.df <- cytoband[,c(1,4,5,6,9)]
-str(cytoband.df)
-head(unique(cytoband.df$V1), 20)
+#remove extra coloumns from gene gff
+Pact.cytoband.df <- Pact.cytoband[,c(1,4,5,6,9)]
+str(Pact.cytoband.df)
+head(Pact.cytoband.df)
 
-cytoband.df <- cytoband.df %>% 
-  filter(V1 == "scaffold1_cov55"| V1 == "scaffold2_cov51" |V1 == "scaffold3_cov83" | V1 == "scaffold4_cov57" | V1 == "scaffold6_cov64" | V1 == "scaffold7_cov100" | V1 == "scaffold8_cov45"
-         | V1 == "scaffold9_cov118" |V1 == "scaffold10_cov103"| V1 == "scaffold11_cov60" | V1 == "scaffold12_cov67"| V1 == "scaffold13_cov99"
-         |V1 == "scaffold14_cov75"| V1 == "scaffold15_cov110"| V1 == "scaffold16_cov58"| V1 == "scaffold17_cov151"  | V1 == "scaffold18_cov131"| 
-           V1 == "scaffold19_cov103"|V1 == "scaffold20_cov103"| V1 == "scaffold21_cov102")
- 
-Pact_union <- Pact %>% 
-  filter(chrom == "scaffold1_cov55"| chrom == "scaffold2_cov51" |chrom == "scaffold3_cov83" | chrom == "scaffold4_cov57" | chrom == "scaffold6_cov64" | chrom == "scaffold7_cov100" | chrom == "scaffold8_cov45"
-         | chrom == "scaffold9_cov118" |chrom == "scaffold10_cov103"| chrom == "scaffold11_cov60" | chrom == "scaffold12_cov67"| chrom == "scaffold13_cov99"
-         |chrom == "scaffold14_cov75"| chrom == "scaffold15_cov110"| chrom == "scaffold16_cov58"| chrom == "scaffold17_cov151"  | chrom == "scaffold18_cov131"| 
-           chrom == "scaffold19_cov103"|chrom == "scaffold20_cov103"| chrom == "scaffold21_cov102")
+#examine scaffolds for the number of genes in a scaffold 
+sizes <- Pact.cytoband.df %>% 
+  group_by(V1) %>% 
+  summarise(count=n()) %>%
+  arrange(-count)
 
+which(Pact.cytoband.df$V1=='scaffold502cov107')
+
+Pact.cytoband.df <- Pact.cytoband.df %>%
+  filter(V1 == "scaffold502cov107"| V1 == "scaffold3517cov108" | V1 == "scaffold179cov105"| V1 == "scaffold382cov105" | V1 == "scaffold2581cov101"
+         | V1 == "scaffold1396cov105" | V1 == "scaffold150315cov104" | V1 == "scaffold2081cov104"| V1 == "scaffold3008cov108" | V1 == "scaffold222cov106" )
+
+Pact_union <- Pact %>%
+  filter(chrom== "scaffold502_cov107"| chrom== "scaffold3517_cov108" | chrom== "scaffold179_cov105"| chrom== "scaffold382_cov105" | chrom== "scaffold2581_cov101"
+         | chrom== "scaffold1396_cov105" | chrom== "scaffold150315_cov104" | chrom== "scaffold2081_cov104"| chrom== "scaffold3008_cov108" | chrom== "scaffold222_cov106")
+
+Pact_union$chrom <- gsub("_", "", Pact_union$chrom)
+
+which(Pact_union$chrom=='scaffold502cov107')
+
+#set all CpG data as numeric
 Pact_union$X1 <-as.numeric(Pact_union$X1)
 Pact_union$X2 <-as.numeric(Pact_union$X2)
 Pact_union$X3 <-as.numeric(Pact_union$X3)
@@ -39,21 +57,7 @@ Pact_union$X7 <-as.numeric(Pact_union$X7)
 Pact_union$X8 <-as.numeric(Pact_union$X8)
 Pact_union$X9 <-as.numeric(Pact_union$X9)
 
-# Pact.all <- Pact_union
-# 
-# Pact.all$X1[Pact.all$X1 >= 0] <- 1
-# Pact.all$X2[Pact.all$X2 >= 0] <- 1
-# Pact.all$X3[Pact.all$X3 >= 0] <- 1
-# Pact.all$X4[Pact.all$X4 >= 0] <- 1
-# Pact.all$X5[Pact.all$X5 >= 0] <- 1
-# Pact.all$X6[Pact.all$X6 >= 0] <- 1
-# Pact.all$X7[Pact.all$X7 >= 0] <- 1
-# Pact.all$X8[Pact.all$X8 >= 0] <- 1
-# Pact.all$X9[Pact.all$X9 >= 0] <- 1
-# Pact.all <- Pact.all %>% mutate_at(c(4:12), ~replace(., is.na(.), 0))
-
-#Pact_union$meth <- Pact_union %>% mutate(Total = select(.,X1:X9) %>% rowSums())
-
+#scale the data from 0-1
 Pact_union.WGBS <- Pact_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
 Pact_union.WGBS <- Pact_union.WGBS[,c(1,2,3,13)]
 Pact_union.WGBS$avg <- Pact_union.WGBS$avg/100
@@ -64,56 +68,101 @@ Pact_union.MBDBS <- Pact_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
 Pact_union.MBDBS <- Pact_union.MBDBS[,c(1,2,3,13)]
 Pact_union.MBDBS$avg <- Pact_union.MBDBS$avg/100
 
-#Pact_union <- Pact_union[,c(1,2,3,13)]
-
-# circos.clear()
-# circos.initializeWithIdeogram(cytoband.df, species = NULL, sort.chr = TRUE)
-# 
-# #bed_list <- list(Pact_union.WGBS, Pact_union.RRBS,Pact_union.MBDBS )
-# circos.genomicTrack(Pact_union.WGBS, stack = TRUE, 
-#                     panel.fun = function(region, value, ...) {
-#                       i = getI(...)
-#                       circos.genomicLines(region, value, type = "h")
-#                     })
-# circos.genomicTrack(Pact_union.RRBS, stack = TRUE, 
-#                     panel.fun = function(region, value, ...) {
-#                       i = getI(...)
-#                       circos.genomicPoints(region, value, pch = 16, cex = 0.5, col = "red", ...)
-#                     })
-# circos.genomicTrack(Pact_union.MBDBS, stack = TRUE, 
-#                     panel.fun = function(region, value, ...) {
-#                       i = getI(...)
-#                       circos.genomicPoints(region, value, pch = 16, cex = 0.5, col = "blue", ...)
-#                     })
-# circos.clear()
-# 
-# 
-# circos.initializeWithIdeogram(cytoband.df, species = NULL, sort.chr = TRUE)
-# bed <- Pact.all
-# circos.genomicTrack(bed, stack=FALSE,
-#                     panel.fun = function(region, value, ...) {
-#                       circos.genomicLines(region, value, col = 4:12, ...)
-#                     })
+#plot top 10 scaffold with the highest gene numbers
+pdf('Output/Pact_genes_CpG_3methods_top10.pdf')
 circos.clear()
 
-circos.initializeWithIdeogram(cytoband.df, species = NULL, sort.chr = TRUE)
-circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1),
+circos.initializeWithIdeogram(Pact.cytoband.df, species = NULL, sort.chr = TRUE)
+circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="blue")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="blue")
                     })
-circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1),
+circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="cyan")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="cyan")
                     })
-circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1),
+circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1),track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="green")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="green")
                     })
+dev.off()
 
-# lgd_points <-  Legend(at = c("WGBS", "MBDBS", "RRBS"), type = "points", legend_gp = gpar(col = 1:2), 
-#                     title_position = "topleft", title = "Method")
-# 
-# grid.draw(lgd_points)
-# upViewport()
+##### MONTIPORA #####
+#load in all genes gff from a genome
+Mcap.cytoband <- read.table("data/Mcap.GFFannotation.gene.gff", sep = "\t",  header = FALSE)
+
+Mcap.cytoband <- Mcap.cytoband %>%
+  filter(V3 == 'gene')
+
+#remove extra coloumns from gene gff
+Mcap.cytoband.df <- Mcap.cytoband[,c(1,4,5,6,9)]
+str(Mcap.cytoband.df)
+head(Mcap.cytoband.df)
+
+#read in the 5x coverage bedgraph of CpG for all 18 samples, 3 reps x 3 methods x 2 species
+Mcap <- read.table("data/Mcap_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+head(Mcap)
+str(Mcap)
+
+#examine scaffolds for the number of genes in a scaffold 
+sizes <- Mcap.cytoband.df %>% 
+  group_by(V1) %>% 
+  summarise(count=n()) %>%
+  arrange(-count)
+
+which(Mcap.cytoband.df$V1=='2')
+
+Mcap.cytoband.df <- Mcap.cytoband.df %>%
+  filter(V1 == "2"| V1 == "19" | V1 == "28"| V1 == "10" | V1 == "1"
+         | V1 == "12" | V1 == "105" | V1 == "68"| V1 == "74" | V1 == "26" )
+
+Mcap_union <- Mcap %>%
+  filter(chrom== "2"| chrom== "19" | chrom== "28"| chrom== "10" | chrom== "1"
+         | chrom== "12" | chrom== "105" | chrom== "68"| chrom== "74" | chrom== "26" )
+
+which(Mcap_union$chrom=='2')
+
+#set all CpG data as numeric
+Mcap_union$X10 <-as.numeric(Mcap_union$X10)
+Mcap_union$X11 <-as.numeric(Mcap_union$X11)
+Mcap_union$X12 <-as.numeric(Mcap_union$X12)
+Mcap_union$X13 <-as.numeric(Mcap_union$X13)
+Mcap_union$X14 <-as.numeric(Mcap_union$X14)
+Mcap_union$X15 <-as.numeric(Mcap_union$X15)
+Mcap_union$X16 <-as.numeric(Mcap_union$X16)
+Mcap_union$X17 <-as.numeric(Mcap_union$X17)
+Mcap_union$X18 <-as.numeric(Mcap_union$X18)
 
 
+#scale the data from 0-1
+Mcap_union.WGBS <- Mcap_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
+Mcap_union.WGBS <- Mcap_union.WGBS[,c(1,2,3,13)]
+Mcap_union.WGBS$avg <- Mcap_union.WGBS$avg/100
+Mcap_union.RRBS <- Mcap_union %>% mutate(avg = rowMeans(.[7:9], na.rm=TRUE))
+Mcap_union.RRBS <- Mcap_union.RRBS[,c(1,2,3,13)]
+Mcap_union.RRBS$avg <- Mcap_union.RRBS$avg/100
+Mcap_union.MBDBS <- Mcap_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
+Mcap_union.MBDBS <- Mcap_union.MBDBS[,c(1,2,3,13)]
+Mcap_union.MBDBS$avg <- Mcap_union.MBDBS$avg/100
+
+#plot CpG of top 10 scaffolds with the highest numbers of genes
+#outer track = WGBS in blue
+#middle track = RRBS in cyan
+#inner track = RRBS in green
+pdf('Output/Mcap_genes_CpG_3methods_top10.pdf')
+circos.clear()
+
+circos.initializeWithIdeogram(Mcap.cytoband.df, species = NULL, sort.chr = TRUE)
+circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="blue")
+                    })
+circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="cyan")
+                    })
+circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1),track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="green")
+                    })
+dev.off()
