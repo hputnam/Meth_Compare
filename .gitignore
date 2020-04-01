@@ -6,3 +6,7 @@ genome-feature-files/Structural_annotation_abintio.gff
 data/*bedgraph
 analyses/10-unionbedg/Mcap_union_5x.bedgraph
 analyses/10-unionbedg/Pact_union_5x.bedgraph
+genome-feature-files/C1_CpG.gff
+genome-feature-files/Mcap_CpG.gff
+genome-feature-files/Pact_CpG.gff
+analyses/10-unionbedg/Pact-C1_union_5x.bedgraph
