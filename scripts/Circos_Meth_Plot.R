@@ -97,17 +97,17 @@ Pact_union.MBDBS$avg <- Pact_union.MBDBS$avg/100
 circos.clear()
 
 circos.initializeWithIdeogram(cytoband.df, species = NULL, sort.chr = TRUE)
-circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1),
+circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="blue")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="blue")
                     })
-circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1),
+circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="cyan")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="cyan")
                     })
-circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1),
+circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1),track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="green")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="green")
                     })
 
 # lgd_points <-  Legend(at = c("WGBS", "MBDBS", "RRBS"), type = "points", legend_gp = gpar(col = 1:2), 
