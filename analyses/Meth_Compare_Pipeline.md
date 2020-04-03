@@ -211,14 +211,54 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 #ran the code below and it generated no output indicating raw Fastq files on Gannet and Mox are identical
 `diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)`
 
+Trimmed data on Mox - from where trimming was performed
 
+```
+#RRBS:
+2e87e45941d8a4c523e6080fc460d3f3  Meth13_R1_001_val_1.fq.gz
+e9548420a9512df45a08cf3b735cc95f  Meth13_R2_001_val_2.fq.gz
+4ed014c23ba4c28681d5b4af17e95346  Meth14_R1_001_val_1.fq.gz
+8937fd8eb2ef852e103a79b48231a9ab  Meth14_R2_001_val_2.fq.gz
+49ece06a7e8a4a8a936fddcdbd9c3921  Meth15_R1_001_val_1.fq.gz
+e1048fea898bc32cb03ff801534183d9  Meth15_R2_001_val_2.fq.gz
+7a40c8cfafabb02e78bb8efe9001bf53  Meth4_R1_001_val_1.fq.gz
+900a3858aab3571a8329c2e5952b265e  Meth4_R2_001_val_2.fq.gz
+8c5ac01b3aeee1b4a40e991885259007  Meth5_R1_001_val_1.fq.gz
+d6e026bb59b10a11ad9b51b8acdd18a7  Meth5_R2_001_val_2.fq.gz
+2bafaff063eb4b8c960e345634291fb4  Meth6_R1_001_val_1.fq.gz
+6ea2c605b839ea9ca91ecb524e7184d7  Meth6_R2_001_val_2.fq.gz
+
+#WGBS_MBD:
+04e14c4ec8cd7ef280b97d3ecca51b1a  Meth10_R1_001_val_1.fq.gz
+7eed0ec3df5d8fd42984f517e5633ef6  Meth10_R2_001_val_2.fq.gz
+84f59f4b67562be14bd0692c89ee3066  Meth11_R1_001_val_1.fq.gz
+91e1151899fa6de016d4bce233be0819  Meth11_R2_001_val_2.fq.gz
+645233a25517dcb1e620e794aaf1e4bc  Meth12_R1_001_val_1.fq.gz
+f5f0339ac5f056d8dd3cf6747cfcbff6  Meth12_R2_001_val_2.fq.gz
+c4e449e7210609e56be0348d1cacaf85  Meth16_R1_001_val_1.fq.gz
+047d811b05a0df7a93344c110ce5f155  Meth16_R2_001_val_2.fq.gz
+36aba1f7007b9fb4c83a76810e4b1306  Meth17_R1_001_val_1.fq.gz
+a006f7dbf9baa7239272506b1ea560be  Meth17_R2_001_val_2.fq.gz
+cdde1f3bc4e4020fb4025ea1dc7a0c2e  Meth18_R1_001_val_1.fq.gz
+06a030b4c6ae092d748a08a4c226e674  Meth18_R2_001_val_2.fq.gz
+f41790ce58777f20ee742cba75692065  Meth1_R1_001_val_1.fq.gz
+ab16c162efedbcb6dce8e678affa4ee1  Meth1_R2_001_val_2.fq.gz
+e78a80a91c6d0e0928299d22a7aeba33  Meth2_R1_001_val_1.fq.gz
+7e94bfa7f8c6c0794e4958e5628fe45f  Meth2_R2_001_val_2.fq.gz
+27895574a941878cd26a1400b04ee3cd  Meth3_R1_001_val_1.fq.gz
+1926fcfc1e4172e26b83cad82d87fb67  Meth3_R2_001_val_2.fq.gz
+1c1bb5648e064bd9f927e4f481a7d8e5  Meth7_R1_001_val_1.fq.gz
+0edb6d01e4f6561d3eb24c4b2ff62035  Meth7_R2_001_val_2.fq.gz
+efc6cc59733842eabadd21536c2f33bb  Meth8_R1_001_val_1.fq.gz
+8c5a88ab86e9673b4e1c82f1452b6ad1  Meth8_R2_001_val_2.fq.gz
+04829778554df5986ae415fcda3b7e81  Meth9_R1_001_val_1.fq.gz
+a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
 ---
 
 **^^^**     
 **^^^**
 
 WOULD LOVE TO SEE CONCRETE VALIDATION ON TRIMMING ABOVE    
-ALSO NEED MD5 OF TRIMMED FILES
 
 ----
 
