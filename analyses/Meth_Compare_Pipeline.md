@@ -208,7 +208,7 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 ```
 ---
 
-#ran the code below and it generated no output indicating files on Gannet and Mox are identical
+#ran the code below and it generated no output indicating raw Fastq files on Gannet and Mox are identical
 `diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)`
 
 
