@@ -100,97 +100,15 @@ d5199e48ed87773f67c4e3d8d9db3fce  /gscratch/scrubbed/sr320/froger-raw/00_fastq/M
 c8ec0b73721a067729124c043904dc0e  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R2_001.fastq.gz
 
+
+
+
+
+
 ```
 
+# Quality Trimming
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-----
-
-
-# Coral WGBS MBD-BS and RRBS data
-
-Bismark Bisulfite Mapper VX “ map bisulfite treated sequencing reads to a genome of interest and perform methylation calls in a single step”
-
-Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications
-
-requires bowtie2, samtools, perl, trimmomatic
-
-* Bowtie 2 version X by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)
-* Program: samtools (Tools for alignments in the SAM format) Version: X
-* perl X
-* Bismark Bisulfite Mapper VX
-* Trimmomatic
-* multiqc
-
-## Obtain Genome files and Run Bismark Genome preparation
-`mkdir GENOME`
-
-`cd GENOME`
-
-`mkdir Mcap_Genome`
-
-`cd Mcap_Genome`
-
-`wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`
-
-`mkdir Pact_Genome`
-
-`cd Pact_Genome`
-
-`wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar `
-
-### Lambda genome
-https://www.ncbi.nlm.nih.gov/genome/167?genome_assembly_id=161521
-
-`mkdir Lambda_Genome`
-
-`cd Lambda_Genome`
-
-`scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
-`
-
-# Pdamicornis genome
-
-http://pdam.reefgenomics.org/download/
-
-`mkdir Pdam_Genome`
-
-`cd Pdam_Genome`
-
-`wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
-
-#### Mcapitata
-``bismark_genome_preparation Mcap_Genome``
-
-#### Pacuta
-``bismark_genome_preparation Pact_Genome``
-
-#### Lambda
-``bismark_genome_preparation Lambda_Genome``
-
-
-
-
-### TrimGalore
 ```
 #!/bin/bash
 ## Job Name
@@ -289,6 +207,103 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 /gscratch/scrubbed/strigg/analyses/20200311/RRBS/FASTQC/.
 ```
 ---
+
+#ran the code below and it generated no output indicating files on Gannet and Mox are identical
+`diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)`
+
+
+
+^      
+|
+
+WOULD LOVE TO SEE CONCRETE VALIDATION ABOVE
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+----
+
+
+# Coral WGBS MBD-BS and RRBS data
+
+Bismark Bisulfite Mapper VX “ map bisulfite treated sequencing reads to a genome of interest and perform methylation calls in a single step”
+
+Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications
+
+requires bowtie2, samtools, perl, trimmomatic
+
+* Bowtie 2 version X by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)
+* Program: samtools (Tools for alignments in the SAM format) Version: X
+* perl X
+* Bismark Bisulfite Mapper VX
+* Trimmomatic
+* multiqc
+
+## Obtain Genome files and Run Bismark Genome preparation
+`mkdir GENOME`
+
+`cd GENOME`
+
+`mkdir Mcap_Genome`
+
+`cd Mcap_Genome`
+
+`wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`
+
+`mkdir Pact_Genome`
+
+`cd Pact_Genome`
+
+`wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar `
+
+### Lambda genome
+https://www.ncbi.nlm.nih.gov/genome/167?genome_assembly_id=161521
+
+`mkdir Lambda_Genome`
+
+`cd Lambda_Genome`
+
+`scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
+`
+
+# Pdamicornis genome
+
+http://pdam.reefgenomics.org/download/
+
+`mkdir Pdam_Genome`
+
+`cd Pdam_Genome`
+
+`wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
+
+#### Mcapitata
+``bismark_genome_preparation Mcap_Genome``
+
+#### Pacuta
+``bismark_genome_preparation Pact_Genome``
+
+#### Lambda
+``bismark_genome_preparation Lambda_Genome``
+
+
+
+
+
 
 # Genome preparation
 
