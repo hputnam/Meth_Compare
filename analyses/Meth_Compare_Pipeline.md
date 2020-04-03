@@ -15,7 +15,7 @@ https://meschedl.github.io/MESPutnam_Open_Lab_Notebook/Redos-PMS/
 
 ---
 
-## Sequence Data
+# Sequence Data
 
 
 values provided by GeneWiz
@@ -100,8 +100,6 @@ d5199e48ed87773f67c4e3d8d9db3fce  /gscratch/scrubbed/sr320/froger-raw/00_fastq/M
 c8ec0b73721a067729124c043904dc0e  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth9_R2_001.fastq.gz
 
-#ran the code below and it generated no output indicating files on Gannet and Mox are identical
-diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)
 ```
 
 
