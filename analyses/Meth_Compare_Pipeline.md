@@ -253,6 +253,8 @@ efc6cc59733842eabadd21536c2f33bb  Meth8_R1_001_val_1.fq.gz
 8c5a88ab86e9673b4e1c82f1452b6ad1  Meth8_R2_001_val_2.fq.gz
 04829778554df5986ae415fcda3b7e81  Meth9_R1_001_val_1.fq.gz
 a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
+```
+
 ---
 
 **^^^**     
@@ -261,6 +263,9 @@ a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
 WOULD LOVE TO SEE CONCRETE VALIDATION ON TRIMMING ABOVE    
 
 ----
+
+
+
 
 # Bismark Alignment   
 
