@@ -195,7 +195,7 @@ c8ec0b73721a067729124c043904dc0e  ./Meth9_R1_001.fastq.gz
 b896f80209fbaaee4ca5316f435839ff  ./Meth9_R2_001.fastq.gz
 ```
 
-Copy to Mox 
+Copy to Mox
 ```
 63a1cc9e23dcedd71a66dac00f36467d  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R1_001.fastq.gz
 ac966619cb5a2483870f973b696a38a1  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R2_001.fastq.gz
@@ -427,11 +427,11 @@ Meth2_R2_001.fastq.gz			trimmed_fastq_checksums.md5
 #!/bin/bash
 ## Job Name
 #SBATCH --job-name=TrimGfroger
-## Allocation Definition 
+## Allocation Definition
 #SBATCH --account=srlab
 #SBATCH --partition=srlab
 ## Resources
-## Nodes 
+## Nodes
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=4-23:30:00
@@ -485,7 +485,7 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth17_R2_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R1_001.fastq.gz \
-/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R2_001.fastq.gz 
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth18_R2_001.fastq.gz
 
 #TrimGalore on RRBS
 /gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
@@ -508,7 +508,7 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R1_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth5_R2_001.fastq.gz \
 /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R1_001.fastq.gz \
-/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R2_001.fastq.gz 
+/gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth6_R2_001.fastq.gz
 
 #run multiqc for WGBS and MBD samples
 
