@@ -60,7 +60,7 @@ b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
 ```
 
 
-Raw data on Mox
+Raw trimmed on Mox 
 
 ```
 63a1cc9e23dcedd71a66dac00f36467d  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R1_001.fastq.gz
