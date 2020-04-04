@@ -257,18 +257,110 @@ a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
 ---
 # Genome Preparation
 
+**File info**     
+```
+859M Jun  8  2018 Mcap.genome_assembly.fa
+d51b958bd7adc4ba83a959f7c0a1774c  Mcap.genome_assembly.fa
+```
+
+```
+344M Mar  5 15:46 Pocillopora_acuta_genome_v1.fasta
+4664217f0afd33b80614b09368be2c00  Pocillopora_acuta_genome_v1.fasta
+```
 
 
 
 
 
+---
+
+```
+#!/bin/bash
+## Job Name
+#SBATCH --job-name=fr-01
+## Allocation Definition
+#SBATCH --account=srlab
+#SBATCH --partition=srlab
+## Resources
+## Nodes (We only get 1, so this is fixed)
+#SBATCH --nodes=1
+## Walltime (days-hours:minutes:seconds format)
+#SBATCH --time=6-00:00:00
+## Memory per node
+#SBATCH --mem=100G
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=sr320@uw.edu
+## Specify the working directory for this job
+#SBATCH --chdir=/gscratch/scrubbed/sr320/030520-fr01/
 
 
+# Directories and programs
+bismark_dir="/gscratch/srlab/programs/Bismark-0.21.0"
+bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
+samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
 
+source /gscratch/srlab/programs/scripts/paths.sh
+
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+/gscratch/srlab/sr320/data/froger/Mcap_Genome/
+
+
+${bismark_dir}/bismark_genome_preparation \
+--verbose \
+--parallel 28 \
+--path_to_aligner ${bowtie2_dir} \
+/gscratch/srlab/sr320/data/froger/Pact_Genome/
+```
 
 
 
 # Bismark Alignment   
+
+
+
+
+**Trim files used**
+
+```
+/gscratch/scrubbed/sr320/031520-TG-bs/Mcap_trim/
+/gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/
+```
+
+```
+[sr320@mox2 Mcap_trim]$ ls
+Meth10_R1_001_val_1.fq.gz  Meth13_R1_001_val_1.fq.gz  Meth16_R1_001_val_1.fq.gz
+Meth10_R2_001_val_2.fq.gz  Meth13_R2_001_val_2.fq.gz  Meth16_R2_001_val_2.fq.gz
+Meth11_R1_001_val_1.fq.gz  Meth14_R1_001_val_1.fq.gz  Meth17_R1_001_val_1.fq.gz
+Meth11_R2_001_val_2.fq.gz  Meth14_R2_001_val_2.fq.gz  Meth17_R2_001_val_2.fq.gz
+Meth12_R1_001_val_1.fq.gz  Meth15_R1_001_val_1.fq.gz  Meth18_R1_001_val_1.fq.gz
+Meth12_R2_001_val_2.fq.gz  Meth15_R2_001_val_2.fq.gz  Meth18_R2_001_val_2.fq.gz
+
+```
+
+```
+[sr320@mox2 Pact_trim]$ ls
+Meth1_R1_001_val_1.fq.gz  Meth4_R1_001_val_1.fq.gz  Meth7_R1_001_val_1.fq.gz
+Meth1_R2_001_val_2.fq.gz  Meth4_R2_001_val_2.fq.gz  Meth7_R2_001_val_2.fq.gz
+Meth2_R1_001_val_1.fq.gz  Meth5_R1_001_val_1.fq.gz  Meth8_R1_001_val_1.fq.gz
+Meth2_R2_001_val_2.fq.gz  Meth5_R2_001_val_2.fq.gz  Meth8_R2_001_val_2.fq.gz
+Meth3_R1_001_val_1.fq.gz  Meth6_R1_001_val_1.fq.gz  Meth9_R1_001_val_1.fq.gz
+Meth3_R2_001_val_2.fq.gz  Meth6_R2_001_val_2.fq.gz  Meth9_R2_001_val_2.fq.gz
+```
+
+
+
+
+
+
+
+
+
+
+---
 
 ```
 [sr320@mox2 031520-TG-bs]$ cat 0313_1100.sh
@@ -300,12 +392,6 @@ samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
 
 source /gscratch/srlab/programs/scripts/paths.sh
 
-
-# ${bismark_dir}/bismark_genome_preparation \
-# --verbose \
-# --parallel 28 \
-# --path_to_aligner ${bowtie2_dir} \
-# ${genome_folder}
 
 
 
@@ -347,31 +433,11 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 
 
 
-# Will want to have directory of trimmed data from both taxa
-
-genome_folder="/gscratch/srlab/sr320/data/lambda/"
-reads_dir="/gscratch/scrubbed/sr320/031520-TG-bs/"
-
-
-
-find ${reads_dir}*2020*_R1_001.fastq.gz \
-| xargs basename -s _R1_001.fastq.gz | xargs -I{} ${bismark_dir}/bismark \
---path_to_bowtie ${bowtie2_dir} \
--genome ${genome_folder} \
--p 4 \
--u 10000000 \
--score_min L,0,-0.6 \
---non_directional \
--1 ${reads_dir}{}_R1_001.fastq.gz \
--2 ${reads_dir}{}_R2_001.fastq.gz \
--o lambda_tg
-
-
 --------------------------------------------------------
 
 # From here we extract methylation and create downstream amendable files.
 # will split samples into dedup and nodedup directories for reasson
-# RRBS data does NOT need to be deplicated
+# RRBS data does NOT need to be deduplicated
 # First the dedups which in our case would be
 
 mkdir Mcap_tg
@@ -781,127 +847,3 @@ do
 done
 
 ```
-
-
-
-# Coral WGBS MBD-BS and RRBS data
-
-Bismark Bisulfite Mapper VX “ map bisulfite treated sequencing reads to a genome of interest and perform methylation calls in a single step”
-
-Bismark: a flexible aligner and methylation caller for Bisulfite-Seq applications
-
-requires bowtie2, samtools, perl, trimmomatic
-
-* Bowtie 2 version X by Ben Langmead (langmea@cs.jhu.edu, www.cs.jhu.edu/~langmea)
-* Program: samtools (Tools for alignments in the SAM format) Version: X
-* perl X
-* Bismark Bisulfite Mapper VX
-* Trimmomatic
-* multiqc
-
-## Obtain Genome files and Run Bismark Genome preparation
-`mkdir GENOME`
-
-`cd GENOME`
-
-`mkdir Mcap_Genome`
-
-`cd Mcap_Genome`
-
-`wget http://cyanophora.rutgers.edu/montipora/Mcap.genome_assembly.fa.gz`
-
-`mkdir Pact_Genome`
-
-`cd Pact_Genome`
-
-`wget http://ihpe.univ-perp.fr/telechargement/Data_to_downoload.rar `
-
-### Lambda genome
-https://www.ncbi.nlm.nih.gov/genome/167?genome_assembly_id=161521
-
-`mkdir Lambda_Genome`
-
-`cd Lambda_Genome`
-
-`scp -P 2292  /Users/hputnam/Desktop/20190622/20190503/Pacuta_genome/Pocillopora_acuta_genome_v1.fasta hputnam@kitt.uri.edu:/home/hputnam/Meth_Compare/GENOME/Lambda_Genome
-`
-
-# Pdamicornis genome
-
-http://pdam.reefgenomics.org/download/
-
-`mkdir Pdam_Genome`
-
-`cd Pdam_Genome`
-
-`wget http://pdam.reefgenomics.org/download/pdam_scaffolds.fasta.gz`
-
-#### Mcapitata
-``bismark_genome_preparation Mcap_Genome``
-
-#### Pacuta
-``bismark_genome_preparation Pact_Genome``
-
-#### Lambda
-``bismark_genome_preparation Lambda_Genome``
-
-
-
-
-
-
-# Genome preparation
-
-```
-#!/bin/bash
-## Job Name
-#SBATCH --job-name=fr-01
-## Allocation Definition
-#SBATCH --account=srlab
-#SBATCH --partition=srlab
-## Resources
-## Nodes (We only get 1, so this is fixed)
-#SBATCH --nodes=1
-## Walltime (days-hours:minutes:seconds format)
-#SBATCH --time=6-00:00:00
-## Memory per node
-#SBATCH --mem=100G
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=sr320@uw.edu
-## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/030520-fr01/
-
-# Prepping 3 coral genomes
-
-# Directories and programs
-bismark_dir="/gscratch/srlab/programs/Bismark-0.21.0"
-bowtie2_dir="/gscratch/srlab/programs/bowtie2-2.3.4.1-linux-x86_64/"
-samtools="/gscratch/srlab/programs/samtools-1.9/samtools"
-reads_dir="/gscratch/srlab/sr320/data/olurida-bs/decomp/"
-#genome_folder="/gscratch/srlab/sr320/data/olurida-genomes/v081/"
-
-source /gscratch/srlab/programs/scripts/paths.sh
-
-
-${bismark_dir}/bismark_genome_preparation \
---verbose \
---parallel 28 \
---path_to_aligner ${bowtie2_dir} \
-/gscratch/srlab/sr320/data/froger/Mcap_Genome/
-
-
-${bismark_dir}/bismark_genome_preparation \
---verbose \
---parallel 28 \
---path_to_aligner ${bowtie2_dir} \
-/gscratch/srlab/sr320/data/froger/Pact_Genome/
-```
-
-
-# Mapping
-
-
-
-
-
-# Methylation Extract
