@@ -223,10 +223,11 @@ e1048fea898bc32cb03ff801534183d9  Meth15_R2_001_val_2.fq.gz
 d6e026bb59b10a11ad9b51b8acdd18a7  Meth5_R2_001_val_2.fq.gz
 2bafaff063eb4b8c960e345634291fb4  Meth6_R1_001_val_1.fq.gz
 6ea2c605b839ea9ca91ecb524e7184d7  Meth6_R2_001_val_2.fq.gz
-
+```
 
 `/gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC`
 
+```
 #WGBS_MBD:
 04e14c4ec8cd7ef280b97d3ecca51b1a  Meth10_R1_001_val_1.fq.gz
 7eed0ec3df5d8fd42984f517e5633ef6  Meth10_R2_001_val_2.fq.gz
