@@ -129,11 +129,6 @@ b896f80209fbaaee4ca5316f435839ff  /gscratch/scrubbed/sr320/froger-raw/00_fastq/M
 ## Specify the working directory for this job
 #SBATCH --chdir=/gscratch/scrubbed/strigg/analyses/20200311
 
-%%bash
-
-#run md5 on fastqs to be sure the files in the directory (/gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz) match what was on Gannet (/gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt).
-
-md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 
 #TrimGalore on WGBS and MBD-BS
 /gscratch/srlab/programs/TrimGalore-0.4.5/trim_galore \
@@ -208,10 +203,11 @@ md5sum /gscratch/scrubbed/sr320/froger-raw/00_fastq/*.gz > md5sum.txt
 ```
 ---
 
-#ran the code below and it generated no output indicating raw Fastq files on Gannet and Mox are identical
-`diff <(cut -d' ' -f1 /gscratch/scrubbed/sr320/froger-raw/00_fastq/md5sum_list.txt) <(cut -d' ' -f1 /gscratch/scrubbed/strigg/analyses/20200311/md5sum.txt)`
 
-Trimmed data on Mox - from where trimming was performed
+
+**Trimmed data on Mox - from where trimming was performed**
+`/gscratch/scrubbed/strigg/analyses/20200311/RRBS/FASTQC`
+
 
 ```
 #RRBS:
@@ -227,6 +223,9 @@ e1048fea898bc32cb03ff801534183d9  Meth15_R2_001_val_2.fq.gz
 d6e026bb59b10a11ad9b51b8acdd18a7  Meth5_R2_001_val_2.fq.gz
 2bafaff063eb4b8c960e345634291fb4  Meth6_R1_001_val_1.fq.gz
 6ea2c605b839ea9ca91ecb524e7184d7  Meth6_R2_001_val_2.fq.gz
+
+
+`/gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC`
 
 #WGBS_MBD:
 04e14c4ec8cd7ef280b97d3ecca51b1a  Meth10_R1_001_val_1.fq.gz
@@ -256,13 +255,15 @@ a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
 ```
 
 ---
+# Genome Preparation
 
-**^^^**     
-**^^^**
 
-WOULD LOVE TO SEE CONCRETE VALIDATION ON TRIMMING ABOVE    
 
-----
+
+
+
+
+
 
 
 
