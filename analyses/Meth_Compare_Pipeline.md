@@ -848,3 +848,9 @@ do
 done
 
 ```
+
+---
+
+**Output from Bismark Aligment ++**
+
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/
