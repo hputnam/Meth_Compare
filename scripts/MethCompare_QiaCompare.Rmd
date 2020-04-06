@@ -15,241 +15,137 @@ setwd("~/GitHub/Meth_Compare")
 ```
 
 
-
-#pulling in coverage files for methylKit - deduplicated (WGBS and MBD-BS)
+##~~~~~~~~~~~~~~~~
+####FULL DATASET TRIMGALORE _MCap
+##~~~~~~~~~~~~~~
+#Deduplicated
 ```{bash}
-wget -r -l1 --no-parent -A "*.cov.gz" \
-https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/ --directory-prefix="../data/"
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup --directory-prefix="../data/"
 
 ```
 
-#pulling in coverage files for methylKit - non deduplicated (RRBS)
+#No deduplicated
 ```{bash}
-wget -r -l1 --no-parent -A "*.cov.gz" \
-https://gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/ --directory-prefix="../data/"
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup --directory-prefix="../data/"
 
 ```
 
-#unzip
-```{bash}
-gunzip ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/*cov.gz
-```
 
-```{bash}
-gunzip ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/*cov.gz
-```
-
-#countlines
-```{bash}
-wc ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/*cov
-```
-
-#countlines
-```{bash}
-wc ../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/*cov
-```
 #make a list of cov files
 ```{r}
 library(methylKit)
-MC_all.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
+MC_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 ```
 
-
-
-#The following command reads Bismark coverage files
-#NOTE: The treatments here are pointless, just looking for QC one at a time
+#The following command reads coverage files
 ```{r}
-myobj_MC.all=methRead(MC_all.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+myobj_MC_all_TG=methRead(MC_all_TG.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
 ```
 
-
-
-
-##############################
-#READ IN ALL FOR INDIVIDUAL QC
-##############################
-############QC##############
-#can run these on individual samples by changing the sample # in the brackets --looking for PCR bias at right hand of plot, also get mean coverage for each sample
-```{r}
-
-getCoverageStats(myobj_MC.all[[1]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[2]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[3]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[4]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[5]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[6]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[7]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[8]], plot=F,both.strands=F)
-getCoverageStats(myobj_MC.all[[9]], plot=F,both.strands=F)
-
-getMethylationStats(myobj_MC.all[[1]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[2]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[3]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[4]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[5]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[6]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[7]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[8]],plot=TRUE,both.strands=FALSE)
-getMethylationStats(myobj_MC.all[[9]],plot=TRUE,both.strands=FALSE)
-```
-
-#filtering to 5x for all compared
+#filtering to 5x  - unite - correlation plot
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj=filterByCoverage(myobj_MC.all,lo.count=5)
+filtered.myobj.MC_all_TG=filterByCoverage(myobj_MC_all_TG,lo.count=5)
 
 #################UNITE##############################
-meth<-unite(filtered.myobj, destrand=TRUE)
-nrow(meth)
-head(meth)
-jpeg("../analyses/MethCompare_correlation_all.jpg", width = 1000, height = 600)
-getCorrelation(meth,plot=TRUE)
+meth_MC_all_TG<-unite(filtered.myobj.MC_all_TG)
+nrow(meth_MC_all_TG)
+head(meth_MC_all_TG)
+jpeg("../analyses/MethCompare_correlation_MC_all_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_MC_all_TG,plot=TRUE)
 dev.off()
 ```
 
-#####################
-#PAIRWISE COMPARISONS
-####################
+#make a PCA
+```{r}
+PCASamples(meth_MC_all_TG)
+```
 
-##WGBS v. MBD
+
+
+##WGBS v MBD
 #make a list of cov files
 ```{r}
 library(methylKit)
-MC_WGBCvMBD.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov')
+MC_WvM_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov'
+)
 
 ```
-
 
 
 #The following command reads coverage files
 ```{r}
-myobj_MC.WGBSvMBD=methRead(MC_WGBCvMBD.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_M_16","Mcap_M_17","Mcap_M_18"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
-```
-
-
-#filtering to 5x for all compared
-```{r}
-
-#################FILTERING###########################
-filtered.myobj.WGBSvMBD=filterByCoverage(myobj_MC.WGBSvMBD,lo.count=5)
-
-#################UNITE##############################
-meth_WvM<-unite(filtered.myobj.WGBSvMBD, destrand=TRUE)
-nrow(meth_WvM)
-head(meth_WvM)
-jpeg("../analyses/MethCompare_correlation_WGBSvMBD.jpg", width = 1000, height = 600)
-getCorrelation(meth_WvM,plot=TRUE)
-dev.off()
-```
-
-####WGBS v RRBS
-#make a list of cov files
-```{r}
-
-MC_WGBSvRRBS.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
-
-```
-
-
-
-#The following command reads sorted coverage files
-```{r}
-myobj_MC.WGBSvRRBS=methRead(MC_WGBSvRRBS.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+myobj_MC_WvM_TG=methRead(MC_WvM_TG.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_R_16","Mcap_R_17","Mcap_R_18"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
 ```
 
 #filtering to 5x for all compared
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.WGBSvRRBS=filterByCoverage(myobj_MC.WGBSvRRBS,lo.count=5)
+filtered.myobj.MC_WvM_TG=filterByCoverage(myobj_MC_WvM_TG,lo.count=5)
 
 #################UNITE##############################
-meth_WvR<-unite(filtered.myobj.WGBSvRRBS, destrand=TRUE)
-nrow(meth_WvR)
-head(meth_WvR)
-jpeg("../analyses/MethCompare_correlation_WGBSvRRBS.jpg", width = 1000, height = 600)
-getCorrelation(meth_WvR,plot=TRUE)
+meth_MC_WvM_TG<-unite(filtered.myobj.MC_WvM_TG)
+nrow(meth_MC_WvM_TG)
+head(meth_MC_WvM_TG)
+jpeg("../analyses/MethCompare_correlation_MC_WvM_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_MC_WvM_TG,plot=TRUE)
 dev.off()
 ```
+#make a PCA
+```{r}
+PCASamples(meth_MC_WvM_TG)
+```
 
-###meth diff to see where these crazy differences are
+###meth diff
 ```{r}
 #calculate diffs
-myDiff_WvR<-calculateDiffMeth(meth_WvR,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
-head(myDiff_WvR)
+myDiff_WvM_TG<-calculateDiffMeth(meth_MC_WvM_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_WvM_TG)
 #flat file of myDiff
-myDiff_WvR.db<-makeMethylDB(myDiff_WvR)
+myDiff_WvM_TG.db<-makeMethylDB(myDiff_WvM_TG)
 #sig diffs
-myDiff_WvR_20p <- getMethylDiff(myDiff_WvR, difference = 20, qvalue = 0.01)
-nrow(myDiff_WvR_20p)
-
+myDiff_WvM_TG_20p <- getMethylDiff(myDiff_WvM_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_WvM_TG_20p)
+head(myDiff_20p_WvM_TG.db)
+#flat file of myDiff
+myDiff_20p_WvM_TG.db<-makeMethylDB(myDiff_WvM_TG_20p)
+head(myDiff_20p_WvM_TG.db)
 ```
 
-#make a flat file to compare coverage and such
-```{r}
-meth_WvR.db<-makeMethylDB(meth_WvR)
-```
-
-
-#same as above but - NORMALIZING COVERAGE!
-```{r}
-
-normMC.myobj_WGBSvRRBS <-normalizeCoverage(myobj_MC.WGBSvRRBS, method = "median",
-  chunk.size = 1e+06, save.db = FALSE)
-#################FILTERING###########################
-norm.filtered.myobj.WGBSvRRBS=filterByCoverage(normMC.myobj_WGBSvRRBS,lo.count=5)
-
-#################UNITE##############################
-meth_normWvR<-unite(norm.filtered.myobj.WGBSvRRBS, destrand=TRUE)
-nrow(meth_normWvR)
-head(meth_normWvR)
-jpeg("../analyses/MethCompare_correlation_normalizedWGBSvRRBS.jpg", width = 1000, height = 600)
-getCorrelation(meth_normWvR,plot=TRUE)
-dev.off()
-```
-
-
-############
-#MBD v RRBS ---this is with 100 million reads
-###########
-
+##WGBS v RRBS
 #make a list of cov files
 ```{r}
 library(methylKit)
-MC_MBDvRRBS.list=list('../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/dedup/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe.deduplicated.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe.bismark.cov',
-'../data/gannet.fish.washington.edu/tmp/Mcap_full-u1M/nodedup/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe.bismark.cov')
+MC_WvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 ```
 
-
-
-#The following command reads sorted coverage files
+#The following command reads coverage files
 ```{r}
-myobj_MC.MBDvRRBS=methRead(MC_MBDvRRBS.list, sample.id = list("Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+myobj_MC_WvR_TG=methRead(MC_WvR_TG.list, sample.id = list("Mcap_W_10","Mcap_W_11","Mcap_W_12","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
 ```
 
 
@@ -257,20 +153,317 @@ myobj_MC.MBDvRRBS=methRead(MC_MBDvRRBS.list, sample.id = list("Mcap_M_16","Mcap_
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.MBDvRRBS=filterByCoverage(myobj_MC.MBDvRRBS,lo.count=5)
+filtered.myobj.MC_WvR_TG=filterByCoverage(myobj_MC_WvR_TG,lo.count=5)
 
 #################UNITE##############################
-meth_MvR<-unite(filtered.myobj.MBDvRRBS, destrand=TRUE)
-nrow(meth_MvR)
-head(meth_MvR)
-jpeg("../analyses/MethCompare_correlation_MBDvRRBS.jpg", width = 1000, height = 600)
-getCorrelation(meth_MvR,plot=TRUE)
+meth_MC_WvR_TG<-unite(filtered.myobj.MC_WvR_TG)
+nrow(meth_MC_WvR_TG)
+head(meth_MC_WvR_TG)
+jpeg("../analyses/MethCompare_correlation_MC_WvR_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_MC_WvR_TG,plot=TRUE)
 dev.off()
 ```
 
+#make a PCA
+```{r}
+PCASamples(meth_MC_WvR_TG)
+```
 
-#pulling in coverage files for methylKit - nondeplicated AND --'ignore_r2 2'
+###meth diff
+```{r}
+#calculate diffs
+myDiff_WvR_TG<-calculateDiffMeth(meth_MC_WvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_WvR_TG)
+#flat file of myDiff
+myDiff_WvM_TG.db<-makeMethylDB(myDiff_WvR_TG)
+#sig diffs
+myDiff_WvR_TG_50p <- getMethylDiff(myDiff_WvR_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_WvR_TG_50p)
+#flat file of myDiff
+myDiff_50p_WvR_TG.db<-makeMethylDB(myDiff_WvR_TG_50p)
+
+```
+
+##MBD v RRBS
+#make a list of cov files
+```{r}
+library(methylKit)
+MC_MvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+#The following command reads coverage files
+```{r}
+myobj_MC_MvR_TG=methRead(MC_MvR_TG.list, sample.id = list("Mcap_M_16","Mcap_M_17","Mcap_M_18","Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+
+#filtering to 5x for all compared
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.MC_MvR_TG=filterByCoverage(myobj_MC_MvR_TG,lo.count=5)
+
+#################UNITE##############################
+meth_MC_MvR_TG<-unite(filtered.myobj.MC_MvR_TG)
+nrow(meth_MC_MvR_TG)
+head(meth_MC_MvR_TG)
+jpeg("../analyses/MethCompare_correlation_MC_MvR_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_MC_MvR_TG,plot=TRUE)
+dev.off()
+```
+
+#make a PCA
+```{r}
+PCASamples(meth_MC_MvR_TG)
+```
+
+###meth diff
+```{r}
+#calculate diffs
+myDiff_MvR_TG<-calculateDiffMeth(meth_MC_MvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_MvR_TG)
+#flat file of myDiff
+myDiff_MvR_TG.db<-makeMethylDB(myDiff_MvR_TG)
+#sig diffs
+myDiff_MvR_TG_50p <- getMethylDiff(myDiff_MvR_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_MvR_TG_50p)
+#flat file of myDiff
+myDiff_50p_MvR_TG.db<-makeMethylDB(myDiff_MvR_TG_50p)
+
+```
+
+
+##~~~~~~~~~~~~~~~~
+####FULL DATASET TRIMGALORE _Pact, Pact_C1
+##~~~~~~~~~~~~~~
+##Pact
+#Deduplicated
 ```{bash}
-wget -r -l1 --no-parent -A "*.cov.gz" \
-https://gannet.fish.washington.edu/tmp/nodedup-r2/ --directory-prefix="../data/"
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup --directory-prefix="../data/"
+
+```
+
+#No deduplicated --missing 5 & 6
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/nodedup --directory-prefix="../data/"
+
+```
+
+#No deduplicated --just 5 & 6
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup --directory-prefix="../data/"
+
+```
+
+#Pact_C1
+#Deduplicated
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup --directory-prefix="../data/"
+
+```
+
+#No deduplicated --missing 5 & 6
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/nodedup --directory-prefix="../data/"
+
+```
+
+
+
+#Pact - all methods
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth4_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth5_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth6_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+
+#The following command reads coverage files
+```{r}
+myobj_Pact_all_TG=methRead(Pact_all_TG.list, sample.id = list("Pact_W_1","Pact_W_2","Pact_W_3","Pact_M_7","Pact_M_8","Pact_M_9","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 5x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_all_TG=filterByCoverage(myobj_Pact_all_TG,lo.count=5)
+
+#################UNITE##############################
+meth_Pact_all_TG<-unite(filtered.myobj.Pact_all_TG)
+nrow(meth_Pact_all_TG)
+head(meth_Pact_all_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_all_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_all_TG,plot=TRUE)
+dev.off()
+```
+
+#Pact - WvM methods
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_WvM_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+#####START UPDATING SCRIPT HERE -- once confirming Meth4 file#########
+#The following command reads coverage files
+```{r}
+myobj_Pact_WvM_TG=methRead(Pact_WvM_TG.list, sample.id = list("Pact_W_1","Pact_W_2","Pact_W_3","Pact_M_7","Pact_M_8","Pact_M_9"), assembly = "Pact_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 5x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_WvM_TG=filterByCoverage(myobj_Pact_WvM_TG,lo.count=5)
+
+#################UNITE##############################
+meth_Pact_WvM_TG<-unite(filtered.myobj.Pact_WvM_TG)
+nrow(meth_Pact_WvM_TG)
+head(meth_Pact_WvM_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_WvM_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_WvM_TG,plot=TRUE)
+dev.off()
+```
+
+###meth diff
+```{r}
+#calculate diffs
+myDiff_Pact_WvM_TG<-calculateDiffMeth(meth_Pact_WvM_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_Pact_WvM_TG)
+#flat file of myDiff
+myDiff_Pact_WvM_TG.db<-makeMethylDB(myDiff_Pact_WvM_TG)
+#sig diffs
+myDiff_Pact_WvM_TG_50p <- getMethylDiff(myDiff_Pact_WvM_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_Pact_WvM_TG_50p)
+tail(myDiff_Pact_WvM_TG)
+#flat file of myDiff
+myDiff_50p_WvM_TG.db<-makeMethylDB(myDiff_WvM_TG_50p)
+```
+
+
+#Pact - WvR
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_WvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth4_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth5_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth6_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+#####START UPDATING SCRIPT HERE -- once confirming Meth4 file#########
+#The following command reads coverage files
+```{r}
+myobj_Pact_WvR_TG=methRead(Pact_WvR_TG.list, sample.id = list("Pact_W_1","Pact_W_2","Pact_W_3","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 5x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_WvR_TG=filterByCoverage(myobj_Pact_WvR_TG,lo.count=5)
+
+#################UNITE##############################
+meth_Pact_WvR_TG<-unite(filtered.myobj.Pact_WvR_TG)
+nrow(meth_Pact_WvR_TG)
+head(meth_Pact_WvR_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_WvR_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_WvR_TG,plot=TRUE)
+dev.off()
+```
+###meth diff
+```{r}
+#calculate diffs
+myDiff_Pact_WvR_TG<-calculateDiffMeth(meth_Pact_WvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_Pact_WvR_TG)
+#flat file of myDiff
+myDiff_Pact_WvR_TG.db<-makeMethylDB(myDiff_Pact_WvR_TG)
+#sig diffs
+myDiff_Pact_WvR_TG_50p <- getMethylDiff(myDiff_Pact_WvR_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_Pact_WvR_TG_50p)
+tail(myDiff_Pact_WvR_TG)
+#flat file of myDiff
+myDiff_50p_WvR_TG.db<-makeMethylDB(myDiff_WvR_TG_50p)
+```
+
+
+
+#Pact - M v R methods
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_MvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth4_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth5_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth6_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+#####START UPDATING SCRIPT HERE -- once confirming Meth4 file#########
+#The following command reads coverage files
+```{r}
+myobj_Pact_MvR_TG=methRead(Pact_MvR_TG.list, sample.id = list("Pact_M_7","Pact_M_8","Pact_M_9","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 5x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_MvR_TG=filterByCoverage(myobj_Pact_MvR_TG,lo.count=5)
+
+#################UNITE##############################
+meth_Pact_MvR_TG<-unite(filtered.myobj.Pact_MvR_TG)
+nrow(meth_Pact_MvR_TG)
+head(meth_Pact_MvR_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_MvR_TG.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_MvR_TG,plot=TRUE)
+dev.off()
+```
+
+###meth diff
+```{r}
+#calculate diffs
+myDiff_Pact_MvR_TG<-calculateDiffMeth(meth_Pact_MvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
+head(myDiff_Pact_MvR_TG)
+#flat file of myDiff
+myDiff_Pact_MvR_TG.db<-makeMethylDB(myDiff_Pact_MvR_TG)
+#sig diffs
+myDiff_Pact_MvR_TG_50p <- getMethylDiff(myDiff_Pact_MvR_TG, difference = 50, qvalue = 0.01)
+nrow(myDiff_Pact_MvR_TG_50p)
+tail(myDiff_Pact_MvR_TG)
+#flat file of myDiff
+myDiff_50p_MvR_TG.db<-makeMethylDB(myDiff_MvR_TG_50p)
+```
 
