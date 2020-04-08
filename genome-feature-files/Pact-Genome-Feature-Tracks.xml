@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Session genome="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pocillopora_acuta_genome_v1.fasta" hasGeneTrack="false" hasSequenceTrack="true" locus="scaffold6_cov64:5759-6078" path="/Users/yaamini/Documents/Meth_Compare/genome-feature-files/Pact-Genome-Feature-Tracks.xml" version="8">
+    <Resources>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Intron.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.TerminalExon.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Genes.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.InitialExon.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.CDS.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.InternalExon.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Transcripts.gff"/>
+    </Resources>
+    <Panel height="754" name="FeaturePanel" width="1903">
+        <Track clazz="org.broad.igv.track.SequenceTrack" fontSize="10" id="Reference sequence" name="Reference sequence" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Genes.gff" name="Pact.GFFannotation.Genes.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Transcripts.gff" name="Pact.GFFannotation.Transcripts.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.CDS.gff" name="Pact.GFFannotation.CDS.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.InitialExon.gff" name="Pact.GFFannotation.InitialExon.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.InternalExon.gff" name="Pact.GFFannotation.InternalExon.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.TerminalExon.gff" name="Pact.GFFannotation.TerminalExon.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Pact.GFFannotation.Intron.gff" name="Pact.GFFannotation.Intron.gff" visible="true"/>
+    </Panel>
+    <PanelLayout dividerFractions="0.00784313725490196"/>
+    <HiddenAttributes>
+        <Attribute name="DATA FILE"/>
+        <Attribute name="DATA TYPE"/>
+        <Attribute name="NAME"/>
+    </HiddenAttributes>
+</Session>
