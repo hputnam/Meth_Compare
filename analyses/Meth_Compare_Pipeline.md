@@ -206,7 +206,7 @@ b896f80209fbaaee4ca5316f435839ff  /gscratch/scrubbed/sr320/froger-raw/00_fastq/M
 
 
 **Trimmed data on Mox - from where trimming was performed**
-`/gscratch/scrubbed/strigg/analyses/20200311/RRBS/FASTQC`
+`/gscratch/scrubbed/strigg/analyses/20200311/RRBS`
 
 
 ```
@@ -225,7 +225,7 @@ d6e026bb59b10a11ad9b51b8acdd18a7  Meth5_R2_001_val_2.fq.gz
 6ea2c605b839ea9ca91ecb524e7184d7  Meth6_R2_001_val_2.fq.gz
 ```
 
-`/gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/FASTQC`
+`/gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD`
 
 ```
 #WGBS_MBD:
