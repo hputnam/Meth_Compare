@@ -60,7 +60,7 @@ b896f80209fbaaee4ca5316f435839ff  Meth9_R2_001.fastq.gz
 ```
 
 
-Raw data on Mox - from where trimming was performed.(why does this say where trimming was performed @sr320?)
+Raw data on Mox - from where trimming and alignements were performed.
 
 ```
 63a1cc9e23dcedd71a66dac00f36467d  /gscratch/scrubbed/sr320/froger-raw/00_fastq/Meth10_R1_001.fastq.gz
@@ -255,6 +255,9 @@ efc6cc59733842eabadd21536c2f33bb  Meth8_R1_001_val_1.fq.gz
 a4c8dd40dece0e44397abebd447d7ec1  Meth9_R2_001_val_2.fq.gz
 ```
 
+**output from TrimGalore and MultiQC**
+https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200311/
+
 ---
 # Genome Preparation
 
@@ -339,6 +342,8 @@ Meth11_R1_001_val_1.fq.gz  Meth14_R1_001_val_1.fq.gz  Meth17_R1_001_val_1.fq.gz
 Meth11_R2_001_val_2.fq.gz  Meth14_R2_001_val_2.fq.gz  Meth17_R2_001_val_2.fq.gz
 Meth12_R1_001_val_1.fq.gz  Meth15_R1_001_val_1.fq.gz  Meth18_R1_001_val_1.fq.gz
 Meth12_R2_001_val_2.fq.gz  Meth15_R2_001_val_2.fq.gz  Meth18_R2_001_val_2.fq.gz
+
+
 
 ```
 
