@@ -1039,7 +1039,22 @@ Next `coverage2cytosine` was used with `--merge_CpG --zero_based` to generate me
 All available in https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/
 
 This process was then repeated for samples not deduplicated for Mcap (simply leaving out that step)
-those data are at https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/
+those data are at https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/ and the files would be on the order of
+```
+74M Meth15_R1_001_val_1_bismark_bt2_pe._10x.bedgraph
+89M Meth15_R1_001_val_1_bismark_bt2_pe._10x.tab
+82M Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+98M Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab
+12G Meth15_R1_001_val_1_bismark_bt2_pe.bam
+47M Meth15_R1_001_val_1_bismark_bt2_pe.bedGraph.gz
+49M Meth15_R1_001_val_1_bismark_bt2_pe.bismark.cov.gz
+156M Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov
+1.3G Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.txt
+28K Meth15_R1_001_val_1_bismark_bt2_pe.M-bias.txt
+3.7G Meth15_R1_001_val_1_bismark_bt2_pe.sorted.bam
+1.7M Meth15_R1_001_val_1_bismark_bt2_pe.sorted.bam.bai
+4.0K Meth15_R1_001_val_1_bismark_bt2_pe_splitting_report.txt
+```
 
 
 Then repeated for Pact with data at
