@@ -990,7 +990,7 @@ done
 
 ---
 
-**Script Explanation and distinct outputs**
+### Script Explanation and distinct outputs
 
 This specifically refers to `0313_1100.sh`. Trim reads were mapped to genomes using `-score_min L,0,-0.6 --non_directional` with the resulting bam files (and reports) now available at
 https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/
