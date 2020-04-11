@@ -499,7 +499,7 @@ wc -l 20200410_SR_copy_trim_RRBS_WGBS_MBD_md5sum.txt
 
 ---
 
-**Script that ran Bismark on Mox**
+### Script that ran Bismark on Mox
 
 ```
 [sr320@mox2 031520-TG-bs]$ cat 0313_1100.sh
