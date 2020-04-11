@@ -987,6 +987,9 @@ done
 
 ```
 
+
+---
+
 **Script Explanation and distinct outputs**
 
 This specifically refers to `0313_1100.sh`. Trim reads were mapped to genomes using `-score_min L,0,-0.6 --non_directional` with the resulting bam files (and reports) now available at
@@ -997,7 +1000,7 @@ https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg
 Next the bam files were separated such that RRBS is not deduplicated and WGBS and MBDBS are. Files were simply copied to new directory. This was done sequencially for each genome. For Mcap, 10-12 and 16-18 were deduplicated
 and extracted. Bams were sorted and indexed for IGV use.
 
-This process created to following files (using 18 as and example)
+This process created the following files (using 18 as an example)
 ```
 278M CHG_CTOB_Meth18_R1_001_val_1_bismark_bt2_pe.deduplicated.txt
 280M CHG_CTOT_Meth18_R1_001_val_1_bismark_bt2_pe.deduplicated.txt
@@ -1021,15 +1024,16 @@ This process created to following files (using 18 as and example)
 4.0K Meth18_R1_001_val_1_bismark_bt2_pe.deduplication_report.txt
 ```
 
-Next `coverage2cytosine` was used with `--merge_CpG --zero_based` to generated merged coverage files followed by the creation of 5x and 10 bedgraphs and tab files with raw counts. This generated
+Next `coverage2cytosine` was used with `--merge_CpG --zero_based` to generate merged coverage files followed by the creation of 5x and 10 bedgraphs and tab files with raw counts. This generated
 
 ```
-   392 Meth18_R1_001_val_1_bismark_bt2_pe._10x.bedgraph
-   464 Meth18_R1_001_val_1_bismark_bt2_pe._10x.tab
-  4052 Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
-  4664 Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab
-252700 Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov
-1334200 Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.txt
+392K Meth18_R1_001_val_1_bismark_bt2_pe._10x.bedgraph
+464K Meth18_R1_001_val_1_bismark_bt2_pe._10x.tab
+4.0M Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+4.6M Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab
+247M Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov
+1.3G Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.txt
+
 ```
 
 All available in https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/
@@ -1046,7 +1050,7 @@ https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg
 
 ---
 
-**Output from Bismark Aligment ++**
+**All Output from Bismark Aligment ++**
 
 https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/
 
