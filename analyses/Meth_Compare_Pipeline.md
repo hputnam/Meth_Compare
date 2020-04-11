@@ -308,7 +308,7 @@ Meth3_R2_001_val_2.fq.gz  Meth6_R2_001_val_2.fq.gz  Meth9_R2_001_val_2.fq.gz
 
 **MD5 check of Trim files used**
 
-script run on Mox is pasted below and is on Gannet here: 
+script run on Mox is pasted below and is on Gannet here:
 
 https://gannet.fish.washington.edu/metacarcinus/mox_jobs/20200410_MD5compare.sh
 
@@ -317,11 +317,11 @@ https://gannet.fish.washington.edu/metacarcinus/mox_jobs/20200410_MD5compare.sh
 #!/bin/bash
 ## Job Name
 #SBATCH --job-name=MD5check
-## Allocation Definition 
+## Allocation Definition
 #SBATCH --account=srlab
 #SBATCH --partition=srlab
 ## Resources
-## Nodes 
+## Nodes
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=5-23:30:00
@@ -348,13 +348,13 @@ md5sum /gscratch/scrubbed/sr320/031520-TG-bs/Pact_trim/*.gz > Pact_md5sum.txt
 
 cat RRBS_tg_md5sum.txt WGBS_MBD_tg_md5sum.txt \
  > 20200311_ST_trim_RRBS_WGBS_MBD_md5sum.txt
- 
+
 #combine all MD5 of trimmed files in SR's directory
 
 cat Mcap_md5sum.txt Pact_md5sum.txt \
 > 20200410_SR_copy_trim_RRBS_WGBS_MBD_md5sum.txt
 
-#compare files with awk: if an MD5 hash matches between files, the hash from each input file will be printed; if a hash does not match, only the hash from the second input file will be printed. 
+#compare files with awk: if an MD5 hash matches between files, the hash from each input file will be printed; if a hash does not match, only the hash from the second input file will be printed.
 
 awk 'NR==FNR{a[$1]=$1;next}{if($1 in a)print a[$1],$1;else print $1}' \
 20200311_ST_trim_RRBS_WGBS_MBD_md5sum.txt \
@@ -406,7 +406,7 @@ efc6cc59733842eabadd21536c2f33bb  /gscratch/scrubbed/strigg/analyses/20200311/WG
 8c5a88ab86e9673b4e1c82f1452b6ad1  /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/Meth8_R2_001_val_2.fq.gz
 04829778554df5986ae415fcda3b7e81  /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/Meth9_R1_001_val_1.fq.gz
 a4c8dd40dece0e44397abebd447d7ec1  /gscratch/scrubbed/strigg/analyses/20200311/WGBS_MBD/Meth9_R2_001_val_2.fq.gz
- 
+
 cat 20200410_SR_copy_trim_RRBS_WGBS_MBD_md5sum.txt
 
 04e14c4ec8cd7ef280b97d3ecca51b1a  /gscratch/scrubbed/sr320/031520-TG-bs/Mcap_trim/Meth10_R1_001_val_1.fq.gz
@@ -987,11 +987,22 @@ done
 
 ```
 
+**Script Explanation and distinct outputs**
+
+
+
+
+
+
+
 ---
 
 **Output from Bismark Aligment ++**
 
 https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/
+
+
+---
 
 
 **MD5 check of Bismark Alignments**
@@ -1002,11 +1013,11 @@ Perform MD5 check of alignment files on Mox
 #!/bin/bash
 ## Job Name
 #SBATCH --job-name=MD5check
-## Allocation Definition 
+## Allocation Definition
 #SBATCH --account=srlab
 #SBATCH --partition=srlab
 ## Resources
-## Nodes 
+## Nodes
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=5-23:30:00
@@ -1031,7 +1042,7 @@ find /gscratch/scrubbed/sr320/031520-TG-bs \
 >  all_031520-TG-bs_files_MOX_md5sum.txt
 ```
 
-Perform MD5 check of alignment files on Gannet
+**Perform MD5 check of alignment files on Gannet**
 
 ```
 find /Volumes/web/seashell/bu-mox/scrubbed/031520-TG-bs \
@@ -1039,7 +1050,7 @@ find /Volumes/web/seashell/bu-mox/scrubbed/031520-TG-bs \
 > all_031520-TG-bs_files_GANNET_md5sum.txt
 ```
 
-Compare Gannet and Mox MD5s
+**Compare Gannet and Mox MD5s**
 
 ```
 
