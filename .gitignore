@@ -88,3 +88,5 @@ analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._
 analyses/Characterizing-CpG-Methylation/Pact/Meth3_R1_001_val_1_bismark_bt2_pe._10x.bedgraph
 analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth
 analyses/Characterizing-CpG-Methylation/Pact/Meth3_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth
+analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed
+analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed
