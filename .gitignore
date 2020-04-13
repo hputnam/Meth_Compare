@@ -75,3 +75,11 @@ data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/
 data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup/Meth9_R1_001_val_1_bismark_bt2_pe.deduplicated..CpG_report.merged_CpG_evidence.cov
 data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup/Meth8_R1_001_val_1_bismark_bt2_pe.deduplicated..CpG_report.merged_CpG_evidence.cov
 data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov
+analyses/Characterizing-CpG-Methylation/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth13_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth13_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth14_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth14_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth15_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed-mcGenes
+analyses/Characterizing-CpG-Methylation/Mcap/Meth15_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-mcGenes
