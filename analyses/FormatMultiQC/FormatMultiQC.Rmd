@@ -1,0 +1,144 @@
+---
+title: "FormatMultiQC"
+author: "Shelly Trigg"
+date: "4/13/2020"
+output: html_document
+---
+
+load libraries
+```{r}
+library(data.table)
+library(gtools)
+```
+
+read in data 
+```{r}
+#cutadapt stats
+multiqc_a <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_cutadapt.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+#bismark
+multiqc_b <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_bismark_alignment.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+#bismark meth-extract
+multiqc_c <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_bismark_methextract.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+#bismark dedup
+multiqc_d <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_bismark_dedup.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+#general stats
+multiqc_g <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_general_stats.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+
+meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
+
+```
+
+
+format meta data
+```{r}
+#remove extraneous columns
+meta_data <- meta_data[,c("Sample.Name.","Species.Strain.","Library.Prep.Kit.Used.")]
+
+#sub "Pico Methyl-SeqTM Library Prep Kit" wtih WGBS 
+meta_data$Library.Prep.Kit.Used. <- gsub("Pico Methyl-SeqTM Library Prep Kit", "WGBS", meta_data$Library.Prep.Kit.Used.)
+
+meta_data$Library.Prep.Kit.Used. <- gsub("EZ DNA Methylation RRBSTM Library Prep Kit Catalog Nos. D5460S", "RRBS", meta_data$Library.Prep.Kit.Used.)
+
+colnames(meta_data) <- c("Sample", "Species", "Sequencing.Method")
+```
+
+
+format multiqc sample names
+```{r}
+multiqc_a$Sample <- gsub(" \\| ", "_", multiqc_a$Sample)
+multiqc_b$Sample <- gsub(" \\| ", "_", multiqc_b$Sample)
+multiqc_c$Sample <- gsub(" \\| ", "_", multiqc_c$Sample)
+multiqc_d$Sample <- gsub(" \\| ", "_", multiqc_d$Sample)
+multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
+```
+
+
+#create table with trimming stats
+```{r}
+#subset the general stats table for the fastqc data
+multiqc_f <- multiqc_g[,1:6]
+#remove rows with all NAs
+multiqc_f <- multiqc_f[complete.cases(multiqc_f),]
+
+#create file ID column in fastqc table
+multiqc_f$File.ID <- gsub(".*_Meth","Meth",multiqc_f$Sample)
+multiqc_f$File.ID <- gsub("_val.*","",multiqc_f$File.ID)
+
+
+#create a file ID column in cutadapt table
+multiqc_a$File.ID <- gsub(".*_Meth","Meth",multiqc_a$Sample)
+
+
+#merge cutadapt and fastqc stats by Sample.ID, exclude path info ("Sample" column)
+trim_multiqc <- merge(multiqc_a[,-c("Sample")],multiqc_f[,-c("Sample")], by = "File.ID")
+
+#create a sample column to match to meta data
+trim_multiqc$Sample <- gsub("_R.*","",trim_multiqc$File.ID)
+
+#merge with meta data
+trim_multiqc <- merge(meta_data, trim_multiqc, by = "Sample")
+
+#remove extra text from colnames
+colnames(trim_multiqc) <- gsub("FastQC_mqc-generalstats-","", colnames(trim_multiqc))
+
+#order table by Sample.ID 
+trim_multiqc <- trim_multiqc[mixedorder(trim_multiqc$File.ID),]
+
+write.csv(trim_multiqc, "../../Output/Raw_trimmed_data_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+
+```
+
+create a bismark table
+```{r}
+#merge dedup and meth extract data
+multi_bismark <- merge(multiqc_d, multiqc_c, by = "Sample", all = TRUE)
+
+#remove "dedup" from sample column
+multi_bismark$Sample <- gsub("_dedup","",multi_bismark$Sample)
+multi_bismark$Sample <- gsub("_nodedup","",multi_bismark$Sample)
+
+#merge with bismark alignment report
+multi_bismark <- merge(multiqc_b, multi_bismark, by = "Sample", all = TRUE)
+
+#rename Sample column to sample path
+colnames(multi_bismark)[1] <- "Sample.path"
+
+#create a sample column to match to meta data
+multi_bismark$Sample <- gsub(".*_Meth","Meth", multi_bismark$Sample.path)
+multi_bismark$Sample <- gsub("_R.*","", multi_bismark$Sample)
+
+
+#merge with meta data
+multi_bismark <- merge(meta_data,multi_bismark, by ="Sample")
+
+#split out C1 alignments from other alignments
+
+multi_bismark_C1 <- multi_bismark[grepl("C1", multi_bismark$Sample.path ),]
+multi_bismark_C1$Sample.path <- "C1"
+colnames(multi_bismark_C1)[4] <- "Reference"
+
+#order by sample
+multi_bismark_C1 <- multi_bismark_C1[mixedorder(multi_bismark_C1$Sample),]
+
+#write out C1 alignments table
+write.csv(multi_bismark_C1,"../../Output/C1_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+
+
+#remove C1 alignment data from object
+multi_bismark <- multi_bismark[-grep("C1", multi_bismark$Sample.path ),]
+
+#remove Sample path column
+multi_bismark$Sample.path <- NULL
+
+#order data by sample 
+multi_bismark <- multi_bismark[mixedorder(as.character(multi_bismark$Sample)),]
+
+#write out alignments table
+write.csv(multi_bismark,"../../Output/Pact_Mcap_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+```
+
