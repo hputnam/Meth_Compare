@@ -11,40 +11,84 @@ knitr::opts_chunk$set(echo = TRUE)
 #library
 ```{r}
 library(methylKit)
+library(data.table)
+library(dplyr)
 setwd("~/GitHub/Meth_Compare")
 ```
 
 
-##~~~~~~~~~~~~~~~~
-####FULL DATASET TRIMGALORE _MCap
 ##~~~~~~~~~~~~~~
-#Deduplicated
+####FULL DATASET -04/13/20
+##~~~~~~~~~~~~~~
+#get Mcap dedup the files from gannet
 ```{bash}
 wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup --directory-prefix="../data/"
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/ --directory-prefix="../data/"
 
 ```
 
-#No deduplicated
+#get Mcap dedup the files from gannet
 ```{bash}
 wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup --directory-prefix="../data/"
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/ --directory-prefix="../data/"
+
+```
+
+#get Pact dedup the files from gannet
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/ --directory-prefix="../data/"
 
 ```
 
 
+
+#get Pact dedup the files from gannet
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/ --directory-prefix="../data/"
+
+```
+
+#make md5 for the cov files
+```{bash}
+find ~/GitHub/Meth_Compare/data \
+-type f -exec md5sum {} + \
+> ~/GitHub/Meth_Compare/data/all_emu_cov_files_md5sum.txt
+```
+
+#get the MD5 from Gannet
+```{bash}
+wget  \
+https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200410/all_031520-TG-bs_files_GANNET_md5sum.txt --directory-prefix="../data/"
+```
+
+#compare MD5 of cov files on emu to GANNET - join by MD5 and make sure all cov files on emu match to gannet files
+```{r}
+emu_md5<-fread("~/GitHub/Meth_Compare/data/all_emu_cov_files_md5sum.txt", header=F)
+d5<-fread("~/GitHub/Meth_Compare/data/all_031520-TG-bs_files_GANNET_md5sum.txt", header=F)
+join_md5<-left_join(emu_md5,gannet_md5, by = c("V1" = "V1"))
+View(join_md5)
+
+```
+
+
+
+##~~~~~~~~~~~~~~
+####MCap Plots and Analyses ~start here
+##~~~~~~~~~~~~~~
 #make a list of cov files
 ```{r}
 library(methylKit)
-MC_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+MC_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth11_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth12_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth16_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth17_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/dedup/Meth18_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 ```
 
@@ -57,7 +101,7 @@ myobj_MC_all_TG=methRead(MC_all_TG.list, sample.id = list("Mcap_W_10","Mcap_W_11
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.MC_all_TG=filterByCoverage(myobj_MC_all_TG,lo.count=5)
+filtered.myobj.MC_all_TG=filterByCoverage(myobj_MC_all_TG,lo.count=20)
 
 #################UNITE##############################
 meth_MC_all_TG<-unite(filtered.myobj.MC_all_TG)
@@ -240,57 +284,19 @@ myDiff_50p_MvR_TG.db<-makeMethylDB(myDiff_MvR_TG_50p)
 
 
 ##~~~~~~~~~~~~~~~~
-####FULL DATASET TRIMGALORE _Pact, Pact_C1
+####FULL DATASET TRIMGALORE _Pact
 ##~~~~~~~~~~~~~~
-##Pact
-#Deduplicated
-```{bash}
-wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup --directory-prefix="../data/"
-
-```
-
-#No deduplicated --missing 5 & 6
-```{bash}
-wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/nodedup --directory-prefix="../data/"
-
-```
-
-#No deduplicated --just 5 & 6
-```{bash}
-wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup --directory-prefix="../data/"
-
-```
-
-#Pact_C1
-#Deduplicated
-```{bash}
-wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup --directory-prefix="../data/"
-
-```
-
-#No deduplicated --missing 5 & 6
-```{bash}
-wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
-https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/nodedup --directory-prefix="../data/"
-
-```
-
-
 
 #Pact - all methods
 #make a list of cov files
 ```{r}
 library(methylKit)
-Pact_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-100g/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+Pact_all_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
 '../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth4_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
 '../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth5_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
 '../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/Meth6_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
@@ -307,7 +313,7 @@ myobj_Pact_all_TG=methRead(Pact_all_TG.list, sample.id = list("Pact_W_1","Pact_W
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.Pact_all_TG=filterByCoverage(myobj_Pact_all_TG,lo.count=5)
+filtered.myobj.Pact_all_TG=filterByCoverage(myobj_Pact_all_TG,lo.count=20)
 
 #################UNITE##############################
 meth_Pact_all_TG<-unite(filtered.myobj.Pact_all_TG)
