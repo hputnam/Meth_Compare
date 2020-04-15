@@ -107,7 +107,7 @@ filtered.myobj.MC_all_TG=filterByCoverage(myobj_MC_all_TG,lo.count=10)
 meth_MC_all_TG<-unite(filtered.myobj.MC_all_TG)
 nrow(meth_MC_all_TG)
 head(meth_MC_all_TG)
-jpeg("../analyses/MethCompare_correlation_MC_all_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_MC_all_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_MC_all_TG,plot=TRUE)
 dev.off()
 ```
@@ -149,7 +149,7 @@ filtered.myobj.MC_WvM_TG=filterByCoverage(myobj_MC_WvM_TG,lo.count=10)
 meth_MC_WvM_TG<-unite(filtered.myobj.MC_WvM_TG)
 nrow(meth_MC_WvM_TG)
 head(meth_MC_WvM_TG)
-jpeg("../analyses/MethCompare_correlation_MC_WvM_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_MC_WvM_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_MC_WvM_TG,plot=TRUE)
 dev.off()
 ```
@@ -198,7 +198,7 @@ filtered.myobj.MC_WvR_TG=filterByCoverage(myobj_MC_WvR_TG,lo.count=10)
 meth_MC_WvR_TG<-unite(filtered.myobj.MC_WvR_TG)
 nrow(meth_MC_WvR_TG)
 head(meth_MC_WvR_TG)
-jpeg("../analyses/MethCompare_correlation_MC_WvR_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_MC_WvR_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_MC_WvR_TG,plot=TRUE)
 dev.off()
 ```
@@ -248,7 +248,7 @@ filtered.myobj.MC_MvR_TG=filterByCoverage(myobj_MC_MvR_TG,lo.count=10)
 meth_MC_MvR_TG<-unite(filtered.myobj.MC_MvR_TG)
 nrow(meth_MC_MvR_TG)
 head(meth_MC_MvR_TG)
-jpeg("../analyses/MethCompare_correlation_MC_MvR_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_MC_MvR_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_MC_MvR_TG,plot=TRUE)
 dev.off()
 ```
@@ -302,13 +302,13 @@ myobj_Pact_all_TG=methRead(Pact_all_TG.list, sample.id = list("Pact_W_1","Pact_W
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.Pact_all_TG=filterByCoverage(myobj_Pact_all_TG,lo.count=10)
+filtered.myobj.Pact_all_TG=filterByCoverage(myobj_Pact_all_TG,lo.count=30)
 
 #################UNITE##############################
 meth_Pact_all_TG<-unite(filtered.myobj.Pact_all_TG)
 nrow(meth_Pact_all_TG)
 head(meth_Pact_all_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_all_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_all_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_all_TG,plot=TRUE)
 dev.off()
 ```
@@ -342,7 +342,7 @@ filtered.myobj.Pact_WvM_TG=filterByCoverage(myobj_Pact_WvM_TG,lo.count=10)
 meth_Pact_WvM_TG<-unite(filtered.myobj.Pact_WvM_TG)
 nrow(meth_Pact_WvM_TG)
 head(meth_Pact_WvM_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_WvM_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_WvM_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_WvM_TG,plot=TRUE)
 dev.off()
 ```
@@ -390,7 +390,7 @@ filtered.myobj.Pact_WvR_TG=filterByCoverage(myobj_Pact_WvR_TG,lo.count=10)
 meth_Pact_WvR_TG<-unite(filtered.myobj.Pact_WvR_TG)
 nrow(meth_Pact_WvR_TG)
 head(meth_Pact_WvR_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_WvR_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_WvR_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_WvR_TG,plot=TRUE)
 dev.off()
 ```
@@ -438,7 +438,7 @@ filtered.myobj.Pact_MvR_TG=filterByCoverage(myobj_Pact_MvR_TG,lo.count=10)
 meth_Pact_MvR_TG<-unite(filtered.myobj.Pact_MvR_TG)
 nrow(meth_Pact_MvR_TG)
 head(meth_Pact_MvR_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_MvR_TG.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_MvR_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_MvR_TG,plot=TRUE)
 dev.off()
 ```
@@ -456,3 +456,32 @@ tail(myDiff_Pact_MvR_TG)
 
 ```
 
+#####Testing stuff --trying within methods to see if individuals are limiting, try this for Pact..
+#make a list of cov files
+```{r}
+library(methylKit)
+MC_R_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+
+```
+
+#The following command reads coverage files
+```{r}
+myobj_MC_R_TG=methRead(MC_R_TG.list, sample.id = list("Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 10x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.MC_R_TG=filterByCoverage(myobj_MC_R_TG,lo.count=10)
+
+#################UNITE##############################
+meth_MC_R_TG<-unite(filtered.myobj.MC_R_TG, min.per.group = 2L)
+nrow(meth_MC_R_TG)
+head(meth_MC_all_TG)
+jpeg("../analyses/MethCompare_correlation_MC_all_TG_041420.jpg", width = 1000, height = 600)
+getCorrelation(meth_MC_all_TG,plot=TRUE)
+dev.off()
+```
