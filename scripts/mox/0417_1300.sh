@@ -1,22 +1,22 @@
 #!/bin/bash
 ## Job Name
 #SBATCH --job-name=pan-sub
-##  This script is meant to align trim galore data to Pact/C1 pangenome -u featutre
+##  This script is meant to align trim galore data to Pact/C1 pangenome
 ##  And generate files for downstream analyses
 ## Allocation Definition
-#SBATCH --account=coenv
-#SBATCH --partition=coenv
+#SBATCH --account=srlab
+#SBATCH --partition=srlab
 ## Resources
 ## Nodes (We only get 1, so this is fixed)
 #SBATCH --nodes=1
 ## Walltime (days-hours:minutes:seconds format)
 #SBATCH --time=10-00:00:00
 ## Memory per node
-#SBATCH --mem=100G
+#SBATCH --mem=300G
 #SBATCH --mail-type=ALL
 #SBATCH --mail-user=sr320@uw.edu
 ## Specify the working directory for this job
-#SBATCH --chdir=/gscratch/scrubbed/sr320/041720-pan-u
+#SBATCH --chdir=/gscratch/scrubbed/sr320/041720-pan
 
 
 # Directories and programs
@@ -43,7 +43,6 @@ find ${reads_dir}*_R1_001_val_1.fq.gz \
 --path_to_bowtie ${bowtie2_dir} \
 -genome ${genome_folder} \
 -p 4 \
--u 100000 \
 -score_min L,0,-0.6 \
 --non_directional \
 -1 ${reads_dir}{}_R1_001_val_1.fq.gz \
