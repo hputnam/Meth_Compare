@@ -27,7 +27,7 @@ https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg
 
 ```
 
-#get Mcap dedup the files from gannet
+#get Mcap nodedup the files from gannet
 ```{bash}
 wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
 https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/ --directory-prefix="../data/"
@@ -43,7 +43,7 @@ https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg
 
 
 
-#get Pact dedup the files from gannet
+#get Pact nodedup the files from gannet
 ```{bash}
 wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
 https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/nodedup/ --directory-prefix="../data/"
@@ -69,6 +69,20 @@ emu_md5<-fread("~/GitHub/Meth_Compare/data/all_emu_cov_files_md5sum.txt", header
 d5<-fread("~/GitHub/Meth_Compare/data/all_031520-TG-bs_files_GANNET_md5sum.txt", header=F)
 join_md5<-left_join(emu_md5,gannet_md5, by = c("V1" = "V1"))
 View(join_md5)
+
+```
+
+#get Pact_C1 dedup the files from gannet
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/dedup/ --directory-prefix="../data/"
+
+```
+
+#get Pact_C1 dedup the files from gannet
+```{bash}
+wget -r -l1 --no-parent -A "*merged_CpG_evidence.cov" \
+https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/nodedup/ --directory-prefix="../data/"
 
 ```
 
@@ -457,31 +471,164 @@ tail(myDiff_Pact_MvR_TG)
 ```
 
 #####Testing stuff --trying within methods to see if individuals are limiting, try this for Pact..
-#make a list of cov files
 ```{r}
 library(methylKit)
-MC_R_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth13_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth14_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Mcap_tg/nodedup/Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
+Pact_W_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth2_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
+'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth3_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 ```
 
+
 #The following command reads coverage files
 ```{r}
-myobj_MC_R_TG=methRead(MC_R_TG.list, sample.id = list("Mcap_R_13","Mcap_R_14","Mcap_R_15"), assembly = "Map_genome", treatment = c(0,0,0), context = "CpG", pipeline = "bismarkCoverage")
+myobj_Pact_W_TG=methRead(Pact_W_TG.list, sample.id = list("Pact_W_1","Pact_W_2","Pact_W_3"), assembly = "Pact_genome", treatment = c(0,0,0), context = "CpG", pipeline = "bismarkCoverage")
 ```
 
 #filtering to 10x  - unite - correlation plot
 ```{r}
 
 #################FILTERING###########################
-filtered.myobj.MC_R_TG=filterByCoverage(myobj_MC_R_TG,lo.count=10)
+filtered.myobj.Pact_W_TG=filterByCoverage(myobj_Pact_W_TG,lo.count=10)
 
 #################UNITE##############################
-meth_MC_R_TG<-unite(filtered.myobj.MC_R_TG, min.per.group = 2L)
-nrow(meth_MC_R_TG)
-head(meth_MC_all_TG)
-jpeg("../analyses/MethCompare_correlation_MC_all_TG_041420.jpg", width = 1000, height = 600)
-getCorrelation(meth_MC_all_TG,plot=TRUE)
+meth_Pact_W_TG<-unite(filtered.myobj.Pact_W_TG)
+nrow(meth_Pact_W_TG)
+head(meth_Pact_all_TG)
+```
+
+```{r}
+#meth_MC_all_TG -- testing a pretty PCA
+library(reshape2)
+library(ggplot2)
+pcaobj<-PCASamples(meth_MC_all_TG, screeplot = F, adj.lim = c(0.4,0.2),
+                    scale = F, center = T, comp = c(1,2), transpose = T, sd.filter = F,
+                   sd.threshold = 0, filterByQuantile = F, obj.return = T)
+
+summary(pcaobj)
+pcscores<-as.data.frame(pcaobj$x[,1:2])
+head(pcscores)
+newColNames <- c("species", "method", "sample")
+newCols <-colsplit(row.names(pcscores), "_", newColNames)
+pcscores_id<-cbind(pcscores, newCols)
+
+jpeg("../analyses/MethCompare_PCA_Mcap_all_041520.jpg", width = 500, height = 500)
+ggplot(pcscores_id, aes(PC1, PC2)) +
+  geom_point(aes(col=method), size = 4) +
+  xlab("PC1 (51%)") + ylab("PC2 (21%)") +
+  ggtitle("PCA Mcap %methylation across 3 methods")
+dev.off()
+```
+
+
+```{r}
+#meth_Pact_all_TG -- testing a pretty PCA
+library(reshape2)
+library(ggplot2)
+pcaobj<-PCASamples(meth_Pact_all_TG, screeplot = F, adj.lim = c(0.4,0.2),
+                    scale = F, center = T, comp = c(1,2), transpose = T, sd.filter = F,
+                   sd.threshold = 0, filterByQuantile = F, obj.return = T)
+
+summary(pcaobj)
+pcscores<-as.data.frame(pcaobj$x[,1:2])
+head(pcscores)
+newColNames <- c("species", "method", "sample")
+newCols <-colsplit(row.names(pcscores), "_", newColNames)
+pcscores_id<-cbind(pcscores, newCols)
+head(pcscores_id)
+
+jpeg("../analyses/MethCompare_PCA_Pact_all_041520.jpg", width = 500, height = 500)
+ggplot(pcscores_id, aes(PC1, PC2)) +
+  geom_point(aes(col=method), size = 4) +
+  xlab("PC1 (89%)") + ylab("PC2 (6%)") +
+  ggtitle("PCA Pact %methylation across 3 methods")
+dev.off()
+```
+
+
+
+```{r}
+#meth_MC_all_TG -- %meth table
+Mcap_perc<-percMethylation(meth_MC_all_TG,rowids = T)
+colMeans(Mcap_perc, na.rm = T, dims = 1)
+
+```
+
+```{r}
+#meth_Pact_all_TG -- %meth table
+Pact_perc<-percMethylation(meth_Pact_all_TG,rowids = T)
+colMeans(Pact_perc, na.rm = T, dims = 1)
+
+```
+
+
+#Pact - all methods
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_pan_TG.list=list('../analyses/pan-genome-cov/Meth1_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth2_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth3_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth7_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth8_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth9_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth4_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth5_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth6_R1_001_Pact-viaPan-merged.cov')
+
+```
+
+
+#The following command reads coverage files
+```{r}
+myobj_Pact_pan_TG=methRead(Pact_pan_TG.list, sample.id = list("Pact_W_1","Pact_W_2","Pact_W_3","Pact_M_7","Pact_M_8","Pact_M_9","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 10x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_pan_TG=filterByCoverage(myobj_Pact_pan_TG,lo.count=1)
+
+#################UNITE##############################
+meth_Pact_pan_TG<-unite(filtered.myobj.Pact_pan_TG)
+nrow(meth_Pact_pan_TG)
+head(meth_Pact_pan_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_pan_TG_041420.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_pan_TG,plot=TRUE)
+dev.off()
+```
+
+#Pact - all methods
+#make a list of cov files
+```{r}
+library(methylKit)
+Pact_panMvR_TG.list=list('../analyses/pan-genome-cov/Meth7_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth8_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth9_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth4_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth5_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth6_R1_001_Pact-viaPan-merged.cov')
+
+```
+
+
+#The following command reads coverage files
+```{r}
+myobj_Pact_panMvR_TG=methRead(Pact_panMvR_TG.list, sample.id = list("Pact_M_7","Pact_M_8","Pact_M_9","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
+```
+
+#filtering to 10x  - unite - correlation plot
+```{r}
+
+#################FILTERING###########################
+filtered.myobj.Pact_panMvR_TG=filterByCoverage(myobj_Pact_panMvR_TG,lo.count=10)
+
+#################UNITE##############################
+meth_Pact_panMvR_TG<-unite(filtered.myobj.Pact_panMvR_TG)
+nrow(meth_Pact_panMvR_TG)
+head(meth_Pact_pan_TG)
+jpeg("../analyses/MethCompare_correlation_Pact_pan_TG_041420.jpg", width = 1000, height = 600)
+getCorrelation(meth_Pact_panMvR_TG,plot=TRUE)
 dev.off()
 ```
