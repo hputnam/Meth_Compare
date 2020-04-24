@@ -57,6 +57,12 @@ multiqc_d$Sample <- gsub(" \\| ", "_", multiqc_d$Sample)
 multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
 ```
 
+format column names so merging won't produce duplicate colnames
+```{r}
+colnames(multiqc_b)[2] <- "uniq_aligned_reads"
+colnames(multiqc_d)[2] <- "uniq_aligned_reads_no_discard"
+
+```
 
 #create table with trimming stats
 ```{r}
@@ -103,7 +109,9 @@ multi_bismark$Sample <- gsub("_dedup","",multi_bismark$Sample)
 multi_bismark$Sample <- gsub("_nodedup","",multi_bismark$Sample)
 
 #merge with bismark alignment report
-multi_bismark <- merge(multiqc_b, multi_bismark, by = "Sample", all = TRUE)
+#exclude meth calls from bismark alignments because better to include these from meth extract report
+colnames(multiqc_b[,c(5:7,10:17,19:21)]) #print columns to exclude
+multi_bismark <- merge(multiqc_b[,-c(5:7,10:17,19:21)], multi_bismark, by = "Sample", all = TRUE) #merge
 
 #rename Sample column to sample path
 colnames(multi_bismark)[1] <- "Sample.path"
