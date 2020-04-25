@@ -71,22 +71,38 @@ colnames(multiqc_d)[2] <- "uniq_aligned_reads_no_discard"
 
 format lambda table
 ```{r}
+#make multiqc_l a data.frame
+multiqc_l <- data.frame(multiqc_l)
+
 #simplify sample name to just Meth##
 multiqc_l$Sample <- gsub("_R1.*","", multiqc_l$Sample)
 
 #create tot_cpg, tot_chh, tot_chg columns
+
+#calculate the total chg counts by summing unmeth chg counts and meth chg counts
 multiqc_l$tot_chg <- multiqc_l$meth_chg + multiqc_l$unmeth_chg
 
+#calculate the total chh counts by summing unmeth chh counts and meth chh counts
 multiqc_l$tot_chh <- multiqc_l$meth_chh + multiqc_l$unmeth_chh
 
+#calculate the total cpg counts by summing unmeth cpg counts and meth cpg counts
 multiqc_l$tot_cpg <- multiqc_l$meth_cpg + multiqc_l$unmeth_cpg
 
+#calculate the unmeht chg + chh counts by summing unmeth chg counts and unmeth chh counts
 multiqc_l$unmeth_chg_chh <- multiqc_l$unmeth_chg + multiqc_l$unmeth_chh
 
+#calculate the total chg + chh counts by summing total chg counts and total chh counts
 multiqc_l$tot_chg_chh <- multiqc_l$tot_chg + multiqc_l$tot_chh
 
-
+#calculate percent conversion efficiency by dividing the unmethylated chg + chh counts by the total (meth + unmeth) chg + chh counts
 multiqc_l$conversion_efficiency <- (multiqc_l$unmeth_chg_chh/multiqc_l$tot_chg_chh) *100
+
+#remove columns containing strand info (e.g. strand_ot)
+multiqc_l <- multiqc_l[,-grep("strand_",colnames(multiqc_l))]
+
+#write out table
+write.csv(multiqc_l, "../../Output/lamda_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+
 ```
 
 
