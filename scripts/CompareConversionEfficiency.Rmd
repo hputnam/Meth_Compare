@@ -1,0 +1,60 @@
+---
+title: "CompareConversionEfficiency"
+author: "Shelly Trigg"
+date: "4/24/2020"
+output: html_document
+---
+
+load library
+```{r}
+library(gtools)
+```
+
+read in data
+```{r}
+#lambda data
+df_l <- read.csv("../../Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+
+#Pact/Mcap data
+df_pm <- read.csv("../../Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+```
+
+estimate conversion effiency from %unmeth CHH
+```{r}
+#first need to make column for total CHH counts
+df_pm$tot_chh <- df_pm$meth_chh + df_pm$unmeth_chh
+
+#now calculate estimated conversion effiency from %unmeth CHH
+df_pm$estConvEffCHH <- (df_pm$unmeth_chh/df_pm$tot_chh)*100
+```
+
+estimate conversion effiency from %unmeth CHG
+```{r}
+#first need to make column for total CHH counts
+df_pm$tot_chg <- df_pm$meth_chg + df_pm$unmeth_chg
+
+#now calculate estimated conversion effiency from %unmeth CHH
+df_pm$estConvEffCHG <- (df_pm$unmeth_chg/df_pm$tot_chg)*100
+```
+
+
+merge dfs
+```{r}
+df_l <- merge(df_l[,c("Sample", "conversion_efficiency")], df_pm[,c("Sample","estConvEffCHG", "estConvEffCHH")], by = "Sample")
+
+```
+
+rename columns
+```{r}
+colnames(df_l) <- c("Sample", "conversion_efficiency_lambda", "est_conversion_efficiency_umCHG", "est_conversion_efficiency_umCHH")
+```
+
+order table by sample
+```{r}
+df_l <- df_l[mixedorder(df_l$Sample),]
+```
+
+write table
+```{r}
+write.csv(df_l, "../../Output/lamda_vs_estimated_conversion_efficiency.csv", row.names = FALSE, quote = FALSE)
+```
