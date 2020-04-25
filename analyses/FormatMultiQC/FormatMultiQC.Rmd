@@ -28,8 +28,12 @@ multiqc_d <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_
 #general stats
 multiqc_g <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_general_stats.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
+#lambda alignment stats
+multiqc_l <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/multiqc_data/multiqc_bismark_alignment.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
 meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
+
+
 
 ```
 
@@ -57,12 +61,35 @@ multiqc_d$Sample <- gsub(" \\| ", "_", multiqc_d$Sample)
 multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
 ```
 
+
 format column names so merging won't produce duplicate colnames
 ```{r}
 colnames(multiqc_b)[2] <- "uniq_aligned_reads"
 colnames(multiqc_d)[2] <- "uniq_aligned_reads_no_discard"
 
 ```
+
+format lambda table
+```{r}
+#simplify sample name to just Meth##
+multiqc_l$Sample <- gsub("_R1.*","", multiqc_l$Sample)
+
+#create tot_cpg, tot_chh, tot_chg columns
+multiqc_l$tot_chg <- multiqc_l$meth_chg + multiqc_l$unmeth_chg
+
+multiqc_l$tot_chh <- multiqc_l$meth_chh + multiqc_l$unmeth_chh
+
+multiqc_l$tot_cpg <- multiqc_l$meth_cpg + multiqc_l$unmeth_cpg
+
+multiqc_l$unmeth_chg_chh <- multiqc_l$unmeth_chg + multiqc_l$unmeth_chh
+
+multiqc_l$tot_chg_chh <- multiqc_l$tot_chg + multiqc_l$tot_chh
+
+
+multiqc_l$conversion_efficiency <- (multiqc_l$unmeth_chg_chh/multiqc_l$tot_chg_chh) *100
+```
+
+
 
 #create table with trimming stats
 ```{r}
