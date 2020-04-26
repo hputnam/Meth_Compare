@@ -28,9 +28,19 @@ multiqc_d <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_
 #general stats
 multiqc_g <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_general_stats.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
+<<<<<<< HEAD
 
 meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
 
+=======
+#lambda alignment stats
+multiqc_l <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/multiqc_data/multiqc_bismark_alignment.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+
+meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
+
+
+
+>>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 ```
 
 
@@ -58,6 +68,54 @@ multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
 ```
 
 
+<<<<<<< HEAD
+=======
+format column names so merging won't produce duplicate colnames
+```{r}
+colnames(multiqc_b)[2] <- "uniq_aligned_reads"
+colnames(multiqc_d)[2] <- "uniq_aligned_reads_no_discard"
+
+```
+
+format lambda table
+```{r}
+#make multiqc_l a data.frame
+multiqc_l <- data.frame(multiqc_l)
+
+#simplify sample name to just Meth##
+multiqc_l$Sample <- gsub("_R1.*","", multiqc_l$Sample)
+
+#create tot_cpg, tot_chh, tot_chg columns
+
+#calculate the total chg counts by summing unmeth chg counts and meth chg counts
+multiqc_l$tot_chg <- multiqc_l$meth_chg + multiqc_l$unmeth_chg
+
+#calculate the total chh counts by summing unmeth chh counts and meth chh counts
+multiqc_l$tot_chh <- multiqc_l$meth_chh + multiqc_l$unmeth_chh
+
+#calculate the total cpg counts by summing unmeth cpg counts and meth cpg counts
+multiqc_l$tot_cpg <- multiqc_l$meth_cpg + multiqc_l$unmeth_cpg
+
+#calculate the unmeht chg + chh counts by summing unmeth chg counts and unmeth chh counts
+multiqc_l$unmeth_chg_chh <- multiqc_l$unmeth_chg + multiqc_l$unmeth_chh
+
+#calculate the total chg + chh counts by summing total chg counts and total chh counts
+multiqc_l$tot_chg_chh <- multiqc_l$tot_chg + multiqc_l$tot_chh
+
+#calculate percent conversion efficiency by dividing the unmethylated chg + chh counts by the total (meth + unmeth) chg + chh counts
+multiqc_l$conversion_efficiency <- (multiqc_l$unmeth_chg_chh/multiqc_l$tot_chg_chh) *100
+
+#remove columns containing strand info (e.g. strand_ot)
+multiqc_l <- multiqc_l[,-grep("strand_",colnames(multiqc_l))]
+
+#write out table
+write.csv(multiqc_l, "../../Output/lamda_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+
+```
+
+
+
+>>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 #create table with trimming stats
 ```{r}
 #subset the general stats table for the fastqc data
@@ -103,7 +161,13 @@ multi_bismark$Sample <- gsub("_dedup","",multi_bismark$Sample)
 multi_bismark$Sample <- gsub("_nodedup","",multi_bismark$Sample)
 
 #merge with bismark alignment report
+<<<<<<< HEAD
 multi_bismark <- merge(multiqc_b, multi_bismark, by = "Sample", all = TRUE)
+=======
+#exclude meth calls from bismark alignments because better to include these from meth extract report
+colnames(multiqc_b[,c(5:7,10:17,19:21)]) #print columns to exclude
+multi_bismark <- merge(multiqc_b[,-c(5:7,10:17,19:21)], multi_bismark, by = "Sample", all = TRUE) #merge
+>>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 
 #rename Sample column to sample path
 colnames(multi_bismark)[1] <- "Sample.path"
