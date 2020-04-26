@@ -562,27 +562,19 @@ colMeans(Pact_perc, na.rm = T, dims = 1)
 ```
 
 
-#Pact - testing the Pan genome all methods
-#get Pact pangenome files from gannet
-```{bash}
-wget -r -l1 --no-parent -A "*merged.cov" \
-https://gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/ --directory-prefix="../data/"
-
-```
-
-
+#Pact - all methods
 #make a list of cov files
 ```{r}
 library(methylKit)
-Pact_pan_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth1_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth2_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth3_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth7_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth8_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth9_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth4_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth5_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth6_R1_001_Pact-viaPan-merged.cov')
+Pact_pan_TG.list=list('../analyses/pan-genome-cov/Meth1_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth2_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth3_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth7_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth8_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth9_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth4_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth5_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth6_R1_001_Pact-viaPan-merged.cov')
 
 ```
 
@@ -602,21 +594,21 @@ filtered.myobj.Pact_pan_TG=filterByCoverage(myobj_Pact_pan_TG,lo.count=1)
 meth_Pact_pan_TG<-unite(filtered.myobj.Pact_pan_TG)
 nrow(meth_Pact_pan_TG)
 head(meth_Pact_pan_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_ALLpan_TG_042420.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_pan_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_pan_TG,plot=TRUE)
 dev.off()
 ```
 
-#Pact - MBD v RRBS
+#Pact - all methods
 #make a list of cov files
 ```{r}
 library(methylKit)
-Pact_panMvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth7_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth8_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth9_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth4_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth5_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth6_R1_001_Pact-viaPan-merged.cov')
+Pact_panMvR_TG.list=list('../analyses/pan-genome-cov/Meth7_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth8_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth9_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth4_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth5_R1_001_Pact-viaPan-merged.cov',
+'../analyses/pan-genome-cov/Meth6_R1_001_Pact-viaPan-merged.cov')
 
 ```
 
@@ -636,118 +628,7 @@ filtered.myobj.Pact_panMvR_TG=filterByCoverage(myobj_Pact_panMvR_TG,lo.count=10)
 meth_Pact_panMvR_TG<-unite(filtered.myobj.Pact_panMvR_TG)
 nrow(meth_Pact_panMvR_TG)
 head(meth_Pact_pan_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_ALLMvRpan_TG_042420.jpg", width = 1000, height = 600)
+jpeg("../analyses/MethCompare_correlation_Pact_pan_TG_041420.jpg", width = 1000, height = 600)
 getCorrelation(meth_Pact_panMvR_TG,plot=TRUE)
 dev.off()
 ```
-
-###meth diff
-```{r}
-#calculate diffs
-myDiff_Pact_panMvR_TG<-calculateDiffMeth(meth_Pact_panMvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
-head(myDiff_Pact_panMvR_TG)
-
-#sig diffs
-myDiff_Pact_panMvR_TG_50p <- getMethylDiff(myDiff_Pact_panMvR_TG, difference = 50, qvalue = 0.01)
-
-nrow(myDiff_Pact_panMvR_TG_50p)
-perc<-percMethylation(meth_Pact_panMvR_TG,rowids = T)
-head(perc)
-```
-
-
-#Pact - MBD v RRBS (NO SAMPLE 7..just for comparison)
-#make a list of cov files
-```{r}
-library(methylKit)
-Pact_panMvR_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth7_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth9_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth4_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth5_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth6_R1_001_Pact-viaPan-merged.cov')
-
-```
-
-
-#The following command reads coverage files
-```{r}
-myobj_Pact_panMvR_TG=methRead(Pact_panMvR_TG.list, sample.id = list("Pact_M_7","Pact_M_9","Pact_R_4","Pact_R_5","Pact_R_6"), assembly = "Pact_genome", treatment = c(0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
-```
-
-#filtering to 10x  - unite - correlation plot
-```{r}
-
-#################FILTERING###########################
-filtered.myobj.Pact_panMvR_TG=filterByCoverage(myobj_Pact_panMvR_TG,lo.count=10)
-
-#################UNITE##############################
-meth_Pact_panMvR_TG<-unite(filtered.myobj.Pact_panMvR_TG)
-nrow(meth_Pact_panMvR_TG)
-head(meth_Pact_panMvR_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_ALLMvR_NOSAMPLE8_pan_TG_042420.jpg", width = 1000, height = 600)
-getCorrelation(meth_Pact_panMvR_TG,plot=TRUE)
-dev.off()
-```
-
-###meth diff
-```{r}
-#calculate diffs
-myDiff_Pact_panMvR_TG<-calculateDiffMeth(meth_Pact_panMvR_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
-head(myDiff_Pact_panMvR_TG)
-
-#sig diffs
-myDiff_Pact_panMvR_TG_50p <- getMethylDiff(myDiff_Pact_panMvR_TG, difference = 50, qvalue = 0.01)
-
-nrow(myDiff_Pact_panMvR_TG_50p)
-perc<-percMethylation(meth_Pact_panMvR_TG,rowids = T)
-head(perc)
-```
-
-#Pact - MBD v MBD no C1 v C1pan
-#make a list of cov files
-```{r}
-library(methylKit)
-Pact_MvMpan_TG.list=list('../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth7_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth8_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs/Pact_tg/dedup/Meth9_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth7_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth8_R1_001_Pact-viaPan-merged.cov',
-'../data/gannet.fish.washington.edu/seashell/bu-github/Meth_Compare/analyses/pan-genome-cov-full/Meth9_R1_001_Pact-viaPan-merged.cov')
-
-```
-
-
-#The following command reads coverage files
-```{r}
-myobj_Pact_MvMpan_TG=methRead(Pact_MvMpan_TG.list, sample.id = list("Pact_M_7","Pact_M_8","Pact_M_9","Pact_Mpan_7","Pact_Mpan_8","Pact_Mpan_9"), assembly = "Pact_genome", treatment = c(0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage")
-```
-
-#filtering to 10x  - unite - correlation plot
-```{r}
-
-#################FILTERING###########################
-filtered.myobj.Pact_MvMpan_TG=filterByCoverage(myobj_Pact_MvMpan_TG,lo.count=10)
-
-#################UNITE##############################
-meth_Pact_MvMpan_TG<-unite(filtered.myobj.Pact_MvMpan_TG)
-nrow(meth_Pact_MvMpan_TG)
-head(meth_Pact_MvMpan_TG)
-jpeg("../analyses/MethCompare_correlation_Pact_MvMpan_TG_042420.jpg", width = 1000, height = 600)
-getCorrelation(meth_Pact_MvMpan_TG,plot=TRUE)
-dev.off()
-```
-
-###meth diff
-```{r}
-#calculate diffs
-myDiff_Pact_MvMpan_TG<-calculateDiffMeth(meth_Pact_MvMpan_TG,num.cores = 8,weighted.mean=FALSE,slim=TRUE)
-head(myDiff_Pact_MvMpan_TG)
-
-#sig diffs
-myDiff_Pact_MvMpan_TG_50p <- getMethylDiff(myDiff_Pact_MvMpan_TG, difference = 50, qvalue = 0.01)
-
-nrow(myDiff_Pact_MvMpan_TG_50p)
-perc<-percMethylation(myDiff_Pact_MvMpan_TG_TG,rowids = T)
-head(perc)
-```
-

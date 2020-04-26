@@ -61,12 +61,6 @@ multiqc_d$Sample <- gsub(" \\| ", "_", multiqc_d$Sample)
 multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
 ```
 
-format column names so merging won't produce duplicate colnames
-```{r}
-colnames(multiqc_b)[2] <- "uniq_aligned_reads"
-colnames(multiqc_d)[2] <- "uniq_aligned_reads_no_discard"
-
-```
 
 format column names so merging won't produce duplicate colnames
 ```{r}
