@@ -107,16 +107,3 @@ analyses/Characterizing-CpG-Methylation/Pact/Meth3_R1_001_val_1_bismark_bt2_pe._
 analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph-unMeth.bed-paIntron
 /data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs
 analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-paIntron
-<<<<<<< HEAD
-=======
-analyses/pan-genome-cov-full/*merged_CpG_evidence.cov
-analyses/pan-genome-cov-full/Meth1_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth2_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth3_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth4_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth5_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth6_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth7_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth8_R1_001_Pact-viaPan-merged.cov
-analyses/pan-genome-cov-full/Meth9_R1_001_Pact-viaPan-merged.cov
->>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
