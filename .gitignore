@@ -108,3 +108,12 @@ analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._
 /data/gannet.fish.washington.edu/seashell/bu-mox/scrubbed/031520-TG-bs
 analyses/Characterizing-CpG-Methylation/Pact/Meth2_R1_001_val_1_bismark_bt2_pe._10x.bedgraph.bed-paIntron
 analyses/pan-genome-cov-full/*.cov
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
