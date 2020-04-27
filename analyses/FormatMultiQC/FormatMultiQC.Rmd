@@ -28,11 +28,6 @@ multiqc_d <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_
 #general stats
 multiqc_g <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200413/multiqc_data/multiqc_general_stats.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-<<<<<<< HEAD
-
-meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
-
-=======
 #lambda alignment stats
 multiqc_l <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/multiqc_data/multiqc_bismark_alignment.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
@@ -40,7 +35,6 @@ meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", 
 
 
 
->>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 ```
 
 
@@ -68,8 +62,6 @@ multiqc_g$Sample <- gsub(" \\| ", "_", multiqc_g$Sample)
 ```
 
 
-<<<<<<< HEAD
-=======
 format column names so merging won't produce duplicate colnames
 ```{r}
 colnames(multiqc_b)[2] <- "uniq_aligned_reads"
@@ -115,7 +107,6 @@ write.csv(multiqc_l, "../../Output/lamda_alignments_descriptive_stats.csv", row.
 
 
 
->>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 #create table with trimming stats
 ```{r}
 #subset the general stats table for the fastqc data
@@ -161,13 +152,9 @@ multi_bismark$Sample <- gsub("_dedup","",multi_bismark$Sample)
 multi_bismark$Sample <- gsub("_nodedup","",multi_bismark$Sample)
 
 #merge with bismark alignment report
-<<<<<<< HEAD
-multi_bismark <- merge(multiqc_b, multi_bismark, by = "Sample", all = TRUE)
-=======
 #exclude meth calls from bismark alignments because better to include these from meth extract report
 colnames(multiqc_b[,c(5:7,10:17,19:21)]) #print columns to exclude
 multi_bismark <- merge(multiqc_b[,-c(5:7,10:17,19:21)], multi_bismark, by = "Sample", all = TRUE) #merge
->>>>>>> dab158436a754cc3fd162c4bb321b7185cad521a
 
 #rename Sample column to sample path
 colnames(multi_bismark)[1] <- "Sample.path"
