@@ -118,3 +118,5 @@ analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth12_R1_001_val_1_bismark_bt2_
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph-unMeth
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph-unMeth.bed
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed
