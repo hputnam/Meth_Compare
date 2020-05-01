@@ -567,7 +567,7 @@ write.table(PactIntronsSummary, "../analyses/Characterizing-CpG-Methylation-5x/P
 ##### Import file counts
 
 ```{r}
-PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 PactIntergenicOverlaps <- PactIntergenicOverlaps[-37,] #Remove final row
 tail(PactIntergenicOverlaps) #Confirm import
 ```
