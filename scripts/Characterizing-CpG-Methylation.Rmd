@@ -21,6 +21,52 @@ sessionInfo()
 
 ### Mcap
 
+#### Import file counts
+
+```{r}
+McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapAll <- McapAll[-10,] #Remove last row (total lines for all files)
+tail(McapAll) #Confirm import
+```
+
+```{r}
+McapMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapMeth <- McapMeth[-10,] #Remove last row (total lines for all files)
+tail(McapMeth) #Confirm import
+```
+
+```{r}
+McapSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapSparseMeth <- McapSparseMeth[-10,] #Remove last row (total lines for all files)
+tail(McapSparseMeth) #Confirm import
+```
+
+```{r}
+McapUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapUnMeth <- McapUnMeth[-10,] #Remove last row (total lines for all files)
+tail(McapUnMeth) #Confirm import
+```
+
+#### Create summary table
+
+```{r}
+McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
+McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
+tail(McapCpGType) #Confirm table mashing
+```
+
+```{r}
+McapCpGType$percentMeth <- (McapCpGType$Meth / McapCpGType$totalLines) * 100 #Calculate percent methylated loci
+McapCpGType$percentSparseMeth <- (McapCpGType$sparseMeth / McapCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+McapCpGType$percentUnMeth <- (McapCpGType$unMeth / McapCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+McapCpGType <- McapCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(McapCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 ### Pact
 
 ## CpG overlaps
