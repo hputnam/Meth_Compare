@@ -441,7 +441,7 @@ write.table(PactGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact
 ##### Import file counts
 
 ```{r}
-PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
 PactCDSOverlaps <- PactCDSOverlaps[-37,] #Remove final row
 tail(PactCDSOverlaps) #Confirm import
 ```
@@ -504,7 +504,7 @@ write.table(PactCDSSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/
 ##### Import file counts
 
 ```{r}
-PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 PactIntronsOverlaps <- PactIntronsOverlaps[-37,] #Remove final row
 tail(PactIntronsOverlaps) #Confirm import
 ```
