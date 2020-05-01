@@ -9,6 +9,7 @@ load libraries
 ```{r}
 library(data.table)
 library(gtools)
+library(ggplot2)
 ```
 
 read in data 
@@ -193,3 +194,35 @@ multi_bismark <- multi_bismark[mixedorder(as.character(multi_bismark$Sample)),]
 write.csv(multi_bismark,"../../Output/Pact_Mcap_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
 ```
 
+## plot different stats
+
+percent reads with unique alignment 
+```{r}
+jpeg("../../Output/Pact_Mcap_boxplot_methodXuniquely_mapped_reads.jpg", width = 6, height= 3, units = "in", res = 300 )
+ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = percent_aligned,group = Sequencing.Method, color = Sequencing.Method,fill = Sequencing.Method), alpha = 0.3) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("uniquely mapped reads (%)")
+dev.off()
+```
+
+percent CpG methylation 
+```{r}
+jpeg("../../Output/Pact_Mcap_boxplot_methodXmethCpG.jpg", width = 6, height= 3, units = "in", res = 300 )
+ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = percent_cpg_meth,group = Sequencing.Method, color = Sequencing.Method, fill = Sequencing.Method), alpha = 0.5) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("CpG methylation (%)")
+dev.off()
+```
+
+## Other potential plots
+percent reads with any alignment (unique or ambig)
+```{r}
+ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = ((uniq_aligned_reads + ambig_reads)/total_reads),group = Sequencing.Method, fill = Sequencing.Method)) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("mapped reads (%)")
+
+```
+
+percent CHG methylation 
+```{r}
+ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = percent_chg_meth,group = Sequencing.Method, color = Sequencing.Method, fill = Sequencing.Method), alpha = 0.5) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("CHG methylation (%)")
+```
+
+percent CHH methylation 
+```{r}
+ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = percent_chh_meth,group = Sequencing.Method, color = Sequencing.Method, fill = Sequencing.Method), alpha = 0.5) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("CHH methylation (%)")
+```
