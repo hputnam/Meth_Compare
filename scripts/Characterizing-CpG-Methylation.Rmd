@@ -121,6 +121,67 @@ write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pac
 
 #### Genes
 
+##### Import file counts
+
+```{r}
+McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapGeneOverlaps <- McapGeneOverlaps[-37,] #Remove final row
+tail(McapGeneOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+McapGeneSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(McapGeneSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(McapGeneSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  McapGeneSummary[i,1] <- McapGeneOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,2] <- McapGeneOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,3] <- McapGeneOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,4] <- McapGeneOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(McapGeneSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+McapGeneSummary$percentMeth <- (McapGeneSummary$Meth / McapGeneSummary$totalLines) * 100 #Calculate percent methylated
+McapGeneSummary$percentSparseMeth <- (McapGeneSummary$sparseMeth / McapGeneSummary$totalLines) * 100 #Calculate percent sparsely methylated
+McapGeneSummary$percentUnMeth <- (McapGeneSummary$unMeth / McapGeneSummary$totalLines) * 100 #Calculate percent unmethylated
+McapGeneSummary <- McapGeneSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(McapGeneSummary) #Confirm calculations
+```
+
+```{r}
+write.table(McapGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Gene-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 #### CDS
 
 #### Introns
