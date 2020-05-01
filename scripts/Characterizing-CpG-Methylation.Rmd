@@ -69,6 +69,52 @@ write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mca
 
 ### Pact
 
+#### Import file counts
+
+```{r}
+PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- PactAll[-10,] #Remove last row (total lines for all files)
+tail(PactAll) #Confirm import
+```
+
+```{r}
+PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- PactMeth[-10,] #Remove last row (total lines for all files)
+tail(PactMeth) #Confirm import
+```
+
+```{r}
+PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- PactSparseMeth[-10,] #Remove last row (total lines for all files)
+tail(PactSparseMeth) #Confirm import
+```
+
+```{r}
+PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- PactUnMeth[-10,] #Remove last row (total lines for all files)
+tail(PactUnMeth) #Confirm import
+```
+
+#### Create summary table
+
+```{r}
+PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
+PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
+tail(PactCpGType) #Confirm table mashing
+```
+
+```{r}
+PactCpGType$percentMeth <- (PactCpGType$Meth / PactCpGType$totalLines) * 100 #Calculate percent methylated loci
+PactCpGType$percentSparseMeth <- (PactCpGType$sparseMeth / PactCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+PactCpGType$percentUnMeth <- (PactCpGType$unMeth / PactCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+PactCpGType <- PactCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(PactCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 ## CpG overlaps
 
 ### Mcap
