@@ -7,9 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll create figures to characterize CpG methylation in my *C. virginica* gonad samples. I will use a list of CpGs with at least 5x coverage in any samples. I'll also calculate relevant statistics for methylation islands.
-
-**MOVE CODE TO ANALYSIS DIRECTORY `2019-03-18-Characterizing-CpG-Methylation` BEFORE PROCEEDING.**
+In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I will use a list of CpGs with at least 5x coverage in any samples.
 
 # Session information
 
@@ -17,11 +15,41 @@ In this script, I'll create figures to characterize CpG methylation in my *C. vi
 sessionInfo()
 ```
 
+# Summary tables
+
+## CpG distribution
+
+### Mcap
+
+### Pact
+
+## CpG overlaps
+
+### Mcap
+
+#### Genes
+
+#### CDS
+
+#### Introns
+
+#### Intergenic regions
+
+### Pact
+
+#### Genes
+
+#### CDS
+
+#### Introns
+
+#### Intergenic regions
+
 # CpG distributions
 
 ## Import data
 
-### *M. capitata*
+### Mcap
 
 #### Sample 1
 
@@ -128,27 +156,5 @@ hist(cpgMethylationMBD2$methylation, main = "")
 hist(cpgMethylationWGBS3$methylation, main = "")
 hist(cpgMethylationRRBS3$methylation, main = "")
 hist(cpgMethylationMBD3$methylation, main = "")
-```
-
-# Methylation island characteristics
-
-## Import data
-
-```{r}
-methylationIslands <- read.delim("../analyses/Characterizing-CpG-Methylation/FILE", header = FALSE) #Import methylation island list
-colnames(methylationIslands) <- c("chr", "MI.start", "MI.end", "mCpGs", "MI.length") #Add column names
-head(methylationIslands) #Confirm file format
-```
-
-## Calculate statistics
-
-```{r}
-range(methylationIslands$mCpGs) #Calculate the range of the number of mCpGs
-median(methylationIslands$mCpGs) #Calculate the median number of mCpGs in an island
-```
-
-```{r}
-range(methylationIslands$MI.length) #Calculate the range MI length
-median(methylationIslands$MI.length) #Calculate the median MI length
 ```
 
