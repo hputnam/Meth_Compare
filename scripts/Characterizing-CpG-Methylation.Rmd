@@ -853,14 +853,14 @@ barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.
 ```
 
 ```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
+pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
 par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
 barplot(t(McapCpGTypeTotalPercents), 
         col= "white", 
         axes = F, 
         names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
-        ylim = c(0, 100)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
 xx[,-1] <- NA #Ignore all other columns
@@ -881,7 +881,12 @@ axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.
 mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
 mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 
-#dev.off() #Turn off plotting device
+segments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
+segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
+segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD
+mtext(side = 3, "p = 0.008", at = c(2.5, 106), cex = 1.2) #Add x-axis label
+
+dev.off() #Turn off plotting device
 ```
 
 ### Pact
