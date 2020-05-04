@@ -9,12 +9,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I will use a list of CpGs with at least 5x coverage in any samples.
 
-# Session information
+# Install packages
 
 ```{r}
+#install.packages("RColorBrewer")
+require(RColorBrewer) #Load RColorBrewer
+
 #install.packages("dichromat")
 require(dichromat)
 ```
+
+# Session information
 
 ```{r}
 sessionInfo()
@@ -810,6 +815,30 @@ for (i in 1:3) {
   McapCpGTypeTotalPercents[,i] <- (McapCpGTypeCounts[,i+1] / McapCpGTypeCounts[,1])  *100
 } #Divide CpG type by total lines and multiply by 100 to get percents
 head(McapCpGTypeTotalPercents) #Check output
+```
+
+#### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+McapCpGTypePropTest <- chisq.test(data.frame(t(McapCpGTypeTotalPercents))) #Perform test on a transposed version of the percents dataframe
+McapCpGTypePropTest #The distribution of CpGs is sginificantly different between all methods
+```
+
+```{r}
+McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
+McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+McapCpGTypeWGMB #The distribution of CpGs is not sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
 ```
 
 #### Create plot
