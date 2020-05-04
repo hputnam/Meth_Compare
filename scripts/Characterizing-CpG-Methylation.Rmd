@@ -12,6 +12,11 @@ In this script, I'll create summary tables and figures to characterize CpG methy
 # Session information
 
 ```{r}
+#install.packages("dichromat")
+require(dichromat)
+```
+
+```{r}
 sessionInfo()
 ```
 
@@ -805,14 +810,23 @@ head(McapCpGTypeTotalPercents) #Check output
 #### Create plot
 
 ```{r}
-RColorBrewer::display.brewer.all()
+plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
+                rev(RColorBrewer::brewer.pal(3, "Blues")), 
+                rev(RColorBrewer::brewer.pal(3, "Reds"))) #Create vector of WGBS, RRBS, and MBD colors
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
 ```
-
 
 ```{r}
-barplot(t(McapCpGTypeTotalPercents))
+barplot(t(McapCpGTypeTotalPercents), col='white', axes=F, axisnames=F, yaxp=c(0,1,2), las=1)
+for (i in 1:ncol(t(McapCpGTypeTotalPercents))) {
+    xx = t(McapCpGTypeTotalPercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx,col=dichromat(c(plotColors[i], plotColors[2*i], plotColors[i*3])), add=T, axes=F) 
+}
 ```
-
 
 ### Pact
 
