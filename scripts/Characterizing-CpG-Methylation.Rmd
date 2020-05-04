@@ -849,11 +849,11 @@ barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.
 
 ```{r}
 #pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+par(mar = c(3,5,1,1), oma = c(5, 1, 1, 1)) #Change figure boundaries
 
 barplot(t(McapCpGTypeTotalPercents), 
         col= "white", 
-        axes = F, 
+        axes = FALSE, 
         names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
