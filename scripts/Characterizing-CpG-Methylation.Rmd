@@ -884,7 +884,7 @@ mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 segments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
 segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
 segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD
-mtext(side = 3, "p = 0.008", at = c(2.5, 106), cex = 1.2) #Add x-axis label
+#mtext(side = 3, "p = 0.008", at = c(2.5, 106), cex = 1.2) #Add x-axis label
 
 dev.off() #Turn off plotting device
 ```
