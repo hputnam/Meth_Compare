@@ -942,6 +942,30 @@ for (i in 1:3) {
 head(PactCpGTypeTotalPercents) #Check output
 ```
 
+#### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+PactCpGTypePropTest <- chisq.test(data.frame(t(PactCpGTypeTotalPercents))) #Perform test on a transposed version of the percents dataframe
+PactCpGTypePropTest #The distribution of CpGs is sginificantly different between all methods
+```
+
+```{r}
+PactCpGTypeWGRR <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
+PactCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+PactCpGTypeWGMB <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+PactCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+PactCpGTypeRRMB <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+PactCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
+```
+
 #### Create plot
 
 ```{r}
