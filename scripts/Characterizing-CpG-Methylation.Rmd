@@ -627,9 +627,16 @@ write.table(PactIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5
 
 # CpG distributions
 
-## Mcap
+## Individual samples
 
-### Reorganize data
+### Mcap
+
+```{r}
+McapCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
+head(McapCpGType) #Check import
+```
+
+#### Reorganize data
 
 ```{r}
 McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
@@ -649,7 +656,7 @@ barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-### Create multipanel figure with all samples
+#### Create multipanel figure with all samples
 
 ```{r}
 #pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
@@ -681,9 +688,9 @@ barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 #dev.off() #Turn off plotting device
 ```
 
-## Pact
+### Pact
 
-### Reorganize data
+#### Reorganize data
 
 ```{r}
 PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
@@ -703,7 +710,7 @@ barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-### Create multipanel figure with all samples
+#### Create multipanel figure with all samples
 
 ```{r}
 #pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
@@ -734,3 +741,91 @@ barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 
 #dev.off() #Turn off plotting device
 ```
+
+## Combined samples
+
+### Mcap
+
+#### Reorganize data
+
+```{r}
+McapCpGTypeCounts <- data.frame("totalLines" = rep(0, times = 3),
+                                   "Meth" = rep(0, times = 3),
+                                   "sparseMeth" = rep(0, times = 3),
+                                   "unMeth" = rep(0, times = 3)) #Create an empty dataframe for summed counts
+head(McapCpGTypeCounts) #Check dataframe format
+```
+
+```{r}
+#Total lines concatenation
+McapCpGTypeCounts$totalLines[1] <- sum(McapCpGType$totalLines[1], McapCpGType$totalLines[2],  McapCpGType$totalLines[3]) #WGBS
+McapCpGTypeCounts$totalLines[2] <- sum(McapCpGType$totalLines[4], McapCpGType$totalLines[5],  McapCpGType$totalLines[6]) #RRBS
+McapCpGTypeCounts$totalLines[3] <- sum(McapCpGType$totalLines[7], McapCpGType$totalLines[8],  McapCpGType$totalLines[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
+
+```{r}
+#Meth concatenation
+McapCpGTypeCounts$Meth[1] <- sum(McapCpGType$Meth[1], McapCpGType$Meth[2],  McapCpGType$Meth[3]) #WGBS
+McapCpGTypeCounts$Meth[2] <- sum(McapCpGType$Meth[4], McapCpGType$Meth[5],  McapCpGType$Meth[6]) #RRBS
+McapCpGTypeCounts$Meth[3] <- sum(McapCpGType$Meth[7], McapCpGType$Meth[8],  McapCpGType$Meth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
+
+```{r}
+#sparseMeth concatenation
+McapCpGTypeCounts$sparseMeth[1] <- sum(McapCpGType$sparseMeth[1], McapCpGType$sparseMeth[2],  McapCpGType$sparseMeth[3]) #WGBS
+McapCpGTypeCounts$sparseMeth[2] <- sum(McapCpGType$sparseMeth[4], McapCpGType$sparseMeth[5],  McapCpGType$sparseMeth[6]) #RRBS
+McapCpGTypeCounts$sparseMeth[3] <- sum(McapCpGType$sparseMeth[7], McapCpGType$sparseMeth[8],  McapCpGType$sparseMeth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
+
+```{r}
+#unMeth concatenation
+McapCpGTypeCounts$unMeth[1] <- sum(McapCpGType$unMeth[1], McapCpGType$unMeth[2],  McapCpGType$unMeth[3]) #WGBS
+McapCpGTypeCounts$unMeth[2] <- sum(McapCpGType$unMeth[4], McapCpGType$unMeth[5],  McapCpGType$unMeth[6]) #RRBS
+McapCpGTypeCounts$unMeth[3] <- sum(McapCpGType$unMeth[7], McapCpGType$unMeth[8],  McapCpGType$unMeth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
+
+```{r}
+McapCpGTypeTotalPercents <- data.frame("Meth" = rep(0, times = 3),
+                                       "sparseMeth" = rep(0, times = 3),
+                                       "unMeth" = rep(0, times = 3)) #Create an empty dataframe for total percents
+head(McapCpGTypeTotalPercents) #Check dataframe
+```
+
+```{r}
+for (i in 1:3) {
+  McapCpGTypeTotalPercents[,i] <- (McapCpGTypeCounts[,i+1] / McapCpGTypeCounts[,1])  *100
+} #Divide CpG type by total lines and multiply by 100 to get percents
+head(McapCpGTypeTotalPercents) #Check output
+```
+
+#### Create plot
+
+```{r}
+RColorBrewer::display.brewer.all()
+```
+
+
+```{r}
+barplot(t(McapCpGTypeTotalPercents))
+```
+
+
+### Pact
+
+
+
+
+
+
+
+
+
+
+
+
+
+
