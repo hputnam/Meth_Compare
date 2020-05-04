@@ -695,6 +695,11 @@ barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 
 ### Pact
 
+```{r}
+PactCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
+head(PactCpGType) #Check import
+```
+
 #### Reorganize data
 
 ```{r}
@@ -819,8 +824,8 @@ barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.
 ```
 
 ```{r}
-pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,1,1), oma = c(1, 1, 1, 1)) #Change figure boundaries
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
 barplot(t(McapCpGTypeTotalPercents), 
         col= "white", 
@@ -847,12 +852,100 @@ axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.
 mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
 mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 
-dev.off() #Turn off plotting device
+#dev.off() #Turn off plotting device
 ```
 
 ### Pact
 
+#### Reorganize data
 
+```{r}
+PactCpGTypeCounts <- data.frame("totalLines" = rep(0, times = 3),
+                                "Meth" = rep(0, times = 3),
+                                "sparseMeth" = rep(0, times = 3),
+                                "unMeth" = rep(0, times = 3)) #Create an empty dataframe for summed counts
+head(PactCpGTypeCounts) #Check dataframe format
+```
+
+```{r}
+#Total lines concatenation
+PactCpGTypeCounts$totalLines[1] <- sum(PactCpGType$totalLines[1], PactCpGType$totalLines[2],  PactCpGType$totalLines[3]) #WGBS
+PactCpGTypeCounts$totalLines[2] <- sum(PactCpGType$totalLines[4], PactCpGType$totalLines[5],  PactCpGType$totalLines[6]) #RRBS
+PactCpGTypeCounts$totalLines[3] <- sum(PactCpGType$totalLines[7], PactCpGType$totalLines[8],  PactCpGType$totalLines[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#Meth concatenation
+PactCpGTypeCounts$Meth[1] <- sum(PactCpGType$Meth[1], PactCpGType$Meth[2],  PactCpGType$Meth[3]) #WGBS
+PactCpGTypeCounts$Meth[2] <- sum(PactCpGType$Meth[4], PactCpGType$Meth[5],  PactCpGType$Meth[6]) #RRBS
+PactCpGTypeCounts$Meth[3] <- sum(PactCpGType$Meth[7], PactCpGType$Meth[8],  PactCpGType$Meth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#sparseMeth concatenation
+PactCpGTypeCounts$sparseMeth[1] <- sum(PactCpGType$sparseMeth[1], PactCpGType$sparseMeth[2],  PactCpGType$sparseMeth[3]) #WGBS
+PactCpGTypeCounts$sparseMeth[2] <- sum(PactCpGType$sparseMeth[4], PactCpGType$sparseMeth[5],  PactCpGType$sparseMeth[6]) #RRBS
+PactCpGTypeCounts$sparseMeth[3] <- sum(PactCpGType$sparseMeth[7], PactCpGType$sparseMeth[8],  PactCpGType$sparseMeth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#unMeth concatenation
+PactCpGTypeCounts$unMeth[1] <- sum(PactCpGType$unMeth[1], PactCpGType$unMeth[2],  PactCpGType$unMeth[3]) #WGBS
+PactCpGTypeCounts$unMeth[2] <- sum(PactCpGType$unMeth[4], PactCpGType$unMeth[5],  PactCpGType$unMeth[6]) #RRBS
+PactCpGTypeCounts$unMeth[3] <- sum(PactCpGType$unMeth[7], PactCpGType$unMeth[8],  PactCpGType$unMeth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+PactCpGTypeTotalPercents <- data.frame("Meth" = rep(0, times = 3),
+                                       "sparseMeth" = rep(0, times = 3),
+                                       "unMeth" = rep(0, times = 3)) #Create an empty dataframe for total percents
+head(PactCpGTypeTotalPercents) #Check dataframe
+```
+
+```{r}
+for (i in 1:3) {
+  PactCpGTypeTotalPercents[,i] <- (PactCpGTypeCounts[,i+1] / PactCpGTypeCounts[,1])  *100
+} #Divide CpG type by total lines and multiply by 100 to get percents
+head(PactCpGTypeTotalPercents) #Check output
+```
+
+#### Create plot
+
+```{r}
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type-Combined.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(PactCpGTypeTotalPercents), 
+        col= "white", 
+        axes = F, 
+        names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
+        ylim = c(0, 100)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-1] <- NA #Ignore all other columns
+colnames(xx)[-1] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[1], plotColors[2], plotColors[3]), add=T, axes=F) #Add WGBS greens
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-2] <- NA #Ignore all other columns
+colnames(xx)[-2] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[4], plotColors[5], plotColors[6]), add=T, axes=F) #Add RRBS blues
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-3] <- NA #Ignore all other columns
+colnames(xx)[-3] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[7], plotColors[8], plotColors[9]), add=T, axes=F) #Add MBD-BSSeq reds
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+#dev.off() #Turn off plotting device
+```
 
 
 
