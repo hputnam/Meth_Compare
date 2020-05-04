@@ -822,11 +822,6 @@ head(McapCpGTypeTotalPercents) #Check output
 The null hypothesis is that distributions of different CpG types is the same between sequencing methods
 
 ```{r}
-McapCpGTypePropTest <- chisq.test(data.frame(t(McapCpGTypeTotalPercents))) #Perform test on a transposed version of the percents dataframe
-McapCpGTypePropTest #The distribution of CpGs is sginificantly different between all methods
-```
-
-```{r}
 McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
 McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
 ```
@@ -950,11 +945,6 @@ head(PactCpGTypeTotalPercents) #Check output
 #### Conduct chi-squared tests of homogeneity
 
 The null hypothesis is that distributions of different CpG types is the same between sequencing methods
-
-```{r}
-PactCpGTypePropTest <- chisq.test(data.frame(t(PactCpGTypeTotalPercents))) #Perform test on a transposed version of the percents dataframe
-PactCpGTypePropTest #The distribution of CpGs is sginificantly different between all methods
-```
 
 ```{r}
 PactCpGTypeWGRR <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
