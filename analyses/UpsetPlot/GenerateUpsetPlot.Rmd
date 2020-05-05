@@ -1,0 +1,51 @@
+---
+title: "UpsetPlot"
+author: "Shelly Trigg"
+date: "5/1/2020"
+output: html_document
+---
+
+install packages
+```{r}
+install.packages("UpSetR")
+
+if (!requireNamespace("BiocManager", quietly=TRUE))
+    install.packages("BiocManager")
+BiocManager::install("ComplexHeatmap")
+
+```
+
+load libraries
+```{r}
+library(UpSetR)
+library(ComplexHeatmap)
+library(data.table)
+```
+
+load data
+```{r}
+pact <- read.table("/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Pact/Pact_method_union_5x_matrix.tsv", header = TRUE, sep = "\t", row.names = 1, stringsAsFactors = FALSE)
+  #fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200501/data/Pact_method_union_5x_matrix.tsv", stringsAsFactors = FALSE, header = TRUE)
+
+mcap <- read.table("/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Mcap/Mcap_method_union_5x_matrix.tsv", header = TRUE, sep = "\t", row.names = 1, stringsAsFactors = FALSE)
+```
+
+make combination matrix
+```{r}
+pact_m <- make_comb_mat(pact)
+mcap_m <- make_comb_mat(mcap)
+
+save(pact_m, file = "/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Pact/pact_m.RData")
+
+save(mcap_m, file = "/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Mcap/mcap_m.RData")
+```
+
+```{r}
+jpeg("../../Output/Pact_UpsetPlot.jpg", width = 8, height = 4, unit = "in", res = 300)
+UpSet(pact_m,pt_size = unit(5, "mm"), lwd = 3,comb_col = c("gold","red", "blue", "black")[comb_degree(pact_m)])
+dev.off()
+
+jpeg("../../Output/Mcap_UpsetPlot.jpg", width = 8, height = 4, unit = "in", res = 300)
+UpSet(mcap_m,pt_size = unit(5, "mm"), lwd = 3,comb_col = c("gold","red", "blue", "black")[comb_degree(mcap_m)])
+dev.off()
+```

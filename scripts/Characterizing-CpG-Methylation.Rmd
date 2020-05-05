@@ -9,6 +9,16 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I will use a list of CpGs with at least 5x coverage in any samples.
 
+# Install packages
+
+```{r}
+#install.packages("RColorBrewer")
+require(RColorBrewer) #Load RColorBrewer
+
+#install.packages("dichromat")
+require(dichromat)
+```
+
 # Session information
 
 ```{r}
@@ -21,7 +31,99 @@ sessionInfo()
 
 ### Mcap
 
+#### Import file counts
+
+```{r}
+McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapAll <- McapAll[-10,] #Remove last row (total lines for all files)
+tail(McapAll) #Confirm import
+```
+
+```{r}
+McapMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapMeth <- McapMeth[-10,] #Remove last row (total lines for all files)
+tail(McapMeth) #Confirm import
+```
+
+```{r}
+McapSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapSparseMeth <- McapSparseMeth[-10,] #Remove last row (total lines for all files)
+tail(McapSparseMeth) #Confirm import
+```
+
+```{r}
+McapUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapUnMeth <- McapUnMeth[-10,] #Remove last row (total lines for all files)
+tail(McapUnMeth) #Confirm import
+```
+
+#### Create summary table
+
+```{r}
+McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
+McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
+tail(McapCpGType) #Confirm table mashing
+```
+
+```{r}
+McapCpGType$percentMeth <- (McapCpGType$Meth / McapCpGType$totalLines) * 100 #Calculate percent methylated loci
+McapCpGType$percentSparseMeth <- (McapCpGType$sparseMeth / McapCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+McapCpGType$percentUnMeth <- (McapCpGType$unMeth / McapCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+McapCpGType <- McapCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(McapCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 ### Pact
+
+#### Import file counts
+
+```{r}
+PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- PactAll[-10,] #Remove last row (total lines for all files)
+tail(PactAll) #Confirm import
+```
+
+```{r}
+PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- PactMeth[-10,] #Remove last row (total lines for all files)
+tail(PactMeth) #Confirm import
+```
+
+```{r}
+PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- PactSparseMeth[-10,] #Remove last row (total lines for all files)
+tail(PactSparseMeth) #Confirm import
+```
+
+```{r}
+PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- PactUnMeth[-10,] #Remove last row (total lines for all files)
+tail(PactUnMeth) #Confirm import
+```
+
+#### Create summary table
+
+```{r}
+PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
+PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
+tail(PactCpGType) #Confirm table mashing
+```
+
+```{r}
+PactCpGType$percentMeth <- (PactCpGType$Meth / PactCpGType$totalLines) * 100 #Calculate percent methylated loci
+PactCpGType$percentSparseMeth <- (PactCpGType$sparseMeth / PactCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+PactCpGType$percentUnMeth <- (PactCpGType$unMeth / PactCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+PactCpGType <- PactCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(PactCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
 
 ## CpG overlaps
 
@@ -29,132 +131,896 @@ sessionInfo()
 
 #### Genes
 
+##### Import file counts
+
+```{r}
+McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapGeneOverlaps <- McapGeneOverlaps[-37,] #Remove final row
+tail(McapGeneOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+McapGeneSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(McapGeneSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(McapGeneSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  McapGeneSummary[i,1] <- McapGeneOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,2] <- McapGeneOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,3] <- McapGeneOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(McapGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapGeneSummary[i,4] <- McapGeneOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(McapGeneSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+McapGeneSummary$percentMeth <- (McapGeneSummary$Meth / McapGeneSummary$totalLines) * 100 #Calculate percent methylated
+McapGeneSummary$percentSparseMeth <- (McapGeneSummary$sparseMeth / McapGeneSummary$totalLines) * 100 #Calculate percent sparsely methylated
+McapGeneSummary$percentUnMeth <- (McapGeneSummary$unMeth / McapGeneSummary$totalLines) * 100 #Calculate percent unmethylated
+McapGeneSummary <- McapGeneSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(McapGeneSummary) #Confirm calculations
+```
+
+```{r}
+write.table(McapGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Gene-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 #### CDS
+
+##### Import file counts
+
+```{r}
+McapCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapCDSOverlaps <- McapCDSOverlaps[-37,] #Remove final row
+tail(McapCDSOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+McapCDSSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(McapCDSSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(McapCDSSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  McapCDSSummary[i,1] <- McapCDSOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(McapCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapCDSSummary[i,2] <- McapCDSOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(McapCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapCDSSummary[i,3] <- McapCDSOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(McapCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapCDSSummary[i,4] <- McapCDSOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(McapCDSSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+McapCDSSummary$percentMeth <- (McapCDSSummary$Meth / McapCDSSummary$totalLines) * 100 #Calculate percent methylated
+McapCDSSummary$percentSparseMeth <- (McapCDSSummary$sparseMeth / McapCDSSummary$totalLines) * 100 #Calculate percent sparsely methylated
+McapCDSSummary$percentUnMeth <- (McapCDSSummary$unMeth / McapCDSSummary$totalLines) * 100 #Calculate percent unmethylated
+McapCDSSummary <- McapCDSSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(McapCDSSummary) #Confirm calculations
+```
+
+```{r}
+write.table(McapCDSSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CDS-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
 
 #### Introns
 
+##### Import file counts
+
+```{r}
+McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapIntronsOverlaps <- McapIntronsOverlaps[-37,] #Remove final row
+tail(McapIntronsOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+McapIntronsSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(McapIntronsSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(McapIntronsSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  McapIntronsSummary[i,1] <- McapIntronsOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(McapIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntronsSummary[i,2] <- McapIntronsOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(McapIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntronsSummary[i,3] <- McapIntronsOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(McapIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntronsSummary[i,4] <- McapIntronsOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(McapIntronsSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+McapIntronsSummary$percentMeth <- (McapIntronsSummary$Meth / McapIntronsSummary$totalLines) * 100 #Calculate percent methylated
+McapIntronsSummary$percentSparseMeth <- (McapIntronsSummary$sparseMeth / McapIntronsSummary$totalLines) * 100 #Calculate percent sparsely methylated
+McapIntronsSummary$percentUnMeth <- (McapIntronsSummary$unMeth / McapIntronsSummary$totalLines) * 100 #Calculate percent unmethylated
+McapIntronsSummary <- McapIntronsSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(McapIntronsSummary) #Confirm calculations
+```
+
+```{r}
+write.table(McapIntronsSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Introns-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 #### Intergenic regions
+
+##### Import file counts
+
+```{r}
+McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapIntergenicOverlaps <- McapIntergenicOverlaps[-37,] #Remove final row
+tail(McapIntergenicOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+McapIntergenicSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(McapIntergenicSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(McapIntergenicSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  McapIntergenicSummary[i,1] <- McapIntergenicOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(McapIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntergenicSummary[i,2] <- McapIntergenicOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(McapIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntergenicSummary[i,3] <- McapIntergenicOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(McapIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  McapIntergenicSummary[i,4] <- McapIntergenicOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(McapIntergenicSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+McapIntergenicSummary$percentMeth <- (McapIntergenicSummary$Meth / McapIntergenicSummary$totalLines) * 100 #Calculate percent methylated
+McapIntergenicSummary$percentSparseMeth <- (McapIntergenicSummary$sparseMeth / McapIntergenicSummary$totalLines) * 100 #Calculate percent sparsely methylated
+McapIntergenicSummary$percentUnMeth <- (McapIntergenicSummary$unMeth / McapIntergenicSummary$totalLines) * 100 #Calculate percent unmethylated
+McapIntergenicSummary <- McapIntergenicSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(McapIntergenicSummary) #Confirm calculations
+```
+
+```{r}
+write.table(McapIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Intergenic-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
 
 ### Pact
 
 #### Genes
 
+##### Import file counts
+
+```{r}
+PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactGeneOverlaps <- PactGeneOverlaps[-37,] #Remove final row
+tail(PactGeneOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+PactGeneSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(PactGeneSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(PactGeneSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  PactGeneSummary[i,1] <- PactGeneOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(PactGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactGeneSummary[i,2] <- PactGeneOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(PactGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactGeneSummary[i,3] <- PactGeneOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(PactGeneSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactGeneSummary[i,4] <- PactGeneOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(PactGeneSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+PactGeneSummary$percentMeth <- (PactGeneSummary$Meth / PactGeneSummary$totalLines) * 100 #Calculate percent methylated
+PactGeneSummary$percentSparseMeth <- (PactGeneSummary$sparseMeth / PactGeneSummary$totalLines) * 100 #Calculate percent sparsely methylated
+PactGeneSummary$percentUnMeth <- (PactGeneSummary$unMeth / PactGeneSummary$totalLines) * 100 #Calculate percent unmethylated
+PactGeneSummary <- PactGeneSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(PactGeneSummary) #Confirm calculations
+```
+
+```{r}
+write.table(PactGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Gene-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 #### CDS
+
+##### Import file counts
+
+```{r}
+PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactCDSOverlaps <- PactCDSOverlaps[-37,] #Remove final row
+tail(PactCDSOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+PactCDSSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(PactCDSSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(PactCDSSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  PactCDSSummary[i,1] <- PactCDSOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(PactCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactCDSSummary[i,2] <- PactCDSOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(PactCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactCDSSummary[i,3] <- PactCDSOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(PactCDSSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactCDSSummary[i,4] <- PactCDSOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(PactCDSSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+PactCDSSummary$percentMeth <- (PactCDSSummary$Meth / PactCDSSummary$totalLines) * 100 #Calculate percent methylated
+PactCDSSummary$percentSparseMeth <- (PactCDSSummary$sparseMeth / PactCDSSummary$totalLines) * 100 #Calculate percent sparsely methylated
+PactCDSSummary$percentUnMeth <- (PactCDSSummary$unMeth / PactCDSSummary$totalLines) * 100 #Calculate percent unmethylated
+PactCDSSummary <- PactCDSSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(PactCDSSummary) #Confirm calculations
+```
+
+```{r}
+write.table(PactCDSSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CDS-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
 
 #### Introns
 
+##### Import file counts
+
+```{r}
+PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactIntronsOverlaps <- PactIntronsOverlaps[-37,] #Remove final row
+tail(PactIntronsOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+PactIntronsSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(PactIntronsSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(PactIntronsSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  PactIntronsSummary[i,1] <- PactIntronsOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(PactIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntronsSummary[i,2] <- PactIntronsOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(PactIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntronsSummary[i,3] <- PactIntronsOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(PactIntronsSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntronsSummary[i,4] <- PactIntronsOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(PactIntronsSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+PactIntronsSummary$percentMeth <- (PactIntronsSummary$Meth / PactIntronsSummary$totalLines) * 100 #Calculate percent methylated
+PactIntronsSummary$percentSparseMeth <- (PactIntronsSummary$sparseMeth / PactIntronsSummary$totalLines) * 100 #Calculate percent sparsely methylated
+PactIntronsSummary$percentUnMeth <- (PactIntronsSummary$unMeth / PactIntronsSummary$totalLines) * 100 #Calculate percent unmethylated
+PactIntronsSummary <- PactIntronsSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(PactIntronsSummary) #Confirm calculations
+```
+
+```{r}
+write.table(PactIntronsSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Introns-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
 #### Intergenic regions
+
+##### Import file counts
+
+```{r}
+PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactIntergenicOverlaps <- PactIntergenicOverlaps[-37,] #Remove final row
+tail(PactIntergenicOverlaps) #Confirm import
+```
+
+##### Transfer values to summary table
+
+```{r}
+PactIntergenicSummary <- data.frame("totalLines" = rep(0, times = 9),
+                              "Meth" = rep(0, times = 9),
+                              "sparseMeth" = rep(0, times = 9),
+                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
+head(PactIntergenicSummary) #Confirm dataframe creation
+```
+
+```{r}
+nLines <- length(PactIntergenicSummary$totalLines) #Count number of lines
+for(i in 1:nLines) {
+  PactIntergenicSummary[i,1] <- PactIntergenicOverlaps[i+(3*i),1]
+} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
+head(PactIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntergenicSummary[i,2] <- PactIntergenicOverlaps[(i+(3*i)-3),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
+head(PactIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntergenicSummary[i,3] <- PactIntergenicOverlaps[(i+(3*i)-2),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
+head(PactIntergenicSummary) #Confirm values were added
+```
+
+```{r}
+for(i in 1:nLines) {
+  PactIntergenicSummary[i,4] <- PactIntergenicOverlaps[(i+(3*i)-1),1]
+} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
+head(PactIntergenicSummary) #Confirm values were added
+```
+
+##### Calculate percents
+
+```{r}
+PactIntergenicSummary$percentMeth <- (PactIntergenicSummary$Meth / PactIntergenicSummary$totalLines) * 100 #Calculate percent methylated
+PactIntergenicSummary$percentSparseMeth <- (PactIntergenicSummary$sparseMeth / PactIntergenicSummary$totalLines) * 100 #Calculate percent sparsely methylated
+PactIntergenicSummary$percentUnMeth <- (PactIntergenicSummary$unMeth / PactIntergenicSummary$totalLines) * 100 #Calculate percent unmethylated
+PactIntergenicSummary <- PactIntergenicSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
+tail(PactIntergenicSummary) #Confirm calculations
+```
+
+```{r}
+write.table(PactIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Intergenic-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
 
 # CpG distributions
 
-## Import data
+## Individual samples
 
 ### Mcap
 
-#### Sample 1
+```{r}
+McapCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
+head(McapCpGType) #Check import
+```
+
+#### Reorganize data
 
 ```{r}
-cpgMethylationWGBS1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth10.fastp-trim.202003063900_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationWGBS1) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationWGBS1) #Confirm import
+McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
+head(McapCpGTypePercents) #Check reorganization
 ```
 
 ```{r}
-cpgMethylationRRBS1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth13.fastp-trim.202003062040_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationRRBS1) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationRRBS1) #Confirm import
+#Create test plots
+
+barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, WGBS
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
+
+barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, RRBS
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
+
+barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, MBD-BSSeq
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
+```
+
+#### Create multipanel figure with all samples
+
+```{r}
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
+
+par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
+
+barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
+
+barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
+mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
+
+barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
+mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+
+barplot(t(McapCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
+barplot(t(McapCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
+barplot(t(McapCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
+mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
+
+barplot(t(McapCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
+barplot(t(McapCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
+barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
+
+#dev.off() #Turn off plotting device
+```
+
+### Pact
+
+```{r}
+PactCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
+head(PactCpGType) #Check import
+```
+
+#### Reorganize data
+
+```{r}
+PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
+tail(PactCpGTypePercents) #Check reorganization
 ```
 
 ```{r}
-cpgMethylationMBD1 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth16.fastp-trim.202003062412_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationMBD1) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationMBD1) #Confirm import
+#Create test plots
+
+barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, WGBS
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
+
+barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, RRBS
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
+
+barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, MBD-BSSeq
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-#### Sample 2
+#### Create multipanel figure with all samples
 
 ```{r}
-cpgMethylationWGBS2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth11.fastp-trim.202003065734_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationWGBS2) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationWGBS2) #Confirm import
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
+
+par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
+
+barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
+mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+
+barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
+mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
+
+barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
+mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
+axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
+
+barplot(t(PactCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
+barplot(t(PactCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
+barplot(t(PactCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
+mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
+
+barplot(t(PactCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
+barplot(t(PactCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
+barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
+
+#dev.off() #Turn off plotting device
 ```
 
-```{r}
-cpgMethylationRRBS2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth14.fastp-trim.202003064415_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationRRBS2) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationRRBS2) #Confirm import
-```
+## Combined samples
+
+### Mcap
+
+#### Reorganize data
 
 ```{r}
-cpgMethylationMBD2 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth17.fastp-trim.202003063731_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationMBD2) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationMBD2) #Confirm import
-```
-
-#### Sample 3
-
-```{r}
-cpgMethylationWGBS3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth12.fastp-trim.202003060645_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationWGBS3) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationWGBS3) #Confirm import
-```
-
-```{r}
-cpgMethylationRRBS3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth15.fastp-trim.202003065503_R1_001_bismark_bt2_pe_10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationRRBS3) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationRRBS3) #Confirm import
-```
-
-```{r}
-cpgMethylationMBD3 <- read.delim("../analyses/Characterizing-CpG-Methylation/Meth18.fastp-trim.202003065117_R1_001_bismark_bt2_pe._10x.bedgraph-Mcap", header = FALSE) #Import file with CpG methylation for all loci with 10x coverage
-colnames(cpgMethylationMBD3) <- c("chromosome", "start", "end", "methylation") #Add column names
-head(cpgMethylationMBD3) #Confirm import
-```
-
-## Create individual figures to test options
-
-```{r}
-hist(cpgMethylationWGBS1$methylation)
-hist(cpgMethylationRRBS1$methylation)
-hist(cpgMethylationMBD1$methylation)
-
-hist(cpgMethylationWGBS2$methylation)
-hist(cpgMethylationRRBS2$methylation)
-hist(cpgMethylationMBD2$methylation)
-
-hist(cpgMethylationWGBS3$methylation)
-hist(cpgMethylationRRBS3$methylation)
-hist(cpgMethylationMBD3$methylation)
+McapCpGTypeCounts <- data.frame("totalLines" = rep(0, times = 3),
+                                   "Meth" = rep(0, times = 3),
+                                   "sparseMeth" = rep(0, times = 3),
+                                   "unMeth" = rep(0, times = 3)) #Create an empty dataframe for summed counts
+head(McapCpGTypeCounts) #Check dataframe format
 ```
 
 ```{r}
-plot(density(cpgMethylationWGBS1$methylation))
-plot(density(cpgMethylationRRBS1$methylation))
-plot(density(cpgMethylationMBD1$methylation))
-
-plot(density(cpgMethylationWGBS2$methylation))
-plot(density(cpgMethylationRRBS2$methylation))
-plot(density(cpgMethylationMBD2$methylation))
-
-plot(density(cpgMethylationWGBS3$methylation))
-plot(density(cpgMethylationRRBS3$methylation))
-plot(density(cpgMethylationMBD3$methylation))
+#Total lines concatenation
+McapCpGTypeCounts$totalLines[1] <- sum(McapCpGType$totalLines[1], McapCpGType$totalLines[2],  McapCpGType$totalLines[3]) #WGBS
+McapCpGTypeCounts$totalLines[2] <- sum(McapCpGType$totalLines[4], McapCpGType$totalLines[5],  McapCpGType$totalLines[6]) #RRBS
+McapCpGTypeCounts$totalLines[3] <- sum(McapCpGType$totalLines[7], McapCpGType$totalLines[8],  McapCpGType$totalLines[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
 ```
 
-## Create multipanel figure with all samples
+```{r}
+#Meth concatenation
+McapCpGTypeCounts$Meth[1] <- sum(McapCpGType$Meth[1], McapCpGType$Meth[2],  McapCpGType$Meth[3]) #WGBS
+McapCpGTypeCounts$Meth[2] <- sum(McapCpGType$Meth[4], McapCpGType$Meth[5],  McapCpGType$Meth[6]) #RRBS
+McapCpGTypeCounts$Meth[3] <- sum(McapCpGType$Meth[7], McapCpGType$Meth[8],  McapCpGType$Meth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
 
 ```{r}
-par(mfrow = c(3,3))
-hist(cpgMethylationWGBS1$methylation, main = "")
-hist(cpgMethylationRRBS1$methylation, main = "")
-hist(cpgMethylationMBD1$methylation, main = "")
+#sparseMeth concatenation
+McapCpGTypeCounts$sparseMeth[1] <- sum(McapCpGType$sparseMeth[1], McapCpGType$sparseMeth[2],  McapCpGType$sparseMeth[3]) #WGBS
+McapCpGTypeCounts$sparseMeth[2] <- sum(McapCpGType$sparseMeth[4], McapCpGType$sparseMeth[5],  McapCpGType$sparseMeth[6]) #RRBS
+McapCpGTypeCounts$sparseMeth[3] <- sum(McapCpGType$sparseMeth[7], McapCpGType$sparseMeth[8],  McapCpGType$sparseMeth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
 
-hist(cpgMethylationWGBS2$methylation, main = "")
-hist(cpgMethylationRRBS2$methylation, main = "")
-hist(cpgMethylationMBD2$methylation, main = "")
+```{r}
+#unMeth concatenation
+McapCpGTypeCounts$unMeth[1] <- sum(McapCpGType$unMeth[1], McapCpGType$unMeth[2],  McapCpGType$unMeth[3]) #WGBS
+McapCpGTypeCounts$unMeth[2] <- sum(McapCpGType$unMeth[4], McapCpGType$unMeth[5],  McapCpGType$unMeth[6]) #RRBS
+McapCpGTypeCounts$unMeth[3] <- sum(McapCpGType$unMeth[7], McapCpGType$unMeth[8],  McapCpGType$unMeth[9]) #MBD-BSSeq
+head(McapCpGTypeCounts) #Check output
+```
 
-hist(cpgMethylationWGBS3$methylation, main = "")
-hist(cpgMethylationRRBS3$methylation, main = "")
-hist(cpgMethylationMBD3$methylation, main = "")
+```{r}
+McapCpGTypeTotalPercents <- data.frame("Meth" = rep(0, times = 3),
+                                       "sparseMeth" = rep(0, times = 3),
+                                       "unMeth" = rep(0, times = 3)) #Create an empty dataframe for total percents
+head(McapCpGTypeTotalPercents) #Check dataframe
+```
+
+```{r}
+for (i in 1:3) {
+  McapCpGTypeTotalPercents[,i] <- (McapCpGTypeCounts[,i+1] / McapCpGTypeCounts[,1])  *100
+} #Divide CpG type by total lines and multiply by 100 to get percents
+head(McapCpGTypeTotalPercents) #Check output
+```
+
+#### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
+McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+McapCpGTypeWGMB #The distribution of CpGs is not sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
+```
+
+#### Create plot
+
+```{r}
+plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
+                rev(RColorBrewer::brewer.pal(3, "Blues")), 
+                rev(RColorBrewer::brewer.pal(3, "Reds"))) #Create vector of WGBS, RRBS, and MBD colors
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
+barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
+```
+
+```{r}
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1), oma = c(5, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(McapCpGTypeTotalPercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-1] <- NA #Ignore all other columns
+colnames(xx)[-1] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[1], plotColors[2], plotColors[3]), add=T, axes=F) #Add WGBS greens
+
+xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-2] <- NA #Ignore all other columns
+colnames(xx)[-2] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[4], plotColors[5], plotColors[6]), add=T, axes=F) #Add RRBS blues
+
+xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-3] <- NA #Ignore all other columns
+colnames(xx)[-3] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[7], plotColors[8], plotColors[9]), add=T, axes=F) #Add MBD-BSSeq reds
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+segments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
+segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
+segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD
+text("p = 0.008", x = 2.5, y = 108, cex = 1.2) #Add p-value
+
+#dev.off() #Turn off plotting device
+```
+
+### Pact
+
+#### Reorganize data
+
+```{r}
+PactCpGTypeCounts <- data.frame("totalLines" = rep(0, times = 3),
+                                "Meth" = rep(0, times = 3),
+                                "sparseMeth" = rep(0, times = 3),
+                                "unMeth" = rep(0, times = 3)) #Create an empty dataframe for summed counts
+head(PactCpGTypeCounts) #Check dataframe format
+```
+
+```{r}
+#Total lines concatenation
+PactCpGTypeCounts$totalLines[1] <- sum(PactCpGType$totalLines[1], PactCpGType$totalLines[2],  PactCpGType$totalLines[3]) #WGBS
+PactCpGTypeCounts$totalLines[2] <- sum(PactCpGType$totalLines[4], PactCpGType$totalLines[5],  PactCpGType$totalLines[6]) #RRBS
+PactCpGTypeCounts$totalLines[3] <- sum(PactCpGType$totalLines[7], PactCpGType$totalLines[8],  PactCpGType$totalLines[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#Meth concatenation
+PactCpGTypeCounts$Meth[1] <- sum(PactCpGType$Meth[1], PactCpGType$Meth[2],  PactCpGType$Meth[3]) #WGBS
+PactCpGTypeCounts$Meth[2] <- sum(PactCpGType$Meth[4], PactCpGType$Meth[5],  PactCpGType$Meth[6]) #RRBS
+PactCpGTypeCounts$Meth[3] <- sum(PactCpGType$Meth[7], PactCpGType$Meth[8],  PactCpGType$Meth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#sparseMeth concatenation
+PactCpGTypeCounts$sparseMeth[1] <- sum(PactCpGType$sparseMeth[1], PactCpGType$sparseMeth[2],  PactCpGType$sparseMeth[3]) #WGBS
+PactCpGTypeCounts$sparseMeth[2] <- sum(PactCpGType$sparseMeth[4], PactCpGType$sparseMeth[5],  PactCpGType$sparseMeth[6]) #RRBS
+PactCpGTypeCounts$sparseMeth[3] <- sum(PactCpGType$sparseMeth[7], PactCpGType$sparseMeth[8],  PactCpGType$sparseMeth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+#unMeth concatenation
+PactCpGTypeCounts$unMeth[1] <- sum(PactCpGType$unMeth[1], PactCpGType$unMeth[2],  PactCpGType$unMeth[3]) #WGBS
+PactCpGTypeCounts$unMeth[2] <- sum(PactCpGType$unMeth[4], PactCpGType$unMeth[5],  PactCpGType$unMeth[6]) #RRBS
+PactCpGTypeCounts$unMeth[3] <- sum(PactCpGType$unMeth[7], PactCpGType$unMeth[8],  PactCpGType$unMeth[9]) #MBD-BSSeq
+head(PactCpGTypeCounts) #Check output
+```
+
+```{r}
+PactCpGTypeTotalPercents <- data.frame("Meth" = rep(0, times = 3),
+                                       "sparseMeth" = rep(0, times = 3),
+                                       "unMeth" = rep(0, times = 3)) #Create an empty dataframe for total percents
+head(PactCpGTypeTotalPercents) #Check dataframe
+```
+
+```{r}
+for (i in 1:3) {
+  PactCpGTypeTotalPercents[,i] <- (PactCpGTypeCounts[,i+1] / PactCpGTypeCounts[,1])  *100
+} #Divide CpG type by total lines and multiply by 100 to get percents
+head(PactCpGTypeTotalPercents) #Check output
+```
+
+#### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+PactCpGTypeWGRR <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
+PactCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+PactCpGTypeWGMB <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+PactCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+PactCpGTypeRRMB <- chisq.test(data.frame(t(PactCpGTypeTotalPercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+PactCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
+```
+
+#### Create plot
+
+```{r}
+#pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type-Combined.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(PactCpGTypeTotalPercents), 
+        col= "white", 
+        axes = F, 
+        names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-1] <- NA #Ignore all other columns
+colnames(xx)[-1] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[1], plotColors[2], plotColors[3]), add=T, axes=F) #Add WGBS greens
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-2] <- NA #Ignore all other columns
+colnames(xx)[-2] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[4], plotColors[5], plotColors[6]), add=T, axes=F) #Add RRBS blues
+
+xx <- t(PactCpGTypeTotalPercents) #New matrix for piecewise color addtions
+xx[,-3] <- NA #Ignore all other columns
+colnames(xx)[-3] <- NA #Ignore all other column names
+barplot(xx, col = c(plotColors[7], plotColors[8], plotColors[9]), add=T, axes=F) #Add MBD-BSSeq reds
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+segments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
+segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
+segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
+text("p = 0.003", x = 2.5, y = 108, cex = 1.2) #Add p-value
+
+segments(x0 = 1, y0 = 111, x1 = 3, y1 = 111, lwd = 1.5) #Add line connecting WGBS and MBD-BSSeq
+segments(x0 = 1, y0 = 111, x1 = 1, y1 = 108, lwd = 1.5) #Add left segment from connecting line to WGBS
+segments(x0 = 3, y0 = 111, x1 = 3, y1 = 108, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
+text("p = 0.004", x = 2, y = 113, cex = 1.2) #Add p-value
+
+#dev.off() #Turn off plotting device
+```
+
+## Interspecies chi-squared tests
+
+The hypothesis is that the distribution of CpG type will be the same between species for the same methods used.
+
+```{r}
+WGBSCpGType <- chisq.test(cbind(t(McapCpGTypeTotalPercents)[,1], t(PactCpGTypeTotalPercents)[,1]))
+WGBSCpGType #The distribution of CpGs for WGBS is not significantly different between species
+```
+
+```{r}
+RRBSCpGType <- chisq.test(cbind(t(McapCpGTypeTotalPercents)[,2], t(PactCpGTypeTotalPercents)[,2]))
+RRBSCpGType #The distribution of CpGs for WGBS is not significantly different between species
+```
+
+```{r}
+MBDCpGType <- chisq.test(cbind(t(McapCpGTypeTotalPercents)[,3], t(PactCpGTypeTotalPercents)[,3]))
+MBDCpGType #The distribution of CpGs for WGBS is not significantly different between species
 ```
 
