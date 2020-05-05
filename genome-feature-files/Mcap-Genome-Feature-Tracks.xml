@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Session genome="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="All" path="/Users/yaamini/Documents/Meth_Compare/genome-feature-files/Mcap-Genome-Feature-Tracks.xml" version="8">
+<Session genome="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="2:951495-966373" path="/Users/yaamini/Documents/Meth_Compare/genome-feature-files/Mcap-Genome-Feature-Tracks.xml" version="8">
     <Resources>
         <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.intron.gff"/>
         <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.gene.gff"/>
+        <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.flanks.gff"/>
         <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.CDS.gff"/>
         <Resource index="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap_CpG.gff.idx" path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap_CpG.gff"/>
     </Resources>
-    <Panel height="577" name="FeaturePanel" width="1133">
+    <Panel height="754" name="FeaturePanel" width="1903">
         <Track clazz="org.broad.igv.track.SequenceTrack" fontSize="10" id="Reference sequence" name="Reference sequence" visible="true"/>
-        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;760.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.gene.gff" name="Mcap.GFFannotation.gene.gff" visible="true"/>
-        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;448.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.CDS.gff" name="Mcap.GFFannotation.CDS.gff" visible="true"/>
-        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;409.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.intron.gff" name="Mcap.GFFannotation.intron.gff" visible="true"/>
-        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" featureVisibilityWindow="1000000" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap_CpG.gff" name="Mcap_CpG.gff" visible="true"/>
+        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;108.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.gene.gff" name="Mcap.GFFannotation.gene.gff" visible="true"/>
+        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;378.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.CDS.gff" name="Mcap.GFFannotation.CDS.gff" visible="true"/>
+        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;342.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.intron.gff" name="Mcap.GFFannotation.intron.gff" visible="true"/>
+        <Track clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" colorScale="ContinuousColorScale;0.0;263.0;255,255,255;0,0,178" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.flanks.gff" name="Mcap.GFFannotation.flanks.gff" visible="true"/>
+        <Track altColor="0,0,178" clazz="org.broad.igv.track.FeatureTrack" color="0,0,178" featureVisibilityWindow="1000000" fontSize="10" id="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap_CpG.gff" name="Mcap_CpG.gff" visible="true"/>
     </Panel>
-    <PanelLayout dividerFractions="0.01020408163265306"/>
+    <PanelLayout dividerFractions="0.00784313725490196"/>
     <HiddenAttributes>
         <Attribute name="DATA FILE"/>
         <Attribute name="DATA TYPE"/>
