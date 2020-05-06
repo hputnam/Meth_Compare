@@ -364,3 +364,7 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x.bedgraph-ave
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x.bedgraph-averages-MBDBS
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x.bedgraph-averages-RRBS
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x.bedgraph-averages-WGBS
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages.bedgraph
