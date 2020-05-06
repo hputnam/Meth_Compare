@@ -1,0 +1,13 @@
+  172840 Mcap_union_5x-averages-MBDBS.bedgraph-Meth.bed-mcIntergenic
+  142955 Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-mcIntergenic
+ 2358573 Mcap_union_5x-averages-MBDBS.bedgraph-unMeth.bed-mcIntergenic
+ 2674368 Mcap_union_5x-averages-MBDBS.bedgraph.bed-mcIntergenic
+  665129 Mcap_union_5x-averages-RRBS.bedgraph-Meth.bed-mcIntergenic
+  754396 Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-mcIntergenic
+ 5949714 Mcap_union_5x-averages-RRBS.bedgraph-unMeth.bed-mcIntergenic
+ 7369239 Mcap_union_5x-averages-RRBS.bedgraph.bed-mcIntergenic
+   16508 Mcap_union_5x-averages-WGBS.bedgraph-Meth.bed-mcIntergenic
+   11950 Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-mcIntergenic
+   74632 Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcIntergenic
+  103090 Mcap_union_5x-averages-WGBS.bedgraph.bed-mcIntergenic
+ 20293394 total
