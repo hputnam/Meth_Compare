@@ -425,3 +425,15 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGB
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-mcIntrons
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcIntrons
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph.bed-mcIntrons
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-Meth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-unMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-Meth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-unMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-mcFlanks
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-Meth.bed-mcFlanks
