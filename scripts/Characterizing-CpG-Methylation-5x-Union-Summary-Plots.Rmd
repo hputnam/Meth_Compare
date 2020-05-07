@@ -74,7 +74,7 @@ tail(McapCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ### Pact
@@ -82,26 +82,26 @@ write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mca
 #### Import file counts
 
 ```{r}
-PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactAll <- PactAll[-10,] #Remove last row (total lines for all files)
+PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- PactAll[-4,] #Remove last row (total lines for all files)
 tail(PactAll) #Confirm import
 ```
 
 ```{r}
-PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactMeth <- PactMeth[-10,] #Remove last row (total lines for all files)
+PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- PactMeth[-4,] #Remove last row (total lines for all files)
 tail(PactMeth) #Confirm import
 ```
 
 ```{r}
-PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactSparseMeth <- PactSparseMeth[-10,] #Remove last row (total lines for all files)
+PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- PactSparseMeth[-4,] #Remove last row (total lines for all files)
 tail(PactSparseMeth) #Confirm import
 ```
 
 ```{r}
-PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactUnMeth <- PactUnMeth[-10,] #Remove last row (total lines for all files)
+PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- PactUnMeth[-4,] #Remove last row (total lines for all files)
 tail(PactUnMeth) #Confirm import
 ```
 
@@ -122,7 +122,7 @@ tail(PactCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ## CpG overlaps
@@ -637,240 +637,61 @@ write.table(PactIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5
 
 # CpG distributions
 
-## Individual samples
+## Mcap
 
-### Mcap
-
-```{r}
-McapCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
-head(McapCpGType) #Check import
-```
-
-#### Reorganize data
+### Reorganize data
 
 ```{r}
-McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
-head(McapCpGTypePercents) #Check reorganization
+McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only percent information
+head(McapCpGTypePercents) #Confirm changes
 ```
 
-```{r}
-#Create test plots
-
-barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, RRBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, MBD-BSSeq
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-```
-
-#### Create multipanel figure with all samples
-
-```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
-
-par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
-
-barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
-
-barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
-mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
-
-barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
-mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(McapCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
-barplot(t(McapCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
-barplot(t(McapCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
-mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
-
-barplot(t(McapCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
-barplot(t(McapCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
-barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
-
-#dev.off() #Turn off plotting device
-```
-
-### Pact
-
-```{r}
-PactCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
-head(PactCpGType) #Check import
-```
-
-#### Reorganize data
-
-```{r}
-PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
-tail(PactCpGTypePercents) #Check reorganization
-```
-
-```{r}
-#Create test plots
-
-barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, RRBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c("Methylated", "Sparsely Methylated", "Unmethylated"), axes = FALSE) #Sample 1, MBD-BSSeq
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-```
-
-#### Create multipanel figure with all samples
-
-```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
-
-par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
-
-barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
-mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
-mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
-
-barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
-mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(PactCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
-barplot(t(PactCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
-barplot(t(PactCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
-mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
-
-barplot(t(PactCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
-barplot(t(PactCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
-barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
-
-#dev.off() #Turn off plotting device
-```
-
-## Combined samples
-
-### Mcap
-
-#### Reorganize data
-
-```{r}
-McapCpGTypeCounts <- data.frame("totalLines" = rep(0, times = 3),
-                                   "Meth" = rep(0, times = 3),
-                                   "sparseMeth" = rep(0, times = 3),
-                                   "unMeth" = rep(0, times = 3)) #Create an empty dataframe for summed counts
-head(McapCpGTypeCounts) #Check dataframe format
-```
-
-```{r}
-#Total lines concatenation
-McapCpGTypeCounts$totalLines[1] <- sum(McapCpGType$totalLines[1], McapCpGType$totalLines[2],  McapCpGType$totalLines[3]) #WGBS
-McapCpGTypeCounts$totalLines[2] <- sum(McapCpGType$totalLines[4], McapCpGType$totalLines[5],  McapCpGType$totalLines[6]) #RRBS
-McapCpGTypeCounts$totalLines[3] <- sum(McapCpGType$totalLines[7], McapCpGType$totalLines[8],  McapCpGType$totalLines[9]) #MBD-BSSeq
-head(McapCpGTypeCounts) #Check output
-```
-
-```{r}
-#Meth concatenation
-McapCpGTypeCounts$Meth[1] <- sum(McapCpGType$Meth[1], McapCpGType$Meth[2],  McapCpGType$Meth[3]) #WGBS
-McapCpGTypeCounts$Meth[2] <- sum(McapCpGType$Meth[4], McapCpGType$Meth[5],  McapCpGType$Meth[6]) #RRBS
-McapCpGTypeCounts$Meth[3] <- sum(McapCpGType$Meth[7], McapCpGType$Meth[8],  McapCpGType$Meth[9]) #MBD-BSSeq
-head(McapCpGTypeCounts) #Check output
-```
-
-```{r}
-#sparseMeth concatenation
-McapCpGTypeCounts$sparseMeth[1] <- sum(McapCpGType$sparseMeth[1], McapCpGType$sparseMeth[2],  McapCpGType$sparseMeth[3]) #WGBS
-McapCpGTypeCounts$sparseMeth[2] <- sum(McapCpGType$sparseMeth[4], McapCpGType$sparseMeth[5],  McapCpGType$sparseMeth[6]) #RRBS
-McapCpGTypeCounts$sparseMeth[3] <- sum(McapCpGType$sparseMeth[7], McapCpGType$sparseMeth[8],  McapCpGType$sparseMeth[9]) #MBD-BSSeq
-head(McapCpGTypeCounts) #Check output
-```
-
-```{r}
-#unMeth concatenation
-McapCpGTypeCounts$unMeth[1] <- sum(McapCpGType$unMeth[1], McapCpGType$unMeth[2],  McapCpGType$unMeth[3]) #WGBS
-McapCpGTypeCounts$unMeth[2] <- sum(McapCpGType$unMeth[4], McapCpGType$unMeth[5],  McapCpGType$unMeth[6]) #RRBS
-McapCpGTypeCounts$unMeth[3] <- sum(McapCpGType$unMeth[7], McapCpGType$unMeth[8],  McapCpGType$unMeth[9]) #MBD-BSSeq
-head(McapCpGTypeCounts) #Check output
-```
-
-```{r}
-McapCpGTypeTotalPercents <- data.frame("Meth" = rep(0, times = 3),
-                                       "sparseMeth" = rep(0, times = 3),
-                                       "unMeth" = rep(0, times = 3)) #Create an empty dataframe for total percents
-head(McapCpGTypeTotalPercents) #Check dataframe
-```
-
-```{r}
-for (i in 1:3) {
-  McapCpGTypeTotalPercents[,i] <- (McapCpGTypeCounts[,i+1] / McapCpGTypeCounts[,1])  *100
-} #Divide CpG type by total lines and multiply by 100 to get percents
-head(McapCpGTypeTotalPercents) #Check output
-```
-
-#### Conduct chi-squared tests of homogeneity
+### Conduct chi-squared tests of homogeneity
 
 The null hypothesis is that distributions of different CpG types is the same between sequencing methods
 
 ```{r}
-McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 2),]))) #WGBS vs. RRBS
+McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypePercents[c(1, 2),]))) #WGBS vs. RRBS
 McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
 ```
 
 ```{r}
-McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
-McapCpGTypeWGMB #The distribution of CpGs is not sginificantly different between WGBS and MBD-BSSeq
+McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+McapCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
 ```
 
 ```{r}
-McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGTypeTotalPercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
-McapCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
 ```
 
-#### Create plot
+### Create plot
 
 ```{r}
 plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
                 rev(RColorBrewer::brewer.pal(3, "Blues")), 
                 rev(RColorBrewer::brewer.pal(3, "Reds"))) #Create vector of WGBS, RRBS, and MBD colors
-barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
-barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
-barplot(t(McapCpGTypeTotalPercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
 ```
 
 ```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-Combined.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,1,1), oma = c(5, 1, 1, 1)) #Change figure boundaries
+#pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
-barplot(t(McapCpGTypeTotalPercents), 
+barplot(t(McapCpGTypePercents), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BSSeq"), cex.names = 1.2,
+        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
-xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
-xx[,-1] <- NA #Ignore all other columns
-colnames(xx)[-1] <- NA #Ignore all other column names
-barplot(xx, col = c(plotColors[1], plotColors[2], plotColors[3]), add=T, axes=F) #Add WGBS greens
-
-xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
-xx[,-2] <- NA #Ignore all other columns
-colnames(xx)[-2] <- NA #Ignore all other column names
-barplot(xx, col = c(plotColors[4], plotColors[5], plotColors[6]), add=T, axes=F) #Add RRBS blues
-
-xx <- t(McapCpGTypeTotalPercents) #New matrix for piecewise color addtions
-xx[,-3] <- NA #Ignore all other columns
-colnames(xx)[-3] <- NA #Ignore all other column names
-barplot(xx, col = c(plotColors[7], plotColors[8], plotColors[9]), add=T, axes=F) #Add MBD-BSSeq reds
+for (i in 1:ncol(t(McapCpGTypePercents))){
+    xx <- t(McapCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
