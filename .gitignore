@@ -535,3 +535,8 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGB
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-paIntergenic
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-unMeth.bed-paIntergenic
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph.bed-paIntergenic
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Intron-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Intergenic-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Gene-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-CDS-Overlaps.txt
