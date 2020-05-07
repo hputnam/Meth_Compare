@@ -454,3 +454,6 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages.bed
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-RRBS.bedgraph
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-MBDBS.bedgraph
+analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-MBDBS.bedgraph-Meth
+analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-RRBS.bedgraph-Meth
+analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-Meth

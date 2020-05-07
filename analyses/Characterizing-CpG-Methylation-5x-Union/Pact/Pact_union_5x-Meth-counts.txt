@@ -1,0 +1,4 @@
+   66798 Pact_union_5x-averages-MBDBS.bedgraph-Meth
+  154042 Pact_union_5x-averages-RRBS.bedgraph-Meth
+  255370 Pact_union_5x-averages-WGBS.bedgraph-Meth
+  476210 total
