@@ -219,7 +219,18 @@ head(McapFeatureOverlaps) #Check addition
 write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+```{r}
+McapFeatureOverlapsPercents <- McapFeatureOverlaps #Duplicate dataframe
+for (i in 1:length(McapFeatureOverlaps)) {
+  McapFeatureOverlapsPercents[i,] <- (McapFeatureOverlaps[i,] / McapFeatureOverlaps[6,]) * 100
+} #Divide every entry by totalLines and multiply by 100 to get percentages
+McapFeatureOverlapsPercents <- McapFeatureOverlapsPercents[1:5,] #Remove totalLines row
+head(McapFeatureOverlapsPercents) #Check calculations
+```
 
+```{r}
+write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
 
 
 
