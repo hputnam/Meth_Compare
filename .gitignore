@@ -540,3 +540,8 @@ analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Intergenic-Overlaps
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Gene-Overlaps.txt
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Overlaps.txt
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-CDS-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Intron-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Intergenic-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Gene-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Flanks-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-CDS-Overlaps.txt

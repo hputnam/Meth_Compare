@@ -1,0 +1,6 @@
+ 1455630 Pact-CGMotif-CDS-Overlaps.txt
+ 1732726 Pact-CGMotif-Flanks-Overlaps.txt
+ 3434720 Pact-CGMotif-Gene-Overlaps.txt
+ 5720900 Pact-CGMotif-Intergenic-Overlaps.txt
+ 1999490 Pact-CGMotif-Intron-Overlaps.txt
+ 14343466 total
