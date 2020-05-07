@@ -450,3 +450,4 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGB
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcIntergenic
 analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph.bed-mcIntergenic
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x.bedgraph
+analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages.bedgraph
