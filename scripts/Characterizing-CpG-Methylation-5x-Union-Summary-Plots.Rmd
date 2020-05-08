@@ -361,18 +361,10 @@ write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-
 ```
 
 ```{r}
-for (i in 1:length(McapFeatureOverlaps)) {
-  McapFeatureOverlaps[6,i] <- sum(McapFeatureOverlaps[,i])
-} #Add the counts in each column and save in a new row
-head(McapFeatureOverlaps) #Check addition
-```
-
-```{r}
 McapFeatureOverlapsPercents <- McapFeatureOverlaps #Duplicate dataframe
 for (i in 1:length(McapFeatureOverlaps)) {
-  McapFeatureOverlapsPercents[i,] <- (McapFeatureOverlaps[i,] / McapFeatureOverlaps[6,]) * 100
-} #Divide every entry by totalLines and multiply by 100 to get percentages
-McapFeatureOverlapsPercents <- McapFeatureOverlapsPercents[1:5,] #Remove totalLines row
+  McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlaps[,i] / (sum(McapFeatureOverlaps[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages
 head(McapFeatureOverlapsPercents) #Check calculations
 ```
 
