@@ -1,0 +1,7 @@
+RvM	WvM
+All	10889	27251
+Genes	2692	5382
+CDS	2328	4676
+Introns	882	1840
+Flanks	2650	4948
+Intergenic	8197	21880
