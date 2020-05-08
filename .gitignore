@@ -649,3 +649,5 @@ analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntron
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntron
 analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanks
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanks
+analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntergenic
+analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntergenic
