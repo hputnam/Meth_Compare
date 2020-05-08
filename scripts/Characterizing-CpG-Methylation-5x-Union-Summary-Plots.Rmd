@@ -375,7 +375,7 @@ write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 ### Conduct chi-squared tests of homogeneity
 
 ```{r}
-McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
+McapFeatureAllWG <- aov(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
 McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
 ```
 
@@ -409,6 +409,7 @@ McapFeatureRRMB #The distribution of CpGs is not significantly different between
 ```{r}
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])))
 ```
+
 
 
 
