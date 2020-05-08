@@ -1,0 +1,3 @@
+     882 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntron
+    1840 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntron
+    2722 total
