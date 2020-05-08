@@ -101,142 +101,63 @@ write.table(PactDMCFeatureOverlapsPercents, "../analyses/Identifying-genomic-loc
 ### Import file counts
 
 ```{r}
-McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
-McapGenomeFeatures <- McapGenomeFeatures[-6,] #Remove final row
-tail(McapGenomeFeatures) #Check import
+McapUpsetGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapUpsetGeneOverlaps <- McapUpsetGeneOverlaps[-9,] #Remove final row
+tail(McapUpsetGeneOverlaps) #Confirm import
 ```
 
 ```{r}
-McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
-McapGeneOverlaps <- McapGeneOverlaps[-13,] #Remove final row
-tail(McapGeneOverlaps) #Confirm import
+McapUpsetCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapUpsetCDSOverlaps <- McapUpsetCDSOverlaps[-9,] #Remove final row
+tail(McapUpsetCDSOverlaps) #Confirm import
 ```
 
 ```{r}
-McapCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
-McapCDSOverlaps <- McapCDSOverlaps[-13,] #Remove final row
-tail(McapCDSOverlaps) #Confirm import
+McapUpsetIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapUpsetIntronsOverlaps <- McapUpsetIntronsOverlaps[-9,] #Remove final row
+tail(McapUpsetIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
-McapIntronsOverlaps <- McapIntronsOverlaps[-13,] #Remove final row
-tail(McapIntronsOverlaps) #Confirm import
+McapUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapUpsetFlanksOverlaps <- McapUpsetFlanksOverlaps[-9,] #Remove final row
+tail(McapUpsetFlanksOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
-McapFlanksOverlaps <- McapFlanksOverlaps[-13,] #Remove final row
-tail(McapFlanksOverlaps) #Confirm import
-```
-
-```{r}
-McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
-McapIntergenicOverlaps <- McapIntergenicOverlaps[-13,] #Remove final row
-tail(McapIntergenicOverlaps) #Confirm import
+McapUpsetIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapUpsetIntergenicOverlaps <- McapUpsetIntergenicOverlaps[-9,] #Remove final row
+tail(McapUpsetIntergenicOverlaps) #Confirm import
 ```
 
 ### Create summary tables
 
 ```{r}
-McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 5),
-                                  "MBDBSMeth" = rep(0, times = 5),
-                                  "MBDBSsparseMeth" = rep(0, times = 5),
-                                  "MBDBSunMeth" = rep(0, times = 5),
-                                  "MBDBS" = rep(0, times = 5),
-                                  "RRBSMeth" = rep(0, times = 5),
-                                  "RRBSsparseMeth" = rep(0, times = 5),
-                                  "RRBSunMeth" = rep(0, times = 5),
-                                  "RRBS" = rep(0, times = 5),
-                                  "WGBSMeth" = rep(0, times = 5),
-                                  "WGBSsparseMeth" = rep(0, times = 5),
-                                  "WGBSunMeth" = rep(0, times = 5),                                  
-                                  "WGBS" = rep(0, times = 5)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
-row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Assign row names
-head(McapFeatureOverlaps) #Confirm changes
+McapUpsetFeatureOverlaps <- cbind(McapUpsetGeneOverlaps,
+                                McapUpsetCDSOverlaps,
+                                McapUpsetIntronsOverlaps,
+                                McapUpsetFlanksOverlaps,
+                                McapUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
+colnames(McapUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
+row.names(McapUpsetFeatureOverlaps) <- c("MBD",
+                                        "RRBS.MBD",
+                                        "RRBS",
+                                        "WGBS.MBD",
+                                        "WGBS.RRBS.MBD",
+                                        "WGBS.RRBS",
+                                        "WGBS",
+                                        "None") #Add rownames based on original files
+McapUpsetFeatureOverlaps <- data.frame(t(McapUpsetFeatureOverlaps)) #Transpose dataframe
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(5,6,4,2,7,3,1,8)] #Reorganize columns
+tail(McapUpsetFeatureOverlaps) #Confirm changes
 ```
 
 ```{r}
-McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[3],
-                                 McapGenomeFeatures$counts[1],
-                                 McapGenomeFeatures$counts[5],
-                                 McapGenomeFeatures$counts[2],
-                                 McapGenomeFeatures$counts[4]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
-head(McapFeatureOverlaps) #Confirm modification
-```
-
-```{r}
-for (i in 1:length(McapGeneOverlaps$counts)) {
-  McapFeatureOverlaps[1,i+1] <- McapGeneOverlaps[i,1]
-  McapFeatureOverlaps[2,i+1] <- McapCDSOverlaps[i,1]
-  McapFeatureOverlaps[3,i+1] <- McapIntronsOverlaps[i,1]
-  McapFeatureOverlaps[4,i+1] <- McapFlanksOverlaps[i,1]
-  McapFeatureOverlaps[5,i+1] <- McapIntergenicOverlaps[i,1]
-} #For each table with feature overlap information, paste the contents of the count column in the assigned row
-head(McapFeatureOverlaps) #Check summary table
-```
-
-```{r}
-write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
-```
-
-```{r}
-McapFeatureOverlapsPercents <- McapFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
-for (i in 1:length(McapFeatureOverlaps)) {
-  McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlapsPercents[,i] / (sum(McapFeatureOverlapsPercents[,i]))) * 100
-} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
-head(McapFeatureOverlapsPercents) #Check calculations
-```
-
-```{r}
-write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
-```
-
-### Conduct chi-squared tests of homogeneity
-
-```{r}
-McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
-McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-McapFeatureAllRR <- chisq.test(McapFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
-McapFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
-```
-
-```{r}
-McapFeatureAllMB <- chisq.test(McapFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
-McapFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-McapFeatureWGRR <- chisq.test(McapFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
-McapFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
-```
-
-```{r}
-McapFeatureWGMB <- chisq.test(McapFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
-McapFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
-```
-
-```{r}
-McapFeatureRRMB <- chisq.test(McapFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
-McapFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
+write.table(McapUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ### Create plot
-
-```{r}
-plotColors2 <- c("grey20", "grey40", "grey60", "grey80", 
-                rev(RColorBrewer::brewer.pal(4, "Greens")), 
-                rev(RColorBrewer::brewer.pal(4, "Blues")), 
-                rev(RColorBrewer::brewer.pal(4, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
-```
-
-#### All data
 
 ```{r}
 #pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
@@ -262,286 +183,5 @@ mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 #dev.off() #Turn off plotting device
 ```
 
-#### CpG feature overlap by methylation status
-
-```{r}
-#pdf("../Output/Mcap-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
-par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
-
-#Methylated CpGs
-
-barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(McapFeatureOverlapsPercents[,c(10,6,2)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Methylated", line = 3, cex = 1.5) #Add y-axis label
-
-#Sparsely methylated CpGs
-
-barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(McapFeatureOverlapsPercents[,c(11,7,3)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Sparsely Methylated", line = 3, cex = 1.5) #Add y-axis label
-
-#Unmethylated CpGs
-
-barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(McapFeatureOverlapsPercents[,c(12,8,4)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
-
-#dev.off() #Turn off plotting device
-```
-
 ## Pact
-
-### Import file counts
-
-```{r}
-PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
-PactGenomeFeatures <- PactGenomeFeatures[-6,] #Remove final row
-tail(PactGenomeFeatures) #Check import
-```
-
-```{r}
-PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
-PactGeneOverlaps <- PactGeneOverlaps[-13,] #Remove final row
-tail(PactGeneOverlaps) #Confirm import
-```
-
-```{r}
-PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
-PactCDSOverlaps <- PactCDSOverlaps[-13,] #Remove final row
-tail(PactCDSOverlaps) #Confirm import
-```
-
-```{r}
-PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
-PactIntronsOverlaps <- PactIntronsOverlaps[-13,] #Remove final row
-tail(PactIntronsOverlaps) #Confirm import
-```
-
-```{r}
-PactFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
-PactFlanksOverlaps <- PactFlanksOverlaps[-13,] #Remove final row
-tail(PactFlanksOverlaps) #Confirm import
-```
-
-```{r}
-PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
-PactIntergenicOverlaps <- PactIntergenicOverlaps[-13,] #Remove final row
-tail(PactIntergenicOverlaps) #Confirm import
-```
-
-### Create summary tables
-
-```{r}
-PactFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 5),
-                                  "MBDBSMeth" = rep(0, times = 5),
-                                  "MBDBSsparseMeth" = rep(0, times = 5),
-                                  "MBDBSunMeth" = rep(0, times = 5),
-                                  "MBDBS" = rep(0, times = 5),
-                                  "RRBSMeth" = rep(0, times = 5),
-                                  "RRBSsparseMeth" = rep(0, times = 5),
-                                  "RRBSunMeth" = rep(0, times = 5),
-                                  "RRBS" = rep(0, times = 5),
-                                  "WGBSMeth" = rep(0, times = 5),
-                                  "WGBSsparseMeth" = rep(0, times = 5),
-                                  "WGBSunMeth" = rep(0, times = 5),                                  
-                                  "WGBS" = rep(0, times = 5)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
-row.names(PactFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Assign row names
-head(PactFeatureOverlaps) #Confirm changes
-```
-
-```{r}
-PactFeatureOverlaps$allCpGs <- c(PactGenomeFeatures$counts[3],
-                                 PactGenomeFeatures$counts[1],
-                                 PactGenomeFeatures$counts[5],
-                                 PactGenomeFeatures$counts[2],
-                                 PactGenomeFeatures$counts[4]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
-head(PactFeatureOverlaps) #Confirm modification
-```
-
-```{r}
-for (i in 1:length(PactGeneOverlaps$counts)) {
-  PactFeatureOverlaps[1,i+1] <- PactGeneOverlaps[i,1]
-  PactFeatureOverlaps[2,i+1] <- PactCDSOverlaps[i,1]
-  PactFeatureOverlaps[3,i+1] <- PactIntronsOverlaps[i,1]
-  PactFeatureOverlaps[4,i+1] <- PactFlanksOverlaps[i,1]
-  PactFeatureOverlaps[5,i+1] <- PactIntergenicOverlaps[i,1]
-} #For each table with feature overlap information, paste the contents of the count column in the assigned row
-head(PactFeatureOverlaps) #Check summary table
-```
-
-```{r}
-write.table(PactFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
-```
-
-```{r}
-PactFeatureOverlapsPercents <- PactFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
-for (i in 1:length(PactFeatureOverlaps)) {
-  PactFeatureOverlapsPercents[,i] <- (PactFeatureOverlapsPercents[,i] / (sum(PactFeatureOverlapsPercents[,i]))) * 100
-} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
-head(PactFeatureOverlapsPercents) #Check calculations
-```
-
-```{r}
-write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
-```
-
-### Conduct chi-squared tests of homogeneity
-
-```{r}
-PactFeatureAllWG <- chisq.test(PactFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
-PactFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-PactFeatureAllRR <- chisq.test(PactFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
-PactFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
-```
-
-```{r}
-PactFeatureAllMB <- chisq.test(PactFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
-PactFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-PactFeatureWGRR <- chisq.test(PactFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
-PactFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
-```
-
-```{r}
-PactFeatureWGMB <- chisq.test(PactFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
-PactFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
-```
-
-```{r}
-PactFeatureRRMB <- chisq.test(PactFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
-PactFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
-```
-
-### Create plot
-
-#### All data
-
-```{r}
-#pdf("../Output/Pact-CpG-Features.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
-
-barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("All", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
-
-for (i in 1:4) {
-    xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
-    xx[,-i] <- NA
-    colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
-mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
-
-#dev.off() #Turn off plotting device
-```
-
-#### CpG feature overlap by methylation status
-
-```{r}
-#pdf("../Output/Pact-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
-par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
-
-#Methylated CpGs
-
-barplot(t(t(PactFeatureOverlapsPercents[,c(10,6,2)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(PactFeatureOverlapsPercents[,c(10,6,2)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Methylated", line = 3, cex = 1.5) #Add y-axis label
-
-#Sparsely methylated CpGs
-
-barplot(t(t(PactFeatureOverlapsPercents[,c(11,7,3)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(PactFeatureOverlapsPercents[,c(11,7,3)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Sparsely Methylated", line = 3, cex = 1.5) #Add y-axis label
-
-#Unmethylated CpGs
-
-barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-for (i in 2:4) {
-    xx <- t(t(PactFeatureOverlapsPercents[,c(12,8,4)]))
-    xx[,-(i-1)] <- NA
-    colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
-
-#dev.off() #Turn off plotting device
-```
-
 
