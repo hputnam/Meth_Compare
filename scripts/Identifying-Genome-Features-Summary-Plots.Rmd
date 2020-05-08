@@ -83,7 +83,15 @@ write.table(PactDMCFeatureOverlaps, "../analyses/Identifying-genomic-locations/P
 ```
 
 ```{r}
-PactDMCFeatureOverlapsPercents <- PactDMCFeatureOverlaps[-1]
+PactDMCFeatureOverlapsPercents <- PactDMCFeatureOverlaps[-1,] #Remove gene overlap information and save as a new dataframe
+for (i in 1:length(PactDMCFeatureOverlapsPercents)) {
+  PactDMCFeatureOverlapsPercents[,i] <- (PactDMCFeatureOverlapsPercents[,i] / sum(PactDMCFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(PactDMCFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(PactDMCFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Pact/Pact-DMC-Feature-Overlap-percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 # Upset plot data
