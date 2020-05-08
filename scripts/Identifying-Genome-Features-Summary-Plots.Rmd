@@ -172,21 +172,14 @@ write.table(McapUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-l
 ### Create plot
 
 ```{r}
-#pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
+#pdf("../Output/Mcap-Upset-Feature-Overlaps.pdf", height = 8.5, width = 11)
 par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
-barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
-        col= "white", 
+barplot(t(t(McapUpsetFeatureOverlapsPercents)), 
+        col= c("grey20", "grey40", "grey60", "grey80"), 
         axes = FALSE, 
-        names.arg = c("All", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
-
-for (i in 1:4) {
-    xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
-    xx[,-i] <- NA
-    colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+        names.arg = c("WRM", "WR", "WM", "RM", "W", "R", "M", "None"), cex.names = 1.2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
