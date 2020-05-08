@@ -375,7 +375,7 @@ write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 ### Conduct chi-squared tests of homogeneity
 
 ```{r}
-McapFeatureAllWG <- aov(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
+McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
 McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
 ```
 
@@ -407,10 +407,38 @@ McapFeatureRRMB #The distribution of CpGs is not significantly different between
 ### Create plot
 
 ```{r}
-barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])))
+plotColors2 <- c("grey20", "grey40", "grey60", "grey80", 
+                rev(RColorBrewer::brewer.pal(4, "Greens")), 
+                rev(RColorBrewer::brewer.pal(4, "Blues")), 
+                rev(RColorBrewer::brewer.pal(4, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
 ```
 
+```{r}
+pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
+barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("All", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+dev.off() #Turn off plotting device
+```
 
 
 
