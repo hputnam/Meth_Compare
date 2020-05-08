@@ -25,13 +25,11 @@ require(dichromat)
 sessionInfo()
 ```
 
-# Summary tables
+# CpG distributions
 
-## CpG distribution
+## Mcap
 
-### Mcap
-
-#### Import file counts
+### Import file counts
 
 ```{r}
 McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
@@ -57,7 +55,7 @@ McapUnMeth <- McapUnMeth[-4,] #Remove last row (total lines for all files)
 tail(McapUnMeth) #Confirm import
 ```
 
-#### Create summary table
+### Create summary table
 
 ```{r}
 McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
@@ -77,9 +75,79 @@ tail(McapCpGType) #Confirm calculations
 write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
-### Pact
+### Reorganize data
 
-#### Import file counts
+```{r}
+McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only percent information
+head(McapCpGTypePercents) #Confirm changes
+```
+
+### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGType[c(1, 2),]))) #WGBS vs. RRBS
+McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGType[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+McapCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGType[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
+```
+
+### Create plot
+
+```{r}
+plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
+                rev(RColorBrewer::brewer.pal(3, "Blues")), 
+                rev(RColorBrewer::brewer.pal(3, "Reds"))) #Create vector of WGBS, RRBS, and MBD colors
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
+```
+
+```{r}
+#pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(McapCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(McapCpGTypePercents))){
+    xx <- t(McapCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+#segments(x0 = 1, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting WGBS and MBD-BSSeq
+#segments(x0 = 1, y0 = 106, x1 = 1, y1 = 103, lwd = 1.5) #Add left segment from connecting line to WGBS
+#segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD
+#text("p = 0.019", x = 2, y = 108, cex = 1.2) #Add p-value
+
+#dev.off() #Turn off plotting device
+```
+
+
+
+
+
+## Pact
+
+### Import file counts
 
 ```{r}
 PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
@@ -105,7 +173,7 @@ PactUnMeth <- PactUnMeth[-4,] #Remove last row (total lines for all files)
 tail(PactUnMeth) #Confirm import
 ```
 
-#### Create summary table
+### Create summary table
 
 ```{r}
 PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
@@ -125,11 +193,92 @@ tail(PactCpGType) #Confirm calculations
 write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
-## CpG overlaps
+### Reorganize data
 
-### Mcap
+```{r}
+PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only percent information
+head(PactCpGTypePercents) #Confirm changes
+```
 
-##### Import file counts
+### Conduct chi-squared tests of homogeneity
+
+The null hypothesis is that distributions of different CpG types is the same between sequencing methods
+
+```{r}
+PactCpGTypeWGRR <- chisq.test(data.frame(t(PactCpGType[c(1, 2),]))) #WGBS vs. RRBS
+PactCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+PactCpGTypeWGMB <- chisq.test(data.frame(t(PactCpGType[c(1, 3),]))) #WGBS vs. MBD-BSSeq
+PactCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+PactCpGTypeRRMB <- chisq.test(data.frame(t(PactCpGType[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+PactCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
+```
+
+### Create plot
+
+```{r}
+#pdf("../Output/Pact-CpG-Type.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(PactCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(PactCpGTypePercents))){
+    xx <- t(PactCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+#egments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
+#segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
+#segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
+#text("p = 0.016", x = 2.5, y = 108, cex = 1.2) #Add p-value
+
+#segments(x0 = 1, y0 = 111, x1 = 3, y1 = 111, lwd = 1.5) #Add line connecting WGBS and MBD-BSSeq
+#segments(x0 = 1, y0 = 111, x1 = 1, y1 = 108, lwd = 1.5) #Add left segment from connecting line to WGBS
+#segments(x0 = 3, y0 = 111, x1 = 3, y1 = 108, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
+#text("p = 0.006", x = 2, y = 113, cex = 1.2) #Add p-value
+
+#dev.off() #Turn off plotting device
+```
+
+## Interspecies chi-squared tests
+
+The hypothesis is that the distribution of CpG type will be the same between species for the same methods used.
+
+```{r}
+WGBSCpGType <- chisq.test(cbind(t(McapCpGType)[,1], t(PactCpGType)[,1]))
+WGBSCpGType #The distribution of CpGs for WGBS is not significantly different between species
+```
+
+```{r}
+RRBSCpGType <- chisq.test(cbind(t(McapCpGType)[,2], t(PactCpGType)[,2]))
+RRBSCpGType #The distribution of CpGs for RRBS is significantly different between species
+```
+
+```{r}
+MBDCpGType <- chisq.test(cbind(t(McapCpGType)[,3], t(PactCpGType)[,3]))
+MBDCpGType #The distribution of CpGs for MBD-BS is not significantly different between species
+```
+
+# CpG feature overlaps
+
+## Mcap
+
+### Import file counts
 
 ```{r}
 McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
@@ -167,23 +316,23 @@ McapIntergenicOverlaps <- McapIntergenicOverlaps[-13,] #Remove final row
 tail(McapIntergenicOverlaps) #Confirm import
 ```
 
-#### Reformat tables
+### Create summary tables
 
 ```{r}
-McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 6),
-                                  "MBDBSMeth" = rep(0, times = 6),
-                                  "MBDBSsparseMeth" = rep(0, times = 6),
-                                  "MBDBSunMeth" = rep(0, times = 6),
-                                  "MBDBS" = rep(0, times = 6),
-                                  "RRBSMeth" = rep(0, times = 6),
-                                  "RRBSsparseMeth" = rep(0, times = 6),
-                                  "RRBSunMeth" = rep(0, times = 6),
-                                  "RRBS" = rep(0, times = 6),
-                                  "WGBSMeth" = rep(0, times = 6),
-                                  "WGBSsparseMeth" = rep(0, times = 6),
-                                  "WGBSunMeth" = rep(0, times = 6),                                  
-                                  "WGBS" = rep(0, times = 6)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
-row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic", "totalLines") #Assign row names
+McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 5),
+                                  "MBDBSMeth" = rep(0, times = 5),
+                                  "MBDBSsparseMeth" = rep(0, times = 5),
+                                  "MBDBSunMeth" = rep(0, times = 5),
+                                  "MBDBS" = rep(0, times = 5),
+                                  "RRBSMeth" = rep(0, times = 5),
+                                  "RRBSsparseMeth" = rep(0, times = 5),
+                                  "RRBSunMeth" = rep(0, times = 5),
+                                  "RRBS" = rep(0, times = 5),
+                                  "WGBSMeth" = rep(0, times = 5),
+                                  "WGBSsparseMeth" = rep(0, times = 5),
+                                  "WGBSunMeth" = rep(0, times = 5),                                  
+                                  "WGBS" = rep(0, times = 5)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Assign row names
 head(McapFeatureOverlaps) #Confirm changes
 ```
 
@@ -192,8 +341,7 @@ McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[3],
                                  McapGenomeFeatures$counts[1],
                                  McapGenomeFeatures$counts[5],
                                  McapGenomeFeatures$counts[2],
-                                 McapGenomeFeatures$counts[4],
-                                 0) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
+                                 McapGenomeFeatures$counts[4]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
 head(McapFeatureOverlaps) #Confirm modification
 ```
 
@@ -209,14 +357,14 @@ head(McapFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
+write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
 for (i in 1:length(McapFeatureOverlaps)) {
   McapFeatureOverlaps[6,i] <- sum(McapFeatureOverlaps[,i])
 } #Add the counts in each column and save in a new row
 head(McapFeatureOverlaps) #Check addition
-```
-
-```{r}
-write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ```{r}
@@ -232,166 +380,44 @@ head(McapFeatureOverlapsPercents) #Check calculations
 write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
-
-
-
-
-
-
-### Pact
-
-
-
-# CpG distributions
-
-## Mcap
-
-### Reorganize data
-
-```{r}
-McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only percent information
-head(McapCpGTypePercents) #Confirm changes
-```
-
 ### Conduct chi-squared tests of homogeneity
 
-The null hypothesis is that distributions of different CpG types is the same between sequencing methods
-
 ```{r}
-McapCpGTypeWGRR <- chisq.test(data.frame(t(McapCpGTypePercents[c(1, 2),]))) #WGBS vs. RRBS
-McapCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+McapFeatureAllWG <- chisq.test(data.frame(t(McapFeatureOverlaps[c(1,13)]))) #All CpGs vs. WGBS
+McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
 ```
 
 ```{r}
-McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
-McapCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+McapFeatureAllRR <- chisq.test(data.frame(t(McapFeatureOverlaps[c(1,9)]))) #All CpGs vs. RRBS
+McapFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
 ```
 
 ```{r}
-McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
-McapCpGTypeRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
+McapFeatureAllMB <- chisq.test(data.frame(t(McapFeatureOverlaps[c(1,5)]))) #All CpGs vs. MBDBS
+McapFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
+```
+
+```{r}
+McapFeatureWGRR <- chisq.test(data.frame(t(McapFeatureOverlaps[c(13, 9),]))) #WGBS vs. RRBS
+McapFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+```{r}
+McapFeatureWGMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(13, 5),]))) #WGBS vs. MBD-BSSeq
+McapFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+```{r}
+McapFeatureRRMB <- chisq.test(data.frame(t(McapCpGTypePercents[c(9, 5),]))) #RRBS vs. MBD-BSSeq
+McapFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
 ```
 
 ### Create plot
 
-```{r}
-plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
-                rev(RColorBrewer::brewer.pal(3, "Blues")), 
-                rev(RColorBrewer::brewer.pal(3, "Reds"))) #Create vector of WGBS, RRBS, and MBD colors
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
-```
 
-```{r}
-pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,1,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
-barplot(t(McapCpGTypePercents), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
-for (i in 1:ncol(t(McapCpGTypePercents))){
-    xx <- t(McapCpGTypePercents)
-    xx[,-i] <- NA
-    colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
-mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
-
-segments(x0 = 1, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting WGBS and MBD-BSSeq
-segments(x0 = 1, y0 = 106, x1 = 1, y1 = 103, lwd = 1.5) #Add left segment from connecting line to WGBS
-segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD
-text("p = 0.019", x = 2, y = 108, cex = 1.2) #Add p-value
-
-dev.off() #Turn off plotting device
-```
 
 ## Pact
 
-### Reorganize data
-
-```{r}
-PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only percent information
-head(PactCpGTypePercents) #Confirm changes
-```
-
-### Conduct chi-squared tests of homogeneity
-
-The null hypothesis is that distributions of different CpG types is the same between sequencing methods
-
-```{r}
-PactCpGTypeWGRR <- chisq.test(data.frame(t(PactCpGTypePercents[c(1, 2),]))) #WGBS vs. RRBS
-PactCpGTypeWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
-```
-
-```{r}
-PactCpGTypeWGMB <- chisq.test(data.frame(t(PactCpGTypePercents[c(1, 3),]))) #WGBS vs. MBD-BSSeq
-PactCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
-```
-
-```{r}
-PactCpGTypeRRMB <- chisq.test(data.frame(t(PactCpGTypePercents[c(2, 3),]))) #RRBS vs. MBD-BSSeq
-PactCpGTypeRRMB #The distribution of CpGs is sginificantly different between RRBS vs. MBD-BSSeq
-```
-
-### Create plot
-
-```{r}
-#pdf("../Output/Pact-CpG-Type.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
-
-barplot(t(PactCpGTypePercents), 
-        col= "white", 
-        axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
-
-for (i in 1:ncol(t(PactCpGTypePercents))){
-    xx <- t(PactCpGTypePercents)
-    xx[,-i] <- NA
-    colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
-} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
-mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
-
-segments(x0 = 2, y0 = 106, x1 = 3, y1 = 106, lwd = 1.5) #Add line connecting RRBS and MBD-BSSeq
-segments(x0 = 2, y0 = 106, x1 = 2, y1 = 103, lwd = 1.5) #Add left segment from connecting line to RRBS
-segments(x0 = 3, y0 = 106, x1 = 3, y1 = 103, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
-text("p = 0.016", x = 2.5, y = 108, cex = 1.2) #Add p-value
-
-segments(x0 = 1, y0 = 111, x1 = 3, y1 = 111, lwd = 1.5) #Add line connecting WGBS and MBD-BSSeq
-segments(x0 = 1, y0 = 111, x1 = 1, y1 = 108, lwd = 1.5) #Add left segment from connecting line to WGBS
-segments(x0 = 3, y0 = 111, x1 = 3, y1 = 108, lwd = 1.5) #Add right segment from connecting line to MBD-BSSeq
-text("p = 0.006", x = 2, y = 113, cex = 1.2) #Add p-value
-
-#dev.off() #Turn off plotting device
-```
-
-## Interspecies chi-squared tests
-
-The hypothesis is that the distribution of CpG type will be the same between species for the same methods used.
-
-```{r}
-WGBSCpGType <- chisq.test(cbind(t(McapCpGTypePercents)[,1], t(PactCpGTypePercents)[,1]))
-WGBSCpGType #The distribution of CpGs for WGBS is not significantly different between species
-```
-
-```{r}
-RRBSCpGType <- chisq.test(cbind(t(McapCpGTypePercents)[,2], t(PactCpGTypePercents)[,2]))
-RRBSCpGType #The distribution of CpGs for RRBS is significantly different between species
-```
-
-```{r}
-MBDCpGType <- chisq.test(cbind(t(McapCpGTypePercents)[,3], t(PactCpGTypePercents)[,3]))
-MBDCpGType #The distribution of CpGs for MBD-BS is not significantly different between species
-```
 
