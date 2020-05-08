@@ -561,3 +561,11 @@ analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_MBD_only_CpGs.bed-mcGenes
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_only_CpGs.bed-mcGenes
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcGenes
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_only_CpGs.bed-mcGenes
+analyses/Identifying-genomic-locations/Mcap/Mcap_MBD_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_no_method_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_RRBS_MBD_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_RRBS_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_MBD_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcCDS
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_only_CpGs.bed-mcCDS
