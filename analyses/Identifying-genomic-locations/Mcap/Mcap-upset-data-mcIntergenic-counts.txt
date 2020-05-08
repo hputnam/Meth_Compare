@@ -1,0 +1,9 @@
+   55914 Mcap_MBD_only_CpGs.bed-mcIntergenic
+   12660 Mcap_RRBS_MBD_only_CpGs.bed-mcIntergenic
+ 1199825 Mcap_RRBS_only_CpGs.bed-mcIntergenic
+  368815 Mcap_WGBS_MBD_only_CpGs.bed-mcIntergenic
+  119629 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcIntergenic
+ 1342254 Mcap_WGBS_RRBS_only_CpGs.bed-mcIntergenic
+ 5538541 Mcap_WGBS_only_CpGs.bed-mcIntergenic
+ 10587188 Mcap_no_method_CpGs.bed-mcIntergenic
+ 19224826 total
