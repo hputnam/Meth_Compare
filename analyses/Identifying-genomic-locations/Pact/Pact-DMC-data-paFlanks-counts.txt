@@ -1,0 +1,3 @@
+    2650 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanks
+    4948 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanks
+    7598 total
