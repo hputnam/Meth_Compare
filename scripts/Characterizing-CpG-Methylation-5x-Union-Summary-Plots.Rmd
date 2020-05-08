@@ -635,16 +635,6 @@ PactFeatureRRMB #The distribution of CpGs is not significantly different between
 
 ### Create plot
 
-```{r}
-plotColors2 <- c("grey20", "grey40", "grey60", "grey80", 
-                rev(RColorBrewer::brewer.pal(4, "Greens")), 
-                rev(RColorBrewer::brewer.pal(4, "Blues")), 
-                rev(RColorBrewer::brewer.pal(4, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
-barplot(t(PactCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
-barplot(t(PactCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
-barplot(t(PactCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
-```
-
 #### All data
 
 ```{r}
