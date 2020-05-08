@@ -190,3 +190,92 @@ mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 
 ## Pact
 
+### Import file counts
+
+```{r}
+PactUpsetGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactUpsetGeneOverlaps <- PactUpsetGeneOverlaps[-9,] #Remove final row
+tail(PactUpsetGeneOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactUpsetCDSOverlaps <- PactUpsetCDSOverlaps[-9,] #Remove final row
+tail(PactUpsetCDSOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactUpsetIntronsOverlaps <- PactUpsetIntronsOverlaps[-9,] #Remove final row
+tail(PactUpsetIntronsOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactUpsetFlanksOverlaps <- PactUpsetFlanksOverlaps[-9,] #Remove final row
+tail(PactUpsetFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactUpsetIntergenicOverlaps <- PactUpsetIntergenicOverlaps[-9,] #Remove final row
+tail(PactUpsetIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+PactUpsetFeatureOverlaps <- cbind(PactUpsetGeneOverlaps,
+                                PactUpsetCDSOverlaps,
+                                PactUpsetIntronsOverlaps,
+                                PactUpsetFlanksOverlaps,
+                                PactUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
+colnames(PactUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
+row.names(PactUpsetFeatureOverlaps) <- c("MBD",
+                                        "RRBS.MBD",
+                                        "RRBS",
+                                        "WGBS.MBD",
+                                        "WGBS.RRBS.MBD",
+                                        "WGBS.RRBS",
+                                        "WGBS",
+                                        "None") #Add rownames based on original files
+PactUpsetFeatureOverlaps <- data.frame(t(PactUpsetFeatureOverlaps)) #Transpose dataframe
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(5,6,4,2,7,3,1,8)] #Reorganize columns
+tail(PactUpsetFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+write.table(PactUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-Feature-Overlap-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
+PactUpsetFeatureOverlapsPercents <- PactUpsetFeatureOverlaps[-1,] #Duplicate but without gene information
+for (i in 1:length(PactUpsetFeatureOverlapsPercents)) {
+  PactUpsetFeatureOverlapsPercents[,i] <- (PactUpsetFeatureOverlapsPercents[,i] / sum(PactUpsetFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(PactUpsetFeatureOverlapsPercents) #Confirm calculations
+```
+
+```{r}
+write.table(PactUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+### Create plot
+
+```{r}
+#pdf("../Output/Pact-Upset-Feature-Overlaps.pdf", height = 8.5, width = 11)
+par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+
+barplot(t(t(PactUpsetFeatureOverlapsPercents)), 
+        col= c("grey20", "grey40", "grey60", "grey80"), 
+        axes = FALSE, 
+        names.arg = c("WRM", "WR", "WM", "RM", "W", "R", "M", "None"), cex.names = 1.2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+
+#dev.off() #Turn off plotting device
+```
