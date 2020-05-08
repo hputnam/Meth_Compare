@@ -643,3 +643,5 @@ analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_MBD_only_CpGs.bed-paI
 analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_only_CpGs.bed-paIntergenic
 analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paGenes
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paGenes
+analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paCDS
+analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paCDS
