@@ -416,8 +416,10 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
 ```
 
+#### All data
+
 ```{r}
-pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
+#pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
 par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
 
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
@@ -437,9 +439,71 @@ axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.
 mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
 mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 
-dev.off() #Turn off plotting device
+#dev.off() #Turn off plotting device
 ```
 
+#### CpG feature overlap by methylation status
+
+```{r}
+#pdf("../Output/Mcap-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
+
+#Methylated CpGs
+
+barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(10,6,2)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Methylated", line = 3, cex = 1.5) #Add y-axis label
+
+#Sparsely methylated CpGs
+
+barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(11,7,3)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Sparsely Methylated", line = 3, cex = 1.5) #Add y-axis label
+
+#Unmethylated CpGs
+
+barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
+        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(12,8,4)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
+
+#dev.off() #Turn off plotting device
+```
 
 
 
