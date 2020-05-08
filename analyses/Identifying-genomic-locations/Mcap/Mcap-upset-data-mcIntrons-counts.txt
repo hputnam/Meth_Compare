@@ -1,0 +1,9 @@
+   25986 Mcap_MBD_only_CpGs.bed-mcIntrons
+    5771 Mcap_RRBS_MBD_only_CpGs.bed-mcIntrons
+  451002 Mcap_RRBS_only_CpGs.bed-mcIntrons
+  132376 Mcap_WGBS_MBD_only_CpGs.bed-mcIntrons
+   39745 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcIntrons
+  566347 Mcap_WGBS_RRBS_only_CpGs.bed-mcIntrons
+ 2407953 Mcap_WGBS_only_CpGs.bed-mcIntrons
+ 3871291 Mcap_no_method_CpGs.bed-mcIntrons
+ 7500471 total
