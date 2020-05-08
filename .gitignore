@@ -593,3 +593,11 @@ analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_MBD_only_CpGs.bed-mcInterg
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_only_CpGs.bed-mcIntergenic
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcIntergenic
 analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_only_CpGs.bed-mcIntergenic
+analyses/Identifying-genomic-locations/Pact/Pact_MBD_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_no_method_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_RRBS_MBD_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_RRBS_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_WGBS_MBD_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_WGBS_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_MBD_only_CpGs.bed
+analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_only_CpGs.bed
