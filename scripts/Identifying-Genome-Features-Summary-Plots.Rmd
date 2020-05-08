@@ -34,12 +34,6 @@ sessionInfo()
 ### Import line counts
 
 ```{r}
-PactDMC <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with DMC line counts
-PactDMC <- PactDMC[-3,] #Remove final row
-tail(PactDMC) #Check import
-```
-
-```{r}
 PactDMCGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 PactDMCGeneOverlaps <- PactDMCGeneOverlaps[-3,] #Remove final row
 tail(PactDMCGeneOverlaps) #Confirm import
@@ -72,14 +66,13 @@ tail(PactDMCIntergenicOverlaps) #Confirm import
 ### Create summary tables
 
 ```{r}
-PactDMCFeatureOverlaps <- cbind(PactDMC,
-                                PactDMCGeneOverlaps,
+PactDMCFeatureOverlaps <- cbind(PactDMCGeneOverlaps,
                                 PactDMCCDSOverlaps,
                                 PactDMCIntronsOverlaps,
                                 PactDMCFlanksOverlaps,
                                 PactDMCIntergenicOverlaps) #Use cbind to combine individual dataframes
-PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,12,2))] #Only keep count columns
-colnames(PactDMCFeatureOverlaps) <- c("All", "Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
+PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
+colnames(PactDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
 row.names(PactDMCFeatureOverlaps) <- c("RvM", "WvM") #Add rownames based on original files
 PactDMCFeatureOverlaps <- data.frame(t(PactDMCFeatureOverlaps)) #Transpose dataframe
 head(PactDMCFeatureOverlaps) #Confirm changes
@@ -87,6 +80,10 @@ head(PactDMCFeatureOverlaps) #Confirm changes
 
 ```{r}
 write.table(PactDMCFeatureOverlaps, "../analyses/Identifying-genomic-locations/Pact/Pact-DMC-Feature-Overlap-counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+```{r}
+PactDMCFeatureOverlapsPercents <- PactDMCFeatureOverlaps[-1]
 ```
 
 # Upset plot data
