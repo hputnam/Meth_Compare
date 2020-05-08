@@ -157,6 +157,18 @@ tail(McapUpsetFeatureOverlaps) #Confirm changes
 write.table(McapUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+```{r}
+McapUpsetFeatureOverlapsPercents <- McapUpsetFeatureOverlaps[-1,] #Duplicate but without gene information
+for (i in 1:length(McapUpsetFeatureOverlapsPercents)) {
+  McapUpsetFeatureOverlapsPercents[,i] <- (McapUpsetFeatureOverlapsPercents[,i] / sum(McapUpsetFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(McapUpsetFeatureOverlapsPercents) #Confirm calculations
+```
+
+```{r}
+write.table(McapUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
 ### Create plot
 
 ```{r}
