@@ -659,3 +659,15 @@ genome-feature-files/Pact.GFFannotation.flanks.forwardDownstream.gff
 genome-feature-files/Pact.GFFannotation.flanks.forwardUpstream.gff
 genome-feature-files/Pact.GFFannotation.flanks.reverseDownstream.gff
 genome-feature-files/Pact.GFFannotation.flanks.reverseUpstream.gff
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-Meth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-unMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-Meth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-unMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-Meth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcFlanksUpstream
+analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph.bed-mcFlanksUpstream
