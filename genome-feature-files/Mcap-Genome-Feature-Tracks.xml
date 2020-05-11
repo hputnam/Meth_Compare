@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Session genome="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="2:951495-966373" path="/Users/yaamini/Documents/Meth_Compare/genome-feature-files/Mcap-Genome-Feature-Tracks.xml" version="8">
+<Session genome="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.genome_assembly.fa" hasGeneTrack="false" hasSequenceTrack="true" locus="2:294347-296911" path="/Users/yaamini/Documents/Meth_Compare/genome-feature-files/Mcap-Genome-Feature-Tracks.xml" version="8">
     <Resources>
         <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.intron.gff"/>
         <Resource path="https://gannet.fish.washington.edu/spartina/Meth_Compare/genome-feature-files/Mcap.GFFannotation.gene.gff"/>
