@@ -1,3 +1,3 @@
-    1419 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanksUpstream
-    2627 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanksUpstream
-    4046 total
+    1301 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanksUpstream
+    2372 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanksUpstream
+    3673 total
