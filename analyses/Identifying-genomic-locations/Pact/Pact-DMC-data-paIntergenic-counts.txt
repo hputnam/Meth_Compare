@@ -1,3 +1,3 @@
-    8197 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntergenic
-   21880 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntergenic
-   30077 total
+    6553 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntergenic
+   18802 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntergenic
+   25355 total
