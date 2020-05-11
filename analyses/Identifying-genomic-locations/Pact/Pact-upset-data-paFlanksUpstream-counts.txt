@@ -1,0 +1,9 @@
+    8384 Pact_MBD_only_CpGs.bed-paFlanksUpstream
+    1386 Pact_RRBS_MBD_only_CpGs.bed-paFlanksUpstream
+   18291 Pact_RRBS_only_CpGs.bed-paFlanksUpstream
+  292046 Pact_WGBS_MBD_only_CpGs.bed-paFlanksUpstream
+  154583 Pact_WGBS_RRBS_MBD_only_CpGs.bed-paFlanksUpstream
+  123276 Pact_WGBS_RRBS_only_CpGs.bed-paFlanksUpstream
+  362352 Pact_WGBS_only_CpGs.bed-paFlanksUpstream
+  168218 Pact_no_method_CpGs.bed-paFlanksUpstream
+ 1128536 total
