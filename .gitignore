@@ -651,3 +651,7 @@ analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanks
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanks
 analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paIntergenic
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paIntergenic
+genome-feature-files/Mcap.GFFannotation.flanks.forwardDownstream.gff
+genome-feature-files/Mcap.GFFannotation.flanks.forwardUpstream.gff
+genome-feature-files/Mcap.GFFannotation.flanks.reverseDownstream.gff
+genome-feature-files/Mcap.GFFannotation.flanks.reverseUpstream.gff
