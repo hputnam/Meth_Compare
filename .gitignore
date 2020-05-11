@@ -655,3 +655,7 @@ genome-feature-files/Mcap.GFFannotation.flanks.forwardDownstream.gff
 genome-feature-files/Mcap.GFFannotation.flanks.forwardUpstream.gff
 genome-feature-files/Mcap.GFFannotation.flanks.reverseDownstream.gff
 genome-feature-files/Mcap.GFFannotation.flanks.reverseUpstream.gff
+genome-feature-files/Pact.GFFannotation.flanks.forwardDownstream.gff
+genome-feature-files/Pact.GFFannotation.flanks.forwardUpstream.gff
+genome-feature-files/Pact.GFFannotation.flanks.reverseDownstream.gff
+genome-feature-files/Pact.GFFannotation.flanks.reverseUpstream.gff
