@@ -741,3 +741,5 @@ analyses/Identifying-genomic-locations/Pact/Pact_WGBS_MBD_only_CpGs.bed-paFlanks
 analyses/Identifying-genomic-locations/Pact/Pact_WGBS_only_CpGs.bed-paFlanksDownstream
 analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_MBD_only_CpGs.bed-paFlanksDownstream
 analyses/Identifying-genomic-locations/Pact/Pact_WGBS_RRBS_only_CpGs.bed-paFlanksDownstream
+analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanksDownstream
+analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanksDownstream
