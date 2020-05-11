@@ -707,3 +707,11 @@ analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGB
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-paFlanksDownstream
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-unMeth.bed-paFlanksDownstream
 analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph.bed-paFlanksDownstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_MBD_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_no_method_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_RRBS_MBD_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_RRBS_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_MBD_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcFlanksUpstream
+analyses/Identifying-genomic-locations/Mcap/Mcap_WGBS_RRBS_only_CpGs.bed-mcFlanksUpstream
