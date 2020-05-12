@@ -115,18 +115,56 @@ head(McapCpGTypeWGRR) #Confirm changes
 
 #### WGBS vs. MBD-BS
 
+```{r}
+McapCpGTypeWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapCpGTypeStatTest)) { #For each CpG type
+  Method1CpG <- McapCpGTypeStatTest[1,i] #Variable for # CpG type for method 1
+  Method2CpG <- McapCpGTypeStatTest[3,i] #Variable for # CpG type for method 2
+  Method1NotCpG <- sum(McapCpGTypeStatTest[1,-i]) #Variable for # other CpG types for method 1
+  Method2NotCpG <- sum(McapCpGTypeStatTest[3,-i]) #Variable for # other CpG types for method 2
+  ct <- matrix(c(Method1CpG,Method2CpG,Method1NotCpG,Method2NotCpG), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapCpGTypeStatTest[i])), paste0("Not", colnames(McapCpGTypeStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(McapCpGTypeStatTest)[c(1,3)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$CpGType <- as.character(colnames(McapCpGTypeStatTest)[i]) #Add CpG type to results
+  McapCpGTypeWGMB <- rbind(McapCpGTypeWGMB, ctResults) #Add test statistics to master table
+}
+```
 
 ```{r}
-McapCpGTypeWGMB <- chisq.test(data.frame(t(McapCpGType[c(1, 3),]))) #WGBS vs. MBD-BSSeq
-McapCpGTypeWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+McapCpGTypeWGMB$p.adj <- p.adjust(McapCpGTypeWGMB$p.value, method = "fdr") #Correct p-value using FDR
+McapCpGTypeWGMB$comparison <- rep("WGBS vs. MBDBS", times = 3) #Add methods compared
+head(McapCpGTypeWGMB) #Confirm changes
 ```
 
 #### RRBS vs. MBD-BS
 
-
+```{r}
+McapCpGTypeRRMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapCpGTypeStatTest)) { #For each CpG type
+  Method1CpG <- McapCpGTypeStatTest[2,i] #Variable for # CpG type for method 1
+  Method2CpG <- McapCpGTypeStatTest[3,i] #Variable for # CpG type for method 2
+  Method1NotCpG <- sum(McapCpGTypeStatTest[2,-i]) #Variable for # other CpG types for method 1
+  Method2NotCpG <- sum(McapCpGTypeStatTest[3,-i]) #Variable for # other CpG types for method 2
+  ct <- matrix(c(Method1CpG,Method2CpG,Method1NotCpG,Method2NotCpG), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapCpGTypeStatTest[i])), paste0("Not", colnames(McapCpGTypeStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(McapCpGTypeStatTest)[c(2,3)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$CpGType <- as.character(colnames(McapCpGTypeStatTest)[i]) #Add CpG type to results
+  McapCpGTypeRRMB <- rbind(McapCpGTypeRRMB, ctResults) #Add test statistics to master table
+}
+```
 
 ```{r}
-McapCpGTypeRRMB <- chisq.test(data.frame(t(McapCpGType[c(2, 3),]))) #RRBS vs. MBD-BSSeq
+McapCpGTypeRRMB$p.adj <- p.adjust(McapCpGTypeRRMB$p.value, method = "fdr") #Correct p-value using FDR
+McapCpGTypeRRMB$comparison <- rep("RRBS vs. MBDBS", times = 3) #Add methods compared
+head(McapCpGTypeRRMB) #Confirm changes
+```
+
+```{r}
+ <- chisq.test(data.frame(t(McapCpGType[c(2, 3),]))) #RRBS vs. MBD-BSSeq
 McapCpGTypeRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
 ```
 
