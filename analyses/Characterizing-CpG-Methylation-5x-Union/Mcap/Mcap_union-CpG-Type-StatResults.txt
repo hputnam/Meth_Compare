@@ -1,0 +1,10 @@
+statistic p.value parameter method CpGType p.adj comparison
+36723.9653989205 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 WGBS vs. RRBS
+74132.6713418638 0 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 0 WGBS vs. RRBS
+118595.087121458 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 WGBS vs. RRBS
+22298.329055771 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 WGBS vs. MBDBS
+8012.76182895311 0 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 0 WGBS vs. MBDBS
+32023.6744374565 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 WGBS vs. MBDBS
+8102.19615398892 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 RRBS vs. MBDBS
+139.388749897866 3.62144615342223e-32 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 3.62144615342223e-32 RRBS vs. MBDBS
+6227.41911945258 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 RRBS vs. MBDBS

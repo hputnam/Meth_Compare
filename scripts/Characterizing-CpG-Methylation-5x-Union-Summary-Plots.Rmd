@@ -163,6 +163,19 @@ McapCpGTypeRRMB$comparison <- rep("RRBS vs. MBDBS", times = 3) #Add methods comp
 head(McapCpGTypeRRMB) #Confirm changes
 ```
 
+#### Save statistical test results
+
+```{r}
+McapCpGTypeStatResults <- rbind(McapCpGTypeWGRR,
+                                McapCpGTypeWGMB,
+                                McapCpGTypeRRMB) #Combine tables
+tail(McapCpGTypeStatResults) #Confirm changes
+```
+
+```{r}
+write.table(McapCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
 ### Create plot
 
 ```{r}
