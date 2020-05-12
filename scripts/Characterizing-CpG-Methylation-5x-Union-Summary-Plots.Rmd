@@ -330,7 +330,7 @@ for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
 ```{r}
 PactCpGTypeWGMB$p.adj <- p.adjust(PactCpGTypeWGMB$p.value, method = "fdr") #Correct p-value using FDR
 PactCpGTypeWGMB$comparison <- rep("WGBS vs. MBDBS", times = 3) #Add methods compared
-head(PactCpGTypeWGMB) #Confirm changes
+head(PactCpGTypeWGM) #Confirm changes
 ```
 
 #### RRBS vs. MBD-BS
