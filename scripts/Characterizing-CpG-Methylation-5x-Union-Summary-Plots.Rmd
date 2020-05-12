@@ -163,11 +163,6 @@ McapCpGTypeRRMB$comparison <- rep("RRBS vs. MBDBS", times = 3) #Add methods comp
 head(McapCpGTypeRRMB) #Confirm changes
 ```
 
-```{r}
- <- chisq.test(data.frame(t(McapCpGType[c(2, 3),]))) #RRBS vs. MBD-BSSeq
-McapCpGTypeRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
-```
-
 ### Create plot
 
 ```{r}
