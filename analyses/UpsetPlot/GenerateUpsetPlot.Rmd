@@ -30,6 +30,15 @@ pact <- read.table("/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/
 mcap <- read.table("/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Mcap/Mcap_method_union_5x_matrix.tsv", header = TRUE, sep = "\t", row.names = 1, stringsAsFactors = FALSE)
 ```
 
+change column name from "all" to "Genome"
+```{r}
+colnames(pact) <- c("Genome", "WGBS", "RRBS", "MBD")
+
+colnames(mcap) <- c("Genome", "WGBS", "RRBS", "MBD")
+
+
+```
+
 make combination matrix
 ```{r}
 pact_m <- make_comb_mat(pact)
@@ -40,12 +49,43 @@ save(pact_m, file = "/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data
 save(mcap_m, file = "/Volumes/web/metacarcinus/FROGER_meth_compare/20200504/data/Mcap/mcap_m.RData")
 ```
 
+Draft 1
 ```{r}
 jpeg("../../Output/Pact_UpsetPlot.jpg", width = 8, height = 4, unit = "in", res = 300)
-UpSet(pact_m,pt_size = unit(5, "mm"), lwd = 3,comb_col = c("gold","red", "blue", "black")[comb_degree(pact_m)])
+UpSet(pact_m,pt_size = unit(5, "mm"), lwd = 3,set_order = c("Genome", "WGBS", "RRBS", "MBD"), row_names_side = "right",comb_col = c("gold","red", "blue", "black")[comb_degree(pact_m)])
 dev.off()
 
 jpeg("../../Output/Mcap_UpsetPlot.jpg", width = 8, height = 4, unit = "in", res = 300)
-UpSet(mcap_m,pt_size = unit(5, "mm"), lwd = 3,comb_col = c("gold","red", "blue", "black")[comb_degree(mcap_m)])
+UpSet(mcap_m,pt_size = unit(5, "mm"), lwd = 3,set_order = c("Genome", "WGBS", "RRBS", "MBD"),comb_col = c("gold","red", "blue", "black")[comb_degree(mcap_m)])
 dev.off()
+```
+
+**Draft 2**
+To change the color of the dots, I editted the source code by doing trace("upset", edit=TRUE)
+and followed edits from this post: https://www.r-bloggers.com/hacking-our-way-through-upsetr/
+
+I basically just added the code below just after the Matrix_layout variable is assigned.
+```
+for(i in 1:length(unique(Matrix_layout$y))) {
+     j <- which(Matrix_layout$y == i & Matrix_layout$value == 1)
+     if(length(j) > 0) Matrix_layout$color[j] <- c("orange", "springgreen3","dodgerblue", "red")[i]
+  } 
+```
+An alternative for future plots so that the number of colors matches the number of set groups could be the following:
+```
+  for(i in 1:length(unique(Matrix_layout$y))) {
+     j <- which(Matrix_layout$y == i & Matrix_layout$value == 1)
+     if(length(j) > 0) Matrix_layout$color[j] <- colorRamps::matlab.like2(n = length(unique(Matrix_layout$y)))[i]
+  }
+```
+
+```{r}
+jpeg("../../Output/Pact_UpsetPlot_draft2.jpg", width = 8, height = 4, unit = "in", res = 300)
+upset(pact, sets = c("Genome", "WGBS", "MBD","RRBS"), keep.order = TRUE, order.by = "freq",main.bar.color = "black", sets.bar.color = c("orange", "springgreen3","dodgerblue", "red"), shade.alpha = 0.01,point.size = 4, line.size = 0.001, show.numbers = "yes",matrix.dot.alpha = 0.01, set_size.angles = 20, set_size.show = TRUE, mainbar.y.label = "Intersection Size (number of CpGs)", sets.x.label = "Set Size (number of CpGs)")
+dev.off()
+
+jpeg("../../Output/Mcap_UpsetPlot_draft2.jpg", width = 8, height = 4, unit = "in", res = 300)
+upset(mcap, sets = c("Genome", "WGBS", "MBD","RRBS"), keep.order = TRUE, order.by = "freq",main.bar.color = "black", sets.bar.color = c("orange", "springgreen3","dodgerblue", "red"), shade.alpha = 0.01,point.size = 4, line.size = 0.001, show.numbers = "yes",matrix.dot.alpha = 0.01, set_size.angles = 20, set_size.show = TRUE, mainbar.y.label = "Intersection Size (number of CpGs)", sets.x.label = "Set Size (number of CpGs)")
+dev.off()
+
 ```
