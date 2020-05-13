@@ -210,7 +210,7 @@ for (i in 1:ncol(t(McapCpGTypePercents))){
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
@@ -399,7 +399,7 @@ for (i in 1:ncol(t(PactCpGTypePercents))){
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
@@ -512,7 +512,7 @@ write.table(InterspeciesCpGTypeStatResults, "../analyses/Characterizing-CpG-Meth
 ### Create multipanel plot
 
 ```{r}
-pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
+#pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,1,0), oma = c(2, 1, 0, 11), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
@@ -530,7 +530,7 @@ for (i in 1:ncol(t(McapCpGTypePercents))){
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Percent CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 text(expression(paste("a. ", italic("M. capitata"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
 
 #Pact
@@ -548,7 +548,7 @@ for (i in 1:ncol(t(PactCpGTypePercents))){
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Percent CpGs", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 text(expression(paste("b. ", italic("P. acuta"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
 
 #Add legend
@@ -565,7 +565,7 @@ legend(x = 0.62, y = 0.96,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.85, y = 0.965, cex = 1.5) #Add legend title that is aligned with legend
 
-dev.off() #Turn off plotting device
+#dev.off() #Turn off plotting device
 ```
 
 
