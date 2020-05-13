@@ -840,7 +840,7 @@ write.table(McapFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-
 ### Create plot
 
 ```{r}
-McapFeatureOverlapsPercents <- McapFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
+McapFeatureOverlapsPercents <- McapFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
 for (i in 1:length(McapFeatureOverlaps)) {
   McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlapsPercents[,i] / (sum(McapFeatureOverlapsPercents[,i]))) * 100
 } #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
@@ -852,20 +852,20 @@ write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 ```
 
 ```{r}
-plotColors2 <- c("grey20", "grey40", "grey60", "grey80", 
-                rev(RColorBrewer::brewer.pal(4, "Greens")), 
-                rev(RColorBrewer::brewer.pal(4, "Blues")), 
-                rev(RColorBrewer::brewer.pal(4, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Blues"))))) #Check blues
-barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Reds"))))) #Check reds
+plotColors2 <- c("grey20", "grey40", "grey60", "grey80", "grey100", 
+                rev(RColorBrewer::brewer.pal(5, "Greens")), 
+                rev(RColorBrewer::brewer.pal(5, "Blues")), 
+                rev(RColorBrewer::brewer.pal(5, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Greens"))))) #Check greens
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Blues"))))) #Check blues
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Reds"))))) #Check reds
 ```
 
 #### All data
 
 ```{r}
-#pdf("../Output/Mcap-CpG-Features.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+#pdf("../Output/Mcap_union-CpG-Features.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 10)) #Change figure boundaries
 
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
@@ -877,12 +877,24 @@ for (i in 1:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
     xx[,-i] <- NA
     colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
-mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.62, y = 0.87, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -890,7 +902,7 @@ mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 #### CpG feature overlap by methylation status
 
 ```{r}
-#pdf("../Output/Mcap-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+#pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
 
 #Methylated CpGs
@@ -1443,3 +1455,5 @@ tail(InterspeciesFeatureStatResults) #Confirm changes
 ```{r}
 write.table(InterspeciesFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Interspecies_union-Feature-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
+
+### Create multipanel plot
