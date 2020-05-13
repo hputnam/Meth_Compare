@@ -666,46 +666,172 @@ write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-
 
 ### Conduct chi-squared tests of homogeneity
 
+```{r}
+McapFeatureStatTest <- data.frame(t(McapFeatureOverlaps[-c(1,4),c(1,13,9,5)])) #Separate out count data for statistical testing. Remove gene and total flank information. Transpose and save as dataframe so methods are row names
+head(McapFeatureStatTest) #Confirm changes
+```
+
 #### All vs. WGBS
 
 ```{r}
-McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
-McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
+McapFeatureAllWG <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  AllFeature <- McapFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- McapFeatureStatTest[2,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(McapFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(McapFeatureStatTest[2,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(1,2)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureAllWG <- rbind(McapFeatureAllWG, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureAllWG$p.adj <- p.adjust(McapFeatureAllWG$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureAllWG$comparison <- rep("All vs. WGBS", times = 5) #Add methods compared
+head(McapFeatureAllWG) #Confirm changes
 ```
 
 #### All vs. RRBS
 
 ```{r}
-McapFeatureAllRR <- chisq.test(McapFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
-McapFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
+McapFeatureAllRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  AllFeature <- McapFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- McapFeatureStatTest[3,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(McapFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(McapFeatureStatTest[3,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(1,3)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureAllRR <- rbind(McapFeatureAllRR, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureAllRR$p.adj <- p.adjust(McapFeatureAllRR$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureAllRR$comparison <- rep("All vs. RRBS", times = 5) #Add methods compared
+head(McapFeatureAllRR) #Confirm changes
 ```
 
 #### All vs. MBD-BS
 
 ```{r}
-McapFeatureAllMB <- chisq.test(McapFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
-McapFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
+McapFeatureAllMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  AllFeature <- McapFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- McapFeatureStatTest[4,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(McapFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(McapFeatureStatTest[4,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(1,4)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureAllMB <- rbind(McapFeatureAllMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureAllMB$p.adj <- p.adjust(McapFeatureAllMB$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureAllMB$comparison <- rep("All vs. MBDBS", times = 5) #Add methods compared
+head(McapFeatureAllMB) #Confirm changes
 ```
 
 #### WGBS vs. RRBS
 
 ```{r}
-McapFeatureWGRR <- chisq.test(McapFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
-McapFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+McapFeatureWGRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  Method1Feature <- McapFeatureStatTest[2,i] #Variable for # feature for method 1
+  Method2Feature <- McapFeatureStatTest[3,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(McapFeatureStatTest[2,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(McapFeatureStatTest[3,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(2,3)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureWGRR <- rbind(McapFeatureWGRR, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureWGRR$p.adj <- p.adjust(McapFeatureWGRR$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods compared
+head(McapFeatureWGRR) #Confirm changes
 ```
 
 #### WGBS vs. MBD-BS
 
 ```{r}
-McapFeatureWGMB <- chisq.test(McapFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
-McapFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+McapFeatureWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  Method1Feature <- McapFeatureStatTest[2,i] #Variable for # feature for method 1
+  Method2Feature <- McapFeatureStatTest[4,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(McapFeatureStatTest[2,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(McapFeatureStatTest[4,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(2,4)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureWGMB <- rbind(McapFeatureWGMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureWGMB$p.adj <- p.adjust(McapFeatureWGMB$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureWGMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
+head(McapFeatureWGMB) #Confirm changes
 ```
 
 #### RRBS vs. MBD-BS
 
 ```{r}
-McapFeatureRRMB <- chisq.test(McapFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
-McapFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
+McapFeatureRRMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapFeatureStatTest)) { #For each feature
+  Method1Feature <- McapFeatureStatTest[3,i] #Variable for # feature for method 1
+  Method2Feature <- McapFeatureStatTest[4,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(McapFeatureStatTest[3,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(McapFeatureStatTest[4,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapFeatureStatTest[i])), paste0("Not", colnames(McapFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(McapFeatureStatTest)[c(3,4)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(McapFeatureStatTest)[i]) #Add feature to results
+  McapFeatureRRMB <- rbind(McapFeatureRRMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+McapFeatureRRMB$p.adj <- p.adjust(McapFeatureRRMB$p.value, method = "fdr") #Correct p-value using FDR
+McapFeatureRRMB$comparison <- rep("RRBS vs. MBDBS", times = 5) #Add methods compared
+head(McapFeatureRRMB) #Confirm changes
+```
+
+#### Save statistical test results
+
+```{r}
+McapCpGTypeStatResults <- rbind(McapCpGTypeWGRR,
+                                McapCpGTypeWGMB,
+                                McapCpGTypeRRMB) #Combine tables
+tail(McapCpGTypeStatResults) #Confirm changes
+```
+
+```{r}
+write.table(McapCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
 
 ### Create plot
