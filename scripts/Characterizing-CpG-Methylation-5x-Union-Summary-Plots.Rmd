@@ -568,8 +568,6 @@ text("Methylation Status", x = 0.85, y = 0.965, cex = 1.5) #Add legend title tha
 #dev.off() #Turn off plotting device
 ```
 
-
-
 # CpG feature overlaps
 
 ## Mcap
@@ -601,9 +599,15 @@ tail(McapIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
-McapFlanksOverlaps <- McapFlanksOverlaps[-13,] #Remove final row
-tail(McapFlanksOverlaps) #Confirm import
+McapFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-13,] #Remove final row
+tail(McapFlanksUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksDownstreamOverlaps <- McapFlanksDownstreamOverlaps[-13,] #Remove final row
+tail(McapFlanksDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
@@ -615,20 +619,20 @@ tail(McapIntergenicOverlaps) #Confirm import
 ### Create summary tables
 
 ```{r}
-McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 5),
-                                  "MBDBSMeth" = rep(0, times = 5),
-                                  "MBDBSsparseMeth" = rep(0, times = 5),
-                                  "MBDBSunMeth" = rep(0, times = 5),
-                                  "MBDBS" = rep(0, times = 5),
-                                  "RRBSMeth" = rep(0, times = 5),
-                                  "RRBSsparseMeth" = rep(0, times = 5),
-                                  "RRBSunMeth" = rep(0, times = 5),
-                                  "RRBS" = rep(0, times = 5),
-                                  "WGBSMeth" = rep(0, times = 5),
-                                  "WGBSsparseMeth" = rep(0, times = 5),
-                                  "WGBSunMeth" = rep(0, times = 5),                                  
-                                  "WGBS" = rep(0, times = 5)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
-row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Assign row names
+McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 6),
+                                  "MBDBSMeth" = rep(0, times = 6),
+                                  "MBDBSsparseMeth" = rep(0, times = 6),
+                                  "MBDBSunMeth" = rep(0, times = 6),
+                                  "MBDBS" = rep(0, times = 6),
+                                  "RRBSMeth" = rep(0, times = 6),
+                                  "RRBSsparseMeth" = rep(0, times = 6),
+                                  "RRBSunMeth" = rep(0, times = 6),
+                                  "RRBS" = rep(0, times = 6),
+                                  "WGBSMeth" = rep(0, times = 6),
+                                  "WGBSsparseMeth" = rep(0, times = 6),
+                                  "WGBSunMeth" = rep(0, times = 6),                                  
+                                  "WGBS" = rep(0, times = 6)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
 head(McapFeatureOverlaps) #Confirm changes
 ```
 
@@ -656,6 +660,52 @@ head(McapFeatureOverlaps) #Check summary table
 write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+### Conduct chi-squared tests of homogeneity
+
+#### All vs. WGBS
+
+```{r}
+McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
+McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
+```
+
+#### All vs. RRBS
+
+```{r}
+McapFeatureAllRR <- chisq.test(McapFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
+McapFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
+```
+
+#### All vs. MBD-BS
+
+```{r}
+McapFeatureAllMB <- chisq.test(McapFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
+McapFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
+```
+
+#### WGBS vs. RRBS
+
+```{r}
+McapFeatureWGRR <- chisq.test(McapFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
+McapFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
+```
+
+#### WGBS vs. MBD-BS
+
+```{r}
+McapFeatureWGMB <- chisq.test(McapFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
+McapFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
+```
+
+#### RRBS vs. MBD-BS
+
+```{r}
+McapFeatureRRMB <- chisq.test(McapFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
+McapFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
+```
+
+### Create plot
+
 ```{r}
 McapFeatureOverlapsPercents <- McapFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
 for (i in 1:length(McapFeatureOverlaps)) {
@@ -667,40 +717,6 @@ head(McapFeatureOverlapsPercents) #Check calculations
 ```{r}
 write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
-
-### Conduct chi-squared tests of homogeneity
-
-```{r}
-McapFeatureAllWG <- chisq.test(McapFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
-McapFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-McapFeatureAllRR <- chisq.test(McapFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
-McapFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
-```
-
-```{r}
-McapFeatureAllMB <- chisq.test(McapFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
-McapFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-McapFeatureWGRR <- chisq.test(McapFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
-McapFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
-```
-
-```{r}
-McapFeatureWGMB <- chisq.test(McapFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
-McapFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
-```
-
-```{r}
-McapFeatureRRMB <- chisq.test(McapFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
-McapFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
-```
-
-### Create plot
 
 ```{r}
 plotColors2 <- c("grey20", "grey40", "grey60", "grey80", 
