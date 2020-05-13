@@ -1,0 +1,10 @@
+statistic p.value parameter method CpGType p.adj comparison
+151000.802075104 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 Mcap vs. Pact
+794.523994586964 8.36851421262722e-175 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 8.36851421262722e-175 Mcap vs. Pact
+65792.3008765204 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 Mcap vs. Pact
+601958.928627118 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 Mcap vs. Pact
+232078.350045195 0 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 0 Mcap vs. Pact
+865643.330891627 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 Mcap vs. Pact
+15890.2075146326 0 1 Pearson's Chi-squared test with Yates' continuity correction Meth 0 Mcap vs. Pact
+270.073670387923 1.09358645088905e-60 1 Pearson's Chi-squared test with Yates' continuity correction sparseMeth 1.09358645088905e-60 Mcap vs. Pact
+6011.30092104907 0 1 Pearson's Chi-squared test with Yates' continuity correction unMeth 0 Mcap vs. Pact
