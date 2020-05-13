@@ -865,13 +865,13 @@ barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::b
 
 ```{r}
 #pdf("../Output/Mcap_union-CpG-Features.pdf", height = 8.5, width = 11)
-par(mar = c(2,5,0,1), oma = c(1, 1, 0, 10)) #Change figure boundaries
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
 
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("All", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
@@ -885,7 +885,7 @@ mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.62, y = 0.87, 
+legend(x = 0.57, y = 0.87, 
        xpd = TRUE,
        legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
        pch = 22, 
@@ -894,7 +894,7 @@ legend(x = 0.62, y = 0.87,
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Genome Feature", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -903,61 +903,72 @@ text("Genome Feature", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is
 
 ```{r}
 #pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
-par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
+par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Methylated CpGs
-
+#Strong methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(10,6,2)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Methylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
 
-#Sparsely methylated CpGs
-
+#Moderate methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(11,7,3)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Sparsely Methylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Unmethylated CpGs
-
+#Weak methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(12,8,4)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.73, y = 0.97, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -1238,7 +1249,7 @@ write.table(PactFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-
 ### Create plot
 
 ```{r}
-PactFeatureOverlapsPercents <- PactFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
+PactFeatureOverlapsPercents <- PactFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
 for (i in 1:length(PactFeatureOverlaps)) {
   PactFeatureOverlapsPercents[,i] <- (PactFeatureOverlapsPercents[,i] / (sum(PactFeatureOverlapsPercents[,i]))) * 100
 } #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
@@ -1252,25 +1263,37 @@ write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 #### All data
 
 ```{r}
-#pdf("../Output/Pact-CpG-Features.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(2, 1, 1, 1)) #Change figure boundaries
+#pdf("../Output/Pact_union-CpG-Features.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
 
 barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("All", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
     xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
     xx[,-i] <- NA
     colnames(xx)[-i] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "Proportion CpGs", line = 3, cex = 1.5) #Add y-axis label
-mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.87, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -1278,62 +1301,73 @@ mtext(side = 1, "Sequencing Method", line = 3, cex = 1.5) #Add x-axis label
 #### CpG feature overlap by methylation status
 
 ```{r}
-#pdf("../Output/Pact-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
-par(mar = c(1,5,0,1), oma = c(4, 1, 1, 1), mfcol = c(3,1)) #Change figure boundaries
+#pdf("../Output/Pact_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Methylated CpGs
-
+#Strong methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(PactFeatureOverlapsPercents[,c(10,6,2)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Methylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
 
-#Sparsely methylated CpGs
-
+#Moderate methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(11,7,3)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", ""),
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(PactFeatureOverlapsPercents[,c(11,7,3)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Sparsely Methylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Unmethylated CpGs
-
+#Weak methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
-        ylim = c(0, 115)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
     xx <- t(t(PactFeatureOverlapsPercents[,c(12,8,4)]))
     xx[,-(i-1)] <- NA
     colnames(xx)[-(i-1)] <- NA
-    barplot(xx, col = c(plotColors2[(4*i)-3], plotColors2[(4*i)-2], plotColors2[(4*i)-1], plotColors2[(4*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.73, y = 0.97, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -1457,3 +1491,60 @@ write.table(InterspeciesFeatureStatResults, "../analyses/Characterizing-CpG-Meth
 ```
 
 ### Create multipanel plot
+
+```{r}
+#pdf("../Output/Union-CpG-Features-Multipanel.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
+
+#Mcap
+barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", "", ""), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste("a. ", italic("M. capitata"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+
+#Pact
+barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste("b. ", italic("P. acuta"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.91, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.785, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
