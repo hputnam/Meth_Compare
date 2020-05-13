@@ -576,7 +576,7 @@ text("Methylation Status", x = 0.85, y = 0.965, cex = 1.5) #Add legend title tha
 
 ```{r}
 McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
-McapGenomeFeatures <- McapGenomeFeatures[-6,] #Remove final row
+McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
 tail(McapGenomeFeatures) #Check import
 ```
 
@@ -619,29 +619,31 @@ tail(McapIntergenicOverlaps) #Confirm import
 ### Create summary tables
 
 ```{r}
-McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 6),
-                                  "MBDBSMeth" = rep(0, times = 6),
-                                  "MBDBSsparseMeth" = rep(0, times = 6),
-                                  "MBDBSunMeth" = rep(0, times = 6),
-                                  "MBDBS" = rep(0, times = 6),
-                                  "RRBSMeth" = rep(0, times = 6),
-                                  "RRBSsparseMeth" = rep(0, times = 6),
-                                  "RRBSunMeth" = rep(0, times = 6),
-                                  "RRBS" = rep(0, times = 6),
-                                  "WGBSMeth" = rep(0, times = 6),
-                                  "WGBSsparseMeth" = rep(0, times = 6),
-                                  "WGBSunMeth" = rep(0, times = 6),                                  
-                                  "WGBS" = rep(0, times = 6)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
-row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
+McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 7),
+                                  "MBDBSMeth" = rep(0, times = 7),
+                                  "MBDBSsparseMeth" = rep(0, times = 7),
+                                  "MBDBSunMeth" = rep(0, times = 7),
+                                  "MBDBS" = rep(0, times = 7),
+                                  "RRBSMeth" = rep(0, times = 7),
+                                  "RRBSsparseMeth" = rep(0, times = 7),
+                                  "RRBSunMeth" = rep(0, times = 7),
+                                  "RRBS" = rep(0, times = 7),
+                                  "WGBSMeth" = rep(0, times = 7),
+                                  "WGBSsparseMeth" = rep(0, times = 7),
+                                  "WGBSunMeth" = rep(0, times = 7),                                  
+                                  "WGBS" = rep(0, times = 7)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanking Regions", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
 head(McapFeatureOverlaps) #Confirm changes
 ```
 
 ```{r}
-McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[3],
+McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[5],
                                  McapGenomeFeatures$counts[1],
-                                 McapGenomeFeatures$counts[5],
+                                 McapGenomeFeatures$counts[7],
+                                 McapGenomeFeatures$counts[3],
+                                 McapGenomeFeatures$counts[4],
                                  McapGenomeFeatures$counts[2],
-                                 McapGenomeFeatures$counts[4]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
+                                 McapGenomeFeatures$counts[6]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
 head(McapFeatureOverlaps) #Confirm modification
 ```
 
@@ -651,9 +653,11 @@ for (i in 1:length(McapGeneOverlaps$counts)) {
   McapFeatureOverlaps[2,i+1] <- McapCDSOverlaps[i,1]
   McapFeatureOverlaps[3,i+1] <- McapIntronsOverlaps[i,1]
   McapFeatureOverlaps[4,i+1] <- McapFlanksOverlaps[i,1]
-  McapFeatureOverlaps[5,i+1] <- McapIntergenicOverlaps[i,1]
+  McapFeatureOverlaps[5,i+1] <- McapFlanksUpstreamOverlaps[i,1]
+  McapFeatureOverlaps[6,i+1] <- McapFlanksDownstreamOverlaps[i,1]
+  McapFeatureOverlaps[7,i+1] <- McapIntergenicOverlaps[i,1]
 } #For each table with feature overlap information, paste the contents of the count column in the assigned row
-head(McapFeatureOverlaps) #Check summary table
+tail(McapFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
