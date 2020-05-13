@@ -1326,4 +1326,120 @@ mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
 #dev.off() #Turn off plotting device
 ```
 
+## Interspecies chi-squared tests
 
+The hypothesis is that the distribution of feature overlaps will be the same between species for the same methods used.
+
+#### All
+
+```{r}
+AllFeature <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
+  Species1Feature <- McapFeatureStatTest[1,i] #Variable for # feature overlap for Species 1
+  Species2Feature <- PactFeatureStatTest[1,i] #Variable for # feature overlap for Species 2
+  Species1NotFeature <- sum(McapFeatureStatTest[1,-i]) #Variable for # other feature overlaps for Species 1
+  Species2NotFeature <- sum(PactFeatureStatTest[1,-i]) #Variable for # other feature overlaps for Species 2
+  ct <- matrix(c(Species1Feature,Species2Feature,Species1NotFeature,Species2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$Feature <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature overlap to results
+  AllFeature <- rbind(AllFeature, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+AllFeature$p.adj <- p.adjust(AllFeature$p.value, method = "fdr") #Correct p-value using FDR
+AllFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+head(AllFeature) #Confirm changes
+```
+
+#### WGBS
+
+```{r}
+WGBSFeature <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
+  Species1Feature <- McapFeatureStatTest[2,i] #Variable for # feature overlap for Species 1
+  Species2Feature <- PactFeatureStatTest[2,i] #Variable for # feature overlap for Species 2
+  Species1NotFeature <- sum(McapFeatureStatTest[2,-i]) #Variable for # other feature overlaps for Species 1
+  Species2NotFeature <- sum(PactFeatureStatTest[2,-i]) #Variable for # other feature overlaps for Species 2
+  ct <- matrix(c(Species1Feature,Species2Feature,Species1NotFeature,Species2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$Feature <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature overlap to results
+  WGBSFeature <- rbind(WGBSFeature, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+WGBSFeature$p.adj <- p.adjust(WGBSFeature$p.value, method = "fdr") #Correct p-value using FDR
+WGBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+head(WGBSFeature) #Confirm changes
+```
+
+#### RRBS
+
+```{r}
+RRBSFeature <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
+  Species1Feature <- McapFeatureStatTest[3,i] #Variable for # feature overlap for Species 1
+  Species2Feature <- PactFeatureStatTest[3,i] #Variable for # feature overlap for Species 2
+  Species1NotFeature <- sum(McapFeatureStatTest[3,-i]) #Variable for # other feature overlaps for Species 1
+  Species2NotFeature <- sum(PactFeatureStatTest[3,-i]) #Variable for # other feature overlaps for Species 2
+  ct <- matrix(c(Species1Feature,Species2Feature,Species1NotFeature,Species2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$Feature <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature overlap to results
+  RRBSFeature <- rbind(RRBSFeature, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+RRBSFeature$p.adj <- p.adjust(RRBSFeature$p.value, method = "fdr") #Correct p-value using FDR
+RRBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+head(RRBSFeature) #Confirm changes
+```
+
+#### MBD-BS
+
+```{r}
+MBDBSFeature <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
+  Species1Feature <- McapFeatureStatTest[4,i] #Variable for # feature overlap for Species 1
+  Species2Feature <- PactFeatureStatTest[4,i] #Variable for # feature overlap for Species 2
+  Species1NotFeature <- sum(McapFeatureStatTest[4,-i]) #Variable for # other feature overlaps for Species 1
+  Species2NotFeature <- sum(PactFeatureStatTest[4,-i]) #Variable for # other feature overlaps for Species 2
+  ct <- matrix(c(Species1Feature,Species2Feature,Species1NotFeature,Species2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$Feature <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature overlap to results
+  MBDBSFeature <- rbind(MBDBSFeature, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+MBDBSFeature$p.adj <- p.adjust(MBDBSFeature$p.value, method = "fdr") #Correct p-value using FDR
+MBDBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+head(MBDBSFeature) #Confirm changes
+```
+
+#### Save statistical test results
+
+```{r}
+InterspeciesFeatureStatResults <- rbind(AllFeature,
+                                        WGBSFeature,
+                                        RRBSFeature,
+                                        MBDBSFeature) #Combine tables
+tail(InterspeciesFeatureStatResults) #Confirm changes
+```
+
+```{r}
+write.table(InterspeciesFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Interspecies_union-Feature-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
