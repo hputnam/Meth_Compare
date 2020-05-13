@@ -444,52 +444,31 @@ head(WGBSCpGType) #Confirm changes
 #### RRBS
 
 ```{r}
-PactCpGTypeWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+RRBSCpGType <- data.frame() #Create empty dataframe to store chi-squared results
 for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
-  Method1CpG <- PactCpGTypeStatTest[1,i] #Variable for # CpG type for method 1
-  Method2CpG <- PactCpGTypeStatTest[3,i] #Variable for # CpG type for method 2
-  Method1NotCpG <- sum(PactCpGTypeStatTest[1,-i]) #Variable for # other CpG types for method 1
-  Method2NotCpG <- sum(PactCpGTypeStatTest[3,-i]) #Variable for # other CpG types for method 2
-  ct <- matrix(c(Method1CpG,Method2CpG,Method1NotCpG,Method2NotCpG), ncol = 2) #Create contingency table
+  Species1CpG <- McapCpGTypeStatTest[2,i] #Variable for # CpG type for Species 1
+  Species2CpG <- PactCpGTypeStatTest[2,i] #Variable for # CpG type for Species 2
+  Species1NotCpG <- sum(McapCpGTypeStatTest[2,-i]) #Variable for # other CpG types for Species 1
+  Species2NotCpG <- sum(PactCpGTypeStatTest[2,-i]) #Variable for # other CpG types for Species 2
+  ct <- matrix(c(Species1CpG,Species2CpG,Species1NotCpG,Species2NotCpG), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(PactCpGTypeStatTest[i])), paste0("Not", colnames(PactCpGTypeStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(PactCpGTypeStatTest)[c(1,3)])) #Assign row names: method 1, method 2
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$CpGType <- as.character(colnames(PactCpGTypeStatTest)[i]) #Add CpG type to results
-  PactCpGTypeWGMB <- rbind(PactCpGTypeWGMB, ctResults) #Add test statistics to master table
+  RRBSCpGType <- rbind(RRBSCpGType, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-PactCpGTypeWGMB$p.adj <- p.adjust(PactCpGTypeWGMB$p.value, method = "fdr") #Correct p-value using FDR
-PactCpGTypeWGMB$comparison <- rep("WGBS vs. MBDBS", times = 3) #Add methods compared
-head(PactCpGTypeWGMB) #Confirm changes
+RRBSCpGType$p.adj <- p.adjust(RRBSCpGType$p.value, method = "fdr") #Correct p-value using FDR
+RRBSCpGType$comparison <- rep("Mcap vs. Pact", times = 3) #Add methods compared
+head(RRBSCpGType) #Confirm changes
 ```
 
 #### MBD-BS
 
-```{r}
-PactCpGTypeRRMB <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
-  Method1CpG <- PactCpGTypeStatTest[2,i] #Variable for # CpG type for method 1
-  Method2CpG <- PactCpGTypeStatTest[3,i] #Variable for # CpG type for method 2
-  Method1NotCpG <- sum(PactCpGTypeStatTest[2,-i]) #Variable for # other CpG types for method 1
-  Method2NotCpG <- sum(PactCpGTypeStatTest[3,-i]) #Variable for # other CpG types for method 2
-  ct <- matrix(c(Method1CpG,Method2CpG,Method1NotCpG,Method2NotCpG), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(PactCpGTypeStatTest[i])), paste0("Not", colnames(PactCpGTypeStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(PactCpGTypeStatTest)[c(2,3)])) #Assign row names: method 1, method 2
-  print(ct) #Confirm table is correct
-  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$CpGType <- as.character(colnames(PactCpGTypeStatTest)[i]) #Add CpG type to results
-  PactCpGTypeRRMB <- rbind(PactCpGTypeRRMB, ctResults) #Add test statistics to master table
-}
-```
 
-```{r}
-PactCpGTypeRRMB$p.adj <- p.adjust(PactCpGTypeRRMB$p.value, method = "fdr") #Correct p-value using FDR
-PactCpGTypeRRMB$comparison <- rep("RRBS vs. MBDBS", times = 3) #Add methods compared
-head(PactCpGTypeRRMB) #Confirm changes
-```
 
 #### Save statistical test results
 
@@ -506,15 +485,6 @@ write.table(PactCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-
 
 
 
-```{r}
-RRBSCpGType <- chisq.test(cbind(t(McapCpGType)[,2], t(PactCpGType)[,2]))
-RRBSCpGType #The distribution of CpGs for RRBS is significantly different between species
-```
-
-```{r}
-MBDCpGType <- chisq.test(cbind(t(McapCpGType)[,3], t(PactCpGType)[,3]))
-MBDCpGType #The distribution of CpGs for MBD-BS is not significantly different between species
-```
 
 # CpG feature overlaps
 
