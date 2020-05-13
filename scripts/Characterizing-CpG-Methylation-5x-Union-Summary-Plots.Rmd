@@ -956,7 +956,7 @@ mtext(side = 2, "% Unmethylated", line = 3, cex = 1.5) #Add y-axis label
 
 ```{r}
 PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
-PactGenomeFeatures <- PactGenomeFeatures[-6,] #Remove final row
+PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
 tail(PactGenomeFeatures) #Check import
 ```
 
@@ -1050,6 +1050,181 @@ tail(PactFeatureOverlaps) #Check summary table
 write.table(PactFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+### Conduct chi-squared tests of homogeneity
+
+```{r}
+PactFeatureStatTest <- data.frame(t(PactFeatureOverlaps[-c(1,4),c(1,13,9,5)])) #Separate out count data for statistical testing. Remove gene and total flank information. Transpose and save as dataframe so methods are row names
+head(PactFeatureStatTest) #Confirm changes
+```
+
+#### All vs. WGBS
+
+```{r}
+PactFeatureAllWG <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  AllFeature <- PactFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- PactFeatureStatTest[2,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(PactFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(PactFeatureStatTest[2,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(1,2)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureAllWG <- rbind(PactFeatureAllWG, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureAllWG$p.adj <- p.adjust(PactFeatureAllWG$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureAllWG$comparison <- rep("All vs. WGBS", times = 5) #Add methods compared
+head(PactFeatureAllWG) #Confirm changes
+```
+
+#### All vs. RRBS
+
+```{r}
+PactFeatureAllRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  AllFeature <- PactFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- PactFeatureStatTest[3,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(PactFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(PactFeatureStatTest[3,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(1,3)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureAllRR <- rbind(PactFeatureAllRR, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureAllRR$p.adj <- p.adjust(PactFeatureAllRR$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureAllRR$comparison <- rep("All vs. RRBS", times = 5) #Add methods compared
+head(PactFeatureAllRR) #Confirm changes
+```
+
+#### All vs. MBD-BS
+
+```{r}
+PactFeatureAllMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  AllFeature <- PactFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- PactFeatureStatTest[4,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(PactFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(PactFeatureStatTest[4,-i]) #Variable for # other feature overlap with method CpGs
+  ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(1,4)])) #Assign row names: all, method
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureAllMB <- rbind(PactFeatureAllMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureAllMB$p.adj <- p.adjust(PactFeatureAllMB$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureAllMB$comparison <- rep("All vs. MBDBS", times = 5) #Add methods compared
+head(PactFeatureAllMB) #Confirm changes
+```
+
+#### WGBS vs. RRBS
+
+```{r}
+PactFeatureWGRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  Method1Feature <- PactFeatureStatTest[2,i] #Variable for # feature for method 1
+  Method2Feature <- PactFeatureStatTest[3,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(PactFeatureStatTest[2,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(PactFeatureStatTest[3,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(2,3)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureWGRR <- rbind(PactFeatureWGRR, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureWGRR$p.adj <- p.adjust(PactFeatureWGRR$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods compared
+head(PactFeatureWGRR) #Confirm changes
+```
+
+#### WGBS vs. MBD-BS
+
+```{r}
+PactFeatureWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  Method1Feature <- PactFeatureStatTest[2,i] #Variable for # feature for method 1
+  Method2Feature <- PactFeatureStatTest[4,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(PactFeatureStatTest[2,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(PactFeatureStatTest[4,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(2,4)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureWGMB <- rbind(PactFeatureWGMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureWGMB$p.adj <- p.adjust(PactFeatureWGMB$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureWGMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
+head(PactFeatureWGMB) #Confirm changes
+```
+
+#### RRBS vs. MBD-BS
+
+```{r}
+PactFeatureRRMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactFeatureStatTest)) { #For each feature
+  Method1Feature <- PactFeatureStatTest[3,i] #Variable for # feature for method 1
+  Method2Feature <- PactFeatureStatTest[4,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(PactFeatureStatTest[3,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(PactFeatureStatTest[4,-i]) #Variable for # other feature for method 2
+  ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactFeatureStatTest[i])), paste0("Not", colnames(PactFeatureStatTest[i]))) #Assign column names: feature, not feature
+  rownames(ct) <- c(as.character(row.names(PactFeatureStatTest)[c(3,4)])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$FeatureType <- as.character(colnames(PactFeatureStatTest)[i]) #Add feature to results
+  PactFeatureRRMB <- rbind(PactFeatureRRMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+PactFeatureRRMB$p.adj <- p.adjust(PactFeatureRRMB$p.value, method = "fdr") #Correct p-value using FDR
+PactFeatureRRMB$comparison <- rep("RRBS vs. MBDBS", times = 5) #Add methods compared
+head(PactFeatureRRMB) #Confirm changes
+```
+
+#### Save statistical test results
+
+```{r}
+PactFeatureStatResults <- rbind(PactFeatureAllWG,
+                                PactFeatureAllRR,
+                                PactFeatureAllMB,
+                                PactFeatureWGRR,
+                                PactFeatureWGMB,
+                                PactFeatureRRMB) #Combine tables
+tail(PactFeatureStatResults) #Confirm changes
+```
+
+```{r}
+write.table(PactFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
+### Create plot
+
 ```{r}
 PactFeatureOverlapsPercents <- PactFeatureOverlaps[-1,] #Duplicate dataframe but remove gene row
 for (i in 1:length(PactFeatureOverlaps)) {
@@ -1061,40 +1236,6 @@ head(PactFeatureOverlapsPercents) #Check calculations
 ```{r}
 write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
-
-### Conduct chi-squared tests of homogeneity
-
-```{r}
-PactFeatureAllWG <- chisq.test(PactFeatureOverlaps[,c(1,13)]) #All CpGs vs. WGBS
-PactFeatureAllWG #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-PactFeatureAllRR <- chisq.test(PactFeatureOverlaps[,c(1,9)]) #All CpGs vs. RRBS
-PactFeatureAllRR #The distribution of CpGs in genome features is not significantly different between all CpGs and RRBS
-```
-
-```{r}
-PactFeatureAllMB <- chisq.test(PactFeatureOverlaps[,c(1,5)]) #All CpGs vs. MBDBS
-PactFeatureAllMB #The distribution of CpGs in genome features is not significantly different between all CpGs and WGBS
-```
-
-```{r}
-PactFeatureWGRR <- chisq.test(PactFeatureOverlaps[,c(13, 9)]) #WGBS vs. RRBS
-PactFeatureWGRR #The distribution of CpGs is not sginificantly different between WGBS and RRBS
-```
-
-```{r}
-PactFeatureWGMB <- chisq.test(PactFeatureOverlaps[,c(13, 5),]) #WGBS vs. MBD-BSSeq
-PactFeatureWGMB #The distribution of CpGs is sginificantly different between WGBS and MBD-BSSeq
-```
-
-```{r}
-PactFeatureRRMB <- chisq.test(PactFeatureOverlaps[,c(9, 5)]) #RRBS vs. MBD-BSSeq
-PactFeatureRRMB #The distribution of CpGs is not significantly different between RRBS vs. MBD-BSSeq
-```
-
-### Create plot
 
 #### All data
 
