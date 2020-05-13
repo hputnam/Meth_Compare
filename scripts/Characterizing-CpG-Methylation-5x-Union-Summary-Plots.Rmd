@@ -468,23 +468,41 @@ head(RRBSCpGType) #Confirm changes
 
 #### MBD-BS
 
+```{r}
+MBDBSCpGType <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
+  Species1CpG <- McapCpGTypeStatTest[3,i] #Variable for # CpG type for Species 1
+  Species2CpG <- PactCpGTypeStatTest[3,i] #Variable for # CpG type for Species 2
+  Species1NotCpG <- sum(McapCpGTypeStatTest[3,-i]) #Variable for # other CpG types for Species 1
+  Species2NotCpG <- sum(PactCpGTypeStatTest[3,-i]) #Variable for # other CpG types for Species 2
+  ct <- matrix(c(Species1CpG,Species2CpG,Species1NotCpG,Species2NotCpG), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(PactCpGTypeStatTest[i])), paste0("Not", colnames(PactCpGTypeStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c("Mcap", "Pact") #Assign row names: Species 1, Species 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$CpGType <- as.character(colnames(PactCpGTypeStatTest)[i]) #Add CpG type to results
+  MBDBSCpGType <- rbind(MBDBSCpGType, ctResults) #Add test statistics to master table
+}
+```
 
+```{r}
+MBDBSCpGType$p.adj <- p.adjust(MBDBSCpGType$p.value, method = "fdr") #CoMBDect p-value using FDR
+MBDBSCpGType$comparison <- rep("Mcap vs. Pact", times = 3) #Add methods compared
+head(MBDBSCpGType) #Confirm changes
+```
 
 #### Save statistical test results
 
 ```{r}
-PactCpGTypeStatResults <- rbind(PactCpGTypeWGRR,
-                                PactCpGTypeWGMB,
-                                PactCpGTypeRRMB) #Combine tables
-tail(PactCpGTypeStatResults) #Confirm changes
+InterspeciesCpGTypeStatResults <- rbind(WGBSCpGType,
+                                        RRBSCpGType,
+                                        MBDBSCpGType) #Combine tables
+tail(InterspeciesCpGTypeStatResults) #Confirm changes
 ```
 
 ```{r}
-write.table(PactCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+write.table(InterspeciesCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Interspecies_union-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
-
-
-
 
 # CpG feature overlaps
 
