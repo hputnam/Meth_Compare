@@ -745,3 +745,4 @@ analyses/Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanksDownstream
 analyses/Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanksDownstream
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Upstream-Overlaps.txt
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Downstream-Overlaps.txt
+analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Flanks-Upstream-Overlaps.txt
