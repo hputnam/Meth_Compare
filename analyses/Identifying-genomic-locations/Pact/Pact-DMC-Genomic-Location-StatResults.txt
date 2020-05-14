@@ -1,0 +1,16 @@
+statistic p.value parameter method FeatureType p.adj comparison
+2742.05021327074 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 All vs. RvM
+331.849017448188 3.8025264769653e-74 1 Pearson's Chi-squared test with Yates' continuity correction Introns 3.8025264769653e-74 All vs. RvM
+1366.73874859294 3.55002791972228e-299 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 4.43753489965285e-299 All vs. RvM
+4750.08623846128 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 All vs. RvM
+14714.9980234829 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 All vs. RvM
+3479.88788619422 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 All vs. WvM
+1145.02217792789 5.41686337843296e-251 1 Pearson's Chi-squared test with Yates' continuity correction Introns 5.41686337843296e-251 All vs. WvM
+4673.01377447664 0 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 0 All vs. WvM
+13431.2309775212 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 All vs. WvM
+55183.8517086487 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 All vs. WvM
+69.8466865559912 6.40976808705783e-17 1 Pearson's Chi-squared test with Yates' continuity correction CDS 1.06829468117631e-16 RvM vs. WvM
+15.3482537819026 8.94035214559193e-05 1 Pearson's Chi-squared test with Yates' continuity correction Introns 8.94035214559193e-05 RvM vs. WvM
+77.8884373278485 1.09027740528708e-18 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 2.7256935132177e-18 RvM vs. WvM
+58.2513073485706 2.30683629900073e-14 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 2.88354537375091e-14 RvM vs. WvM
+317.445856008263 5.2150198665579e-71 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 2.60750993327895e-70 RvM vs. WvM
