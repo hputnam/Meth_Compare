@@ -34,6 +34,12 @@ sessionInfo()
 ### Import line counts
 
 ```{r}
+PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
+tail(PactGenomeFeatures) #Check import
+```
+
+```{r}
 PactDMCGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 PactDMCGeneOverlaps <- PactDMCGeneOverlaps[-3,] #Remove final row
 tail(PactDMCGeneOverlaps) #Confirm import
@@ -52,9 +58,21 @@ tail(PactDMCIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-PactDMCFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactDMCFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
 PactDMCFlanksOverlaps <- PactDMCFlanksOverlaps[-3,] #Remove final row
 tail(PactDMCFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
+PactDMCUpstreamOverlaps <- PactDMCUpstreamOverlaps[-3,] #Remove final row
+tail(PactDMCUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
+PactDMCDownstreamOverlaps <- PactDMCDownstreamOverlaps[-3,] #Remove final row
+tail(PactDMCDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
@@ -70,11 +88,13 @@ PactDMCFeatureOverlaps <- cbind(PactDMCGeneOverlaps,
                                 PactDMCCDSOverlaps,
                                 PactDMCIntronsOverlaps,
                                 PactDMCFlanksOverlaps,
+                                PactDMCUpstreamOverlaps,
+                                PactDMCDownstreamOverlaps,
                                 PactDMCIntergenicOverlaps) #Use cbind to combine individual dataframes
-PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
-colnames(PactDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
-row.names(PactDMCFeatureOverlaps) <- c("RvM", "WvM") #Add rownames based on original files
-PactDMCFeatureOverlaps <- data.frame(t(PactDMCFeatureOverlaps)) #Transpose dataframe
+PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+PactDMCFeatureOverlaps <- cbind(PactGenomeFeatures[,1], data.frame(t(PactDMCFeatureOverlaps))) #Transpose dataframe and add genome information
+row.names(PactDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add row names
+colnames(PactDMCFeatureOverlaps) <- c("allCpGs", "RvM", "WvM") #Add column names based on original files
 head(PactDMCFeatureOverlaps) #Confirm changes
 ```
 
