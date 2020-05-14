@@ -29,6 +29,14 @@ sessionInfo()
 
 ## Mcap
 
+### Import file counts
+
+```{r}
+McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
+tail(McapGenomeFeatures) #Check import
+```
+
 ## Pact
 
 ### Import line counts
@@ -92,9 +100,10 @@ PactDMCFeatureOverlaps <- cbind(PactDMCGeneOverlaps,
                                 PactDMCDownstreamOverlaps,
                                 PactDMCIntergenicOverlaps) #Use cbind to combine individual dataframes
 PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
-PactDMCFeatureOverlaps <- cbind(PactGenomeFeatures[,1], data.frame(t(PactDMCFeatureOverlaps))) #Transpose dataframe and add genome information
+PactDMCFeatureOverlaps <- data.frame(t(PactDMCFeatureOverlaps)) #Transpose dataframe
 row.names(PactDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add row names
-colnames(PactDMCFeatureOverlaps) <- c("allCpGs", "RvM", "WvM") #Add column names based on original files
+colnames(PactDMCFeatureOverlaps) <- c("RvM", "WvM") #Add column names based on original files
+PactDMCFeatureOverlaps$allCpGs <- PactGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
 head(PactDMCFeatureOverlaps) #Confirm changes
 ```
 
@@ -128,13 +137,13 @@ head(PactDMCFeatureStatTest) #Confirm changes
 ```{r}
 PactFeatureAllRM <- data.frame() #Create empty dataframe to store chi-squared results
 for(i in 1:ncol(PactDMCFeatureStatTest)) { #For each feature
-  AllFeature <- PactDMCFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
-  MethodFeature <- PactDMCFeatureStatTest[2,i] #Variable for # feature overlap with method CpGs
-  AllNotFeature <- sum(PactDMCFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
-  MethodNotFeature <- sum(PactDMCFeatureStatTest[2,-i]) #Variable for # other feature overlap with method CpGs
+  AllFeature <- PactDMCFeatureStatTest[3,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- PactDMCFeatureStatTest[1,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(PactDMCFeatureStatTest[3,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(PactDMCFeatureStatTest[1,-i]) #Variable for # other feature overlap with method CpGs
   ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(PactDMCFeatureStatTest[i])), paste0("Not", colnames(PactDMCFeatureStatTest[i]))) #Assign column names: feature, not feature
-  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(1,2)])) #Assign row names: all, DMC type
+  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(3,1)])) #Assign row names: all, DMC type
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$FeatureType <- as.character(colnames(PactDMCFeatureStatTest)[i]) #Add feature to results
@@ -153,13 +162,13 @@ head(PactFeatureAllRM) #Confirm changes
 ```{r}
 PactFeatureAllWM <- data.frame() #Create empty dataframe to store chi-squared results
 for(i in 1:ncol(PactDMCFeatureStatTest)) { #For each feature
-  AllFeature <- PactDMCFeatureStatTest[1,i] #Variable for # feature overlap with background CpGs
-  MethodFeature <- PactDMCFeatureStatTest[3,i] #Variable for # feature overlap with method CpGs
-  AllNotFeature <- sum(PactDMCFeatureStatTest[1,-i]) #Variable for # other feature overlap with background CpGs
-  MethodNotFeature <- sum(PactDMCFeatureStatTest[3,-i]) #Variable for # other feature overlap with method CpGs
+  AllFeature <- PactDMCFeatureStatTest[3,i] #Variable for # feature overlap with background CpGs
+  MethodFeature <- PactDMCFeatureStatTest[2,i] #Variable for # feature overlap with method CpGs
+  AllNotFeature <- sum(PactDMCFeatureStatTest[3,-i]) #Variable for # other feature overlap with background CpGs
+  MethodNotFeature <- sum(PactDMCFeatureStatTest[2,-i]) #Variable for # other feature overlap with method CpGs
   ct <- matrix(c(AllFeature,MethodFeature,AllNotFeature,MethodNotFeature), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(PactDMCFeatureStatTest[i])), paste0("Not", colnames(PactDMCFeatureStatTest[i]))) #Assign column names: feature, not feature
-  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(1,3)])) #Assign row names: all, DMC type
+  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(3,2)])) #Assign row names: all, DMC type
   print(ct) #ConfiWM table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$FeatureType <- as.character(colnames(PactDMCFeatureStatTest)[i]) #Add feature to results
@@ -178,13 +187,13 @@ head(PactFeatureAllWM) #ConfiWM changes
 ```{r}
 PactFeatureRMWM <- data.frame() #Create empty dataframe to store chi-squared results
 for(i in 1:ncol(PactDMCFeatureStatTest)) { #For each feature
-  Method1Feature <- PactDMCFeatureStatTest[2,i] #Variable for # feature for method 1
-  Method2Feature <- PactDMCFeatureStatTest[3,i] #Variable for # feature for method 2
-  Method1NotFeature <- sum(PactDMCFeatureStatTest[2,-i]) #Variable for # other feature for method 1
-  Method2NotFeature <- sum(PactDMCFeatureStatTest[3,-i]) #Variable for # other feature for method 2
+  Method1Feature <- PactDMCFeatureStatTest[1,i] #Variable for # feature for method 1
+  Method2Feature <- PactDMCFeatureStatTest[2,i] #Variable for # feature for method 2
+  Method1NotFeature <- sum(PactDMCFeatureStatTest[1,-i]) #Variable for # other feature for method 1
+  Method2NotFeature <- sum(PactDMCFeatureStatTest[2,-i]) #Variable for # other feature for method 2
   ct <- matrix(c(Method1Feature,Method2Feature,Method1NotFeature,Method2NotFeature), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(PactDMCFeatureStatTest[i])), paste0("Not", colnames(PactDMCFeatureStatTest[i]))) #Assign column names: feature, not feature
-  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(2,3)])) #Assign row names: method 1, method 2
+  rownames(ct) <- c(as.character(row.names(PactDMCFeatureStatTest)[c(1,2)])) #Assign row names: method 1, method 2
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$FeatureType <- as.character(colnames(PactDMCFeatureStatTest)[i]) #Add feature to results
@@ -202,8 +211,8 @@ head(PactFeatureRMWM) #Confirm changes
 
 ```{r}
 PactDMCFeatureStatResults <- rbind(PactFeatureAllRM,
-                                PactFeatureAllWM,
-                                PactFeatureRMWM) #Combine tables
+                                   PactFeatureAllWM,
+                                   PactFeatureRMWM) #Combine tables
 tail(PactDMCFeatureStatResults) #Confirm changes
 ```
 
@@ -236,9 +245,21 @@ tail(McapUpsetIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-McapUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
 McapUpsetFlanksOverlaps <- McapUpsetFlanksOverlaps[-9,] #Remove final row
 tail(McapUpsetFlanksOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+McapUpsetUpstreamOverlaps <- McapUpsetUpstreamOverlaps[-9,] #Remove final row
+tail(McapUpsetUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flank overlaps
+McapUpsetDownstreamOverlaps <- McapUpsetDownstreamOverlaps[-9,] #Remove final row
+tail(McapUpsetDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
@@ -254,19 +275,22 @@ McapUpsetFeatureOverlaps <- cbind(McapUpsetGeneOverlaps,
                                 McapUpsetCDSOverlaps,
                                 McapUpsetIntronsOverlaps,
                                 McapUpsetFlanksOverlaps,
+                                McapUpsetUpstreamOverlaps,
+                                McapUpsetDownstreamOverlaps,
                                 McapUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
-McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
-colnames(McapUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+colnames(McapUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add column names
 row.names(McapUpsetFeatureOverlaps) <- c("MBD",
-                                        "RRBS.MBD",
-                                        "RRBS",
-                                        "WGBS.MBD",
-                                        "WGBS.RRBS.MBD",
-                                        "WGBS.RRBS",
-                                        "WGBS",
-                                        "None") #Add rownames based on original files
+                                         "RRBS.MBD",
+                                         "RRBS",
+                                         "WGBS.MBD",
+                                         "WGBS.RRBS.MBD",
+                                         "WGBS.RRBS",
+                                         "WGBS",
+                                         "None") #Add rownames based on original files
 McapUpsetFeatureOverlaps <- data.frame(t(McapUpsetFeatureOverlaps)) #Transpose dataframe
-McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(5,6,4,2,7,3,1,8)] #Reorganize columns
+McapUpsetFeatureOverlaps$allCpGs <- McapGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(9,5,6,4,2,7,3,1,8)] #Reorganize columns
 tail(McapUpsetFeatureOverlaps) #Confirm changes
 ```
 
@@ -275,7 +299,7 @@ write.table(McapUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations
 ```
 
 ```{r}
-McapUpsetFeatureOverlapsPercents <- McapUpsetFeatureOverlaps[-1,] #Duplicate but without gene information
+McapUpsetFeatureOverlapsPercents <- McapUpsetFeatureOverlaps[-c(1,4),] #Duplicate but without gene and total flank information
 for (i in 1:length(McapUpsetFeatureOverlapsPercents)) {
   McapUpsetFeatureOverlapsPercents[,i] <- (McapUpsetFeatureOverlapsPercents[,i] / sum(McapUpsetFeatureOverlapsPercents[,i])) * 100
 } #Calculate percentages
