@@ -509,7 +509,7 @@ tail(InterspeciesCpGTypeStatResults) #Confirm changes
 write.table(InterspeciesCpGTypeStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Interspecies_union-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
 
-### Create multipanel plot
+## Create multipanel plot
 
 ```{r}
 #pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
@@ -1490,7 +1490,7 @@ tail(InterspeciesFeatureStatResults) #Confirm changes
 write.table(InterspeciesFeatureStatResults, "../analyses/Characterizing-CpG-Methylation-5x-Union/Interspecies_union-Feature-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
 
-### Create multipanel plot
+## Create multipanel plot
 
 ```{r}
 #pdf("../Output/Union-CpG-Features-Multipanel.pdf", height = 8.5, width = 11)
