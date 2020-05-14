@@ -352,9 +352,21 @@ tail(PactUpsetIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-PactUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
 PactUpsetFlanksOverlaps <- PactUpsetFlanksOverlaps[-9,] #Remove final row
 tail(PactUpsetFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+PactUpsetUpstreamOverlaps <- PactUpsetUpstreamOverlaps[-9,] #Remove final row
+tail(PactUpsetUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flank overlaps
+PactUpsetDownstreamOverlaps <- PactUpsetDownstreamOverlaps[-9,] #Remove final row
+tail(PactUpsetDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
@@ -367,22 +379,25 @@ tail(PactUpsetIntergenicOverlaps) #Confirm import
 
 ```{r}
 PactUpsetFeatureOverlaps <- cbind(PactUpsetGeneOverlaps,
-                                PactUpsetCDSOverlaps,
-                                PactUpsetIntronsOverlaps,
-                                PactUpsetFlanksOverlaps,
-                                PactUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
-PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(seq(1,10,2))] #Only keep count columns
-colnames(PactUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Intergenic") #Add column names
+                                  PactUpsetCDSOverlaps,
+                                  PactUpsetIntronsOverlaps,
+                                  PactUpsetFlanksOverlaps,
+                                  PactUpsetUpstreamOverlaps,
+                                  PactUpsetDownstreamOverlaps,
+                                  PactUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+colnames(PactUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add column names
 row.names(PactUpsetFeatureOverlaps) <- c("MBD",
-                                        "RRBS.MBD",
-                                        "RRBS",
-                                        "WGBS.MBD",
-                                        "WGBS.RRBS.MBD",
-                                        "WGBS.RRBS",
-                                        "WGBS",
-                                        "None") #Add rownames based on original files
+                                         "RRBS.MBD",
+                                         "RRBS",
+                                         "WGBS.MBD",
+                                         "WGBS.RRBS.MBD",
+                                         "WGBS.RRBS",
+                                         "WGBS",
+                                         "None") #Add rownames based on original files
 PactUpsetFeatureOverlaps <- data.frame(t(PactUpsetFeatureOverlaps)) #Transpose dataframe
-PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(5,6,4,2,7,3,1,8)] #Reorganize columns
+PactUpsetFeatureOverlaps$allCpGs <- PactGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(9,5,6,4,2,7,3,1,8)] #Reorganize columns
 tail(PactUpsetFeatureOverlaps) #Confirm changes
 ```
 
@@ -391,7 +406,7 @@ write.table(PactUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations
 ```
 
 ```{r}
-PactUpsetFeatureOverlapsPercents <- PactUpsetFeatureOverlaps[-1,] #Duplicate but without gene information
+PactUpsetFeatureOverlapsPercents <- PactUpsetFeatureOverlaps[-c(1,4),] #Duplicate but without gene and total flank information
 for (i in 1:length(PactUpsetFeatureOverlapsPercents)) {
   PactUpsetFeatureOverlapsPercents[,i] <- (PactUpsetFeatureOverlapsPercents[,i] / sum(PactUpsetFeatureOverlapsPercents[,i])) * 100
 } #Calculate percentages
