@@ -1,0 +1,220 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "5/14/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+load libraries
+```{r}
+library(data.table)
+library(ggplot2)
+library(dplyr)
+
+```
+
+read in data
+```{r}
+#data for percent genome coverage
+
+Meth1 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth1_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+Meth2 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth2_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+Meth3 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth3_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+Meth4 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth4_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+
+Meth5 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth5_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+
+Meth6 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth6_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+
+Meth7 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth7_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+Meth8 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth8_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+Meth9 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/Meth9_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+# data for saturation estimates
+
+WGBS_50 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_WGBS_50M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+WGBS_100 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_WGBS_100M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+WGBS_150 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_WGBS_150M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+WGBS_200 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_WGBS_200M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+RRBS_50 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_RRBS_50M_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+RRBS_100 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_RRBS_100M_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+RRBS_150 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_RRBS_150M_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+RRBS_200 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_RRBS_200M_R1_001_val_1_bismark_bt2_pe.collect_wgs_metrics.txt")
+
+MBD_50 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_MBD_50M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+MBD_100 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_MBD_100M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+MBD_150 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_MBD_150M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+MBD_200 <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200513/Pact_MBD_200M_R1_001_val_1_bismark_bt2_pe.deduplicated.collect_wgs_metrics.txt")
+
+
+#CpG data for samples
+
+Pact_Sample_CpG <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200514/Pact_CpG_coverage.csv")
+
+#CpG data for pooled samples
+
+Pact_pool_Sample_CpG <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200514/Pact_CpG_est_coverage.csv")
+
+```
+
+Add meta data 
+```{r}
+#data for percent genome coverage
+# add method column
+Meth1$method <- "WGBS"
+Meth2$method <- "WGBS"
+Meth3$method <- "WGBS"
+Meth4$method <- "RRBS"
+Meth5$method <- "RRBS"
+Meth6$method <- "RRBS"
+Meth7$method <- "MBD"
+Meth8$method <- "MBD"
+Meth9$method <- "MBD"
+
+# data for saturation estimates
+#add group and depth info to each dataframe
+
+WGBS_50$method <- "WGBS"
+WGBS_50$depth <- "50"
+
+WGBS_100$method <- "WGBS"
+WGBS_100$depth <- "100"
+
+WGBS_150$method <- "WGBS"
+WGBS_150$depth <- "150"
+
+WGBS_200$method <- "WGBS"
+WGBS_200$depth <- "200"
+
+RRBS_50$method <- "RRBS"
+RRBS_50$depth <- "50"
+
+RRBS_100$method <- "RRBS"
+RRBS_100$depth <- "100"
+
+RRBS_150$method <- "RRBS"
+RRBS_150$depth <- "150"
+
+RRBS_200$method <- "RRBS"
+RRBS_200$depth <- "200"
+
+MBD_50$method <- "MBD"
+MBD_50$depth <- "50"
+
+MBD_100$method <- "MBD"
+MBD_100$depth <- "100"
+
+MBD_150$method <- "MBD"
+MBD_150$depth <- "150"
+
+MBD_200$method <- "MBD"
+MBD_200$depth <- "200"
+
+# CpG data for samples
+# add method column
+for(i in 1:nrow(Pact_Sample_CpG)){
+  if(Pact_Sample_CpG$Sample[i] == "Meth_1" |Pact_Sample_CpG$Sample[i] == "Meth_2" | Pact_Sample_CpG$Sample[i] == "Meth_3"){
+    Pact_Sample_CpG$method[i] <- "WGBS"
+  }
+  if(Pact_Sample_CpG$Sample[i] == "Meth_4" |Pact_Sample_CpG$Sample[i] == "Meth_5" | Pact_Sample_CpG$Sample[i] == "Meth_6"){
+    Pact_Sample_CpG$method[i] <- "RRBS"
+  }
+  if(Pact_Sample_CpG$Sample[i] == "Meth_7" |Pact_Sample_CpG$Sample[i] == "Meth_8" | Pact_Sample_CpG$Sample[i] == "Meth_9"){
+    Pact_Sample_CpG$method[i] <- "MBD"
+  }
+}
+
+```
+
+combine sample data frames
+```{r}
+#data for percent genome coverage
+Pact_samples <- rbind(Meth1,Meth2, Meth3, Meth4, Meth5, Meth6, Meth7, Meth8, Meth9)
+
+# data for saturation estimates
+
+Pact_all <- rbind(WGBS_50, WGBS_100, WGBS_150, WGBS_200, RRBS_50, RRBS_100, RRBS_150, RRBS_200, MBD_50, MBD_100, MBD_150, MBD_200)
+
+```
+
+format for plotting
+```{r}
+#data for percent genome coverage
+#reformat to long
+Pact_samples_stacked <- tidyr::gather(Pact_samples, "coverage", "percent_genome", 13:26)
+#remove PCT_ from coverage column
+Pact_samples_stacked$coverage <- gsub("PCT_","", Pact_samples_stacked$coverage)
+#remove X from coverage column
+Pact_samples_stacked$coverage <- gsub("X","", Pact_samples_stacked$coverage)
+#make coverage a numeric class
+Pact_samples_stacked$coverage <- as.numeric(Pact_samples_stacked$coverage)
+
+
+
+# data for saturation estimates
+#reformat to long
+Pact_all_stacked <- tidyr::gather(Pact_all, "coverage", "percent_genome", 13:26)
+#remove PCT_ from coverage column
+Pact_all_stacked$coverage <- gsub("PCT_","", Pact_all_stacked$coverage)
+#remove X from coverage column
+Pact_all_stacked$coverage <- gsub("X","", Pact_all_stacked$coverage)
+#make coverage a numeric class
+Pact_all_stacked$coverage <- as.numeric(Pact_all_stacked$coverage)
+#reorder depth column and change to class factor for plotting
+Pact_all_stacked$depth <- factor(Pact_all_stacked$depth, levels = c("200", "150", "100", "50"))
+
+#CpG sample data
+#reformat to long
+Pact_Sample_CpG_stacked <- tidyr::gather(Pact_Sample_CpG, "coverage", "percent_CpG", 2:15)
+#remove X from coverage column
+Pact_Sample_CpG_stacked$coverage <- gsub("x","", Pact_Sample_CpG_stacked$coverage)
+#make coverage a numeric class
+Pact_Sample_CpG_stacked$coverage <- as.numeric(Pact_Sample_CpG_stacked$coverage)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
+Pact_Sample_CpG_stacked$percent_CpG <- (Pact_Sample_CpG_stacked$percent_CpG/9155620)
+
+#CpGs for pooled sample data
+#reformat to long
+Pact_pool_Sample_CpG_stacked <-  tidyr::gather(Pact_pool_Sample_CpG, "coverage", "percent_CpG", 3:16)
+#remove X from coverage column
+Pact_pool_Sample_CpG_stacked$coverage <- gsub("x","", Pact_pool_Sample_CpG_stacked$coverage)
+#make coverage a numeric class
+Pact_pool_Sample_CpG_stacked$coverage <- as.numeric(Pact_pool_Sample_CpG_stacked$coverage)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
+Pact_pool_Sample_CpG_stacked$percent_CpG <- (Pact_pool_Sample_CpG_stacked$percent_CpG/9155620)
+#reorder depth column and change to class factor for plotting
+Pact_pool_Sample_CpG_stacked$depth <- factor(Pact_pool_Sample_CpG_stacked$depth, levels = c("200", "150", "100", "50"))
+```
+
+plot coverage
+```{r}
+# fraction of genome covered x method
+jpeg("../../Output/GenomecovXmethod_sample_avg.jpg", width = 4, height = 3, units = "in", res = 300)
+ggplot(Pact_samples_stacked[which(Pact_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
+dev.off()
+
+#fraction of CpGs covered x method
+jpeg("../../Output/CpGcovXmethod_sample_avg.jpg", width = 4, height = 3, units = "in", res = 300)
+ggplot(Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+dev.off()
+
+# fraction of genome covered by pooled samples
+jpeg("../../Output/GenomecovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
+ggplot(Pact_all_stacked[which(Pact_all_stacked$coverage<=50),], aes(x = coverage, y= percent_genome, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ xlab("coverage (X)") + ylab("fraction of genome") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16)) + theme(strip.background =element_rect(fill="white"))
+dev.off()
+
+# fraction of CpGs covered by pooled samples
+
+jpeg("../../Output/CpGcovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
+ggplot(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage<=50),], aes(x = coverage, y= percent_CpG, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ xlab("coverage (X)") + ylab("fraction of CpGs") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16)) + theme(strip.background =element_rect(fill="white"))
+dev.off()
+```
+
