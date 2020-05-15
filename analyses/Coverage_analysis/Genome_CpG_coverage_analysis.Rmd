@@ -197,12 +197,12 @@ Pact_pool_Sample_CpG_stacked$depth <- factor(Pact_pool_Sample_CpG_stacked$depth,
 plot coverage
 ```{r}
 # fraction of genome covered x method
-jpeg("../../Output/GenomecovXmethod_sample_avg.jpg", width = 4, height = 3, units = "in", res = 300)
+jpeg("../../Output/GenomecovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
 ggplot(Pact_samples_stacked[which(Pact_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 
 #fraction of CpGs covered x method
-jpeg("../../Output/CpGcovXmethod_sample_avg.jpg", width = 4, height = 3, units = "in", res = 300)
+jpeg("../../Output/CpGcovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
 ggplot(Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 

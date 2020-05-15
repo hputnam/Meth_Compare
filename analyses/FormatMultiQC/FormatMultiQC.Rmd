@@ -10,6 +10,8 @@ load libraries
 library(data.table)
 library(gtools)
 library(ggplot2)
+library(knitr)
+library(kableExtra)
 ```
 
 read in data 
@@ -192,6 +194,55 @@ multi_bismark <- multi_bismark[mixedorder(as.character(multi_bismark$Sample)),]
 
 #write out alignments table
 write.csv(multi_bismark,"../../Output/Pact_Mcap_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+```
+
+generate simplified table for manuscript main text
+```{r}
+multi_bismark_simp <- multi_bismark[,c("Sample","Species", "Sequencing.Method","total_reads","no_alignments", "ambig_reads", "uniq_aligned_reads_no_discard", "dedup_reads")]
+
+#add raw reads column
+multi_bismark_simp <- merge(data.frame(unique(trim_multiqc[,c("Sample","Species","Sequencing.Method", "r_processed")])), multi_bismark_simp, by = c("Sample","Species","Sequencing.Method"))
+
+#order by sample no
+multi_bismark_simp <- multi_bismark_simp[mixedorder(as.character(multi_bismark_simp$Sample)),]
+
+
+#fill in RRBS cells with uniq_aligned reads
+for(i in 1:nrow(multi_bismark_simp)){
+  if(is.na(multi_bismark_simp$uniq_aligned_reads_no_discard[i])){
+    multi_bismark_simp$uniq_aligned_reads_no_discard[i] <- multi_bismark$uniq_aligned_reads[i]
+  }
+  if(is.na(multi_bismark_simp$dedup_reads[i])){
+    multi_bismark_simp$dedup_reads[i] <- multi_bismark$uniq_aligned_reads[i]
+  }
+}
+
+#convert to sci not.
+#for(i in 4:ncol(multi_bismark_simp)){
+#  multi_bismark_simp[,i] <- formatC(multi_bismark_simp[,i], format = "e", digits = 2)
+#}
+
+#put table in terms of M reads
+for(i in 4:ncol(multi_bismark_simp)){
+  multi_bismark_simp[,i] <- round((multi_bismark_simp[,i]/1000000),2)
+}
+
+#remove sample column
+multi_bismark_simp$Sample <- NULL
+
+#change MBD ... to just MBD in method column
+multi_bismark_simp$Sequencing.Method <- gsub("MBD.*", "MBD", multi_bismark_simp$Sequencing.Method)
+
+#rename columns
+colnames(multi_bismark_simp) <- c("species", "method", "raw", "trimmed", "unaligned", "ambiguously aligned", "uniquely aligned", "uniquely aligned excluding duplicates")
+
+#pretty format
+kable(multi_bismark_simp, row.names = FALSE,align='ccccccc') %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))  %>% row_spec(c(1:3,10:12), color = 'black', background = "#EDF8E9") %>% row_spec(c(4:6,13:15), color = 'black', background = "#E0E4F0") %>% row_spec(c(7:9,16:18), color = 'black', background = '#FEE5D9') %>% column_spec (1:8,border_left = T, border_right = T)  %>% column_spec(column = 1, width = "100px")
+
+
+
+
 ```
 
 ## plot different stats
