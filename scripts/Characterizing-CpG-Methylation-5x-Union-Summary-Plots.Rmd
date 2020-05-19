@@ -1539,7 +1539,7 @@ for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
 
 ```{r}
 AllFeature$p.adj <- p.adjust(AllFeature$p.value, method = "fdr") #Correct p-value using FDR
-AllFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+AllFeature$comparison <- rep("Genome", times = 5) #Add methods compared
 head(AllFeature) #Confirm changes
 ```
 
@@ -1564,7 +1564,7 @@ for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
 
 ```{r}
 WGBSFeature$p.adj <- p.adjust(WGBSFeature$p.value, method = "fdr") #Correct p-value using FDR
-WGBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+WGBSFeature$comparison <- rep("WGBS", times = 5) #Add methods compared
 head(WGBSFeature) #Confirm changes
 ```
 
@@ -1589,7 +1589,7 @@ for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
 
 ```{r}
 RRBSFeature$p.adj <- p.adjust(RRBSFeature$p.value, method = "fdr") #Correct p-value using FDR
-RRBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+RRBSFeature$comparison <- rep("RRBS", times = 5) #Add methods compared
 head(RRBSFeature) #Confirm changes
 ```
 
@@ -1614,7 +1614,7 @@ for(i in 1:ncol(PactFeatureStatTest)) { #For each feature overlap
 
 ```{r}
 MBDBSFeature$p.adj <- p.adjust(MBDBSFeature$p.value, method = "fdr") #Correct p-value using FDR
-MBDBSFeature$comparison <- rep("Mcap vs. Pact", times = 5) #Add methods compared
+MBDBSFeature$comparison <- rep("MBDBS", times = 5) #Add methods compared
 head(MBDBSFeature) #Confirm changes
 ```
 
