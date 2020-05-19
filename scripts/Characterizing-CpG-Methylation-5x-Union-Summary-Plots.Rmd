@@ -442,7 +442,7 @@ for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
 
 ```{r}
 WGBSCpGType$p.adj <- p.adjust(WGBSCpGType$p.value, method = "fdr") #Correct p-value using FDR
-WGBSCpGType$comparison <- rep("Mcap vs. Pact", times = 3) #Add methods compared
+WGBSCpGType$comparison <- rep("WGBS", times = 3) #Add methods compared
 head(WGBSCpGType) #Confirm changes
 ```
 
@@ -467,7 +467,7 @@ for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
 
 ```{r}
 RRBSCpGType$p.adj <- p.adjust(RRBSCpGType$p.value, method = "fdr") #Correct p-value using FDR
-RRBSCpGType$comparison <- rep("Mcap vs. Pact", times = 3) #Add methods compared
+RRBSCpGType$comparison <- rep("RRBS", times = 3) #Add methods compared
 head(RRBSCpGType) #Confirm changes
 ```
 
@@ -492,7 +492,7 @@ for(i in 1:ncol(PactCpGTypeStatTest)) { #For each CpG type
 
 ```{r}
 MBDBSCpGType$p.adj <- p.adjust(MBDBSCpGType$p.value, method = "fdr") #CoMBDect p-value using FDR
-MBDBSCpGType$comparison <- rep("Mcap vs. Pact", times = 3) #Add methods compared
+MBDBSCpGType$comparison <- rep("MBDBS", times = 3) #Add methods compared
 head(MBDBSCpGType) #Confirm changes
 ```
 
