@@ -1,0 +1,13 @@
+  328782 Pact_union_5x-averages-MBDBS.bedgraph-Meth.bed-paGenes
+  286913 Pact_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-paGenes
+ 2135588 Pact_union_5x-averages-MBDBS.bedgraph-unMeth.bed-paGenes
+ 2751283 Pact_union_5x-averages-MBDBS.bedgraph.bed-paGenes
+   28818 Pact_union_5x-averages-RRBS.bedgraph-Meth.bed-paGenes
+   85395 Pact_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-paGenes
+ 1359026 Pact_union_5x-averages-RRBS.bedgraph-unMeth.bed-paGenes
+ 1473239 Pact_union_5x-averages-RRBS.bedgraph.bed-paGenes
+  100847 Pact_union_5x-averages-WGBS.bedgraph-Meth.bed-paGenes
+  119765 Pact_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-paGenes
+ 2981190 Pact_union_5x-averages-WGBS.bedgraph-unMeth.bed-paGenes
+ 3201802 Pact_union_5x-averages-WGBS.bedgraph.bed-paGenes
+ 14852648 total
