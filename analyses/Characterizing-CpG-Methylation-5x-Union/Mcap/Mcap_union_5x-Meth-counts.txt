@@ -1,0 +1,4 @@
+  148321 Mcap_union_5x-averages-MBDBS.bedgraph-Meth
+  329361 Mcap_union_5x-averages-RRBS.bedgraph-Meth
+ 1350936 Mcap_union_5x-averages-WGBS.bedgraph-Meth
+ 1828618 total
