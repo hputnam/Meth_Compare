@@ -1,4 +1,0 @@
-  220277 Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth
- 1155033 Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth
-   16793 Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth
- 1392103 total
