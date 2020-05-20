@@ -1,0 +1,21 @@
+statistic p.value parameter method Feature p.adj comparison
+652988.680678312 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 Genome
+90541.8293727385 0 1 Pearson's Chi-squared test with Yates' continuity correction Introns 0 Genome
+392575.832617017 0 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 0 Genome
+352176.62915765 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 Genome
+637248.037509956 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 Genome
+555343.167121944 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 WGBS
+16.8738639367143 3.99478782786814e-05 1 Pearson's Chi-squared test with Yates' continuity correction Introns 3.99478782786814e-05 WGBS
+204912.997956535 0 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 0 WGBS
+180624.614483266 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 WGBS
+968984.684615915 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 WGBS
+445238.248466902 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 RRBS
+5534.33874090985 0 1 Pearson's Chi-squared test with Yates' continuity correction Introns 0 RRBS
+97649.9498668454 0 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 0 RRBS
+70618.0038966768 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 RRBS
+528911.309689552 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 RRBS
+106284.979825629 0 1 Pearson's Chi-squared test with Yates' continuity correction CDS 0 MBDBS
+77.5793346886052 1.27497115263699e-18 1 Pearson's Chi-squared test with Yates' continuity correction Introns 1.27497115263699e-18 MBDBS
+17943.6696929825 0 1 Pearson's Chi-squared test with Yates' continuity correction Upstream.Flanks 0 MBDBS
+15168.8482733872 0 1 Pearson's Chi-squared test with Yates' continuity correction Downstream.Flanks 0 MBDBS
+212285.407913292 0 1 Pearson's Chi-squared test with Yates' continuity correction Intergenic 0 MBDBS
