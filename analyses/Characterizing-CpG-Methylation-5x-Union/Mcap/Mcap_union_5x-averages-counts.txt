@@ -1,4 +1,4 @@
- 3981450 Mcap_union_5x-averages-MBDBS.bedgraph
- 11509837 Mcap_union_5x-averages-RRBS.bedgraph
-  153392 Mcap_union_5x-averages-WGBS.bedgraph
- 15644679 total
+  866555 Mcap_union_5x-averages-MBDBS.bedgraph
+ 3981450 Mcap_union_5x-averages-RRBS.bedgraph
+ 11509837 Mcap_union_5x-averages-WGBS.bedgraph
+ 16357842 total
