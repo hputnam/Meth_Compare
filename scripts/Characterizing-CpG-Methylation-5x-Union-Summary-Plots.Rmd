@@ -63,6 +63,8 @@ tail(McapUnMeth) #Confirm import
 ```{r}
 McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
 McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(McapCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+McapCpGType <- McapCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
 tail(McapCpGType) #Confirm table mashing
 ```
 
