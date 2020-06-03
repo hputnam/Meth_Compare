@@ -913,7 +913,7 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Strong methylation
+#High methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
@@ -928,7 +928,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
 
 #Moderate methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
@@ -947,7 +947,7 @@ for (i in 2:4) {
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Weak methylation
+#Low methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
@@ -962,7 +962,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
@@ -1380,7 +1380,7 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #pdf("../Output/Pact_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Strong methylation
+#High methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
@@ -1395,7 +1395,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
 
 #Moderate methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(11,7,3)])), 
@@ -1414,7 +1414,7 @@ for (i in 2:4) {
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Weak methylation
+#Low methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
@@ -1429,7 +1429,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
