@@ -285,7 +285,6 @@ The null hypothesis is that distributions of different CpG types is the same bet
 
 ```{r}
 PactCpGTypeStatTest <- PactCpGType[,c(2,4,6)] #Separate out count data for statistical testing
-row.names(PactCpGTypeStatTest) <- c("WGBS", "RRBS", "MBDBS") #Add row names
 head(PactCpGTypeStatTest) #Confirm changes
 ```
 
