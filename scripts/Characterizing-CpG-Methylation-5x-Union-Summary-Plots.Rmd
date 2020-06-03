@@ -86,7 +86,6 @@ The null hypothesis is that distributions of different CpG types is the same bet
 
 ```{r}
 McapCpGTypeStatTest <- McapCpGType[,c(2,4,6)] #Separate out count data for statistical testing
-row.names(McapCpGTypeStatTest) <- c("WGBS", "RRBS", "MBDBS") #Add row names
 head(McapCpGTypeStatTest) #Confirm changes
 ```
 
