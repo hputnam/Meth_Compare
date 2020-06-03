@@ -195,7 +195,7 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 
 ```{r}
 #pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
-par(mar = c(2,5,0,1), oma = c(1, 1, 0, 10)) #Change figure boundaries
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(McapCpGTypePercents), 
         col= "white", 
@@ -215,16 +215,16 @@ mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.62, y = 0.87, 
+legend(x = 0.54, y = 0.87, 
        xpd = TRUE,
-       legend = c("Strong", "Moderate", "Weak"),
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")),
        pch = 22, 
         col = "black", 
         pt.bg = c("grey20", "grey50", "grey80"),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Methylation Status", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
