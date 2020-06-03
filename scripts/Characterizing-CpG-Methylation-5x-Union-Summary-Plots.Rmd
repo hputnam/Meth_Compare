@@ -262,6 +262,8 @@ tail(PactUnMeth) #Confirm import
 ```{r}
 PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
 PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(PactCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+PactCpGType <- PactCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
 tail(PactCpGType) #Confirm table mashing
 ```
 
