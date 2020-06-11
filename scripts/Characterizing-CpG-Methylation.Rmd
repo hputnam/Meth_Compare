@@ -377,6 +377,12 @@ write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 ### Import file counts
 
 ```{r}
+PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
+tail(PactGenomeFeatures) #Check import
+```
+
+```{r}
 PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 PactGeneOverlaps <- PactGeneOverlaps[-37,] #Remove final row
 tail(PactGeneOverlaps) #Confirm import
@@ -395,7 +401,109 @@ tail(PactIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
+PactFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flanks overlaps
+PactFlanksOverlaps <- PactFlanksOverlaps[-37,] #Remove final row
+tail(PactFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
+PactFlanksUpstreamOverlaps <- PactFlanksUpstreamOverlaps[-37,] #Remove final row
+tail(PactFlanksUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
+PactFlanksDownstreamOverlaps <- PactFlanksDownstreamOverlaps[-37,] #Remove final row
+tail(PactFlanksDownstreamOverlaps) #Confirm import
+```
+
+```{r}
 PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 PactIntergenicOverlaps <- PactIntergenicOverlaps[-37,] #Remove final row
 tail(PactIntergenicOverlaps) #Confirm import
+```
+
+### Create summary table
+
+```{r}
+PactFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 7),
+                                  "Meth1Meth" = rep(0, times = 7),
+                                  "Meth1sparseMeth" = rep(0, times = 7),
+                                  "Meth1unMeth" = rep(0, times = 7),
+                                  "Meth1" = rep(0, times = 7),
+                                  "Meth2Meth" = rep(0, times = 7),
+                                  "Meth2sparseMeth" = rep(0, times = 7),
+                                  "Meth2unMeth" = rep(0, times = 7),
+                                  "Meth2" = rep(0, times = 7),
+                                  "Meth3Meth" = rep(0, times = 7),
+                                  "Meth3sparseMeth" = rep(0, times = 7),
+                                  "Meth3unMeth" = rep(0, times = 7),
+                                  "Meth3" = rep(0, times = 7),
+                                  "Meth4Meth" = rep(0, times = 7),
+                                  "Meth4sparseMeth" = rep(0, times = 7),
+                                  "Meth4unMeth" = rep(0, times = 7),
+                                  "Meth4" = rep(0, times = 7),
+                                  "Meth5Meth" = rep(0, times = 7),
+                                  "Meth5sparseMeth" = rep(0, times = 7),
+                                  "Meth5unMeth" = rep(0, times = 7),
+                                  "Meth5" = rep(0, times = 7),
+                                  "Meth6Meth" = rep(0, times = 7),
+                                  "Meth6sparseMeth" = rep(0, times = 7),
+                                  "Meth6unMeth" = rep(0, times = 7),
+                                  "Meth6" = rep(0, times = 7),
+                                  "Meth7Meth" = rep(0, times = 7),
+                                  "Meth7sparseMeth" = rep(0, times = 7),
+                                  "Meth7unMeth" = rep(0, times = 7),
+                                  "Meth7" = rep(0, times = 7),
+                                  "Meth8Meth" = rep(0, times = 7),
+                                  "Meth8sparseMeth" = rep(0, times = 7),
+                                  "Meth8unMeth" = rep(0, times = 7),
+                                  "Meth8" = rep(0, times = 7),
+                                  "Meth9Meth" = rep(0, times = 7),
+                                  "Meth9sparseMeth" = rep(0, times = 7),
+                                  "Meth9unMeth" = rep(0, times = 7),
+                                  "Meth9" = rep(0, times = 7)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(PactFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanking Regions", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
+head(PactFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+PactFeatureOverlaps$allCpGs <- c(PactGenomeFeatures$counts[5],
+                                 PactGenomeFeatures$counts[1],
+                                 PactGenomeFeatures$counts[7],
+                                 PactGenomeFeatures$counts[3],
+                                 PactGenomeFeatures$counts[4],
+                                 PactGenomeFeatures$counts[2],
+                                 PactGenomeFeatures$counts[6]) #Assign information for CG motif overlaps with genome features.
+head(PactFeatureOverlaps) #Confirm modification
+```
+
+```{r}
+for (i in 1:length(PactGeneOverlaps$counts)) {
+  PactFeatureOverlaps[1,i+1] <- PactGeneOverlaps[i,1]
+  PactFeatureOverlaps[2,i+1] <- PactCDSOverlaps[i,1]
+  PactFeatureOverlaps[3,i+1] <- PactIntronsOverlaps[i,1]
+  PactFeatureOverlaps[4,i+1] <- PactFlanksOverlaps[i,1]
+  PactFeatureOverlaps[5,i+1] <- PactFlanksUpstreamOverlaps[i,1]
+  PactFeatureOverlaps[6,i+1] <- PactFlanksDownstreamOverlaps[i,1]
+  PactFeatureOverlaps[7,i+1] <- PactIntergenicOverlaps[i,1]
+} #For each table with feature overlap information, paste the contents of the count column in the assigned row
+tail(PactFeatureOverlaps) #Check summary table
+```
+
+```{r}
+write.table(PactFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
+PactFeatureOverlapsPercents <- PactFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
+for (i in 1:length(PactFeatureOverlaps)) {
+  PactFeatureOverlapsPercents[,i] <- (PactFeatureOverlapsPercents[,i] / (sum(PactFeatureOverlapsPercents[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
+head(PactFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
