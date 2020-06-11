@@ -25,13 +25,11 @@ require(dichromat)
 sessionInfo()
 ```
 
-# Summary tables
+# CpG distribution
 
-## CpG distribution
+## Mcap
 
-### Mcap
-
-#### Import file counts
+### Import file counts
 
 ```{r}
 McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
@@ -57,7 +55,7 @@ McapUnMeth <- McapUnMeth[-10,] #Remove last row (total lines for all files)
 tail(McapUnMeth) #Confirm import
 ```
 
-#### Create summary table
+### Create summary table
 
 ```{r}
 McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
@@ -78,7 +76,7 @@ tail(McapCpGType) #Confirm calculations
 write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
-#### Reorganize data
+### Reorganize data
 
 ```{r}
 McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
@@ -98,7 +96,7 @@ barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-#### Create multipanel figure with all samples
+### Create multipanel figure with all samples
 
 ```{r}
 #pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
@@ -130,9 +128,9 @@ barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 #dev.off() #Turn off plotting device
 ```
 
-### Pact
+## Pact
 
-#### Import file counts
+### Import file counts
 
 ```{r}
 PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
@@ -158,7 +156,7 @@ PactUnMeth <- PactUnMeth[-10,] #Remove last row (total lines for all files)
 tail(PactUnMeth) #Confirm import
 ```
 
-#### Create summary table
+### Create summary table
 
 ```{r}
 PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
@@ -184,7 +182,7 @@ PactCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pa
 head(PactCpGType) #Check import
 ```
 
-#### Reorganize data
+### Reorganize data
 
 ```{r}
 PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
@@ -204,7 +202,7 @@ barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-#### Create multipanel figure with all samples
+### Create multipanel figure with all samples
 
 ```{r}
 #pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
@@ -236,11 +234,17 @@ barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 #dev.off() #Turn off plotting device
 ```
 
-## CpG overlaps
+# CpG overlaps
 
-### Mcap
+## Mcap
 
-#### Import file counts
+### Import file counts
+
+```{r}
+McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
+tail(McapGenomeFeatures) #Check import
+```
 
 ```{r}
 McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
@@ -254,120 +258,29 @@ McapCDSOverlaps <- McapCDSOverlaps[-37,] #Remove final row
 tail(McapCDSOverlaps) #Confirm import
 ```
 
-#### Create summary table
-
-```{r}
-nLines <- length(McapGeneSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  McapGeneSummary[i,1] <- McapGeneOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(McapGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  McapGeneSummary[i,2] <- McapGeneOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(McapGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  McapGeneSummary[i,3] <- McapGeneOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(McapGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  McapGeneSummary[i,4] <- McapGeneOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(McapGeneSummary) #Confirm values were added
-```
-
-```{r}
-McapGeneSummary$percentMeth <- (McapGeneSummary$Meth / McapGeneSummary$totalLines) * 100 #Calculate percent methylated
-McapGeneSummary$percentSparseMeth <- (McapGeneSummary$sparseMeth / McapGeneSummary$totalLines) * 100 #Calculate percent sparsely methylated
-McapGeneSummary$percentUnMeth <- (McapGeneSummary$unMeth / McapGeneSummary$totalLines) * 100 #Calculate percent unmethylated
-McapGeneSummary <- McapGeneSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-McapGeneSummary <- Mcap
-tail(McapGeneSummary) #Confirm calculations
-```
-
-```{r}
-write.table(McapGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Gene-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-
-
-
-
-#### Introns
-
-##### Import file counts
-
 ```{r}
 McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapIntronsOverlaps <- McapIntronsOverlaps[-37,] #Remove final row
 tail(McapIntronsOverlaps) #Confirm import
 ```
 
-##### Transfer values to summary table
-
 ```{r}
-McapIntronsSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(McapIntronsSummary) #Confirm dataframe creation
+McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+McapFlanksOverlaps <- McapFlanksOverlaps[-37,] #Remove final row
+tail(McapFlanksOverlaps) #Confirm import
 ```
 
 ```{r}
-nLines <- length(McapIntronsSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  McapIntronsSummary[i,1] <- McapIntronsOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(McapIntronsSummary) #Confirm values were added
+McapFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-37,] #Remove final row
+tail(McapFlanksUpstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-for(i in 1:nLines) {
-  McapIntronsSummary[i,2] <- McapIntronsOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(McapIntronsSummary) #Confirm values were added
+McapFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-37,] #Remove final row
+tail(McapFlanksDownstreamOverlaps) #Confirm import
 ```
-
-```{r}
-for(i in 1:nLines) {
-  McapIntronsSummary[i,3] <- McapIntronsOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(McapIntronsSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  McapIntronsSummary[i,4] <- McapIntronsOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(McapIntronsSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-McapIntronsSummary$percentMeth <- (McapIntronsSummary$Meth / McapIntronsSummary$totalLines) * 100 #Calculate percent methylated
-McapIntronsSummary$percentSparseMeth <- (McapIntronsSummary$sparseMeth / McapIntronsSummary$totalLines) * 100 #Calculate percent sparsely methylated
-McapIntronsSummary$percentUnMeth <- (McapIntronsSummary$unMeth / McapIntronsSummary$totalLines) * 100 #Calculate percent unmethylated
-McapIntronsSummary <- McapIntronsSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(McapIntronsSummary) #Confirm calculations
-```
-
-```{r}
-write.table(McapIntronsSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Introns-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-#### Intergenic regions
-
-##### Import file counts
 
 ```{r}
 McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
@@ -375,90 +288,82 @@ McapIntergenicOverlaps <- McapIntergenicOverlaps[-37,] #Remove final row
 tail(McapIntergenicOverlaps) #Confirm import
 ```
 
-##### Transfer values to summary table
+### Create summary table
 
 ```{r}
-McapIntergenicSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(McapIntergenicSummary) #Confirm dataframe creation
+McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 7),
+                                  "Meth10Meth" = rep(0, times = 7),
+                                  "Meth10sparseMeth" = rep(0, times = 7),
+                                  "Meth10unMeth" = rep(0, times = 7),
+                                  "Meth10" = rep(0, times = 7),
+                                  "Meth11Meth" = rep(0, times = 7),
+                                  "Meth11sparseMeth" = rep(0, times = 7),
+                                  "Meth11unMeth" = rep(0, times = 7),
+                                  "Meth11" = rep(0, times = 7),
+                                  "Meth12Meth" = rep(0, times = 7),
+                                  "Meth12sparseMeth" = rep(0, times = 7),
+                                  "Meth12unMeth" = rep(0, times = 7),
+                                  "Meth12" = rep(0, times = 7),
+                                  "Meth13Meth" = rep(0, times = 7),
+                                  "Meth13sparseMeth" = rep(0, times = 7),
+                                  "Meth13unMeth" = rep(0, times = 7),
+                                  "Meth13" = rep(0, times = 7),
+                                  "Meth14Meth" = rep(0, times = 7),
+                                  "Meth14sparseMeth" = rep(0, times = 7),
+                                  "Meth14unMeth" = rep(0, times = 7),
+                                  "Meth14" = rep(0, times = 7),
+                                  "Meth15Meth" = rep(0, times = 7),
+                                  "Meth15sparseMeth" = rep(0, times = 7),
+                                  "Meth15unMeth" = rep(0, times = 7),
+                                  "Meth15" = rep(0, times = 7),
+                                  "Meth16Meth" = rep(0, times = 7),
+                                  "Meth16sparseMeth" = rep(0, times = 7),
+                                  "Meth16unMeth" = rep(0, times = 7),
+                                  "Meth16" = rep(0, times = 7),
+                                  "Meth17Meth" = rep(0, times = 7),
+                                  "Meth17sparseMeth" = rep(0, times = 7),
+                                  "Meth17unMeth" = rep(0, times = 7),
+                                  "Meth17" = rep(0, times = 7),
+                                  "Meth18Meth" = rep(0, times = 7),
+                                  "Meth18sparseMeth" = rep(0, times = 7),
+                                  "Meth18unMeth" = rep(0, times = 7),
+                                  "Meth18" = rep(0, times = 7)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanking Regions", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
+head(McapFeatureOverlaps) #Confirm changes
 ```
 
 ```{r}
-nLines <- length(McapIntergenicSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  McapIntergenicSummary[i,1] <- McapIntergenicOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(McapIntergenicSummary) #Confirm values were added
+McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[5],
+                                 McapGenomeFeatures$counts[1],
+                                 McapGenomeFeatures$counts[7],
+                                 McapGenomeFeatures$counts[3],
+                                 McapGenomeFeatures$counts[4],
+                                 McapGenomeFeatures$counts[2],
+                                 McapGenomeFeatures$counts[6]) #Assign information for CG motif overlaps with genome features.
+head(McapFeatureOverlaps) #Confirm modification
 ```
 
 ```{r}
-for(i in 1:nLines) {
-  McapIntergenicSummary[i,2] <- McapIntergenicOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(McapIntergenicSummary) #Confirm values were added
+for (i in 1:length(McapGeneOverlaps$counts)) {
+  McapFeatureOverlaps[1,i+1] <- McapGeneOverlaps[i,1]
+  McapFeatureOverlaps[2,i+1] <- McapCDSOverlaps[i,1]
+  McapFeatureOverlaps[3,i+1] <- McapIntronsOverlaps[i,1]
+  McapFeatureOverlaps[4,i+1] <- McapFlanksOverlaps[i,1]
+  McapFeatureOverlaps[5,i+1] <- McapFlanksUpstreamOverlaps[i,1]
+  McapFeatureOverlaps[6,i+1] <- McapFlanksDownstreamOverlaps[i,1]
+  McapFeatureOverlaps[7,i+1] <- McapIntergenicOverlaps[i,1]
+} #For each table with feature overlap information, paste the contents of the count column in the assigned row
+tail(McapFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
-for(i in 1:nLines) {
-  McapIntergenicSummary[i,3] <- McapIntergenicOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(McapIntergenicSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  McapIntergenicSummary[i,4] <- McapIntergenicOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(McapIntergenicSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-McapIntergenicSummary$percentMeth <- (McapIntergenicSummary$Meth / McapIntergenicSummary$totalLines) * 100 #Calculate percent methylated
-McapIntergenicSummary$percentSparseMeth <- (McapIntergenicSummary$sparseMeth / McapIntergenicSummary$totalLines) * 100 #Calculate percent sparsely methylated
-McapIntergenicSummary$percentUnMeth <- (McapIntergenicSummary$unMeth / McapIntergenicSummary$totalLines) * 100 #Calculate percent unmethylated
-McapIntergenicSummary <- McapIntergenicSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(McapIntergenicSummary) #Confirm calculations
-```
-
-```{r}
-write.table(McapIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-Intergenic-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 
+## Pact
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Pact
-
-#### Genes
-
-##### Import file counts
+### Import file counts
 
 ```{r}
 PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
@@ -466,125 +371,11 @@ PactGeneOverlaps <- PactGeneOverlaps[-37,] #Remove final row
 tail(PactGeneOverlaps) #Confirm import
 ```
 
-##### Transfer values to summary table
-
-```{r}
-PactGeneSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(PactGeneSummary) #Confirm dataframe creation
-```
-
-```{r}
-nLines <- length(PactGeneSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  PactGeneSummary[i,1] <- PactGeneOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(PactGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactGeneSummary[i,2] <- PactGeneOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(PactGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactGeneSummary[i,3] <- PactGeneOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(PactGeneSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactGeneSummary[i,4] <- PactGeneOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(PactGeneSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-PactGeneSummary$percentMeth <- (PactGeneSummary$Meth / PactGeneSummary$totalLines) * 100 #Calculate percent methylated
-PactGeneSummary$percentSparseMeth <- (PactGeneSummary$sparseMeth / PactGeneSummary$totalLines) * 100 #Calculate percent sparsely methylated
-PactGeneSummary$percentUnMeth <- (PactGeneSummary$unMeth / PactGeneSummary$totalLines) * 100 #Calculate percent unmethylated
-PactGeneSummary <- PactGeneSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(PactGeneSummary) #Confirm calculations
-```
-
-```{r}
-write.table(PactGeneSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Gene-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-#### CDS
-
-##### Import file counts
-
 ```{r}
 PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
 PactCDSOverlaps <- PactCDSOverlaps[-37,] #Remove final row
 tail(PactCDSOverlaps) #Confirm import
 ```
-
-##### Transfer values to summary table
-
-```{r}
-PactCDSSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(PactCDSSummary) #Confirm dataframe creation
-```
-
-```{r}
-nLines <- length(PactCDSSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  PactCDSSummary[i,1] <- PactCDSOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(PactCDSSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactCDSSummary[i,2] <- PactCDSOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(PactCDSSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactCDSSummary[i,3] <- PactCDSOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(PactCDSSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactCDSSummary[i,4] <- PactCDSOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(PactCDSSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-PactCDSSummary$percentMeth <- (PactCDSSummary$Meth / PactCDSSummary$totalLines) * 100 #Calculate percent methylated
-PactCDSSummary$percentSparseMeth <- (PactCDSSummary$sparseMeth / PactCDSSummary$totalLines) * 100 #Calculate percent sparsely methylated
-PactCDSSummary$percentUnMeth <- (PactCDSSummary$unMeth / PactCDSSummary$totalLines) * 100 #Calculate percent unmethylated
-PactCDSSummary <- PactCDSSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(PactCDSSummary) #Confirm calculations
-```
-
-```{r}
-write.table(PactCDSSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CDS-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-#### Introns
-
-##### Import file counts
 
 ```{r}
 PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
@@ -592,119 +383,8 @@ PactIntronsOverlaps <- PactIntronsOverlaps[-37,] #Remove final row
 tail(PactIntronsOverlaps) #Confirm import
 ```
 
-##### Transfer values to summary table
-
-```{r}
-PactIntronsSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(PactIntronsSummary) #Confirm dataframe creation
-```
-
-```{r}
-nLines <- length(PactIntronsSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  PactIntronsSummary[i,1] <- PactIntronsOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(PactIntronsSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntronsSummary[i,2] <- PactIntronsOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(PactIntronsSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntronsSummary[i,3] <- PactIntronsOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(PactIntronsSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntronsSummary[i,4] <- PactIntronsOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(PactIntronsSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-PactIntronsSummary$percentMeth <- (PactIntronsSummary$Meth / PactIntronsSummary$totalLines) * 100 #Calculate percent methylated
-PactIntronsSummary$percentSparseMeth <- (PactIntronsSummary$sparseMeth / PactIntronsSummary$totalLines) * 100 #Calculate percent sparsely methylated
-PactIntronsSummary$percentUnMeth <- (PactIntronsSummary$unMeth / PactIntronsSummary$totalLines) * 100 #Calculate percent unmethylated
-PactIntronsSummary <- PactIntronsSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(PactIntronsSummary) #Confirm calculations
-```
-
-```{r}
-write.table(PactIntronsSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Introns-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-#### Intergenic regions
-
-##### Import file counts
-
 ```{r}
 PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 PactIntergenicOverlaps <- PactIntergenicOverlaps[-37,] #Remove final row
 tail(PactIntergenicOverlaps) #Confirm import
 ```
-
-##### Transfer values to summary table
-
-```{r}
-PactIntergenicSummary <- data.frame("totalLines" = rep(0, times = 9),
-                              "Meth" = rep(0, times = 9),
-                              "sparseMeth" = rep(0, times = 9),
-                              "unMeth" = rep(0, times = 9)) #Create empty dataframe for final summary table
-head(PactIntergenicSummary) #Confirm dataframe creation
-```
-
-```{r}
-nLines <- length(PactIntergenicSummary$totalLines) #Count number of lines
-for(i in 1:nLines) {
-  PactIntergenicSummary[i,1] <- PactIntergenicOverlaps[i+(3*i),1]
-} #For every file with the total number of CpG with data (i + (3*i)), take the value in the first column (total lines) and save it in the first column
-head(PactIntergenicSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntergenicSummary[i,2] <- PactIntergenicOverlaps[(i+(3*i)-3),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-3), take the value in the first column (total lines) and save it in the second column
-head(PactIntergenicSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntergenicSummary[i,3] <- PactIntergenicOverlaps[(i+(3*i)-2),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-2), take the value in the first column (total lines) and save it in the third column
-head(PactIntergenicSummary) #Confirm values were added
-```
-
-```{r}
-for(i in 1:nLines) {
-  PactIntergenicSummary[i,4] <- PactIntergenicOverlaps[(i+(3*i)-1),1]
-} #For every file with the total number of CpG with data ((i + (3*i))-1), take the value in the first column (total lines) and save it in the fourth column
-head(PactIntergenicSummary) #Confirm values were added
-```
-
-##### Calculate percents
-
-```{r}
-PactIntergenicSummary$percentMeth <- (PactIntergenicSummary$Meth / PactIntergenicSummary$totalLines) * 100 #Calculate percent methylated
-PactIntergenicSummary$percentSparseMeth <- (PactIntergenicSummary$sparseMeth / PactIntergenicSummary$totalLines) * 100 #Calculate percent sparsely methylated
-PactIntergenicSummary$percentUnMeth <- (PactIntergenicSummary$unMeth / PactIntergenicSummary$totalLines) * 100 #Calculate percent unmethylated
-PactIntergenicSummary <- PactIntergenicSummary[,c(1,2,5,3,6,4,7)] #Rearrange columns
-tail(PactIntergenicSummary) #Confirm calculations
-```
-
-```{r}
-write.table(PactIntergenicSummary, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-Intergenic-Overlaps.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
