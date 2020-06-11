@@ -360,6 +360,17 @@ tail(McapFeatureOverlaps) #Check summary table
 write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+```{r}
+McapFeatureOverlapsPercents <- McapFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
+for (i in 1:length(McapFeatureOverlaps)) {
+  McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlapsPercents[,i] / (sum(McapFeatureOverlapsPercents[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
+head(McapFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
 
 ## Pact
 
