@@ -1,5 +1,5 @@
 ---
-title: "Chacterizing CpG Methylation"
+title: "Chacterizing CpG Methylation (5x Individual Samples)"
 output: html_document
 ---
 
@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I will use a list of CpGs with at least 5x coverage in any samples.
+In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I used individual samples with data for 5x CpGs in [this Jupyter notebook](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb) to identify methylation status and genomic location. I will use the output in this script.
 
 # Install packages
 
@@ -61,6 +61,7 @@ tail(McapUnMeth) #Confirm import
 
 ```{r}
 McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
+rownames(McapCpGType) <- substr(McapAll$filename, start = 1, stop = 6) #Use the first 6 characters of the filename to add sample ID as row names
 McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
 tail(McapCpGType) #Confirm table mashing
 ```
