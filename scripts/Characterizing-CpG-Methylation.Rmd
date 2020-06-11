@@ -110,6 +110,7 @@ tail(PactUnMeth) #Confirm import
 
 ```{r}
 PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
+rownames(PactCpGType) <- substr(PactAll$filename, start = 1, stop = 5) #Use the first 5 characters of the filename to add sample ID to row names
 PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
 tail(PactCpGType) #Confirm table mashing
 ```
