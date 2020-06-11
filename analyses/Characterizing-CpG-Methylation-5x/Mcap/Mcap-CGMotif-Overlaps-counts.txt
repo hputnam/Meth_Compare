@@ -1,8 +1,0 @@
- 1953206 Mcap-CGMotif-CDS-Overlaps.txt
- 1365975 Mcap-CGMotif-Flanks-Downstream-Overlaps.txt
- 2758953 Mcap-CGMotif-Flanks-Overlaps.txt
- 1505544 Mcap-CGMotif-Flanks-Upstream-Overlaps.txt
- 9450564 Mcap-CGMotif-Gene-Overlaps.txt
- 16468305 Mcap-CGMotif-Intergenic-Overlaps.txt
- 7503314 Mcap-CGMotif-Intron-Overlaps.txt
- 41005861 total
