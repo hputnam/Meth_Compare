@@ -63,6 +63,8 @@ tail(McapUnMeth) #Confirm import
 ```{r}
 McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
 McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(McapCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+McapCpGType <- McapCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
 tail(McapCpGType) #Confirm table mashing
 ```
 
@@ -84,7 +86,6 @@ The null hypothesis is that distributions of different CpG types is the same bet
 
 ```{r}
 McapCpGTypeStatTest <- McapCpGType[,c(2,4,6)] #Separate out count data for statistical testing
-row.names(McapCpGTypeStatTest) <- c("WGBS", "RRBS", "MBDBS") #Add row names
 head(McapCpGTypeStatTest) #Confirm changes
 ```
 
@@ -194,7 +195,7 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 
 ```{r}
 #pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
-par(mar = c(2,5,0,1), oma = c(1, 1, 0, 10)) #Change figure boundaries
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(McapCpGTypePercents), 
         col= "white", 
@@ -214,16 +215,16 @@ mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.62, y = 0.87, 
+legend(x = 0.54, y = 0.87, 
        xpd = TRUE,
-       legend = c("Strong", "Moderate", "Weak"),
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
        pch = 22, 
         col = "black", 
         pt.bg = c("grey20", "grey50", "grey80"),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Methylation Status", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -261,6 +262,8 @@ tail(PactUnMeth) #Confirm import
 ```{r}
 PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
 PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(PactCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+PactCpGType <- PactCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
 tail(PactCpGType) #Confirm table mashing
 ```
 
@@ -282,7 +285,6 @@ The null hypothesis is that distributions of different CpG types is the same bet
 
 ```{r}
 PactCpGTypeStatTest <- PactCpGType[,c(2,4,6)] #Separate out count data for statistical testing
-row.names(PactCpGTypeStatTest) <- c("WGBS", "RRBS", "MBDBS") #Add row names
 head(PactCpGTypeStatTest) #Confirm changes
 ```
 
@@ -383,7 +385,7 @@ head(PactCpGTypePercents) #Confirm changes
 
 ```{r}
 #pdf("../Output/Pact_union-CpG-Type.pdf", height = 8.5, width = 11)
-par(mar = c(2,5,0,1), oma = c(1, 1, 0, 10)) #Change figure boundaries
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(PactCpGTypePercents), 
         col= "white", 
@@ -403,16 +405,16 @@ mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
 
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.62, y = 0.87, 
+legend(x = 0.54, y = 0.87, 
        xpd = TRUE,
-       legend = c("Strong", "Moderate", "Weak"),
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
        pch = 22, 
         col = "black", 
         pt.bg = c("grey20", "grey50", "grey80"),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Methylation Status", x = 0.85, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -513,7 +515,7 @@ write.table(InterspeciesCpGTypeStatResults, "../analyses/Characterizing-CpG-Meth
 
 ```{r}
 #pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
-par(mar = c(1,5,1,0), oma = c(2, 1, 0, 11), mfrow = c(2,1)) #Change figure boundaries
+par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
 barplot(t(McapCpGTypePercents), 
@@ -554,16 +556,16 @@ text(expression(paste("b. ", italic("P. acuta"))), x = 0.06, y = 105, cex = 1.2,
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.62, y = 0.96, 
+legend(x = 0.57, y = 0.90, 
        xpd = TRUE,
-       legend = c("Strong", "Moderate", "Weak"),
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")),
        pch = 22, 
         col = "black", 
         pt.bg = c("grey20", "grey50", "grey80"),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Methylation Status", x = 0.85, y = 0.965, cex = 1.5) #Add legend title that is aligned with legend
+text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
 
 #dev.off() #Turn off plotting device
 ```
@@ -911,7 +913,7 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Strong methylation
+#High methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
@@ -926,7 +928,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
 
 #Moderate methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
@@ -945,7 +947,7 @@ for (i in 2:4) {
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Weak methylation
+#Low methylation
 barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
@@ -960,7 +962,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
@@ -1378,7 +1380,7 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #pdf("../Output/Pact_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
-#Strong methylation
+#High methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(10,6,2)])), 
         col= "white", 
         axes = FALSE, 
@@ -1393,7 +1395,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Strong", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
 
 #Moderate methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(11,7,3)])), 
@@ -1412,7 +1414,7 @@ for (i in 2:4) {
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 
-#Weak methylation
+#Low methylation
 barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
@@ -1427,7 +1429,7 @@ for (i in 2:4) {
 } #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% Weak", line = 3, cex = 1.5) #Add y-axis label
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
