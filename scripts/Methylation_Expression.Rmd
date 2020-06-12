@@ -1,0 +1,126 @@
+---
+title: "Methylation_Expression.Rmd"
+author: "HM Putnam"
+date: "5/16/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load libraries
+library(tidyverse)
+```
+
+```{bash}
+
+multiIntersectBed -i \
+data/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab \
+data/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab \
+data/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab \
+> data/Pact_tab/Pact.WGBS.5x.bed
+
+#Use intersectBed to find where loci and genes intersect, allowing loci to be mapped to annotated genes
+#wb: Print all lines in the second file
+#a: file that ends in posOnly
+#b: annotated gene list
+#Save output in a new file that has the same base name and ends in _gene
+for f in "Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab" "Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab" "Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab"
+do
+  intersectBed \
+  -wb \
+  -a data/Pact_tab/${f} \
+  -b genome-feature-files/Pact.GFFannotation.Genes.gff \
+  > data/Pact_tab/${f}_gene
+done
+ 
+#intersect with file to subset only those positions found in all samples
+for f in "Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab_gene" "Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab_gene" "Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab_gene"
+do
+  intersectBed \
+  -a data/Pact_tab/${f} \
+  -b data/Pact_tab/Pact.WGBS.5x.bed  \
+  > data/Pact_tab/${f}_CpG_gene.WGBS.bed
+done
+
+wc -l data/Pact_tab/*_CpG_gene.WGBS.bed
+
+```
+
+```{r}
+#Read in gene gffs
+Mcap <- read.table("genome-feature-files/Mcap.GFFannotation.gene.gff", sep = "\t",  header = FALSE)
+colnames(Mcap) <- c("scaffold", "caller", "feature", "start", "stop","val1","val2","val3", "gene.id")
+
+Pact <- read.table("genome-feature-files/Pact.GFFannotation.Genes.gff", sep = "\t",  header = FALSE)
+colnames(Pact) <- c("scaffold", "caller", "feature", "start", "stop","val1","val2","val3", "gene.id")
+
+#read in the 5x coverage of CpG 
+Pact.1 <- read.table("data/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+colnames(Pact.1) <- c("scaffold", "start", "stop", "per.meth", "meth", "unmeth")
+Pact.1$group <- paste0(Pact.1$scaffold,"-",Pact.1$start, "-",Pact.1$stop)
+head(Pact.1)
+str(Pact.1)
+
+Pact.2 <- read.table("data/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+colnames(Pact.2) <- c("scaffold", "start", "stop", "per.meth", "meth", "unmeth")
+Pact.2$group <- paste0(Pact.2$scaffold,"-",Pact.2$start, "-",Pact.2$stop)
+head(Pact.2)
+str(Pact.2)
+
+Pact.3 <- read.table("data/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+colnames(Pact.3) <- c("scaffold", "start", "stop", "per.meth", "meth", "unmeth")
+Pact.3$group <- paste0(Pact.3$scaffold,"-",Pact.3$start, "-",Pact.3$stop)
+head(Pact.3)
+str(Pact.3)
+
+Pact.WGBS <- full_join(Pact.1,Pact.2, by ="group")
+Pact.WGBS <- full_join(Pact.WGBS,Pact.3, by ="group")
+Pact.WGBS.data <- Pact.WGBS %>%
+  select(group,per.meth.x, per.meth.y, per.meth)
+head(Pact.WGBS.data)
+str(Pact.WGBS.data)
+  
+  
+```
+
+```{bash}
+
+multiIntersectBed -i \
+data/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab \
+data/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab \
+data/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab \
+> data/Pact_tab/Pact.WGBS.5x.bed
+
+#Use intersectBed to find where loci and genes intersect, allowing loci to be mapped to annotated genes
+#wb: Print all lines in the second file
+#a: file that ends in posOnly
+#b: annotated gene list
+#Save output in a new file that has the same base name and ends in _gene
+for f in "Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab" "Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab" "Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab"
+do
+  intersectBed \
+  -wb \
+  -a data/Pact_tab/${f} \
+  -b genome-feature-files/Pact.GFFannotation.Genes.gff \
+  > data/Pact_tab/${f}_gene
+done
+ 
+#intersect with file to subset only those positions found in all samples
+for f in "Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab_gene" "Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab_gene" "Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab_gene"
+do
+  intersectBed \
+  -a data/Pact_tab/${f} \
+  -b data/Pact_tab/Pact.WGBS.5x.bed  \
+  > data/Pact_tab/${f}_CpG_gene.WGBS.bed
+done
+
+wc -l data/Pact_tab/*_CpG_gene.WGBS.bed
+
+
+
+
+
+```
