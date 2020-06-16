@@ -738,6 +738,3 @@ PactRRMBANOSIM$signif #Differences are not significant
 plot.anosim(PactRRMBANOSIM)
 ```
 
-
-
-
