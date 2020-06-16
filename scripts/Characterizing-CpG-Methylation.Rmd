@@ -546,6 +546,30 @@ tail(McapCpGMultiTrans) # Confirm transformation
 nmds.scree(McapCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. Using 2 axes is appropriate.
 ```
 
+```{r}
+McapMasterNMDS <- metaMDS(McapCpGMultiTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
+McapMasterNMDS$stress #May have insufficient data since stress is close to 0
+```
+
+```{r}
+nmds.monte(McapCpGMultiTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value, 0.0000703346, is less than the expected stress value. P-value = 0.0198019802
+stressplot(McapMasterNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
+```
+
+```{r}
+vec.McapMasterNMDS <- envfit(McapMasterNMDS$points, McapCpGMultiTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.McapMasterNMDS #Look at loadings
+```
+
+```{r}
+ordiplot(McapMasterNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.McapMasterNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
+```
+
+```{r}
+McapMasterNMDS$points #Methods appear to overlap with eachother
+```
+
 ### ANOSIM
 
 #### Format data
