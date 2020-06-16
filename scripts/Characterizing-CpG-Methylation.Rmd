@@ -12,11 +12,23 @@ In this script, I'll create summary tables and figures to characterize CpG methy
 # Install packages
 
 ```{r}
-#install.packages("RColorBrewer")
-require(RColorBrewer) #Load RColorBrewer
+#install.packages("RColorBrewer") #Use for color palletes
+#install.packages("dichromat") #Discern color blind accessibility of figures
+#install.packages("compositions") #Compositional data analysis package
+#install.packages("vegan") #Multivariate analysis package
+#install.packages("cluster") #Multivariate analysis package
+```
 
-#install.packages("dichromat")
+```{r}
+require(RColorBrewer) 
 require(dichromat)
+require(compositions)
+require(vegan)
+require(cluster)
+```
+
+```{r}
+source("biostats.R") #Multivariate analysis source script
 ```
 
 # Session information
@@ -507,3 +519,24 @@ head(PactFeatureOverlapsPercents) #Check calculations
 ```{r}
 write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
+
+# Multivariate data analysis with compositional data
+
+We are interested in how sequencing method affects the proportion, or composition, of CpGs in various methylation statuses and genomic features. For this reason, I will use a combined compositional analysis and multivariate approach. For each sample, I will have separate columns for each methylation status and genomic feature. I will not use the genomic feature proportion data that considers methylation status (will keep variables separate).
+
+## Mcap
+
+### Format data
+
+```{r}
+head(McapCpGTypePercents)
+```
+
+```{r}
+McapCpGMultiMaster <- cbind(McapCpGTypePercents,
+                            data.frame(t(McapFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
+head(McapCpGMultiMaster) #Confirm dataframe creation
+```
+
+
+
