@@ -529,14 +529,89 @@ We are interested in how sequencing method affects the proportion, or compositio
 ### Format data
 
 ```{r}
-head(McapCpGTypePercents)
-```
-
-```{r}
 McapCpGMultiMaster <- cbind(McapCpGTypePercents,
                             data.frame(t(McapFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
 head(McapCpGMultiMaster) #Confirm dataframe creation
 ```
+
+```{r}
+McapCpGMultiTrans <- data.frame(clr(McapCpGMultiMaster)) #Use centered log-ratio transformation
+#McapCpGMultiTrans <- data.trans(McapCpGMultiMaster, method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
+tail(McapCpGMultiTrans) # Confirm transformation
+```
+
+### Conduct NMDS
+
+```{r}
+nmds.scree(McapCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions. Using 2 axes is appropriate.
+```
+
+### ANOSIM
+
+#### Format data
+
+```{r}
+dissimMcapCpGMultiTrans <- vegdist(McapCpGMultiTrans, "euclidean") #Calculate euclidean dissimilarity matrix
+```
+
+```{r}
+ANOSIMReplicates <- c(rep("WGBS", times = 3),
+                      rep("RRBS", times = 3),
+                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+#### Global test
+
+```{r}
+methodANOSIM <- anosim(dissimMcapCpGMultiTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+methodANOSIM$statistic #Within group and between group similarities are different for each sequencing method
+methodANOSIM$signif #Differences are significant
+plot.anosim(methodANOSIM) #Obtain boxplot of between and within group similarities
+```
+
+#### Pairwise ANOSIM
+
+##### WGBS vs. RRBS
+
+```{r}
+dataWGRR <- vegdist(McapCpGMultiTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
+```
+
+```{r}
+WGRRANOSIM <- anosim(dataWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+WGRRANOSIM$statistic
+WGRRANOSIM$signif #Differences are not significant
+plot.anosim(WGRRANOSIM)
+```
+
+##### WGBS vs. MBD-BS
+
+```{r}
+dataWGMB <- vegdist(McapCpGMultiTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+WGMBANOSIM <- anosim(dataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+WGMBANOSIM$statistic
+WGMBANOSIM$signif #Differences are not significant
+plot.anosim(WGMBANOSIM)
+```
+
+##### RRBS vs. MBD-BS
+
+```{r}
+dataRRMB <- vegdist(McapCpGMultiTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+RRMBANOSIM <- anosim(dataRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+RRMBANOSIM$statistic
+RRMBANOSIM$signif #Differences are not significant
+plot.anosim(RRMBANOSIM)
+```
+
+
+
 
 
 
