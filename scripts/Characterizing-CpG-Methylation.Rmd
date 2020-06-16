@@ -1,6 +1,6 @@
 ---
 title: "Chacterizing CpG Methylation (5x Individual Samples)"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -543,7 +543,7 @@ tail(McapCpGMultiTrans) # Confirm transformation
 ### Conduct NMDS
 
 ```{r}
-nmds.scree(McapCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+#nmds.scree(McapCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
 ```
 
 ```{r}
@@ -653,7 +653,7 @@ tail(PactCpGMultiTrans) # Confirm transformation
 ### Conduct NMDS
 
 ```{r}
-nmds.scree(PactCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+#nmds.scree(PactCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
 ```
 
 ```{r}
