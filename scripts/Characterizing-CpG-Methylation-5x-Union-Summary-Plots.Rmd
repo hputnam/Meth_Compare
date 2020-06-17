@@ -408,11 +408,11 @@ write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methyla
 ```{r}
 plotColors2 <- c("grey20", "grey40", "grey60", "grey80", "grey100", 
                 rev(RColorBrewer::brewer.pal(5, "Greens")), 
-                rev(RColorBrewer::brewer.pal(5, "Blues")), 
-                rev(RColorBrewer::brewer.pal(5, "Reds"))) #Create vector of all, WGBS, RRBS, and MBD colors
+                rev(RColorBrewer::brewer.pal(5, "Purples")), 
+                rev(RColorBrewer::brewer.pal(5, "Oranges"))) #Create vector of all, WGBS, RRBS, and MBD colors
 barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Greens"))))) #Check greens
-barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Blues"))))) #Check blues
-barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Reds"))))) #Check reds
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Purples"))))) #Check blues
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Oranges"))))) #Check reds
 ```
 
 #### All data
