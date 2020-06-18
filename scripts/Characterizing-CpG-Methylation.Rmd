@@ -533,8 +533,8 @@ We are interested in how sequencing method affects the proportion, or compositio
 ### Format data
 
 ```{r}
-McapCpGMultiMaster <- cbind(McapCpGTypePercents,
-                            data.frame(t(McapFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
+McapCpGMultiMaster <- (cbind(McapCpGTypePercents,
+                            data.frame(t(McapFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) / 100) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
 head(McapCpGMultiMaster) #Confirm dataframe creation
 ```
 
@@ -643,8 +643,8 @@ plot.anosim(McapRRMBANOSIM)
 ### Format data
 
 ```{r}
-PactCpGMultiMaster <- cbind(PactCpGTypePercents,
-                            data.frame(t(PactFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
+PactCpGMultiMaster <- (cbind(PactCpGTypePercents,
+                            data.frame(t(PactFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) / 100) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
 head(PactCpGMultiMaster) #Confirm dataframe creation
 ```
 
@@ -753,26 +753,26 @@ To complement my multivariate analysis, I will use a series of generalized linea
 I will run three separate models for each methylation status since the proportions of each add up to 1.
 
 ```{r}
-McapCpGMasterHigh <- (McapCpGMultiMaster[,-c(2:3)] / 100) #Remove moderate and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
+McapCpGMasterHigh <- McapCpGMultiMaster[,-c(2:3)] #Remove moderate and low methylation columns.
 McapCpGMasterHigh$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterHigh) #Confirm changes
 ```
 
 ```{r}
-McapCpGMasterModerate <- (McapCpGMultiMaster[,-c(1,3)] / 100) #Remove high and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
+McapCpGMasterModerate <- McapCpGMultiMaster[,-c(1,3)] #Remove high and low methylation columns.
 McapCpGMasterModerate$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterModerate) #Confirm changes
 ```
 
 ```{r}
-McapCpGMasterLow <- (McapCpGMultiMaster[,-c(1:2)] / 100) #Remove moderate and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
+McapCpGMasterLow <- McapCpGMultiMaster[,-c(1:2)] #Remove moderate and low methylation columns.
 McapCpGMasterLow$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterLow) #Confirm changes
 ```
 
 ### Run individual models
 
-Which genomic features affect methylation status?
+Which genomic features affect methylation status? Does sequencing method affect the detection of CpGs of various methylation statuses in genomic features? Null hypothesis is always that sequencing method has no effect.
 
 #### High methylation
 
@@ -780,14 +780,42 @@ Which genomic features affect methylation status?
 McapCpGHighModel <- glmmTMB(percentMeth ~ CDS + Introns + Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                             family = beta_family(link = "logit"),
                             data = McapCpGMasterHigh) #Run the full model (all genomic locations) using a beta distribution and a logit link
-summary(McapCpGHighModel) #Running the full model leads to a convergence issue. The model is likely overparametrized. I will run two separate models for each methylation status: one for genic regions (CDS and introns) and another for other regions (flanks and intergenic).
+summary(McapCpGHighModel) #Running the full model leads to a convergence issue. The model is likely overparametrized.
+```
+
+I will run two separate models for each methylation status: one for genic regions (CDS and introns) and another for other regions (flanks and intergenic). This falls in line with the idea that gene body methylation is prominent in invertebrates.
+
+##### Genes
+
+```{r}
+McapCpGHighModel.GeneNull <- glmmTMB(percentMeth ~ CDS + Introns,
+                                     family = beta_family(link = "logit"),
+                                     data = McapCpGMasterHigh) #Run null model (without sequencing method) using a beta distribution and a logit link
+summary(McapCpGHighModel.GeneNull) #CDS and introns significantly contribute to proportion of highly methylated CpGs
 ```
 
 ```{r}
 McapCpGHighModel.Gene <- glmmTMB(percentMeth ~ CDS + Introns + seqMethod,
                                  family = beta_family(link = "logit"),
                                  data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
-summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS. Sig interaction between CDS and sequencing method for WGBS.
+summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
+```
+
+```{r}
+McapCpGHighModel.GeneANOVA <- anova(McapCpGHighModel.Gene, McapCpGHighModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGHighModel.GeneANOVA #Look at ANOVA output
+#McapCpGHighModel.GeneANOVA$Chisq #Chi-sq statistic
+#McapCpGHighModel.GeneANOVA$Df #Degrees of freedom
+#McapCpGHighModel.GeneANOVA$`Pr(>Chisq)` #P-value
+```
+
+##### Not genes
+
+```{r}
+McapCpGHighModel.notGeneNull <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
+                                        family = beta_family(link = "logit"),
+                                        data = McapCpGMasterHigh) #Run null model (no sequencing method) using a beta distribution and a logit link
+summary(McapCpGHighModel.notGeneNull) #Upstream flanks contribute significantly to proportion of highly methylated CpGs
 ```
 
 ```{r}
@@ -797,16 +825,113 @@ McapCpGHighModel.notGene <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.F
 summary(McapCpGHighModel.notGene) #All variables significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
 ```
 
-Disease.Treatment=glmmTMB(cbind(Total.Disease,Total.Coral-Total.Disease)~Treatment+(1|Site),family='binomial',data=SummedDiseaseData)
-Disease.Null=glmmTMB(cbind(Total.Disease,Total.Coral-Total.Disease)~1+(1|Site),family='binomial',data=SummedDiseaseData)
-anova(Disease.Treatment,Disease.Null,test='LRT')
-summary(Disease.Treatment)
+```{r}
+McapCpGHighModel.notGeneANOVA <- anova(McapCpGHighModel.notGene, McapCpGHighModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGHighModel.notGeneANOVA #Look at ANOVA output
+#McapCpGHighModel.notGeneANOVA$Chisq #Chi-sq statistic
+#McapCpGHighModel.notGeneANOVA$Df #Degrees of freedom
+#McapCpGHighModel.notGeneANOVA$`Pr(>Chisq)` #P-value
+```
 
 #### Moderate methylation
 
+##### Genes
+
+```{r}
+McapCpGModerateModel.GeneNull <- glmmTMB(percentSparseMeth ~ CDS + Introns,
+                                         family = beta_family(link = "logit"),
+                                         data = McapCpGMasterModerate) #Run null model (without sequencing method) using a beta distribution and a logit link
+summary(McapCpGModerateModel.GeneNull) #CDS and introns significantly contribute to proportion of moderately methylated CpGs
+```
+
+```{r}
+McapCpGModerateModel.Gene <- glmmTMB(percentSparseMeth ~ CDS + Introns + seqMethod,
+                                     family = beta_family(link = "logit"),
+                                     data = McapCpGMasterModerate) #Run model using a beta distribution and a logit link
+summary(McapCpGModerateModel.Gene) #Introns and sequencing method significantly contribute to proportion of moderately methylated CpGs. MBD-BS has less prop moderately methylated CpGs than RRBS and WGBS.
+```
+
+```{r}
+McapCpGModerateModel.GeneANOVA <- anova(McapCpGModerateModel.Gene, McapCpGModerateModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGModerateModel.GeneANOVA #Look at ANOVA output
+#McapCpGModerateModel.GeneANOVA$Chisq #Chi-sq statistic
+#McapCpGModerateModel.GeneANOVA$Df #Degrees of freedom
+#McapCpGModerateModel.GeneANOVA$`Pr(>Chisq)` #P-value
+```
+
+##### Not genes
+
+```{r}
+McapCpGModerateModel.notGeneNull <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
+                                            family = beta_family(link = "logit"),
+                                            data = McapCpGMasterModerate) #Run null model (no sequencing method) using a beta distribution and a logit link
+summary(McapCpGModerateModel.notGeneNull) #Upstream flanks and intergenic regions contribute significantly to proportion of moderately methylated CpGs
+```
+
+```{r}
+McapCpGModerateModel.notGene <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
+                                        family = beta_family(link = "logit"),
+                                        data = McapCpGMasterModerate) #Run model using a beta distribution and a logit link
+summary(McapCpGModerateModel.notGene) #Sequencing method significantly contributes to proportion of moderately methylated CpGs.
+```
+
+```{r}
+McapCpGModerateModel.notGeneANOVA <- anova(McapCpGModerateModel.notGene, McapCpGModerateModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGModerateModel.notGeneANOVA #Look at ANOVA output
+#McapCpGModerateModel.notGeneANOVA$Chisq #Chi-sq statistic
+#McapCpGModerateModel.notGeneANOVA$Df #Degrees of freedom
+#McapCpGModerateModel.notGeneANOVA$`Pr(>Chisq)` #P-value
+```
+
 #### Low methylation
 
+##### Genes
 
+```{r}
+McapCpGLowModel.GeneNull <- glmmTMB(percentUnMeth ~ CDS + Introns,
+                                    family = beta_family(link = "logit"),
+                                    data = McapCpGMasterLow) #Run null model (without sequencing method) using a beta distribution and a logit link
+summary(McapCpGLowModel.GeneNull) #CDS significantly contributes to proportion of lowly methylated CpGs
+```
+
+```{r}
+McapCpGLowModel.Gene <- glmmTMB(percentUnMeth ~ CDS + Introns + seqMethod,
+                                family = beta_family(link = "logit"),
+                                data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
+summary(McapCpGLowModel.Gene) #All variables significantly contribute to proportion of lowly methylated CpGs.
+```
+
+```{r}
+McapCpGLowModel.GeneANOVA <- anova(McapCpGLowModel.Gene, McapCpGLowModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGLowModel.GeneANOVA #Look at ANOVA output
+#McapCpGLowModel.GeneANOVA$Chisq #Chi-sq statistic
+#McapCpGLowModel.GeneANOVA$Df #Degrees of freedom
+#McapCpGLowModel.GeneANOVA$`Pr(>Chisq)` #P-value
+```
+
+##### Not genes
+
+```{r}
+McapCpGLowModel.notGeneNull <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
+                                       family = beta_family(link = "logit"),
+                                       data = McapCpGMasterLow) #Run null model (no sequencing method) using a beta distribution and a logit link
+summary(McapCpGLowModel.notGeneNull) #Upstream flanks contribute significantly to proportion of lowly methylated CpGs
+```
+
+```{r}
+McapCpGLowModel.notGene <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
+                                   family = beta_family(link = "logit"),
+                                   data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
+summary(McapCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
+```
+
+```{r}
+McapCpGLowModel.notGeneANOVA <- anova(McapCpGLowModel.notGene, McapCpGLowModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
+McapCpGLowModel.notGeneANOVA #Look at ANOVA output
+#McapCpGLowModel.notGeneANOVA$Chisq #Chi-sq statistic
+#McapCpGLowModel.notGeneANOVA$Df #Degrees of freedom
+#McapCpGLowModel.notGeneANOVA$`Pr(>Chisq)` #P-value
+```
 
 
 
