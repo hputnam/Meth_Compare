@@ -3,11 +3,13 @@ title: "Chacterizing CpG Methylation (5x Individual Samples)"
 output: github_document
 ---
 
+In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I used individual samples with data for 5x CpGs in [this Jupyter notebook](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb) to identify methylation status and genomic location. I will use the output in this script.
+
+# Set up R Markdown Document
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* using WGBS, RRBS, and MBD-BSSeq. I used individual samples with data for 5x CpGs in [this Jupyter notebook](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb) to identify methylation status and genomic location. I will use the output in this script.
 
 # Install packages
 
@@ -17,6 +19,7 @@ In this script, I'll create summary tables and figures to characterize CpG methy
 #install.packages("compositions") #Compositional data analysis package
 #install.packages("vegan") #Multivariate analysis package
 #install.packages("cluster") #Multivariate analysis package
+install.packages("glmmTMB") #Linear modeling package
 ```
 
 ```{r}
@@ -25,10 +28,11 @@ require(dichromat)
 require(compositions)
 require(vegan)
 require(cluster)
+require(glmmTMB)
 ```
 
 ```{r}
-source("biostats.R") #Multivariate analysis source script
+#source("biostats.R") #Multivariate analysis source script
 ```
 
 # Session information
@@ -615,7 +619,7 @@ McapDataWGMB <- vegdist(McapCpGMultiTrans[c(1:3, 7:9),], "euclidean") #Subset WG
 ```
 
 ```{r}
-McapWGMBANOSIM <- anosim(McapDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapWGMBANOSIM <- anosim(McapDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 McapWGMBANOSIM$statistic
 McapWGMBANOSIM$signif #Differences are not significant
 plot.anosim(McapWGMBANOSIM)
@@ -719,7 +723,7 @@ PactDataWGMB <- vegdist(PactCpGMultiTrans[c(1:3, 7:9),], "euclidean") #Subset WG
 ```
 
 ```{r}
-PactWGMBANOSIM <- anosim(PactDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactWGMBANOSIM <- anosim(PactDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 PactWGMBANOSIM$statistic
 PactWGMBANOSIM$signif #Differences are not significant
 plot.anosim(PactWGMBANOSIM)
@@ -737,4 +741,53 @@ PactRRMBANOSIM$statistic
 PactRRMBANOSIM$signif #Differences are not significant
 plot.anosim(PactRRMBANOSIM)
 ```
+
+# Generalized linear model analysis
+
+To complement my multivariate analysis, I will use a series of generalized linear models to understand how sequencing method and proportion of CpGs in a genomic location affects (CDS, intron, upstream flank, downstream flank, intergenic) proportion of CpGs in a given methylation status (high, moderate, or low methylation).
+
+## Mcap
+
+### Format data
+
+I will run three separate models for each methylation status since the proportions of each add up to 1.
+
+```{r}
+McapCpGMasterHigh <- McapCpGMultiMaster[,-c(2:3)] #Remove moderate and low methylation columns
+McapCpGMasterHigh$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+head(McapCpGMasterHigh) #Confirm changes
+```
+
+```{r}
+McapCpGMasterModerate <- McapCpGMultiMaster[,-c(1,3)] #Remove high and low methylation columns
+McapCpGMasterModerate$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+head(McapCpGMasterModerate) #Confirm changes
+```
+
+```{r}
+McapCpGMasterLow <- McapCpGMultiMaster[,-c(1:2)] #Remove moderate and low methylation columns
+McapCpGMasterLow$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+head(McapCpGMasterLow) #Confirm changes
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
