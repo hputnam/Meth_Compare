@@ -753,27 +753,58 @@ To complement my multivariate analysis, I will use a series of generalized linea
 I will run three separate models for each methylation status since the proportions of each add up to 1.
 
 ```{r}
-McapCpGMasterHigh <- McapCpGMultiMaster[,-c(2:3)] #Remove moderate and low methylation columns
+McapCpGMasterHigh <- (McapCpGMultiMaster[,-c(2:3)] / 100) #Remove moderate and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
 McapCpGMasterHigh$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterHigh) #Confirm changes
 ```
 
 ```{r}
-McapCpGMasterModerate <- McapCpGMultiMaster[,-c(1,3)] #Remove high and low methylation columns
+McapCpGMasterModerate <- (McapCpGMultiMaster[,-c(1,3)] / 100) #Remove high and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
 McapCpGMasterModerate$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterModerate) #Confirm changes
 ```
 
 ```{r}
-McapCpGMasterLow <- McapCpGMultiMaster[,-c(1:2)] #Remove moderate and low methylation columns
+McapCpGMasterLow <- (McapCpGMultiMaster[,-c(1:2)] / 100) #Remove moderate and low methylation columns. Divide by 100 to get dataframe with proportions, not percents
 McapCpGMasterLow$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
 head(McapCpGMasterLow) #Confirm changes
 ```
 
+### Run individual models
 
+Which genomic features affect methylation status?
 
+#### High methylation
 
+```{r}
+McapCpGHighModel <- glmmTMB(percentMeth ~ CDS + Introns + Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
+                            family = beta_family(link = "logit"),
+                            data = McapCpGMasterHigh) #Run the full model (all genomic locations) using a beta distribution and a logit link
+summary(McapCpGHighModel) #Running the full model leads to a convergence issue. The model is likely overparametrized. I will run two separate models for each methylation status: one for genic regions (CDS and introns) and another for other regions (flanks and intergenic).
+```
 
+```{r}
+McapCpGHighModel.Gene <- glmmTMB(percentMeth ~ CDS + Introns + seqMethod,
+                                 family = beta_family(link = "logit"),
+                                 data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
+summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS. Sig interaction between CDS and sequencing method for WGBS.
+```
+
+```{r}
+McapCpGHighModel.notGene <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
+                                    family = beta_family(link = "logit"),
+                                    data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
+summary(McapCpGHighModel.notGene) #All variables significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
+```
+
+Disease.Treatment=glmmTMB(cbind(Total.Disease,Total.Coral-Total.Disease)~Treatment+(1|Site),family='binomial',data=SummedDiseaseData)
+Disease.Null=glmmTMB(cbind(Total.Disease,Total.Coral-Total.Disease)~1+(1|Site),family='binomial',data=SummedDiseaseData)
+anova(Disease.Treatment,Disease.Null,test='LRT')
+summary(Disease.Treatment)
+
+#### Moderate methylation
+
+#### Low methylation
 
 
 
