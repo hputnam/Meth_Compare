@@ -1,0 +1,761 @@
+---
+title: "Expression_Methylation"
+author: "HM Putnam"
+date: "6/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r libraries}
+#source("https://bioconductor.org/biocLite.R")
+library("pheatmap")
+library("RColorBrewer")
+library("ggplot2")
+library("tidyverse")
+library("GSEABase")
+library("gridExtra")
+library("cowplot")
+```
+
+# Goal is to identify and compare the genes captured by each method
+## Montipora capitata
+
+```{r load data}
+#load sample info
+sample.info <- read.csv(file="metadata/RNASeq_metadata.csv", header=T, sep=",", row.names=1) #load sample info
+Mcap.sample.info <- subset(sample.info, Species == "Montipora capitata")
+Pact.sample.info <- subset(sample.info, Species == "Pocillopora acuta")
+
+#Load Annotation Info
+Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") #load sample info
+colnames(Mcap.annot) <- c("Uniprot", "X.gene_id", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+Mcap.annot <- Mcap.annot %>% 
+  distinct(X.gene_id, .keep_all = TRUE)
+Mcap.annot$X.gene_id <- gsub("augustus.", "", Mcap.annot$X.gene_id)
+Mcap.annot$X.gene_id <- gsub(".t1", "", Mcap.annot$X.gene_id)
+
+Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") #load sample info
+colnames(Pact.annot) <- c("Uniprot", "X.gene_id", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+Pact.annot <- Pact.annot %>% 
+  distinct(X.gene_id, .keep_all = TRUE)
+
+#Load gene gff
+Mcap.genes <- read.csv(file="genome-feature-files/Mcap.GFFannotation.gff", header=FALSE, sep="\t") #load sample info
+Mcap.genes <- filter(Mcap.genes, V3 == "gene")
+colnames(Mcap.genes) <- c("scaffold", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+Mcap.genes$gene <- gsub("ID=", "", Mcap.genes$gene)
+Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
+write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
+            col.names = FALSE, row.names=FALSE, quote=FALSE)
+Mcap.genes <- Mcap.genes[,c(1,4,5,9)]
+
+Pact.genes <- read.csv(file="genome-feature-files/Pact_Structural_annotation_abintio.gff", header=FALSE, sep="\t", skip=22) #load sample info
+Pact.genes <- filter(Pact.genes, V3 == "gene")
+Pact.genes$V1 <- gsub("cov", "_cov", Pact.genes$V1)
+write.table(Pact.genes, file="genome-feature-files/Pact.GFFannotation.genes.gff", sep="\t", 
+            col.names = FALSE, row.names=FALSE, quote=FALSE)
+Pact.genes <- Pact.genes[,c(1,4,5,9)]
+colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene")
+
+#load expression data
+PolyA.Mcap.counts <- read.csv(file="RNASeq/PolyA/mapped/Mcap_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
+PolyA.Mcap.counts$mean.count <- rowMeans(PolyA.Mcap.counts[,2:4])
+range(PolyA.Mcap.counts$mean.count)
+mean(PolyA.Mcap.counts$mean.count)
+colnames(PolyA.Mcap.counts)[1] <- c("gene")
+RiboDep.Mcap.counts <- read.csv(file="RNASeq/RiboDep/mapped/Mcap_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
+PolyA.Pact.counts <- read.csv(file="RNASeq/PolyA/mapped/Pact_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
+PolyA.Pact.counts$mean.count <- rowMeans(PolyA.Pact.counts[,2:4])
+range(PolyA.Pact.counts$mean.count)
+mean(PolyA.Pact.counts$mean.count)
+colnames(PolyA.Pact.counts)[1] <- c("gene")
+RiboDep.Pact.counts <- read.csv(file="RNASeq/RiboDep/mapped/Pact_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
+
+```
+
+#Obtain the gene sets with CpGs with 5x coverage
+```{bash}
+#Intersect Mcap CpG with genes
+for f in data/Mcap_tab/*5x.tab
+do
+intersectBed \
+-wb \
+-a ${f} \
+-b genome-feature-files/Mcap.GFFannotation.genes.gff \
+> ${f}_gene
+done
+
+#Intersect Pact CpG with genes
+for f in data/Pact_tab/*5x.tab
+do
+intersectBed \
+-wb \
+-a ${f} \
+-b genome-feature-files/Pact.GFFannotation.genes.gff \
+> ${f}_gene
+done
+```
+
+# M. capitata 
+```{r}
+#load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
+#1101 1548 1628
+WGBS.1101 <- read.csv("data/Mcap_tab/Meth10_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1548 <- read.csv("data/Mcap_tab/Meth11_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1628 <- read.csv("data/Mcap_tab/Meth12_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+#Determine GO terms for the genes found with each method
+WGBS.data <- rbind(WGBS.1101,WGBS.1548,WGBS.1628)
+WGBS.genes <- as.data.frame(unique(WGBS.data$gene))
+colnames(WGBS.genes) <- c("X.gene_id")
+WGBS.gene.annot <- left_join(WGBS.genes, Mcap.annot, by="X.gene_id")
+nrow(WGBS.genes)
+WGBS.GO <- WGBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(WGBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+WGBS.GOs <- data.frame(v1 = rep.int(WGBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+WGBS.GO.terms <- WGBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(WGBS.GO.terms$v2))  
+
+RRBS.1101 <- read.csv("data/Mcap_tab/Meth13_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1548 <- read.csv("data/Mcap_tab/Meth14_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1628 <- read.csv("data/Mcap_tab/Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+RRBS.data <- rbind(RRBS.1101,RRBS.1548,RRBS.1628)
+RRBS.genes <- as.data.frame(unique(RRBS.data$gene))
+colnames(RRBS.genes) <- c("X.gene_id")
+RRBS.gene.annot <- left_join(RRBS.genes, Mcap.annot, by="X.gene_id")
+nrow(RRBS.genes)
+RRBS.GO <- RRBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(RRBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+RRBS.GOs <- data.frame(v1 = rep.int(RRBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+RRBS.GO.terms <- RRBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(RRBS.GO.terms$v2))   
+
+MBDBS.1101 <- read.csv("data/Mcap_tab/Meth16_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1548 <- read.csv("data/Mcap_tab/Meth17_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1628 <- read.csv("data/Mcap_tab/Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628)
+MBDBS.genes <- as.data.frame(unique(MBDBS.data$gene))
+colnames(MBDBS.genes) <- c("X.gene_id")
+MBDBS.gene.annot <- left_join(MBDBS.genes, Mcap.annot, by="X.gene_id")
+nrow(MBDBS.genes)
+MBDBS.GO <- MBDBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(MBDBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+MBDBS.GOs <- data.frame(v1 = rep.int(MBDBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+MBDBS.GO.terms <- MBDBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(MBDBS.GO.terms$v2))
+
+#combine genes indentified by each method into dataframe for plotting
+WGBS.genes.circ <- as.data.frame(WGBS.genes)
+WGBS.genes.circ$method <- "WGBS"
+colnames(WGBS.genes.circ) <- c("gene", "method")
+
+RRBS.genes.circ <- as.data.frame(RRBS.genes)
+RRBS.genes.circ$method <- "RRBS"
+colnames(RRBS.genes.circ) <- c("gene", "method")
+
+MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
+MBDBS.genes.circ$method <- "MBDBS"
+colnames(MBDBS.genes.circ) <- c("gene", "method")
+
+
+All.circ <- left_join(Mcap.genes, WGBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, RRBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, MBDBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ) <- c("scaffold","gene.start", "gene.stop",  "gene","WGBS","method.WGBS", "RRBS", "method.RRBS",   "MBDBS", "method.MBDBS" )
+
+All.circ.df <- arrange(All.circ,scaffold, gene.start)
+All.circ.data <- All.circ.df[,c(1:5,7,9)]
+str(All.circ.data)
+All.circ.data$WGBS <- as.character(as.factor(All.circ.data$WGBS))
+All.circ.data$RRBS <- as.character(as.factor(All.circ.data$RRBS))
+All.circ.data$MBDBS <- as.character(as.factor(All.circ.data$MBDBS))
+str(All.circ.data)
+
+# Genes with NA are not found in a dataset and assigned to 0
+# Genes present are assigned a 1
+All.circ.data[is.na(All.circ.data)] <- 0 #change NA to 0
+All.circ.data$WGBS[All.circ.data$WGBS != 0] <- 1 #change gene to 1
+All.circ.data$RRBS[All.circ.data$RRBS != 0] <- 1 #change gene to 1
+All.circ.data$MBDBS[All.circ.data$MBDBS != 0] <- 1 #change gene to 1
+str(All.circ.data)
+All.circ.data$WGBS <- as.numeric(as.character(All.circ.data$WGBS))
+All.circ.data$RRBS <- as.numeric(as.character(All.circ.data$RRBS))
+All.circ.data$MBDBS <- as.numeric(as.character(All.circ.data$MBDBS))
+str(All.circ.data)
+
+#set the presence absence matrix
+All.circ.mat <- as.matrix(All.circ.data[1:10000,5:7])
+rownames(All.circ.mat) <- All.circ.data$gene[1:10000]
+str(All.circ.mat)
+
+#set the factor info for the presence absence matrix
+All.circ.fac <- All.circ.data[1:10000,1:4]
+str(All.circ.fac)
+
+#Mcap heatmap
+pdf("Output/Mcap_heatmap_genes_present.pdf")
+pheatmap(All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
+         cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
+dev.off()
+
+
+All.circ.data
+#WGBS genes present
+Mcap.CpG.gene.counts <- left_join(All.circ.data, PolyA.Mcap.counts, by="gene")
+Mcap.CpG.gene.counts <- Mcap.CpG.gene.counts[,c(4,5,6,7,11)]
+
+Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
+Mcap.WGBS.counts$WGBS[Mcap.WGBS.counts$WGBS==0] <- NA
+Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
+Mcap.WGBS.counts$method <- "WGBS"
+colnames(Mcap.WGBS.counts)[2] <- "type"
+
+Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
+Mcap.RRBS.counts$RRBS[Mcap.RRBS.counts$RRBS==0] <- NA
+Mcap.RRBS.counts <- na.omit(Mcap.RRBS.counts)
+Mcap.RRBS.counts$method <- "RRBS"
+colnames(Mcap.RRBS.counts)[2] <- "type"
+
+Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
+Mcap.MBDBS.counts$MBDBS[Mcap.MBDBS.counts$MBDBS==0] <- NA
+Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
+Mcap.MBDBS.counts$method <- "MBDBS"
+colnames(Mcap.MBDBS.counts)[2] <- "type"
+
+Mcap.CpG.counts.present <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
+Mcap.CpG.counts.present$plusone <- (Mcap.CpG.counts.present$mean.count)+1
+cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+
+
+Mcap_presentexpression_by_method <- ggplot(Mcap.CpG.counts.present , aes(plusone, color = method)) +
+  coord_trans(x="log") +
+  geom_density(fill = NA)+
+  ggtitle("A) Expression of Present Genes") +
+  xlab("Log of Mean Counts +1") + #label x axis
+  theme(axis.text.x = element_text(angle = 90, size=10)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+#distribution of genes absent
+Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
+Mcap.WGBS.counts$WGBS[Mcap.WGBS.counts$WGBS==1] <- NA
+Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
+Mcap.WGBS.counts$method <- "WGBS"
+colnames(Mcap.WGBS.counts)[2] <- "type"
+
+Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
+Mcap.RRBS.counts$RRBS[Mcap.RRBS.counts$RRBS==1] <- NA
+Mcap.RRBS.counts <- na.omit(Mcap.RRBS.counts)
+Mcap.RRBS.counts$method <- "RRBS"
+colnames(Mcap.RRBS.counts)[2] <- "type"
+
+Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
+Mcap.MBDBS.counts$MBDBS[Mcap.MBDBS.counts$MBDBS==1] <- NA
+Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
+Mcap.MBDBS.counts$method <- "MBDBS"
+colnames(Mcap.MBDBS.counts)[2] <- "type"
+
+Mcap.CpG.counts.absent <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
+Mcap.CpG.counts.absent$plusone <- (Mcap.CpG.counts.absent$mean.count)+1
+cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+
+
+Mcap_absentexpression_by_method <- ggplot(Mcap.CpG.counts.absent , aes(plusone, color = method)) +
+  coord_trans(x="log") +
+  geom_density(fill = NA)+
+  ggtitle("B) Expression of Absent Genes") +
+  xlab("Log of Mean Counts +1") + #label x axis
+  theme(axis.text.x = element_text(angle = 90, size=10)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+plot_grid(Mcap_presentexpression_by_method, Mcap_absentexpression_by_method, ncol=2, align="v")
+ggsave("Output/Mcap_expression_dist.pdf", width=8.5, height=4)
+
+
+
+#GO Term union df
+GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
+GO.ALL <- left_join(GO.ALL , MBDBS.GO.terms, by="v1", all=TRUE)
+
+# GO Slim
+fl <- "http://www.geneontology.org/ontology/subsets/goslim_generic.obo"
+slim <- getOBOCollection(fl)
+
+WGBS.Ids <- na.omit(as.character(WGBS.GO.terms$v2))
+WGBS.Collection <- GOCollection(WGBS.Ids)
+WGBS.slims <- goSlim(WGBS.Collection, slim, "BP", evidenceCode="TAS")
+WGBS.slims <- WGBS.slims[order(WGBS.slims$Term),]
+WGBS.slims$method <- "WGBS"
+WGBS.slims <- WGBS.slims[-5,]
+
+RRBS.Ids <- na.omit(as.character(RRBS.GO.terms$v2))
+RRBS.Collection <- GOCollection(RRBS.Ids)
+RRBS.slims <- goSlim(RRBS.Collection, slim, "BP", evidenceCode="TAS")
+RRBS.slims <- RRBS.slims[order(RRBS.slims$Term),]
+RRBS.slims$method <- "RRBS"
+RRBS.slims <- RRBS.slims[-5,]
+
+MBDBS.Ids <- na.omit(as.character(MBDBS.GO.terms$v2))
+MBDBS.Collection <- GOCollection(MBDBS.Ids)
+MBDBS.slims <- goSlim(MBDBS.Collection, slim, "BP", evidenceCode="TAS")
+MBDBS.slims <- MBDBS.slims[order(MBDBS.slims$Term),]
+MBDBS.slims$method <- "MBDBS"
+MBDBS.slims <- MBDBS.slims[-5,]
+
+All.slims <- rbind(WGBS.slims,RRBS.slims,MBDBS.slims)
+
+cat.cols <- c("springgreen4","orangered1", "skyblue3")
+
+#plot percent goslim per method   
+pdf("Output/Mcap_GOSlim_compare.pdf")
+ggplot(All.slims, aes(fill=method, y=Percent, x=Term)) + 
+    geom_bar(position="dodge", stat="identity") +
+    scale_fill_manual(values=cat.cols) +
+    theme(axis.text.x = element_text(angle = 90, size=4)) +
+    theme(legend.position = "none") +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+dev.off() 
+
+
+
+
+```
+
+#P. acuta
+```{r}
+#load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
+#1041 1471 1637
+WGBS.1041 <- read.csv("data/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1471 <- read.csv("data/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1637 <- read.csv("data/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+Pact.WGBS.data <- rbind(WGBS.1041,WGBS.1471,WGBS.1637)
+Pact.WGBS.genes <- as.data.frame(unique(Pact.WGBS.data$gene))
+colnames(Pact.WGBS.genes) <- c("X.gene_id")
+Pact.WGBS.gene.annot <- left_join(Pact.WGBS.genes, Pact.annot, by="X.gene_id")
+nrow(Pact.WGBS.genes)
+Pact.WGBS.GO <- Pact.WGBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(Pact.WGBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+Pact.WGBS.GOs <- data.frame(v1 = rep.int(Pact.WGBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.WGBS.GO.terms <- Pact.WGBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(Pact.WGBS.GO.terms$v2))  
+
+RRBS.1041 <- read.csv("data/Pact_tab/Meth4_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1471 <- read.csv("data/Pact_tab/Meth5_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1637 <- read.csv("data/Pact_tab/Meth6_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+Pact.RRBS.data <- rbind(RRBS.1041,RRBS.1471,RRBS.1637)
+Pact.RRBS.genes <- as.data.frame(unique(Pact.RRBS.data$gene))
+colnames(Pact.RRBS.genes) <- c("X.gene_id")
+Pact.RRBS.gene.annot <- left_join(Pact.RRBS.genes, Pact.annot, by="X.gene_id")
+nrow(Pact.RRBS.genes)
+Pact.RRBS.GO <- Pact.RRBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(Pact.RRBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+Pact.RRBS.GOs <- data.frame(v1 = rep.int(Pact.RRBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.RRBS.GO.terms <- Pact.RRBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(Pact.RRBS.GO.terms$v2))   
+
+MBDBS.1041 <- read.csv("data/Pact_tab/Meth7_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1471 <- read.csv("data/Pact_tab/Meth8_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1637 <- read.csv("data/Pact_tab/Meth9_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+
+Pact.MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628)
+Pact.MBDBS.genes <- as.data.frame(unique(Pact.MBDBS.data$gene))
+colnames(Pact.MBDBS.genes) <- c("X.gene_id")
+Pact.MBDBS.gene.annot <- left_join(Pact.MBDBS.genes, Pact.annot, by="X.gene_id")
+nrow(MBDBS.genes)
+Pact.MBDBS.GO <- Pact.MBDBS.gene.annot[,c(1,14)] #identify GOids
+splitted <- strsplit(as.character(Pact.MBDBS.GO$GO.IDs), "; ") #slit into multiple GO ids
+Pact.MBDBS.GOs <- data.frame(v1 = rep.int(Pact.MBDBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.MBDBS.GO.terms <- Pact.MBDBS.GOs %>% distinct(v2, .keep_all = TRUE)
+length(unique(Pact.MBDBS.GO.terms$v2))
+
+Pact.WGBS.genes.circ <- as.data.frame(Pact.WGBS.genes)
+Pact.WGBS.genes.circ$method <- "WGBS"
+colnames(Pact.WGBS.genes.circ) <- c("gene", "method")
+
+Pact.RRBS.genes.circ <- as.data.frame(Pact.RRBS.genes)
+Pact.RRBS.genes.circ$method <- "RRBS"
+colnames(Pact.RRBS.genes.circ) <- c("gene", "method")
+
+Pact.MBDBS.genes.circ <- as.data.frame(Pact.MBDBS.genes)
+Pact.MBDBS.genes.circ$method <- "MBDBS"
+colnames(Pact.MBDBS.genes.circ) <- c("gene", "method")
+
+
+Pact.All.circ <- left_join(Pact.genes, Pact.WGBS.genes.circ, by="gene", keep=TRUE)
+colnames(Pact.All.circ)[4] <- "gene"
+Pact.All.circ <- left_join(Pact.All.circ, Pact.RRBS.genes.circ, by="gene", keep=TRUE)
+colnames(Pact.All.circ)[4] <- "gene"
+Pact.All.circ <- left_join(Pact.All.circ, Pact.MBDBS.genes.circ, by="gene", keep=TRUE)
+colnames(Pact.All.circ) <- c("scaffold","gene.start", "gene.stop",  "gene","WGBS","method.WGBS", "RRBS", "method.RRBS",   "MBDBS", "method.MBDBS" )
+
+Pact.All.circ.df <- arrange(Pact.All.circ,scaffold, gene.start)
+Pact.All.circ.data <- Pact.All.circ.df[,c(1:5,7,9)]
+str(Pact.All.circ.data)
+Pact.All.circ.data$WGBS <- as.character(as.factor(Pact.All.circ.data$WGBS))
+Pact.All.circ.data$RRBS <- as.character(as.factor(Pact.All.circ.data$RRBS))
+Pact.All.circ.data$MBDBS <- as.character(as.factor(Pact.All.circ.data$MBDBS))
+str(Pact.All.circ.data)
+
+
+Pact.All.circ.data[is.na(Pact.All.circ.data)] <- 0 #change NA to 0
+Pact.All.circ.data$WGBS[Pact.All.circ.data$WGBS != 0] <- 1 #change gene to 1
+Pact.All.circ.data$RRBS[Pact.All.circ.data$RRBS != 0] <- 1 #change gene to 1
+Pact.All.circ.data$MBDBS[Pact.All.circ.data$MBDBS != 0] <- 1 #change gene to 1
+str(Pact.All.circ.data)
+Pact.All.circ.data$WGBS <- as.numeric(as.character(Pact.All.circ.data$WGBS))
+Pact.All.circ.data$RRBS <- as.numeric(as.character(Pact.All.circ.data$RRBS))
+Pact.All.circ.data$MBDBS <- as.numeric(as.character(Pact.All.circ.data$MBDBS))
+str(Pact.All.circ.data)
+
+Pact.All.circ.mat <- as.matrix(Pact.All.circ.data[1:10000,5:7])
+rownames(Pact.All.circ.mat) <- Pact.All.circ.data$gene[1:10000]
+str(Pact.All.circ.mat)
+
+Pact.All.circ.fac <- Pact.All.circ.data[1:10000,1:4]
+str(Pact.All.circ.fac)
+
+#Heatmap
+pdf("Output/Pact._heatmap_genes_present.pdf")
+pheatmap(Pact.All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
+         cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
+dev.off()
+
+#GO Term union df
+Pact.GO.ALL <- left_join(Pact.WGBS.GO.terms, Pact.RRBS.GO.terms, by="v1", all=TRUE)
+Pact.GO.ALL <- left_join(Pact.GO.ALL , Pact.MBDBS.GO.terms, by="v1", all=TRUE)
+
+
+Pact.WGBS.Ids <- na.omit(as.character(Pact.WGBS.GO.terms$v2))
+Pact.WGBS.Collection <- GOCollection(Pact.WGBS.Ids)
+Pact.WGBS.slims <- goSlim(Pact.WGBS.Collection, slim, "BP", evidenceCode="TAS")
+Pact.WGBS.slims <- Pact.WGBS.slims[order(Pact.WGBS.slims$Term),]
+Pact.WGBS.slims$method <- "WGBS"
+Pact.WGBS.slims <- Pact.WGBS.slims[-5,]
+
+Pact.RRBS.Ids <- na.omit(as.character(Pact.RRBS.GO.terms$v2))
+Pact.RRBS.Collection <- GOCollection(Pact.RRBS.Ids)
+Pact.RRBS.slims <- goSlim(Pact.RRBS.Collection, slim, "BP", evidenceCode="TAS")
+Pact.RRBS.slims <- Pact.RRBS.slims[order(Pact.RRBS.slims$Term),]
+Pact.RRBS.slims$method <- "RRBS"
+Pact.RRBS.slims <- Pact.RRBS.slims[-5,]
+
+Pact.MBDBS.Ids <- na.omit(as.character(Pact.MBDBS.GO.terms$v2))
+Pact.MBDBS.Collection <- GOCollection(Pact.MBDBS.Ids)
+Pact.MBDBS.slims <- goSlim(Pact.MBDBS.Collection, slim, "BP", evidenceCode="TAS")
+Pact.MBDBS.slims <- Pact.MBDBS.slims[order(Pact.MBDBS.slims$Term),]
+Pact.MBDBS.slims$method <- "MBDBS"
+Pact.MBDBS.slims <- Pact.MBDBS.slims[-5,]
+
+Pact.All.slims <- rbind(Pact.WGBS.slims,Pact.RRBS.slims,Pact.MBDBS.slims)
+
+#plot percent goslim per method   
+pdf("Output/Pact_GOSlim_compare.pdf")
+ggplot(Pact.All.slims, aes(fill=method, y=Percent, x=Term)) + 
+    geom_bar(position="dodge", stat="identity") +
+    scale_fill_manual(values=cat.cols) +
+    theme(axis.text.x = element_text(angle = 90, size=4)) +
+    theme(legend.position = "none") +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+dev.off() 
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+WGBS.genes.circ <- as.data.frame(WGBS.genes)
+WGBS.genes.circ$method <- "WGBS"
+colnames(WGBS.genes.circ) <- c("gene", "method")
+
+RRBS.genes.circ <- as.data.frame(RRBS.genes)
+RRBS.genes.circ$method <- "RRBS"
+colnames(RRBS.genes.circ) <- c("gene", "method")
+
+MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
+MBDBS.genes.circ$method <- "MBDBS"
+colnames(MBDBS.genes.circ) <- c("gene", "method")
+
+
+All.circ <- left_join(Mcap.genes, WGBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, RRBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, MBDBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ) <- c("scaffold","gene.start", "gene.stop",  "gene","WGBS","method.WGBS", "RRBS", "method.RRBS",   "MBDBS", "method.MBDBS" )
+
+All.circ.df <- arrange(All.circ,scaffold, gene.start)
+All.circ.data <- All.circ.df[,c(1:5,7,9)]
+str(All.circ.data)
+All.circ.data$WGBS <- as.character(as.factor(All.circ.data$WGBS))
+All.circ.data$RRBS <- as.character(as.factor(All.circ.data$RRBS))
+All.circ.data$MBDBS <- as.character(as.factor(All.circ.data$MBDBS))
+str(All.circ.data)
+
+
+All.circ.data[is.na(All.circ.data)] <- 0 #change NA to 0
+All.circ.data$WGBS[All.circ.data$WGBS != 0] <- 1 #change gene to 1
+All.circ.data$RRBS[All.circ.data$RRBS != 0] <- 1 #change gene to 1
+All.circ.data$MBDBS[All.circ.data$MBDBS != 0] <- 1 #change gene to 1
+str(All.circ.data)
+All.circ.data$WGBS <- as.numeric(as.character(All.circ.data$WGBS))
+All.circ.data$RRBS <- as.numeric(as.character(All.circ.data$RRBS))
+All.circ.data$MBDBS <- as.numeric(as.character(All.circ.data$MBDBS))
+str(All.circ.data)
+
+All.circ.mat <- as.matrix(All.circ.data[1:10000,5:7])
+rownames(All.circ.mat) <- All.circ.data$gene[1:10000]
+str(All.circ.mat)
+
+All.circ.fac <- All.circ.data[1:10000,1:4]
+str(All.circ.fac)
+```
+
+
+```{r}
+#heatmap
+pdf("Output/Mcap_heatmap_genes_present.pdf")
+pheatmap(All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
+         cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
+dev.off()
+```
+
+
+
+```{r}
+# Ribbon chord diagram linking genes
+WGBSvRRBS <- intersect(WGBS.genes$X.gene_id, RRBS.genes$X.gene_id)
+WGBSvMBDBS <- intersect(WGBS.genes$X.gene_id, MBDBS.genes$X.gene_id)
+RRBSvMBDBS <- intersect(RRBS.genes$X.gene_id, MBDBS.genes$X.gene_id)
+
+WGBSvRRBS <- as.data.frame(WGBSvRRBS)
+WGBSvRRBS$from <- "WGBS"
+WGBSvRRBS$to <- "RRBS"
+WGBSvRRBS$value <- 1
+colnames(WGBSvRRBS) <- c("gene", "from","to", "value")
+WGBSvRRBS.circ <- left_join(Mcap.genes, WGBSvRRBS, by="gene", keep=TRUE)
+WGBSvRRBS.circ$from <- "WGBS"
+WGBSvRRBS.circ$to <- "RRBS"
+WGBSvRRBS.circ$value[is.na(WGBSvRRBS.circ$value)] <- 0 #change NA to 0
+
+WGBSvMBDBS <- as.data.frame(WGBSvMBDBS)
+WGBSvMBDBS$from <- "WGBS"
+WGBSvMBDBS$to <- "MBDBS"
+WGBSvMBDBS$value <- 1
+colnames(WGBSvMBDBS) <- c("gene", "from","to", "value")
+WGBSvMBDBS.circ <- left_join(Mcap.genes, WGBSvMBDBS, by="gene", keep=TRUE)
+WGBSvMBDBS.circ$from <- "WGBS"
+WGBSvMBDBS.circ$to <- "MBDBS"
+WGBSvMBDBS.circ$value[is.na(WGBSvMBDBS.circ$value)] <- 0 #change NA to 0
+
+RRBSvMBDBS <- as.data.frame(RRBSvMBDBS)
+RRBSvMBDBS$from <- "RRBS"
+RRBSvMBDBS$to <- "MBDBS"
+RRBSvMBDBS$value <- 1
+colnames(RRBSvMBDBS) <- c("gene", "from","to", "value")
+RRBSvMBDBS.circ <- left_join(Mcap.genes, RRBSvMBDBS, by="gene", keep=TRUE)
+RRBSvMBDBS.circ$from <- "RRBS"
+RRBSvMBDBS.circ$to <- "MBDBS"
+RRBSvMBDBS.circ$value[is.na(RRBSvMBDBS.circ$value)] <- 0 #change NA to 0
+RRBSvMBDBS.circ <- na.omit(RRBSvMBDBS.circ)
+#index <- seq 1:nrows
+
+#All.circ.data <- rbind(WGBSvRRBS.circ[1:100,], WGBSvMBDBS.circ[1:100,],RRBSvMBDBS.circ[1:100,])
+```
+
+
+```{r}
+#heatmap
+
+```
+
+
+```{r}
+
+WGBS.genes
+WGBS.genes$index
+WGBS.genes$method
+
+RRBS.genes
+MBDBS.genes
+
+```
+
+```{r}
+pdf("Output/circosplot.pdf", width=4.40945, height=4.40945)
+par(mfrow=c(1,1),mar=c(0,0,0,0), lwd=0.5)
+circos.clear()
+circos.par(start.degree=120, gap.degree=c(10, 10), cell.padding=c(0,0,0,0), track.margin=c(0,0))
+circos.initialize(factors=pools, x=circdat$index, xlim=cbind(rep(0, 2), table(pools)))
+
+```
+
+```{r}
+All.circ.data <- rbind(WGBSvRRBS.circ[1:100,], WGBSvMBDBS.circ[1:100,],RRBSvMBDBS.circ[1:100,])
+#All.circ.data$from <- paste0(All.circ.data$gene.x, "_", All.circ.data$from)
+#All.circ.data$to <- paste0(All.circ.data$gene.x, "_", All.circ.data$to)
+
+All.circ.df <- All.circ.data[,6:8]
+str(All.circ.df)
+#All.circ.df$value[All.circ.df$value==0] <- NA
+#str(All.circ.df)
+#All.circ.df <- na.omit(All.circ.df)
+
+pdf("Output/chord_genes_w_CPG_by_Method.pdf")
+chordDiagram(All.circ.df)
+dev.off()
+```
+
+```{r}
+WGBS.genes.circ <- as.data.frame(WGBS.genes)
+WGBS.genes.circ$method <- "WGBS"
+colnames(WGBS.genes.circ) <- c("gene", "method")
+
+RRBS.genes.circ <- as.data.frame(RRBS.genes)
+RRBS.genes.circ$method <- "RRBS"
+colnames(RRBS.genes.circ) <- c("gene", "method")
+
+MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
+MBDBS.genes.circ$method <- "MBDBS"
+colnames(MBDBS.genes.circ) <- c("gene", "method")
+
+
+All.circ <- left_join(Mcap.genes, WGBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, RRBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ)[4] <- "gene"
+All.circ <- left_join(All.circ, MBDBS.genes.circ, by="gene", keep=TRUE)
+colnames(All.circ) <- c("scaffold","gene.start", "gene.stop",  "gene","WGBS","method.WGBS", "RRBS", "method.RRBS",   "MBDBS", "method.MBDBS" )
+
+All.circ.df <- arrange(All.circ,scaffold, gene.start)
+All.circ.data <- All.circ.df[,c(1:5,7,9)]
+str(All.circ.data)
+All.circ.data$WGBS <- as.character(as.factor(All.circ.data$WGBS))
+All.circ.data$RRBS <- as.character(as.factor(All.circ.data$RRBS))
+All.circ.data$MBDBS <- as.character(as.factor(All.circ.data$MBDBS))
+str(All.circ.data)
+
+
+All.circ.data[is.na(All.circ.data)] <- 0 #change NA to 0
+All.circ.data$WGBS[All.circ.data$WGBS != 0] <- 1 #change gene to 1
+All.circ.data$RRBS[All.circ.data$RRBS != 0] <- 1 #change gene to 1
+All.circ.data$MBDBS[All.circ.data$MBDBS != 0] <- 1 #change gene to 1
+All.circ.data$WGBSvRRBS <- as.numeric(All.circ.data$WGBS)-as.numeric(All.circ.data$RRBS)
+
+#gene, from, to, value
+
+# The arguments to spread():
+# - data: Data object
+# - key: Name of column containing the new column names
+# - value: Name of column containing values
+x <- pivot_longer(All.circ.data, cols=gene)
+#Then reshape to long so that there is a to, from, and 1 or 0 column for each gene
+
+
+#allCpGgenes <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", keep=TRUE)
+#colnames(allCpGgenes) <-c()
+#allCpGgenes <- left_join(allCpGgenes, MBDBS.GO.terms, by="v1", keep=TRUE)
+
+set.seed(999)
+mat = matrix(sample(18, 18), 3, 6) 
+rownames(mat) = paste0("S", 1:3)
+colnames(mat) = paste0("E", 1:6)
+mat
+
+
+chordDiagram(mat)
+
+```
+
+
+```{r}
+#GO Term union df
+GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
+GO.ALL <- left_join(GO.ALL , MBDBS.GO.terms, by="v1", all=TRUE)
+
+
+# GO Slim
+fl <- "http://www.geneontology.org/ontology/subsets/goslim_generic.obo"
+slim <- getOBOCollection(fl)
+
+WGBS.Ids <- na.omit(as.character(WGBS.GO.terms$v2))
+WGBS.Collection <- GOCollection(WGBS.Ids)
+WGBS.slims <- goSlim(WGBS.Collection, slim, "BP", evidenceCode="TAS")
+WGBS.slims <- WGBS.slims[order(WGBS.slims$Term),]
+WGBS.slims$method <- "WGBS"
+WGBS.slims <- WGBS.slims[-5,]
+
+RRBS.Ids <- na.omit(as.character(RRBS.GO.terms$v2))
+RRBS.Collection <- GOCollection(RRBS.Ids)
+RRBS.slims <- goSlim(RRBS.Collection, slim, "BP", evidenceCode="TAS")
+RRBS.slims <- RRBS.slims[order(RRBS.slims$Term),]
+RRBS.slims$method <- "RRBS"
+RRBS.slims <- RRBS.slims[-5,]
+
+MBDBS.Ids <- na.omit(as.character(MBDBS.GO.terms$v2))
+MBDBS.Collection <- GOCollection(MBDBS.Ids)
+MBDBS.slims <- goSlim(MBDBS.Collection, slim, "BP", evidenceCode="TAS")
+MBDBS.slims <- MBDBS.slims[order(MBDBS.slims$Term),]
+MBDBS.slims$method <- "MBDBS"
+MBDBS.slims <- MBDBS.slims[-5,]
+
+All.slims <- rbind(WGBS.slims,RRBS.slims,MBDBS.slims)
+
+cat.cols <- c("springgreen4","orangered1", "skyblue3")
+
+#plot percent goslim per method   
+pdf("Output/GOSlim_compare.pdf")
+ggplot(All.slims, aes(fill=method, y=Percent, x=Term)) + 
+    geom_bar(position="dodge", stat="identity") +
+    scale_fill_manual(values=cat.cols) +
+    theme(axis.text.x = element_text(angle = 90, size=4)) +
+    theme(legend.position = "none") +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+dev.off() 
+
+```
