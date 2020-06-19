@@ -791,14 +791,9 @@ I will run two separate models for each methylation status: one for genic region
 McapCpGHighModel.GeneNull <- glmmTMB(percentMeth ~ CDS + Introns,
                                      family = beta_family(link = "logit"),
                                      data = McapCpGMasterHigh) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(McapCpGHighModel.GeneNull) #CDS and introns significantly contribute to proportion of highly methylated CpGs
-```
-
-```{r}
 McapCpGHighModel.Gene <- glmmTMB(percentMeth ~ CDS + Introns + seqMethod,
                                  family = beta_family(link = "logit"),
                                  data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
-summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
 ```
 
 ```{r}
@@ -807,6 +802,10 @@ McapCpGHighModel.GeneANOVA #Look at ANOVA output
 #McapCpGHighModel.GeneANOVA$Chisq #Chi-sq statistic
 #McapCpGHighModel.GeneANOVA$Df #Degrees of freedom
 #McapCpGHighModel.GeneANOVA$`Pr(>Chisq)` #P-value
+```
+
+```{r}
+summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
 ```
 
 ##### Not genes
@@ -865,14 +864,9 @@ McapCpGModerateModel.GeneANOVA #Look at ANOVA output
 McapCpGModerateModel.notGeneNull <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
                                             family = beta_family(link = "logit"),
                                             data = McapCpGMasterModerate) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(McapCpGModerateModel.notGeneNull) #Upstream flanks and intergenic regions contribute significantly to proportion of moderately methylated CpGs
-```
-
-```{r}
 McapCpGModerateModel.notGene <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                                         family = beta_family(link = "logit"),
                                         data = McapCpGMasterModerate) #Run model using a beta distribution and a logit link
-summary(McapCpGModerateModel.notGene) #Sequencing method significantly contributes to proportion of moderately methylated CpGs.
 ```
 
 ```{r}
@@ -883,6 +877,10 @@ McapCpGModerateModel.notGeneANOVA #Look at ANOVA output
 #McapCpGModerateModel.notGeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(McapCpGModerateModel.notGene) #Sequencing method significantly contributes to proportion of moderately methylated CpGs.
+```
+
 #### Low methylation
 
 ##### Genes
@@ -891,14 +889,9 @@ McapCpGModerateModel.notGeneANOVA #Look at ANOVA output
 McapCpGLowModel.GeneNull <- glmmTMB(percentUnMeth ~ CDS + Introns,
                                     family = beta_family(link = "logit"),
                                     data = McapCpGMasterLow) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(McapCpGLowModel.GeneNull) #CDS significantly contributes to proportion of lowly methylated CpGs
-```
-
-```{r}
 McapCpGLowModel.Gene <- glmmTMB(percentUnMeth ~ CDS + Introns + seqMethod,
                                 family = beta_family(link = "logit"),
                                 data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
-summary(McapCpGLowModel.Gene) #All variables significantly contribute to proportion of lowly methylated CpGs.
 ```
 
 ```{r}
@@ -909,20 +902,19 @@ McapCpGLowModel.GeneANOVA #Look at ANOVA output
 #McapCpGLowModel.GeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(McapCpGLowModel.Gene) #All variables significantly contribute to proportion of lowly methylated CpGs.
+```
+
 ##### Not genes
 
 ```{r}
 McapCpGLowModel.notGeneNull <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
                                        family = beta_family(link = "logit"),
                                        data = McapCpGMasterLow) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(McapCpGLowModel.notGeneNull) #Upstream flanks contribute significantly to proportion of lowly methylated CpGs
-```
-
-```{r}
 McapCpGLowModel.notGene <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                                    family = beta_family(link = "logit"),
                                    data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
-summary(McapCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
 ```
 
 ```{r}
@@ -931,6 +923,10 @@ McapCpGLowModel.notGeneANOVA #Look at ANOVA output
 #McapCpGLowModel.notGeneANOVA$Chisq #Chi-sq statistic
 #McapCpGLowModel.notGeneANOVA$Df #Degrees of freedom
 #McapCpGLowModel.notGeneANOVA$`Pr(>Chisq)` #P-value
+```
+
+```{r}
+summary(McapCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
 ```
 
 ## Pact
@@ -969,14 +965,9 @@ Which genomic features affect methylation status? Does sequencing method affect 
 PactCpGHighModel.GeneNull <- glmmTMB(percentMeth ~ CDS + Introns,
                                      family = beta_family(link = "logit"),
                                      data = PactCpGMasterHigh) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(PactCpGHighModel.GeneNull) #All parameters significantly contribute to proportion of highly methylated CpGs
-```
-
-```{r}
 PactCpGHighModel.Gene <- glmmTMB(percentMeth ~ CDS + Introns + seqMethod,
                                  family = beta_family(link = "logit"),
                                  data = PactCpGMasterHigh) #Run model using a beta distribution and a logit link
-summary(PactCpGHighModel.Gene) #All parameters significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
 ```
 
 ```{r}
@@ -987,20 +978,19 @@ PactCpGHighModel.GeneANOVA #Look at ANOVA output
 #PactCpGHighModel.GeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGHighModel.Gene) #All parameters significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
+```
+
 ##### Not genes
 
 ```{r}
 PactCpGHighModel.notGeneNull <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
                                         family = beta_family(link = "logit"),
                                         data = PactCpGMasterHigh) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(PactCpGHighModel.notGeneNull) #All parameters contribute significantly to proportion of highly methylated CpGs
-```
-
-```{r}
 PactCpGHighModel.notGene <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                                     family = beta_family(link = "logit"),
                                     data = PactCpGMasterHigh) #Run model using a beta distribution and a logit link
-summary(PactCpGHighModel.notGene) #All variables significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
 ```
 
 ```{r}
@@ -1011,6 +1001,10 @@ PactCpGHighModel.notGeneANOVA #Look at ANOVA output
 #PactCpGHighModel.notGeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGHighModel.notGene) #All variables significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
+```
+
 #### Moderate methylation
 
 ##### Genes
@@ -1019,14 +1013,9 @@ PactCpGHighModel.notGeneANOVA #Look at ANOVA output
 PactCpGModerateModel.GeneNull <- glmmTMB(percentSparseMeth ~ CDS + Introns,
                                          family = beta_family(link = "logit"),
                                          data = PactCpGMasterModerate) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(PactCpGModerateModel.GeneNull) #CDS significantly contributes to proportion of moderately methylated CpGs
-```
-
-```{r}
 PactCpGModerateModel.Gene <- glmmTMB(percentSparseMeth ~ CDS + Introns + seqMethod,
                                      family = beta_family(link = "logit"),
                                      data = PactCpGMasterModerate) #Run model using a beta distribution and a logit link
-summary(PactCpGModerateModel.Gene) #No parameter significantly contributes to proportion of moderately methylated CpGs. MBD-BS has less prop moderately methylated CpGs than RRBS and WGBS.
 ```
 
 ```{r}
@@ -1037,20 +1026,19 @@ PactCpGModerateModel.GeneANOVA #Look at ANOVA output
 #PactCpGModerateModel.GeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGModerateModel.GeneNull) #CDS significantly contributes to proportion of moderately methylated CpGs
+```
+
 ##### Not genes
 
 ```{r}
 PactCpGModerateModel.notGeneNull <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
                                             family = beta_family(link = "logit"),
                                             data = PactCpGMasterModerate) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(PactCpGModerateModel.notGeneNull) #All parameters contribute significantly to proportion of moderately methylated CpGs
-```
-
-```{r}
 PactCpGModerateModel.notGene <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                                         family = beta_family(link = "logit"),
                                         data = PactCpGMasterModerate) #Run model using a beta distribution and a logit link
-summary(PactCpGModerateModel.notGene) #All parameters significantly contribute to proportion of moderately methylated CpGs.
 ```
 
 ```{r}
@@ -1061,6 +1049,10 @@ PactCpGModerateModel.notGeneANOVA #Look at ANOVA output
 #PactCpGModerateModel.notGeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGModerateModel.notGene) #All parameters significantly contribute to proportion of moderately methylated CpGs.
+```
+
 #### Low methylation
 
 ##### Genes
@@ -1069,14 +1061,9 @@ PactCpGModerateModel.notGeneANOVA #Look at ANOVA output
 PactCpGLowModel.GeneNull <- glmmTMB(percentUnMeth ~ CDS + Introns,
                                     family = beta_family(link = "logit"),
                                     data = PactCpGMasterLow) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(PactCpGLowModel.GeneNull) #CDS and introns significantly contribute to proportion of lowly methylated CpGs
-```
-
-```{r}
 PactCpGLowModel.Gene <- glmmTMB(percentUnMeth ~ CDS + Introns + seqMethod,
                                 family = beta_family(link = "logit"),
                                 data = PactCpGMasterLow) #Run model using a beta distribution and a logit link
-summary(PactCpGLowModel.Gene) #Introns and sequencing method significantly contribute to proportion of lowly methylated CpGs.
 ```
 
 ```{r}
@@ -1087,20 +1074,19 @@ PactCpGLowModel.GeneANOVA #Look at ANOVA output
 #PactCpGLowModel.GeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGLowModel.Gene) #Introns and sequencing method significantly contribute to proportion of lowly methylated CpGs.
+```
+
 ##### Not genes
 
 ```{r}
 PactCpGLowModel.notGeneNull <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
                                        family = beta_family(link = "logit"),
                                        data = PactCpGMasterLow) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(PactCpGLowModel.notGeneNull) #Flanks contribute significantly to proportion of lowly methylated CpGs
-```
-
-```{r}
 PactCpGLowModel.notGene <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
                                    family = beta_family(link = "logit"),
                                    data = PactCpGMasterLow) #Run model using a beta distribution and a logit link
-summary(PactCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
 ```
 
 ```{r}
@@ -1111,4 +1097,7 @@ PactCpGLowModel.notGeneANOVA #Look at ANOVA output
 #PactCpGLowModel.notGeneANOVA$`Pr(>Chisq)` #P-value
 ```
 
+```{r}
+summary(PactCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
+```
 
