@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("compositions") #Compositional data analysis package
 #install.packages("vegan") #Multivariate analysis package
 #install.packages("cluster") #Multivariate analysis package
-install.packages("glmmTMB") #Linear modeling package
+#install.packages("glmmTMB") #Linear modeling package
 ```
 
 ```{r}
@@ -32,7 +32,7 @@ require(glmmTMB)
 ```
 
 ```{r}
-#source("biostats.R") #Multivariate analysis source script
+source("biostats.R") #Multivariate analysis source script
 ```
 
 # Session information
