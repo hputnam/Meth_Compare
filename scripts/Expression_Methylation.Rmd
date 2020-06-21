@@ -200,17 +200,17 @@ All.circ.data$MBDBS <- as.numeric(as.character(All.circ.data$MBDBS))
 str(All.circ.data)
 
 #set the presence absence matrix
-All.circ.mat <- as.matrix(All.circ.data[1:10000,5:7])
-rownames(All.circ.mat) <- All.circ.data$gene[1:10000]
+All.circ.mat <- as.matrix(All.circ.data[1:45000,5:7])
+rownames(All.circ.mat) <- All.circ.data$gene[1:45000]
 str(All.circ.mat)
 
 #set the factor info for the presence absence matrix
-All.circ.fac <- All.circ.data[1:10000,1:4]
+All.circ.fac <- All.circ.data[1:45000,1:4]
 str(All.circ.fac)
 
 #Mcap heatmap
 pdf("Output/Mcap_heatmap_genes_present.pdf")
-pheatmap(All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
+Mcap.genepresence.heatmap <- pheatmap(All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
          cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
 dev.off()
 
@@ -221,22 +221,32 @@ Mcap.CpG.gene.counts <- left_join(All.circ.data, PolyA.Mcap.counts, by="gene")
 Mcap.CpG.gene.counts <- Mcap.CpG.gene.counts[,c(4,5,6,7,11)]
 
 Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
+colnames(Mcap.WGBS.counts)[2] <- "type"
+Mcap.WGBS.counts$method <- "WGBS"
+Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
+colnames(Mcap.RRBS.counts)[2] <- "type"
+Mcap.RRBS.counts$method <- "RRBS"
+Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
+colnames(Mcap.MBDBS.counts)[2] <- "type"
+Mcap.MBDBS.counts$method <- "MBDBS"
+Mcap.CpG.genes.all <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
+
+pdf("Output/test.pdf")
+ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type)) + 
+  geom_tile()+
+  scale_fill_gradientn(colours=c("black", "yellow"))
+dev.off()
+
 Mcap.WGBS.counts$WGBS[Mcap.WGBS.counts$WGBS==0] <- NA
 Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
-Mcap.WGBS.counts$method <- "WGBS"
-colnames(Mcap.WGBS.counts)[2] <- "type"
 
 Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
 Mcap.RRBS.counts$RRBS[Mcap.RRBS.counts$RRBS==0] <- NA
 Mcap.RRBS.counts <- na.omit(Mcap.RRBS.counts)
-Mcap.RRBS.counts$method <- "RRBS"
-colnames(Mcap.RRBS.counts)[2] <- "type"
 
 Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
 Mcap.MBDBS.counts$MBDBS[Mcap.MBDBS.counts$MBDBS==0] <- NA
 Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
-Mcap.MBDBS.counts$method <- "MBDBS"
-colnames(Mcap.MBDBS.counts)[2] <- "type"
 
 Mcap.CpG.counts.present <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
 Mcap.CpG.counts.present$plusone <- (Mcap.CpG.counts.present$mean.count)+1
@@ -289,7 +299,6 @@ panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 plot_grid(Mcap_presentexpression_by_method, Mcap_absentexpression_by_method, ncol=2, align="v")
 ggsave("Output/Mcap_expression_dist.pdf", width=8.5, height=4)
-
 
 
 #GO Term union df
@@ -438,18 +447,94 @@ Pact.All.circ.data$RRBS <- as.numeric(as.character(Pact.All.circ.data$RRBS))
 Pact.All.circ.data$MBDBS <- as.numeric(as.character(Pact.All.circ.data$MBDBS))
 str(Pact.All.circ.data)
 
-Pact.All.circ.mat <- as.matrix(Pact.All.circ.data[1:10000,5:7])
-rownames(Pact.All.circ.mat) <- Pact.All.circ.data$gene[1:10000]
+Pact.All.circ.mat <- as.matrix(Pact.All.circ.data[1:45000,5:7])
+rownames(Pact.All.circ.mat) <- Pact.All.circ.data$gene[1:45000]
 str(Pact.All.circ.mat)
 
-Pact.All.circ.fac <- Pact.All.circ.data[1:10000,1:4]
+Pact.All.circ.fac <- Pact.All.circ.data[1:45000,1:4]
 str(Pact.All.circ.fac)
 
 #Heatmap
-pdf("Output/Pact._heatmap_genes_present.pdf")
-pheatmap(Pact.All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
+pdf("Output/Pact_heatmap_genes_present.pdf")
+Pact.genepresence.heatmap <- pheatmap(Pact.All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
          cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
 dev.off()
+
+Pact.All.circ.data
+#WGBS genes present
+Pact.CpG.gene.counts <- left_join(Pact.All.circ.data, PolyA.Pact.counts, by="gene")
+Pact.CpG.gene.counts <- Pact.CpG.gene.counts[,c(4,5,6,7,11)]
+
+Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
+Pact.WGBS.counts$WGBS[Pact.WGBS.counts$WGBS==0] <- NA
+Pact.WGBS.counts <- na.omit(Pact.WGBS.counts)
+Pact.WGBS.counts$method <- "WGBS"
+colnames(Pact.WGBS.counts)[2] <- "type"
+
+Pact.RRBS.counts <- Pact.CpG.gene.counts[,c(1,3,5)]
+Pact.RRBS.counts$RRBS[Pact.RRBS.counts$RRBS==0] <- NA
+Pact.RRBS.counts <- na.omit(Pact.RRBS.counts)
+Pact.RRBS.counts$method <- "RRBS"
+colnames(Pact.RRBS.counts)[2] <- "type"
+
+Pact.MBDBS.counts <- Pact.CpG.gene.counts[,c(1,4,5)]
+Pact.MBDBS.counts$MBDBS[Pact.MBDBS.counts$MBDBS==0] <- NA
+Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
+Pact.MBDBS.counts$method <- "MBDBS"
+colnames(Pact.MBDBS.counts)[2] <- "type"
+
+Pact.CpG.counts.present <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
+Pact.CpG.counts.present$plusone <- (Pact.CpG.counts.present$mean.count)+1
+cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+
+
+Pact_presentexpression_by_method <- ggplot(Pact.CpG.counts.present , aes(plusone, color = method)) +
+  coord_trans(x="log") +
+  geom_density(fill = NA)+
+  ggtitle("A) Expression of Present Genes") +
+  xlab("Log of Mean Counts +1") + #label x axis
+  theme(axis.text.x = element_text(angle = 90, size=10)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+#distribution of genes absent
+Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
+Pact.WGBS.counts$WGBS[Pact.WGBS.counts$WGBS==1] <- NA
+Pact.WGBS.counts <- na.omit(Pact.WGBS.counts)
+Pact.WGBS.counts$method <- "WGBS"
+colnames(Pact.WGBS.counts)[2] <- "type"
+
+Pact.RRBS.counts <- Pact.CpG.gene.counts[,c(1,3,5)]
+Pact.RRBS.counts$RRBS[Pact.RRBS.counts$RRBS==1] <- NA
+Pact.RRBS.counts <- na.omit(Pact.RRBS.counts)
+Pact.RRBS.counts$method <- "RRBS"
+colnames(Pact.RRBS.counts)[2] <- "type"
+
+Pact.MBDBS.counts <- Pact.CpG.gene.counts[,c(1,4,5)]
+Pact.MBDBS.counts$MBDBS[Pact.MBDBS.counts$MBDBS==1] <- NA
+Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
+Pact.MBDBS.counts$method <- "MBDBS"
+colnames(Pact.MBDBS.counts)[2] <- "type"
+
+Pact.CpG.counts.absent <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
+Pact.CpG.counts.absent$plusone <- (Pact.CpG.counts.absent$mean.count)+1
+cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+
+
+Pact_absentexpression_by_method <- ggplot(Pact.CpG.counts.absent , aes(plusone, color = method)) +
+  coord_trans(x="log") +
+  geom_density(fill = NA)+
+  ggtitle("B) Expression of Absent Genes") +
+  xlab("Log of Mean Counts +1") + #label x axis
+  theme(axis.text.x = element_text(angle = 90, size=10)) +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+
+plot_grid(Pact_presentexpression_by_method, Pact_absentexpression_by_method, ncol=2, align="v")
+ggsave("Output/Pact_expression_dist.pdf", width=8.5, height=4)
+
 
 #GO Term union df
 Pact.GO.ALL <- left_join(Pact.WGBS.GO.terms, Pact.RRBS.GO.terms, by="v1", all=TRUE)
@@ -492,11 +577,15 @@ dev.off()
 
 ```
 
+#heatmap plotting of genes identified as present or absent in each method
+```{r}
 
 
+plot_grid(Mcap.genepresence.heatmap, Pact.genepresence.heatmap, ncol=2, align="v")
+ggsave("Output/gene_presence.pdf", width=8.5, height=6)
 
-
-
+  
+```
 
 
 
