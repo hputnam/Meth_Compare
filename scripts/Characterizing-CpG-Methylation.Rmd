@@ -303,6 +303,28 @@ McapCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
 summary(McapCpGLowModel) #Look at model output.
 ```
 
+#### Correct p-values
+
+```{r}
+McapCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
+                                "z.value" = c(summary(McapCpGHighModel)$coefficients$cond[8:9],
+                                              summary(McapCpGModModel)$coefficients$cond[8:9],
+                                              summary(McapCpGLowModel)$coefficients$cond[8:9]),
+                                "p.value" = c(summary(McapCpGHighModel)$coefficients$cond[11:12],
+                                              summary(McapCpGModModel)$coefficients$cond[11:12],
+                                              summary(McapCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+head(McapCpGMethStatusStatOutput) #Confirm dataframe creation
+```
+
+```{r}
+McapCpGMethStatusStatOutput$p.adj <- p.adjust(McapCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
+head(McapCpGMethStatusStatOutput) #Confirm changes
+```
+
+```{r}
+write.table(McapCpGMethStatusStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
 ## Pact
 
 ### Import file counts
@@ -1175,4 +1197,11 @@ PactIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
                                data = PactFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(PactIntergenicModel) #Look at model output
 ```
+
+
+
+
+
+
+
 
