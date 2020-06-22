@@ -144,6 +144,128 @@ barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 #dev.off() #Turn off plotting device
 ```
 
+### Multivariate data analysis with compositional data
+
+We are interested in how sequencing method affects the proportion, or composition, of CpGs in various methylation statuses and genomic features. For this reason, I will use a combined compositional analysis and multivariate approach. For each sample, I will have separate columns for each methylation status.
+
+#### Format data
+
+```{r}
+McapCpGPercentsTrans <- data.frame(clr(McapCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
+#McapCpGPercentsTrans <- data.trans((McapCpGMultiMaster / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
+tail(McapCpGPercentsTrans) # Confirm transformation
+```
+
+#### Conduct NMDS
+
+```{r}
+nmds.scree(McapCpGPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+```
+
+```{r}
+McapCpGPercentsNMDS <- metaMDS(McapCpGPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
+McapCpGPercentsNMDS$stress #May have insufficient data since stress is close to 0
+```
+
+```{r}
+nmds.monte(McapCpGPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
+stressplot(McapCpGPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
+```
+
+```{r}
+vec.McapCpGPercentsNMDS <- envfit(McapCpGPercentsNMDS$points, McapCpGPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.McapCpGPercentsNMDS #Look at loadings
+```
+
+```{r}
+ordiplot(McapCpGPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.McapCpGPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
+```
+
+```{r}
+McapCpGPercentsNMDS$points #Samples from each method overlap with eachother
+```
+
+#### ANOSIM
+
+##### Format data
+
+```{r}
+dissimMcapCpGPercentsTrans <- vegdist(McapCpGPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
+```
+
+```{r}
+ANOSIMReplicates <- c(rep("WGBS", times = 3),
+                      rep("RRBS", times = 3),
+                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+##### Global test
+
+```{r}
+McapCpGPercentsANOSIM <- anosim(dissimMcapCpGPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+McapCpGPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
+McapCpGPercentsANOSIM$signif #Differences are significant
+plot.anosim(McapCpGPercentsANOSIM) #Obtain boxplot of between and within group similarities
+```
+
+##### Pairwise ANOSIM
+
+###### WGBS vs. RRBS
+
+```{r}
+McapCpGPercentsWGRR <- vegdist(McapCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapCpGPercentsWGRRANOSIM <- anosim(McapCpGPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapCpGPercentsWGRRANOSIM$statistic
+McapCpGPercentsWGRRANOSIM$signif #Differences are not significant
+plot.anosim(McapCpGPercentsWGRRANOSIM)
+```
+
+###### WGBS vs. MBD-BS
+
+```{r}
+McapCpGPercentsWGMB <- vegdist(McapCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapCpGPercentsWGMBANOSIM <- anosim(McapCpGPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+McapCpGPercentsWGMBANOSIM$statistic
+McapCpGPercentsWGMBANOSIM$signif #Differences are not significant
+plot.anosim(McapCpGPercentsWGMBANOSIM)
+```
+
+###### RRBS vs. MBD-BS
+
+```{r}
+McapCpGPercentsRRMB <- vegdist(McapCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapCpGPercentsRRMBANOSIM <- anosim(McapCpGPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapCpGPercentsRRMBANOSIM$statistic
+McapCpGPercentsRRMBANOSIM$signif #Differences are not significant
+plot.anosim(McapCpGPercentsRRMBANOSIM)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Pact
 
 ### Import file counts
@@ -249,6 +371,114 @@ barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 
 #dev.off() #Turn off plotting device
 ```
+
+### Multivariate data analysis with compositional data
+
+#### Format data
+
+```{r}
+PactCpGPercentsTrans <- data.frame(clr(PactCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
+#PactCpGPercentsTrans <- data.trans((PactCpGMultiMaster / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
+tail(PactCpGPercentsTrans) # Confirm transformation
+```
+
+#### Conduct NMDS
+
+```{r}
+nmds.scree(PactCpGPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+```
+
+```{r}
+PactCpGPercentsNMDS <- metaMDS(PactCpGPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
+PactCpGPercentsNMDS$stress #May have insufficient data since stress is close to 0
+```
+
+```{r}
+nmds.monte(PactCpGPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
+stressplot(PactCpGPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
+```
+
+```{r}
+vec.PactCpGPercentsNMDS <- envfit(PactCpGPercentsNMDS$points, PactCpGPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.PactCpGPercentsNMDS #Look at loadings
+```
+
+```{r}
+ordiplot(PactCpGPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.PactCpGPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
+```
+
+```{r}
+PactCpGPercentsNMDS$points #Samples from WGBS and RRBS overlap with eachother. Meth8 may be an MBD-BS outlier
+```
+
+#### ANOSIM
+
+##### Format data
+
+```{r}
+dissimPactCpGPercentsTrans <- vegdist(PactCpGPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
+```
+
+```{r}
+ANOSIMReplicates <- c(rep("WGBS", times = 3),
+                      rep("RRBS", times = 3),
+                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+##### Global test
+
+```{r}
+PactCpGPercentsANOSIM <- anosim(dissimPactCpGPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+PactCpGPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
+PactCpGPercentsANOSIM$signif #Differences are significant
+plot.anosim(PactCpGPercentsANOSIM) #Obtain boxplot of between and within group similarities
+```
+
+##### Pairwise ANOSIM
+
+###### WGBS vs. RRBS
+
+```{r}
+PactCpGPercentsWGRR <- vegdist(PactCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactCpGPercentsWGRRANOSIM <- anosim(PactCpGPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactCpGPercentsWGRRANOSIM$statistic
+PactCpGPercentsWGRRANOSIM$signif #Differences are not significant
+plot.anosim(PactCpGPercentsWGRRANOSIM)
+```
+
+###### WGBS vs. MBD-BS
+
+```{r}
+PactCpGPercentsWGMB <- vegdist(PactCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactCpGPercentsWGMBANOSIM <- anosim(PactCpGPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+PactCpGPercentsWGMBANOSIM$statistic
+PactCpGPercentsWGMBANOSIM$signif #Differences are not significant
+plot.anosim(PactCpGPercentsWGMBANOSIM)
+```
+
+###### RRBS vs. MBD-BS
+
+```{r}
+PactCpGPercentsRRMB <- vegdist(PactCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactCpGPercentsRRMBANOSIM <- anosim(PactCpGPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactCpGPercentsRRMBANOSIM$statistic
+PactCpGPercentsRRMBANOSIM$signif #Differences are not significant
+plot.anosim(PactCpGPercentsRRMBANOSIM)
+```
+
+
+
+
 
 # CpG overlaps
 
@@ -524,223 +754,24 @@ head(PactFeatureOverlapsPercents) #Check calculations
 write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
-# Multivariate data analysis with compositional data
 
-We are interested in how sequencing method affects the proportion, or composition, of CpGs in various methylation statuses and genomic features. For this reason, I will use a combined compositional analysis and multivariate approach. For each sample, I will have separate columns for each methylation status and genomic feature. I will not use the genomic feature proportion data that considers methylation status (will keep variables separate).
 
-## Mcap
 
-### Format data
 
-```{r}
-McapCpGMultiMaster <- (cbind(McapCpGTypePercents,
-                            data.frame(t(McapFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) / 100) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
-head(McapCpGMultiMaster) #Confirm dataframe creation
-```
 
-```{r}
-McapCpGMultiTrans <- data.frame(clr(McapCpGMultiMaster)) #Use centered log-ratio transformation
-#McapCpGMultiTrans <- data.trans(McapCpGMultiMaster, method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
-tail(McapCpGMultiTrans) # Confirm transformation
-```
 
-### Conduct NMDS
 
-```{r}
-#nmds.scree(McapCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
-```
 
-```{r}
-McapMasterNMDS <- metaMDS(McapCpGMultiTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
-McapMasterNMDS$stress #May have insufficient data since stress is close to 0
-```
 
-```{r}
-nmds.monte(McapCpGMultiTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
-stressplot(McapMasterNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
-```
 
-```{r}
-vec.McapMasterNMDS <- envfit(McapMasterNMDS$points, McapCpGMultiTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
-vec.McapMasterNMDS #Look at loadings
-```
 
-```{r}
-ordiplot(McapMasterNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
-plot(vec.McapMasterNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
-```
 
-```{r}
-McapMasterNMDS$points #Samples from each method overlap with eachother
-```
 
-### ANOSIM
 
-#### Format data
 
-```{r}
-dissimMcapCpGMultiTrans <- vegdist(McapCpGMultiTrans, "euclidean") #Calculate euclidean dissimilarity matrix
-```
 
-```{r}
-ANOSIMReplicates <- c(rep("WGBS", times = 3),
-                      rep("RRBS", times = 3),
-                      rep("MBDBS", times = 3)) #Create a vector with grouping information
-```
 
-#### Global test
 
-```{r}
-McapMethodANOSIM <- anosim(dissimMcapCpGMultiTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
-McapMethodANOSIM$statistic #Within group and between group similarities are different for each sequencing method
-McapMethodANOSIM$signif #Differences are significant
-plot.anosim(McapMethodANOSIM) #Obtain boxplot of between and within group similarities
-```
-
-#### Pairwise ANOSIM
-
-##### WGBS vs. RRBS
-
-```{r}
-McapDataWGRR <- vegdist(McapCpGMultiTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapWGRRANOSIM <- anosim(McapDataWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapWGRRANOSIM$statistic
-McapWGRRANOSIM$signif #Differences are not significant
-plot.anosim(McapWGRRANOSIM)
-```
-
-##### WGBS vs. MBD-BS
-
-```{r}
-McapDataWGMB <- vegdist(McapCpGMultiTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapWGMBANOSIM <- anosim(McapDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-McapWGMBANOSIM$statistic
-McapWGMBANOSIM$signif #Differences are not significant
-plot.anosim(McapWGMBANOSIM)
-```
-
-##### RRBS vs. MBD-BS
-
-```{r}
-McapDataRRMB <- vegdist(McapCpGMultiTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapRRMBANOSIM <- anosim(McapDataRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapRRMBANOSIM$statistic
-McapRRMBANOSIM$signif #Differences are not significant
-plot.anosim(McapRRMBANOSIM)
-```
-
-## Pact
-
-### Format data
-
-```{r}
-PactCpGMultiMaster <- (cbind(PactCpGTypePercents,
-                            data.frame(t(PactFeatureOverlapsPercents[,seq(from = 5, to = 37, by = 4)]))) / 100) #Use cbind to create dataframe with CpG type and genomic feature proportions for each sample
-head(PactCpGMultiMaster) #Confirm dataframe creation
-```
-
-```{r}
-PactCpGMultiTrans <- data.frame(clr(PactCpGMultiMaster)) #Use centered log-ratio transformation
-#PactCpGMultiTrans <- data.trans(PactCpGMultiMaster, method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
-tail(PactCpGMultiTrans) # Confirm transformation
-```
-
-### Conduct NMDS
-
-```{r}
-#nmds.scree(PactCpGMultiTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
-```
-
-```{r}
-PactMasterNMDS <- metaMDS(PactCpGMultiTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
-PactMasterNMDS$stress #May have insufficient data since stress is close to 0
-```
-
-```{r}
-nmds.monte(PactCpGMultiTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
-stressplot(PactMasterNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
-```
-
-```{r}
-vec.PactMasterNMDS <- envfit(PactMasterNMDS$points, PactCpGMultiTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
-vec.PactMasterNMDS #Look at loadings
-```
-
-```{r}
-ordiplot(PactMasterNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
-plot(vec.PactMasterNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
-```
-
-```{r}
-PactMasterNMDS$points #WGBS and RRBS appear to overlap with eachother, and MBD-BS samples are consistent with eachother except for Meth8.
-```
-
-### ANOSIM
-
-#### Format data
-
-```{r}
-dissimPactCpGMultiTrans <- vegdist(PactCpGMultiTrans, "euclidean") #Calculate euclidean dissimilarity matrix
-```
-
-#### Global test
-
-```{r}
-PactMethodANOSIM <- anosim(dissimPactCpGMultiTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
-PactMethodANOSIM$statistic #Within group and between group similarities are different for each sequencing method
-PactMethodANOSIM$signif #Differences are significant
-plot.anosim(PactMethodANOSIM) #Obtain boxplot of between and within group similarities
-```
-
-#### Pairwise ANOSIM
-
-##### WGBS vs. RRBS
-
-```{r}
-PactDataWGRR <- vegdist(PactCpGMultiTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactWGRRANOSIM <- anosim(PactDataWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactWGRRANOSIM$statistic
-PactWGRRANOSIM$signif #Differences are not significant
-plot.anosim(PactWGRRANOSIM)
-```
-
-##### WGBS vs. MBD-BS
-
-```{r}
-PactDataWGMB <- vegdist(PactCpGMultiTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactWGMBANOSIM <- anosim(PactDataWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-PactWGMBANOSIM$statistic
-PactWGMBANOSIM$signif #Differences are not significant
-plot.anosim(PactWGMBANOSIM)
-```
-
-##### RRBS vs. MBD-BS
-
-```{r}
-PactDataRRMB <- vegdist(PactCpGMultiTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactRRMBANOSIM <- anosim(PactDataRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactRRMBANOSIM$statistic
-PactRRMBANOSIM$signif #Differences are not significant
-plot.anosim(PactRRMBANOSIM)
-```
 
 # Generalized linear model analysis
 
