@@ -912,6 +912,32 @@ McapIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(McapIntergenicModel) #Look at model output
 ```
 
+#### Correct p-values
+
+```{r}
+McapCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
+                                              "z.value" = c(summary(McapCDSModel)$coefficients$cond[8:9],
+                                                            summary(McapIntronsModel)$coefficients$cond[8:9],
+                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[8:9],
+                                                            summary(McapDownstreamFlanksModel)$coefficients$cond[8:9],
+                                                            summary(McapIntergenicModel)$coefficients$cond[8:9]),
+                                              "p.value" = c(summary(McapCDSModel)$coefficients$cond[11:12],
+                                                            summary(McapIntronsModel)$coefficients$cond[11:12],
+                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[11:12],
+                                                          summary(McapDownstreamFlanksModel)$coefficients$cond[11:12],
+                                                            summary(McapIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+head(McapCpGFeatureOverlapStatOutput) #Confirm dataframe creation
+```
+
+```{r}
+McapCpGFeatureOverlapStatOutput$p.adj <- p.adjust(McapCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
+head(McapCpGFeatureOverlapStatOutput) #Confirm changes
+```
+
+```{r}
+write.table(McapCpGFeatureOverlapStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Overlap-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
 ## Pact
 
 ### Import file counts
