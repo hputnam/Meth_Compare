@@ -595,6 +595,28 @@ PactCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
 summary(PactCpGLowModel) #Look at model output.
 ```
 
+#### Correct p-values
+
+```{r}
+PactCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
+                                "z.value" = c(summary(PactCpGHighModel)$coefficients$cond[8:9],
+                                              summary(PactCpGModModel)$coefficients$cond[8:9],
+                                              summary(PactCpGLowModel)$coefficients$cond[8:9]),
+                                "p.value" = c(summary(PactCpGHighModel)$coefficients$cond[11:12],
+                                              summary(PactCpGModModel)$coefficients$cond[11:12],
+                                              summary(PactCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+head(PactCpGMethStatusStatOutput) #Confirm dataframe creation
+```
+
+```{r}
+PactCpGMethStatusStatOutput$p.adj <- p.adjust(PactCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
+head(PactCpGMethStatusStatOutput) #Confirm changes
+```
+
+```{r}
+write.table(PactCpGMethStatusStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
 # CpG genomic location
 
 ## Mcap
