@@ -618,6 +618,110 @@ head(McapFeatureOverlapsPercents) #Check calculations
 write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+### Multivariate data analysis with compositional data
+
+#### Format data
+
+```{r}
+McapFeatureOverlapsPercentsTrans <- data.frame(clr(t(McapFeatureOverlapsPercents[,seq(5, 37, 4)] / 100))) #Use centered log-ratio transformation on proportion data
+#McapFeatureOverlapsPercentsTrans <- data.trans((McapFeatureOverlapsPercents / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
+tail(McapFeatureOverlapsPercentsTrans) # Confirm transformation
+```
+
+#### Conduct NMDS
+
+```{r}
+nmds.scree(McapFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+```
+
+```{r}
+McapFeatureOverlapsPercentsNMDS <- metaMDS(McapFeatureOverlapsPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
+McapFeatureOverlapsPercentsNMDS$stress #May have insufficient data since stress is close to 0
+```
+
+```{r}
+nmds.monte(McapFeatureOverlapsPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
+stressplot(McapFeatureOverlapsPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
+```
+
+```{r}
+vec.McapFeatureOverlapsPercentsNMDS <- envfit(McapFeatureOverlapsPercentsNMDS$points, McapFeatureOverlapsPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.McapFeatureOverlapsPercentsNMDS #Look at loadings
+```
+
+```{r}
+ordiplot(McapFeatureOverlapsPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.McapFeatureOverlapsPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
+```
+
+```{r}
+McapFeatureOverlapsPercentsNMDS$points #Samples from each method overlap with eachother
+```
+
+#### ANOSIM
+
+##### Format data
+
+```{r}
+dissimMcapFeatureOverlapsPercentsTrans <- vegdist(McapFeatureOverlapsPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
+```
+
+```{r}
+ANOSIMReplicates <- c(rep("WGBS", times = 3),
+                      rep("RRBS", times = 3),
+                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+##### Global test
+
+```{r}
+McapFeatureOverlapsPercentsANOSIM <- anosim(dissimMcapFeatureOverlapsPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+McapFeatureOverlapsPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
+McapFeatureOverlapsPercentsANOSIM$signif #Differences are significant
+plot.anosim(McapFeatureOverlapsPercentsANOSIM) #Obtain boxplot of between and within group similarities
+```
+
+##### Pairwise ANOSIM
+
+###### WGBS vs. RRBS
+
+```{r}
+McapFeatureOverlapsPercentsWGRR <- vegdist(McapFeatureOverlapsPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapFeatureOverlapsPercentsWGRRANOSIM <- anosim(McapFeatureOverlapsPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsWGRRANOSIM$statistic
+McapFeatureOverlapsPercentsWGRRANOSIM$signif #Differences are not significant
+plot.anosim(McapFeatureOverlapsPercentsWGRRANOSIM)
+```
+
+###### WGBS vs. MBD-BS
+
+```{r}
+McapFeatureOverlapsPercentsWGMB <- vegdist(McapFeatureOverlapsPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapFeatureOverlapsPercentsWGMBANOSIM <- anosim(McapFeatureOverlapsPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsWGMBANOSIM$statistic
+McapFeatureOverlapsPercentsWGMBANOSIM$signif #Differences are not significant
+plot.anosim(McapFeatureOverlapsPercentsWGMBANOSIM)
+```
+
+###### RRBS vs. MBD-BS
+
+```{r}
+McapFeatureOverlapsPercentsRRMB <- vegdist(McapFeatureOverlapsPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+McapFeatureOverlapsPercentsRRMBANOSIM <- anosim(McapFeatureOverlapsPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsRRMBANOSIM$statistic
+McapFeatureOverlapsPercentsRRMBANOSIM$signif #Differences are not significant
+plot.anosim(McapFeatureOverlapsPercentsRRMBANOSIM)
+```
+
 ## Pact
 
 ### Import file counts
@@ -754,6 +858,109 @@ head(PactFeatureOverlapsPercents) #Check calculations
 write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
+### Multivariate data analysis with compositional data
+
+#### Format data
+
+```{r}
+PactFeatureOverlapsPercentsTrans <- data.frame(clr(t(PactFeatureOverlapsPercents[,seq(5, 37, 4)] / 100))) #Use centered log-ratio transformation on proportion data
+#PactFeatureOverlapsPercentsTrans <- data.trans((PactFeatureOverlapsPercents / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
+tail(PactFeatureOverlapsPercentsTrans) # Confirm transformation
+```
+
+#### Conduct NMDS
+
+```{r}
+nmds.scree(PactFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+```
+
+```{r}
+PactFeatureOverlapsPercentsNMDS <- metaMDS(PactFeatureOverlapsPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
+PactFeatureOverlapsPercentsNMDS$stress #May have insufficient data since stress is close to 0
+```
+
+```{r}
+nmds.monte(PactFeatureOverlapsPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
+stressplot(PactFeatureOverlapsPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
+```
+
+```{r}
+vec.PactFeatureOverlapsPercentsNMDS <- envfit(PactFeatureOverlapsPercentsNMDS$points, PactFeatureOverlapsPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
+vec.PactFeatureOverlapsPercentsNMDS #Look at loadings
+```
+
+```{r}
+ordiplot(PactFeatureOverlapsPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
+plot(vec.PactFeatureOverlapsPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
+```
+
+```{r}
+PactFeatureOverlapsPercentsNMDS$points #Samples from WGBS and RRBS overlap with eachother. Meth8 may be an MBD-BS outlier.
+```
+
+#### ANOSIM
+
+##### Format data
+
+```{r}
+dissimPactFeatureOverlapsPercentsTrans <- vegdist(PactFeatureOverlapsPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
+```
+
+```{r}
+ANOSIMReplicates <- c(rep("WGBS", times = 3),
+                      rep("RRBS", times = 3),
+                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+##### Global test
+
+```{r}
+PactFeatureOverlapsPercentsANOSIM <- anosim(dissimPactFeatureOverlapsPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+PactFeatureOverlapsPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
+PactFeatureOverlapsPercentsANOSIM$signif #Differences are significant
+plot.anosim(PactFeatureOverlapsPercentsANOSIM) #Obtain boxplot of between and within group similarities
+```
+
+##### Pairwise ANOSIM
+
+###### WGBS vs. RRBS
+
+```{r}
+PactFeatureOverlapsPercentsWGRR <- vegdist(PactFeatureOverlapsPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactFeatureOverlapsPercentsWGRRANOSIM <- anosim(PactFeatureOverlapsPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsWGRRANOSIM$statistic
+PactFeatureOverlapsPercentsWGRRANOSIM$signif #Differences are not significant
+plot.anosim(PactFeatureOverlapsPercentsWGRRANOSIM)
+```
+
+###### WGBS vs. MBD-BS
+
+```{r}
+PactFeatureOverlapsPercentsWGMB <- vegdist(PactFeatureOverlapsPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactFeatureOverlapsPercentsWGMBANOSIM <- anosim(PactFeatureOverlapsPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsWGMBANOSIM$statistic
+PactFeatureOverlapsPercentsWGMBANOSIM$signif #Differences are not significant
+plot.anosim(PactFeatureOverlapsPercentsWGMBANOSIM)
+```
+
+###### RRBS vs. MBD-BS
+
+```{r}
+PactFeatureOverlapsPercentsRRMB <- vegdist(PactFeatureOverlapsPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
+```
+
+```{r}
+PactFeatureOverlapsPercentsRRMBANOSIM <- anosim(PactFeatureOverlapsPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsRRMBANOSIM$statistic
+PactFeatureOverlapsPercentsRRMBANOSIM$signif #Differences are not significant
+plot.anosim(PactFeatureOverlapsPercentsRRMBANOSIM)
+```
 
 
 
