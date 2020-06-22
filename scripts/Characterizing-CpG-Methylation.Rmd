@@ -1246,6 +1246,32 @@ PactIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(PactIntergenicModel) #Look at model output
 ```
 
+#### Correct p-values
+
+```{r}
+PactCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
+                                              "z.value" = c(summary(PactCDSModel)$coefficients$cond[8:9],
+                                                            summary(PactIntronsModel)$coefficients$cond[8:9],
+                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[8:9],
+                                                            summary(PactDownstreamFlanksModel)$coefficients$cond[8:9],
+                                                            summary(PactIntergenicModel)$coefficients$cond[8:9]),
+                                              "p.value" = c(summary(PactCDSModel)$coefficients$cond[11:12],
+                                                            summary(PactIntronsModel)$coefficients$cond[11:12],
+                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[11:12],
+                                                          summary(PactDownstreamFlanksModel)$coefficients$cond[11:12],
+                                                            summary(PactIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+head(PactCpGFeatureOverlapStatOutput) #Confirm dataframe creation
+```
+
+```{r}
+PactCpGFeatureOverlapStatOutput$p.adj <- p.adjust(PactCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
+head(PactCpGFeatureOverlapStatOutput) #Confirm changes
+```
+
+```{r}
+write.table(PactCpGFeatureOverlapStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Overlap-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
+```
+
 
 
 
