@@ -41,7 +41,7 @@ source("biostats.R") #Multivariate analysis source script
 sessionInfo()
 ```
 
-# CpG distribution
+# CpG methylation status
 
 ## Mcap
 
@@ -152,119 +152,156 @@ We are interested in how sequencing method affects the proportion, or compositio
 
 ```{r}
 McapCpGPercentsTrans <- data.frame(clr(McapCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
-#McapCpGPercentsTrans <- data.trans((McapCpGMultiMaster / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
 tail(McapCpGPercentsTrans) # Confirm transformation
 ```
 
-#### Conduct NMDS
+#### PCoA and perMANOVA
 
-```{r}
-nmds.scree(McapCpGPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
-```
-
-```{r}
-McapCpGPercentsNMDS <- metaMDS(McapCpGPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
-McapCpGPercentsNMDS$stress #May have insufficient data since stress is close to 0
-```
-
-```{r}
-nmds.monte(McapCpGPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
-stressplot(McapCpGPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
-```
-
-```{r}
-vec.McapCpGPercentsNMDS <- envfit(McapCpGPercentsNMDS$points, McapCpGPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
-vec.McapCpGPercentsNMDS #Look at loadings
-```
-
-```{r}
-ordiplot(McapCpGPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
-plot(vec.McapCpGPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
-```
-
-```{r}
-McapCpGPercentsNMDS$points #Samples from each method overlap with eachother
-```
-
-#### ANOSIM
-
-##### Format data
+##### Conduct PCoA
 
 ```{r}
 dissimMcapCpGPercentsTrans <- vegdist(McapCpGPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
 ```
 
 ```{r}
-ANOSIMReplicates <- c(rep("WGBS", times = 3),
-                      rep("RRBS", times = 3),
-                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+McapCpGPercentsPCoA <- cmdscale(dissimMcapCpGPercentsTrans, eig = TRUE, add = TRUE) #Perform the PCoA. Include eigenvalues for each PC, and add a constant so default eigenvalues are non-negative.
+McapCpGPercentsPCoA$points #View PC scores
 ```
 
-##### Global test
+##### Understand eigenvalues and loadings
 
 ```{r}
-McapCpGPercentsANOSIM <- anosim(dissimMcapCpGPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
-McapCpGPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
-McapCpGPercentsANOSIM$signif #Differences are significant
-plot.anosim(McapCpGPercentsANOSIM) #Obtain boxplot of between and within group similarities
+McapCpGPercentsPCoA$eig #View eigenvalues
+(McapCpGPercentsPCoA$eig / sum(McapCpGPercentsPCoA$eig)) * 100 #Calculate percent variation explained by each PC
 ```
 
-##### Pairwise ANOSIM
+```{r}
+plot(McapCpGPercentsPCoA$eig/sum(McapCpGPercentsPCoA$eig)*100, 
+     type = "b",lwd = 2,col = "blue", 
+     xlab = "Principal Component from PCoA", ylab = "% variation explained", main = "% variation explained by PCoA (blue) vs. random expectation (red)") #Plot eigenvalues
+lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
+```
 
-###### WGBS vs. RRBS
+```{r}
+vec.McapCpGPercentsPCoA <- envfit(scores(McapCpGPercentsPCoA), McapCpGPercentsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
+vec.McapCpGPercentsPCoA #Look at statistical results
+```
+
+##### Global perMANOVA
+
+```{r}
+sampleInformation <- c(rep("WGBS", times = 3),
+                       rep("RRBS", times = 3),
+                       rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+```{r}
+McapCpGPercentsTest <- adonis(dissimMcapCpGPercentsTrans ~ sampleInformation) #Conduct perMANOVA by method
+McapCpGPercentsTest #Look at test output.
+```
+
+##### Beta dispersion model
+
+```{r}
+disp.McapCpGPercentsTrans <- betadisper(dissimMcapCpGPercentsTrans,group=sampleInformation,type='centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
+anova(disp.McapCpGPercentsTrans) #Variance is the same across all groups. Significance in perMANOVA due to centroid differences, not variance
+```
+
+##### Create plot
+
+```{r}
+ordiplot(McapCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites", xlab = "PC 1 (83.1%)", ylab = "PC 2 (16.9%)") #Plot basic PCoA
+plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
+```
+
+#### Pairwise perMANVOA
+
+##### WGBS vs. RRBS
 
 ```{r}
 McapCpGPercentsWGRR <- vegdist(McapCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-McapCpGPercentsWGRRANOSIM <- anosim(McapCpGPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapCpGPercentsWGRRANOSIM$statistic
-McapCpGPercentsWGRRANOSIM$signif #Differences are not significant
-plot.anosim(McapCpGPercentsWGRRANOSIM)
+McapCpGPercentsWGRRTest <- adonis(McapCpGPercentsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapCpGPercentsWGRRTest
 ```
 
-###### WGBS vs. MBD-BS
+##### WGBS vs. MBD-BS
 
 ```{r}
 McapCpGPercentsWGMB <- vegdist(McapCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-McapCpGPercentsWGMBANOSIM <- anosim(McapCpGPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-McapCpGPercentsWGMBANOSIM$statistic
-McapCpGPercentsWGMBANOSIM$signif #Differences are not significant
-plot.anosim(McapCpGPercentsWGMBANOSIM)
+McapCpGPercentsWGMBTest <- adonis(McapCpGPercentsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+McapCpGPercentsWGMBTest
 ```
 
-###### RRBS vs. MBD-BS
+##### RRBS vs. MBD-BS
 
 ```{r}
 McapCpGPercentsRRMB <- vegdist(McapCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-McapCpGPercentsRRMBANOSIM <- anosim(McapCpGPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapCpGPercentsRRMBANOSIM$statistic
-McapCpGPercentsRRMBANOSIM$signif #Differences are not significant
-plot.anosim(McapCpGPercentsRRMBANOSIM)
+McapCpGPercentsRRMBTest <- adonis(McapCpGPercentsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapCpGPercentsRRMBTest
 ```
 
+### Generalized linear model analysis
 
+To complement my multivariate analysis, I will use a series of generalized linear models. I will run separate models for each methylation status since the proportions of each add up to 1.
 
+Does sequencing method influence the proportion of high, moderate, or low CpGs detected?
 
+#### High methylation
 
+```{r}
+McapCpGPercentsHigh <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                  "replicate" = rep(c("1", "2", "3"), times = 3),
+                                  "highMeth" = McapCpGTypePercents[,1] / 100) #Remove moderate and low methylation information and add sequencing metadata. A = WGBS, B = RRBS, C = MBD-BS. Needed to alphabetize so RRBS and MBD-BS are compared to WGBS (model default is alphabetized)
+head(McapCpGPercentsHigh) #Confirm dataframe creation
+```
 
+```{r}
+McapCpGHighModel <- glmmTMB(highMeth ~ seqMethod + (1|replicate),
+                            family = beta_family(link = "logit"),
+                            data = McapCpGPercentsHigh) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapCpGHighModel) #Look at model output. RRBS has sig lower prop and MBD-BS has sig higher prop than WGBS.
+```
 
+#### Moderate methylation
 
+```{r}
+McapCpGPercentsMod <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                 "replicate" = rep(c("1", "2", "3"), times = 3),
+                                 "modMeth" = McapCpGTypePercents[,2] / 100) #Remove high and low methylation information and add sequencing metadata
+head(McapCpGPercentsMod) #Confirm dataframe creation
+```
 
+```{r}
+McapCpGModModel <- glmmTMB(modMeth ~ seqMethod + (1|replicate),
+                           family = beta_family(link = "logit"),
+                           data = McapCpGPercentsMod) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapCpGModModel) #Look at model output. RRBS has sig lower prop than WGBS.
+```
 
+#### Low methylation
 
+```{r}
+McapCpGPercentsLow <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                 "replicate" = rep(c("1", "2", "3"), times = 3),
+                                 "lowMeth" = McapCpGTypePercents[,3] / 100) #Remove moderate and low methylation information and add sequencing metadata
+head(McapCpGPercentsLow) #Confirm dataframe creation
+```
 
-
-
-
-
+```{r}
+McapCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
+                           family = beta_family(link = "logit"),
+                           data = McapCpGPercentsLow) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapCpGLowModel) #Look at model output. RRBS has a sig higher prop and MBD-BS has a sig lower prop than WGBS.
+```
 
 ## Pact
 
@@ -374,113 +411,175 @@ barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = 
 
 ### Multivariate data analysis with compositional data
 
+We are interested in how sequencing method affects the proportion, or composition, of CpGs in various methylation statuses and genomic features. For this reason, I will use a combined compositional analysis and multivariate approach. For each sample, I will have separate columns for each methylation status.
+
 #### Format data
 
 ```{r}
 PactCpGPercentsTrans <- data.frame(clr(PactCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
-#PactCpGPercentsTrans <- data.trans((PactCpGMultiMaster / 100), method = "hellingers", plot = FALSE) #Hellinger (asymmetric) transformation
 tail(PactCpGPercentsTrans) # Confirm transformation
 ```
 
-#### Conduct NMDS
+#### PCoA and perMANOVA
 
-```{r}
-nmds.scree(PactCpGPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
-```
-
-```{r}
-PactCpGPercentsNMDS <- metaMDS(PactCpGPercentsTrans, distance = 'euclidean', k = 2, trymax = 10000, autotransform = FALSE) #Make MDS dissimilarity matrix on transformed data using euclidean distance.
-PactCpGPercentsNMDS$stress #May have insufficient data since stress is close to 0
-```
-
-```{r}
-nmds.monte(PactCpGPercentsTrans, distance = "euclidean", k = 2, autotransform = FALSE, trymax = 20) #Perform a randomization test to determine if the solution for k dimensions is significant. The observed stress value is less than the expected stress value.
-stressplot(PactCpGPercentsNMDS) #Make Shepard plot to visualize the relationship between original dissimilarities (distance matrix) and distnaces in ordination space. The non-metric R-squared value is 1 (redundant with observed stress value and p-value from the randomization test)
-```
-
-```{r}
-vec.PactCpGPercentsNMDS <- envfit(PactCpGPercentsNMDS$points, PactCpGPercentsTrans, perm = 1000) #Calculate loadings by correlating NMDS scores with original variables
-vec.PactCpGPercentsNMDS #Look at loadings
-```
-
-```{r}
-ordiplot(PactCpGPercentsNMDS, choices = c(1,2), type = "text", display = "sites", xlab = "Axis 1", ylab = "Axis 2") #Plot basic NMDS
-plot(vec.PactCpGPercentsNMDS, p.max = 0.05, col = 'blue') #Plot loadings that are significant at the 0.05 level
-```
-
-```{r}
-PactCpGPercentsNMDS$points #Samples from WGBS and RRBS overlap with eachother. Meth8 may be an MBD-BS outlier
-```
-
-#### ANOSIM
-
-##### Format data
+##### Conduct PCoA
 
 ```{r}
 dissimPactCpGPercentsTrans <- vegdist(PactCpGPercentsTrans, "euclidean") #Calculate euclidean dissimilarity matrix
 ```
 
 ```{r}
-ANOSIMReplicates <- c(rep("WGBS", times = 3),
-                      rep("RRBS", times = 3),
-                      rep("MBDBS", times = 3)) #Create a vector with grouping information
+PactCpGPercentsPCoA <- cmdscale(dissimPactCpGPercentsTrans, eig = TRUE, add = TRUE) #Perform the PCoA. Include eigenvalues for each PC, and add a constant so default eigenvalues are non-negative.
+PactCpGPercentsPCoA$points #View PC scores
 ```
 
-##### Global test
+##### Understand eigenvalues and loadings
 
 ```{r}
-PactCpGPercentsANOSIM <- anosim(dissimPactCpGPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
-PactCpGPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
-PactCpGPercentsANOSIM$signif #Differences are significant
-plot.anosim(PactCpGPercentsANOSIM) #Obtain boxplot of between and within group similarities
+PactCpGPercentsPCoA$eig #View eigenvalues
+(PactCpGPercentsPCoA$eig / sum(PactCpGPercentsPCoA$eig)) * 100 #Calculate percent variation explained by each PC
 ```
 
-##### Pairwise ANOSIM
+```{r}
+plot(PactCpGPercentsPCoA$eig/sum(PactCpGPercentsPCoA$eig)*100, 
+     type = "b",lwd = 2,col = "blue", 
+     xlab = "Principal Component from PCoA", ylab = "% variation explained", main = "% variation explained by PCoA (blue) vs. random expectation (red)") #Plot eigenvalues
+lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
+```
 
-###### WGBS vs. RRBS
+```{r}
+vec.PactCpGPercentsPCoA <- envfit(scores(PactCpGPercentsPCoA), PactCpGPercentsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
+vec.PactCpGPercentsPCoA #Look at statistical results
+```
+
+##### Global perMANOVA
+
+```{r}
+sampleInformation <- c(rep("WGBS", times = 3),
+                       rep("RRBS", times = 3),
+                       rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+```{r}
+PactCpGPercentsTest <- adonis(dissimPactCpGPercentsTrans ~ sampleInformation) #Conduct perMANOVA by method
+PactCpGPercentsTest #Look at test output.
+```
+
+##### Beta dispersion model
+
+```{r}
+disp.PactCpGPercentsTrans <- betadisper(dissimPactCpGPercentsTrans,group=sampleInformation,type='centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
+anova(disp.PactCpGPercentsTrans) #Variance is different between groups. Significance in perMANOVA can be due to centroid and variance differences.
+```
+
+##### Create plot
+
+```{r}
+ordiplot(PactCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites", xlab = "PC 1 (97.9%)", ylab = "PC 2 (2.1%)") #Plot basic PCoA
+plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
+```
+
+#### Pairwise perMANVOA
+
+##### WGBS vs. RRBS
 
 ```{r}
 PactCpGPercentsWGRR <- vegdist(PactCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-PactCpGPercentsWGRRANOSIM <- anosim(PactCpGPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactCpGPercentsWGRRANOSIM$statistic
-PactCpGPercentsWGRRANOSIM$signif #Differences are not significant
-plot.anosim(PactCpGPercentsWGRRANOSIM)
+PactCpGPercentsWGRRTest <- adonis(PactCpGPercentsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactCpGPercentsWGRRTest
 ```
 
-###### WGBS vs. MBD-BS
+```{r}
+disp.PactCpGPercentsWGRR <- betadisper(PactCpGPercentsWGRR, group = sampleInformation[1:6], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
+anova(disp.PactCpGPercentsWGRR) #Variance is the same between groups.
+```
+
+##### WGBS vs. MBD-BS
 
 ```{r}
 PactCpGPercentsWGMB <- vegdist(PactCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-PactCpGPercentsWGMBANOSIM <- anosim(PactCpGPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-PactCpGPercentsWGMBANOSIM$statistic
-PactCpGPercentsWGMBANOSIM$signif #Differences are not significant
-plot.anosim(PactCpGPercentsWGMBANOSIM)
+PactCpGPercentsWGMBTest <- adonis(PactCpGPercentsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+PactCpGPercentsWGMBTest
 ```
 
-###### RRBS vs. MBD-BS
+```{r}
+disp.PactCpGPercentsWGMB <- betadisper(PactCpGPercentsWGMB, group = sampleInformation[c(1:3, 7:9)], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
+anova(disp.PactCpGPercentsWGMB) #Variance is significantly different between groups.
+```
+
+##### RRBS vs. MBD-BS
 
 ```{r}
 PactCpGPercentsRRMB <- vegdist(PactCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
 ```
 
 ```{r}
-PactCpGPercentsRRMBANOSIM <- anosim(PactCpGPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactCpGPercentsRRMBANOSIM$statistic
-PactCpGPercentsRRMBANOSIM$signif #Differences are not significant
-plot.anosim(PactCpGPercentsRRMBANOSIM)
+PactCpGPercentsRRMBTest <- adonis(PactCpGPercentsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactCpGPercentsRRMBTest
 ```
 
+```{r}
+disp.PactCpGPercentsRRMB <- betadisper(PactCpGPercentsRRMB, group = sampleInformation[c(4:9)], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
+anova(disp.PactCpGPercentsRRMB) #Variance is marginally different between groups.
+```
 
+### Generalized linear model analysis
 
+#### High methylation
 
+```{r}
+PactCpGPercentsHigh <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                  "replicate" = rep(c("1", "2", "3"), times = 3),
+                                  "highMeth" = PactCpGTypePercents[,1] / 100) #Remove moderate and low methylation information and add sequencing metadata. A = WGBS, B = RRBS, C = MBD-BS. Needed to alphabetize so RRBS and MBD-BS are compared to WGBS (model default is alphabetized)
+head(PactCpGPercentsHigh) #Confirm dataframe creation
+```
 
-# CpG overlaps
+```{r}
+PactCpGHighModel <- glmmTMB(highMeth ~ seqMethod + (1|replicate),
+                            family = beta_family(link = "logit"),
+                            data = PactCpGPercentsHigh) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(PactCpGHighModel) #Look at model output. MBD-BS has a sig higher prop than WGBS
+```
+
+#### Moderate methylation
+
+```{r}
+PactCpGPercentsMod <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                 "replicate" = rep(c("1", "2", "3"), times = 3),
+                                 "modMeth" = PactCpGTypePercents[,2] / 100) #Remove high and low methylation information and add sequencing metadata
+head(PactCpGPercentsMod) #Confirm dataframe creation
+```
+
+```{r}
+PactCpGModModel <- glmmTMB(modMeth ~ seqMethod + (1|replicate),
+                           family = beta_family(link = "logit"),
+                           data = PactCpGPercentsMod) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(PactCpGModModel) #Look at model output. MBD-BS has a sig higher prop than WGBS.
+```
+
+#### Low methylation
+
+```{r}
+PactCpGPercentsLow <- data.frame("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                 "replicate" = rep(c("1", "2", "3"), times = 3),
+                                 "lowMeth" = PactCpGTypePercents[,3] / 100) #Remove moderate and low methylation information and add sequencing metadata
+head(PactCpGPercentsLow) #Confirm dataframe creation
+```
+
+```{r}
+PactCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
+                           family = beta_family(link = "logit"),
+                           data = PactCpGPercentsLow) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(PactCpGLowModel) #Look at model output. MBD-BS has a sig lower prop than WGBS.
+```
+
+# CpG genomic location
 
 ## Mcap
 
@@ -609,7 +708,7 @@ write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/
 ```{r}
 McapFeatureOverlapsPercents <- McapFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
 for (i in 1:length(McapFeatureOverlaps)) {
-  McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlapsPercents[,i] / (sum(McapFeatureOverlapsPercents[,i]))) * 100
+  McapFeatureOverlapsPercents[,i] <- ((McapFeatureOverlapsPercents[,i] / sum(McapFeatureOverlapsPercents[,i]))) * 100
 } #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
 head(McapFeatureOverlapsPercents) #Check calculations
 ```
@@ -631,7 +730,7 @@ tail(McapFeatureOverlapsPercentsTrans) # Confirm transformation
 #### Conduct NMDS
 
 ```{r}
-nmds.scree(McapFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+#nmds.scree(McapFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
 ```
 
 ```{r}
@@ -667,7 +766,7 @@ dissimMcapFeatureOverlapsPercentsTrans <- vegdist(McapFeatureOverlapsPercentsTra
 ```
 
 ```{r}
-ANOSIMReplicates <- c(rep("WGBS", times = 3),
+sampleInformation <- c(rep("WGBS", times = 3),
                       rep("RRBS", times = 3),
                       rep("MBDBS", times = 3)) #Create a vector with grouping information
 ```
@@ -675,7 +774,7 @@ ANOSIMReplicates <- c(rep("WGBS", times = 3),
 ##### Global test
 
 ```{r}
-McapFeatureOverlapsPercentsANOSIM <- anosim(dissimMcapFeatureOverlapsPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+McapFeatureOverlapsPercentsANOSIM <- anosim(dissimMcapFeatureOverlapsPercentsTrans, grouping = sampleInformation) #Conduct ANOSIM by method
 McapFeatureOverlapsPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
 McapFeatureOverlapsPercentsANOSIM$signif #Differences are significant
 plot.anosim(McapFeatureOverlapsPercentsANOSIM) #Obtain boxplot of between and within group similarities
@@ -690,7 +789,7 @@ McapFeatureOverlapsPercentsWGRR <- vegdist(McapFeatureOverlapsPercentsTrans[c(1:
 ```
 
 ```{r}
-McapFeatureOverlapsPercentsWGRRANOSIM <- anosim(McapFeatureOverlapsPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsWGRRANOSIM <- anosim(McapFeatureOverlapsPercentsWGRR, grouping = sampleInformation[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsPercentsWGRRANOSIM$statistic
 McapFeatureOverlapsPercentsWGRRANOSIM$signif #Differences are not significant
 plot.anosim(McapFeatureOverlapsPercentsWGRRANOSIM)
@@ -703,7 +802,7 @@ McapFeatureOverlapsPercentsWGMB <- vegdist(McapFeatureOverlapsPercentsTrans[c(1:
 ```
 
 ```{r}
-McapFeatureOverlapsPercentsWGMBANOSIM <- anosim(McapFeatureOverlapsPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsWGMBANOSIM <- anosim(McapFeatureOverlapsPercentsWGMB, grouping = sampleInformation[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsPercentsWGMBANOSIM$statistic
 McapFeatureOverlapsPercentsWGMBANOSIM$signif #Differences are not significant
 plot.anosim(McapFeatureOverlapsPercentsWGMBANOSIM)
@@ -716,10 +815,70 @@ McapFeatureOverlapsPercentsRRMB <- vegdist(McapFeatureOverlapsPercentsTrans[c(4:
 ```
 
 ```{r}
-McapFeatureOverlapsPercentsRRMBANOSIM <- anosim(McapFeatureOverlapsPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsPercentsRRMBANOSIM <- anosim(McapFeatureOverlapsPercentsRRMB, grouping = sampleInformation[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsPercentsRRMBANOSIM$statistic
 McapFeatureOverlapsPercentsRRMBANOSIM$signif #Differences are not significant
 plot.anosim(McapFeatureOverlapsPercentsRRMBANOSIM)
+```
+
+### Generalized linear model analysis
+
+To complement my multivariate analysis, I will use a series of generalized linear models. I will run separate models for each genomic location since the proportions of each add up to 1.
+
+Does sequencing method influence the proportion of CpGs detected in various genome features?
+
+#### Format data
+
+```{r}
+McapFeatureOverlapsGLMData <- cbind("seqMethod" = c(rep("A", times = 3), rep("B", times = 3), rep("C", times = 3)),
+                                    "replicate" = rep(seq(1:3), times = 3),
+                                    data.frame(t(McapFeatureOverlapsPercents[,seq(5, 37, 4)] / 100))) #Create master dataframe for GLM
+head(McapFeatureOverlapsGLMData) #Confirm dataframe creation
+```
+
+#### CDS
+
+```{r}
+McapCDSModel <- glmmTMB(CDS ~ seqMethod + (1|replicate),
+                        family = beta_family(link = "logit"),
+                        data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapCDSModel) #Look at model output
+```
+
+#### Introns
+
+```{r}
+McapIntronsModel <- glmmTMB(Introns ~ seqMethod + (1|replicate),
+                            family = beta_family(link = "logit"),
+                            data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapIntronsModel) #Look at model output
+```
+
+#### Upstream Flanks
+
+```{r}
+McapUpstreamFlanksModel <- glmmTMB(Upstream.Flanks ~ seqMethod + (1|replicate),
+                                   family = beta_family(link = "logit"),
+                                   data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapUpstreamFlanksModel) #Look at model output
+```
+
+#### Downstream Flanks
+
+```{r}
+McapDownstreamFlanksModel <- glmmTMB(Downstream.Flanks ~ seqMethod + (1|replicate),
+                                     family = beta_family(link = "logit"),
+                                     data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapDownstreamFlanksModel) #Look at model output
+```
+
+#### Intergenic regions
+
+```{r}
+McapIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
+                               family = beta_family(link = "logit"),
+                               data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
+summary(McapIntergenicModel) #Look at model output
 ```
 
 ## Pact
@@ -871,7 +1030,7 @@ tail(PactFeatureOverlapsPercentsTrans) # Confirm transformation
 #### Conduct NMDS
 
 ```{r}
-nmds.scree(PactFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
+#nmds.scree(PactFeatureOverlapsPercentsTrans, distance = "euclidean", k = 10, autotransform = FALSE, trymax = 20) #Create a screeplot to compare the stress for solutions across different k values from 2 to 10. Use 20 different random start configurations. As the number of ordination axes increases, stress is minimized because the NMDS algorithm is trying to represent p dimensional data in k dimensions.
 ```
 
 ```{r}
@@ -907,7 +1066,7 @@ dissimPactFeatureOverlapsPercentsTrans <- vegdist(PactFeatureOverlapsPercentsTra
 ```
 
 ```{r}
-ANOSIMReplicates <- c(rep("WGBS", times = 3),
+sampleInformation <- c(rep("WGBS", times = 3),
                       rep("RRBS", times = 3),
                       rep("MBDBS", times = 3)) #Create a vector with grouping information
 ```
@@ -915,7 +1074,7 @@ ANOSIMReplicates <- c(rep("WGBS", times = 3),
 ##### Global test
 
 ```{r}
-PactFeatureOverlapsPercentsANOSIM <- anosim(dissimPactFeatureOverlapsPercentsTrans, grouping = ANOSIMReplicates) #Conduct ANOSIM by method
+PactFeatureOverlapsPercentsANOSIM <- anosim(dissimPactFeatureOverlapsPercentsTrans, grouping = sampleInformation) #Conduct ANOSIM by method
 PactFeatureOverlapsPercentsANOSIM$statistic #Within group and between group similarities are different for each sequencing method
 PactFeatureOverlapsPercentsANOSIM$signif #Differences are significant
 plot.anosim(PactFeatureOverlapsPercentsANOSIM) #Obtain boxplot of between and within group similarities
@@ -930,7 +1089,7 @@ PactFeatureOverlapsPercentsWGRR <- vegdist(PactFeatureOverlapsPercentsTrans[c(1:
 ```
 
 ```{r}
-PactFeatureOverlapsPercentsWGRRANOSIM <- anosim(PactFeatureOverlapsPercentsWGRR, grouping = ANOSIMReplicates[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsWGRRANOSIM <- anosim(PactFeatureOverlapsPercentsWGRR, grouping = sampleInformation[1:6]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsPercentsWGRRANOSIM$statistic
 PactFeatureOverlapsPercentsWGRRANOSIM$signif #Differences are not significant
 plot.anosim(PactFeatureOverlapsPercentsWGRRANOSIM)
@@ -943,7 +1102,7 @@ PactFeatureOverlapsPercentsWGMB <- vegdist(PactFeatureOverlapsPercentsTrans[c(1:
 ```
 
 ```{r}
-PactFeatureOverlapsPercentsWGMBANOSIM <- anosim(PactFeatureOverlapsPercentsWGMB, grouping = ANOSIMReplicates[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsWGMBANOSIM <- anosim(PactFeatureOverlapsPercentsWGMB, grouping = sampleInformation[c(1:3, 7:9)]) #Conduct pairwise ANOSIM for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsPercentsWGMBANOSIM$statistic
 PactFeatureOverlapsPercentsWGMBANOSIM$signif #Differences are not significant
 plot.anosim(PactFeatureOverlapsPercentsWGMBANOSIM)
@@ -956,7 +1115,7 @@ PactFeatureOverlapsPercentsRRMB <- vegdist(PactFeatureOverlapsPercentsTrans[c(4:
 ```
 
 ```{r}
-PactFeatureOverlapsPercentsRRMBANOSIM <- anosim(PactFeatureOverlapsPercentsRRMB, grouping = ANOSIMReplicates[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsPercentsRRMBANOSIM <- anosim(PactFeatureOverlapsPercentsRRMB, grouping = sampleInformation[c(4:9)]) #Conduct pairwise ANOSIM for WGBS and RRBS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsPercentsRRMBANOSIM$statistic
 PactFeatureOverlapsPercentsRRMBANOSIM$signif #Differences are not significant
 plot.anosim(PactFeatureOverlapsPercentsRRMBANOSIM)
@@ -980,192 +1139,6 @@ plot.anosim(PactFeatureOverlapsPercentsRRMBANOSIM)
 
 
 
-# Generalized linear model analysis
-
-To complement my multivariate analysis, I will use a series of generalized linear models to understand how sequencing method and proportion of CpGs in a genomic location affects (CDS, intron, upstream flank, downstream flank, intergenic) proportion of CpGs in a given methylation status (high, moderate, or low methylation).
-
-## Mcap
-
-### Format data
-
-I will run three separate models for each methylation status since the proportions of each add up to 1.
-
-```{r}
-McapCpGMasterHigh <- McapCpGMultiMaster[,-c(2:3)] #Remove moderate and low methylation columns.
-McapCpGMasterHigh$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
-head(McapCpGMasterHigh) #Confirm changes
-```
-
-```{r}
-McapCpGMasterModerate <- McapCpGMultiMaster[,-c(1,3)] #Remove high and low methylation columns.
-McapCpGMasterModerate$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
-head(McapCpGMasterModerate) #Confirm changes
-```
-
-```{r}
-McapCpGMasterLow <- McapCpGMultiMaster[,-c(1:2)] #Remove moderate and low methylation columns.
-McapCpGMasterLow$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
-head(McapCpGMasterLow) #Confirm changes
-```
-
-### Run individual models
-
-Which genomic features affect methylation status? Does sequencing method affect the detection of CpGs of various methylation statuses in genomic features? Null hypothesis is always that sequencing method has no effect.
-
-#### High methylation
-
-```{r}
-McapCpGHighModel <- glmmTMB(percentMeth ~ CDS + Introns + Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
-                            family = beta_family(link = "logit"),
-                            data = McapCpGMasterHigh) #Run the full model (all genomic locations) using a beta distribution and a logit link
-summary(McapCpGHighModel) #Running the full model leads to a convergence issue. The model is likely overparametrized.
-```
-
-I will run two separate models for each methylation status: one for genic regions (CDS and introns) and another for other regions (flanks and intergenic). This falls in line with the idea that gene body methylation is prominent in invertebrates.
-
-##### Genes
-
-```{r}
-McapCpGHighModel.GeneNull <- glmmTMB(percentMeth ~ CDS + Introns,
-                                     family = beta_family(link = "logit"),
-                                     data = McapCpGMasterHigh) #Run null model (without sequencing method) using a beta distribution and a logit link
-McapCpGHighModel.Gene <- glmmTMB(percentMeth ~ CDS + Introns + seqMethod,
-                                 family = beta_family(link = "logit"),
-                                 data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
-```
-
-```{r}
-McapCpGHighModel.GeneANOVA <- anova(McapCpGHighModel.Gene, McapCpGHighModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGHighModel.GeneANOVA #Look at ANOVA output
-#McapCpGHighModel.GeneANOVA$Chisq #Chi-sq statistic
-#McapCpGHighModel.GeneANOVA$Df #Degrees of freedom
-#McapCpGHighModel.GeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-```{r}
-summary(McapCpGHighModel.Gene) #CDS and sequencing method significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
-```
-
-##### Not genes
-
-```{r}
-McapCpGHighModel.notGeneNull <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
-                                        family = beta_family(link = "logit"),
-                                        data = McapCpGMasterHigh) #Run null model (no sequencing method) using a beta distribution and a logit link
-summary(McapCpGHighModel.notGeneNull) #Upstream flanks contribute significantly to proportion of highly methylated CpGs
-```
-
-```{r}
-McapCpGHighModel.notGene <- glmmTMB(percentMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
-                                    family = beta_family(link = "logit"),
-                                    data = McapCpGMasterHigh) #Run model using a beta distribution and a logit link
-summary(McapCpGHighModel.notGene) #All variables significantly contribute to proportion of highly methylated CpGs. MBD-BS has higher prop highly methylated CpGs than RRBS and WGBS.
-```
-
-```{r}
-McapCpGHighModel.notGeneANOVA <- anova(McapCpGHighModel.notGene, McapCpGHighModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGHighModel.notGeneANOVA #Look at ANOVA output
-#McapCpGHighModel.notGeneANOVA$Chisq #Chi-sq statistic
-#McapCpGHighModel.notGeneANOVA$Df #Degrees of freedom
-#McapCpGHighModel.notGeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-#### Moderate methylation
-
-##### Genes
-
-```{r}
-McapCpGModerateModel.GeneNull <- glmmTMB(percentSparseMeth ~ CDS + Introns,
-                                         family = beta_family(link = "logit"),
-                                         data = McapCpGMasterModerate) #Run null model (without sequencing method) using a beta distribution and a logit link
-summary(McapCpGModerateModel.GeneNull) #CDS and introns significantly contribute to proportion of moderately methylated CpGs
-```
-
-```{r}
-McapCpGModerateModel.Gene <- glmmTMB(percentSparseMeth ~ CDS + Introns + seqMethod,
-                                     family = beta_family(link = "logit"),
-                                     data = McapCpGMasterModerate) #Run model using a beta distribution and a logit link
-summary(McapCpGModerateModel.Gene) #Introns and sequencing method significantly contribute to proportion of moderately methylated CpGs. MBD-BS has less prop moderately methylated CpGs than RRBS and WGBS.
-```
-
-```{r}
-McapCpGModerateModel.GeneANOVA <- anova(McapCpGModerateModel.Gene, McapCpGModerateModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGModerateModel.GeneANOVA #Look at ANOVA output
-#McapCpGModerateModel.GeneANOVA$Chisq #Chi-sq statistic
-#McapCpGModerateModel.GeneANOVA$Df #Degrees of freedom
-#McapCpGModerateModel.GeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-##### Not genes
-
-```{r}
-McapCpGModerateModel.notGeneNull <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
-                                            family = beta_family(link = "logit"),
-                                            data = McapCpGMasterModerate) #Run null model (no sequencing method) using a beta distribution and a logit link
-McapCpGModerateModel.notGene <- glmmTMB(percentSparseMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
-                                        family = beta_family(link = "logit"),
-                                        data = McapCpGMasterModerate) #Run model using a beta distribution and a logit link
-```
-
-```{r}
-McapCpGModerateModel.notGeneANOVA <- anova(McapCpGModerateModel.notGene, McapCpGModerateModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGModerateModel.notGeneANOVA #Look at ANOVA output
-#McapCpGModerateModel.notGeneANOVA$Chisq #Chi-sq statistic
-#McapCpGModerateModel.notGeneANOVA$Df #Degrees of freedom
-#McapCpGModerateModel.notGeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-```{r}
-summary(McapCpGModerateModel.notGene) #Sequencing method significantly contributes to proportion of moderately methylated CpGs.
-```
-
-#### Low methylation
-
-##### Genes
-
-```{r}
-McapCpGLowModel.GeneNull <- glmmTMB(percentUnMeth ~ CDS + Introns,
-                                    family = beta_family(link = "logit"),
-                                    data = McapCpGMasterLow) #Run null model (without sequencing method) using a beta distribution and a logit link
-McapCpGLowModel.Gene <- glmmTMB(percentUnMeth ~ CDS + Introns + seqMethod,
-                                family = beta_family(link = "logit"),
-                                data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
-```
-
-```{r}
-McapCpGLowModel.GeneANOVA <- anova(McapCpGLowModel.Gene, McapCpGLowModel.GeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGLowModel.GeneANOVA #Look at ANOVA output
-#McapCpGLowModel.GeneANOVA$Chisq #Chi-sq statistic
-#McapCpGLowModel.GeneANOVA$Df #Degrees of freedom
-#McapCpGLowModel.GeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-```{r}
-summary(McapCpGLowModel.Gene) #All variables significantly contribute to proportion of lowly methylated CpGs.
-```
-
-##### Not genes
-
-```{r}
-McapCpGLowModel.notGeneNull <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic,
-                                       family = beta_family(link = "logit"),
-                                       data = McapCpGMasterLow) #Run null model (no sequencing method) using a beta distribution and a logit link
-McapCpGLowModel.notGene <- glmmTMB(percentUnMeth ~ Upstream.Flanks + Downstream.Flanks + Intergenic + seqMethod,
-                                   family = beta_family(link = "logit"),
-                                   data = McapCpGMasterLow) #Run model using a beta distribution and a logit link
-```
-
-```{r}
-McapCpGLowModel.notGeneANOVA <- anova(McapCpGLowModel.notGene, McapCpGLowModel.notGeneNull, test = "LRT") #Compare the null and treatment models with a likelihood ratio test. 
-McapCpGLowModel.notGeneANOVA #Look at ANOVA output
-#McapCpGLowModel.notGeneANOVA$Chisq #Chi-sq statistic
-#McapCpGLowModel.notGeneANOVA$Df #Degrees of freedom
-#McapCpGLowModel.notGeneANOVA$`Pr(>Chisq)` #P-value
-```
-
-```{r}
-summary(McapCpGLowModel.notGene) #All variables significantly contributes to proportion of lowly methylated CpGs.
-```
 
 ## Pact
 
@@ -1175,19 +1148,19 @@ I will run three separate models for each methylation status since the proportio
 
 ```{r}
 PactCpGMasterHigh <- PactCpGMultiMaster[,-c(2:3)] #Remove moderate and low methylation columns.
-PactCpGMasterHigh$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+PactCpGMasterHigh$seqMethod <- sampleInformation #Use ANOSIM replicate information to assign sequencing method
 head(PactCpGMasterHigh) #Confirm changes
 ```
 
 ```{r}
 PactCpGMasterModerate <- PactCpGMultiMaster[,-c(1,3)] #Remove high and low methylation columns.
-PactCpGMasterModerate$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+PactCpGMasterModerate$seqMethod <- sampleInformation #Use ANOSIM replicate information to assign sequencing method
 head(PactCpGMasterModerate) #Confirm changes
 ```
 
 ```{r}
 PactCpGMasterLow <- PactCpGMultiMaster[,-c(1:2)] #Remove moderate and low methylation columns.
-PactCpGMasterLow$seqMethod <- ANOSIMReplicates #Use ANOSIM replicate information to assign sequencing method
+PactCpGMasterLow$seqMethod <- sampleInformation #Use ANOSIM replicate information to assign sequencing method
 head(PactCpGMasterLow) #Confirm changes
 ```
 
