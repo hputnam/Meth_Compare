@@ -17,9 +17,6 @@ require(RColorBrewer) #Load RColorBrewer
 
 #install.packages("dichromat")
 require(dichromat)
-
-#install.packages("broom")
-require(broom)
 ```
 
 # Session information
