@@ -17,12 +17,13 @@ library("cowplot")
 library("lattice")
 library("latticeExtra")
 library("ggforce")
+library("goseq")
 
 ```
 
-# Goal is to identify and compare the genes captured by each method
-## Montipora capitata
+Goal is to identify and compare presence and absence and the expression levels of the genes captured by each method
 
+Load sample info, annotation, and counts
 ```{r load data}
 #load sample info
 sample.info <- read.csv(file="metadata/RNASeq_metadata.csv", header=T, sep=",", row.names=1)
@@ -40,11 +41,25 @@ Mcap.annot <- Mcap.annot %>%
 Mcap.annot$gene <- gsub("augustus.", "", Mcap.annot$gene) #remove excess characters from gene name
 Mcap.annot$gene <- gsub(".t1", "", Mcap.annot$gene) #remove excess characters from gene name
 
+#Identify Mcap full set of GO terms
+Mcap.GO <- Mcap.annot[,c(2,14)] #identify GOids
+splitted <- strsplit(as.character(Mcap.GO$GO.IDs), "; ") #slit into multiple GO ids
+Mcap.GOs <- data.frame(v1 = rep.int(Mcap.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+Mcap.GO.terms <- Mcap.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(Mcap.GO.terms$v2)) #view number of go terms
+
 #Load Pact Annotation Info
 Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
 colnames(Pact.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
 Pact.annot <- Pact.annot %>% 
   distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
+
+#Identify Mcap full set of GO terms
+Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
+splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
+Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+Pact.GO.terms <- Pact.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(Pact.GO.terms$v2)) #view number of go terms
 
 #Load Mcap gene gff
 Mcap.genes <- read.csv(file="genome-feature-files/Mcap.GFFannotation.gff", header=FALSE, sep="\t") 
@@ -53,6 +68,10 @@ Mcap.genes <- filter(Mcap.genes, V3 == "gene")
 colnames(Mcap.genes) <- c("scaffold", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 Mcap.genes$gene <- gsub("ID=", "", Mcap.genes$gene)
 Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
+
+Mcap.gene.len.df <- Mcap.genes 
+Mcap.gene.len.df$length <- Mcap.gene.len.df$gene.stop-Mcap.gene.len.df$gene.start
+
 
 #write output of gene gff only
 write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
@@ -67,6 +86,9 @@ write.table(Pact.genes, file="genome-feature-files/Pact.GFFannotation.genes.gff"
             col.names = FALSE, row.names=FALSE, quote=FALSE)
 Pact.genes <- Pact.genes[,c(1,4,5,9)]
 colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene")
+
+Pact.gene.len.df <- Pact.genes 
+Pact.gene.len.df$length <- Pact.gene.len.df$gene.stop-Pact.gene.len.df$gene.start
 
 #load expression data
 #Montipora capitata counts
@@ -111,7 +133,7 @@ mean(Pact.counts$mean.TPM)
 
 ```
 
-#Obtain the genes from both genomes that have CpG data with 5x coverage
+Obtain the genes from both genomes that have CpG data with 5x coverage
 ```{bash}
 #Intersect Mcap CpG with genes
 for f in data/Mcap_tab/*5x.tab
@@ -134,7 +156,7 @@ intersectBed \
 done
 ```
 
-# M. capitata 
+Load M. capitata (Mcap) Methylation data and ID genes and GO terms in each method
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1101 1548 1628
@@ -282,7 +304,7 @@ Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
 
 Mcap.CpG.counts.present <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
 Mcap.CpG.counts.present$plusone <- log10(Mcap.CpG.counts.present$mean.TPM+1)
-#cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+#cat.cols <- c("#E6550D", "#756BB1", "#31A354") #WGBS, RRBS, MBDBS
 
 Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="WGBS")
 Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="RRBS")
@@ -301,6 +323,31 @@ plot_multi_histogram <- function(df, feature, label_column) {
     facet_zoom(ylim = c(0, 0.12))
     plt + guides(fill=guide_legend(title=label_column))
 }
+
+#GO Enrichment by method
+ALL<- Mcap.genes$gene #set the all transcripts list
+Meth <- Mcap.MBDBS.counts$gene #set the enrichment test list
+LENGTH <- Mcap.gene.len.df
+
+#change contig lists to vectors
+ALL.vector <-c(t(ALL))
+Meth.vector <-c(t(Meth))
+ID.vector <- LENGTH$gene
+LENGTH.vector <- LENGTH$length
+
+gene.vector=as.integer(ALL.vector%in%Meth.vector) #Construct new vector with 1 for DEG and 0 for others
+names(gene.vector)=ALL.vector #set names
+DEG.pwf<-nullp(gene.vector, ID.vector, bias.data=LENGTH.vector) #weight vector by length of gene
+
+#Find enriched GO terms, "selection-unbiased testing for category enrichment amongst differentially expressed (DE) genes for RNA-seq data"
+GO.wall<-goseq(DEG.pwf, ID.vector, gene2cat=Mcap.GO.terms, test.cats=c("GO:CC", "GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+#How many enriched GO terms do we have
+class(GO.wall)
+head(GO.wall)
+tail(GO.wall)
+nrow(GO.wall)
+
 
 #distribution of genes absent
 Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
@@ -328,17 +375,43 @@ Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="WGBS")
 Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="RRBS")
 Mcap.MBDBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="MBDBS")
 
+#GO Enrichment by method
+ALL<- Mcap.genes$gene #set the all transcripts list
+Meth <- Mcap.WGBS.counts$gene #set the enrichment test list
+LENGTH <- Mcap.gene.len.df
+
+#change contig lists to vectors
+ALL.vector <-c(t(ALL))
+Meth.vector <-c(t(Meth))
+ID.vector <- LENGTH$gene
+LENGTH.vector <- LENGTH$length
+
+gene.vector=as.integer(ALL.vector%in%Meth.vector) #Construct new vector with 1 for DEG and 0 for others
+names(gene.vector)=ALL.vector #set names
+DEG.pwf<-nullp(gene.vector, ID.vector, bias.data=LENGTH.vector) #weight vector by length of gene
+
+#Find enriched GO terms, "selection-unbiased testing for category enrichment amongst differentially expressed (DE) genes for RNA-seq data"
+GO.wall<-goseq(DEG.pwf, ID.vector, gene2cat=Mcap.GO.terms, test.cats=c("GO:CC", "GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+#How many enriched GO terms do we have
+class(GO.wall)
+head(GO.wall)
+tail(GO.wall)
+nrow(GO.wall)
+
+
+
 # Plotting Distributions
-pdf("Output/gene_expression_present.pdf", width=8.5, height=6)
+pdf("Output/Mcap.gene_expression_present.pdf", width=8.5, height=6)
 McapEP <- plot_multi_histogram(Mcap.CpG.counts.present, 'plusone', 'method')
 dev.off()
 
-pdf("Output/gene_expression_absent.pdf", width=8.5, height=6)
+pdf("Output/Mcap.gene_expression_absent.pdf", width=8.5, height=6)
 McapEA <- plot_multi_histogram(Mcap.CpG.counts.absent, 'plusone', 'method')
 dev.off()
 
 plot_grid(McapEP, McapEA, ncol=1, nrow=2, align="v", labels = c('A) Genes with CpG Present', 'B) Genes with CpG Absent'), label_size = 12)
-ggsave("Output/gene_expression_distributions.pdf", width=8.5, height=6)
+ggsave("Output/Mcap.gene_expression_distributions.pdf", width=8.5, height=6)
 
 ```
 
@@ -388,7 +461,7 @@ panel.background = element_blank(), axis.line = element_line(colour = "black"))
 dev.off()
 ```
 
-#P. acuta
+
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1041 1471 1637
