@@ -641,11 +641,11 @@ Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="RRBS")
 Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="MBDBS")
 
 # Plotting Distributions
-pdf("Output/gene_expression_present.pdf", width=8.5, height=6)
+pdf("Output/Pact.gene_expression_present.pdf", width=8.5, height=6)
 PactEP <- plot_multi_histogram(Pact.CpG.counts.present, 'plusone', 'method')
 dev.off()
 
-pdf("Output/gene_expression_absent.pdf", width=8.5, height=6)
+pdf("Output/Pact.gene_expression_absent.pdf", width=8.5, height=6)
 PactEA <- plot_multi_histogram(Pact.CpG.counts.absent, 'plusone', 'method')
 dev.off()
 
@@ -658,6 +658,17 @@ ggsave("Output/gene_expression_distributions.pdf", width=12, height=6)
 
 
 
+
+
+
+
+
+
+
+
+
+
+```{r}
 #GO Term union df
 Pact.GO.ALL <- left_join(Pact.WGBS.GO.terms, Pact.RRBS.GO.terms, by="v1", all=TRUE)
 Pact.GO.ALL <- left_join(Pact.GO.ALL , Pact.MBDBS.GO.terms, by="v1", all=TRUE)
