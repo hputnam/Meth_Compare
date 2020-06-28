@@ -256,7 +256,7 @@ rm *.sam
 - Merged-GTF guided assembly without novel transcript discovery
 - Compilation of GTF-files into gene and transcript count matrices
 
-For our assembly, we will have to run StringTie twice. The first run will be a reference guided assembly that will allow for discovery of novel transcripts (by leaving out the -e option). Then we will merge the output GTF files and examine the sensitivity of our assembly. We will use the merged-GTF from our first assembly to guide our second StringTie run (including the ```-e``` option). This second run is necessary in order to compile our GTF files into gene and transcript count matrices that we will need for our differential expression analysis, because the StringTie script that compiles the GTF files ```prepDE.py``` only runs if the ```-e``` option is "on" during the previous assembly.
+For our assembly, we will have to run StringTie. This run is necessary in order to compile our GTF files into gene count matrices that we will need for our differential expression analysis, because the StringTie script that compiles the GTF files ```prepDE.py``` only runs if the ```-e``` option is "on" during the previous assembly.
 
 # Reference-guided assembly to genes only
 
@@ -264,6 +264,8 @@ For our assembly, we will have to run StringTie twice. The first run will be a r
 - -p - Specify number of processers
 - -G - Specify annotation file
 - -o - Name of output file
+- -e - only estimate the abundance of given reference transcripts (requires -G)
+- -A gene abundance estimation output file
 
 mkdir stie
 
@@ -285,7 +287,7 @@ stringtie Sample3.bam -p 8 -e -G /home/hputnam/Meth_Compare/RiboDep_RNASeq/ref/P
 
 #Mcap PolyA Ignore Novel
 `
-stringtie 1101.bam -p 8 -e -G /home/hputnam/Meth_Compare/RiboDep_RNASeq/ref/Mcap.GFFannotation.gff -o 1101.gtf 
+stringtie 1101.bam -p 8 -e -G /home/hputnam/Meth_Compare/RiboDep_RNASeq/ref/Mcap.GFFannotation.fixed.gff -o 1101.gtf 
 stringtie 1548.bam -p 8 -e -G /home/hputnam/Meth_Compare/RiboDep_RNASeq/ref/Mcap.GFFannotation.gff -o 1548.gtf 
 stringtie 1628.bam -p 8 -e -G /home/hputnam/Meth_Compare/RiboDep_RNASeq/ref/Mcap.GFFannotation.gff -o 1628.gtf 
 `
