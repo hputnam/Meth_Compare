@@ -18,6 +18,7 @@ library("GSEABase")
 library("cowplot")
 library("lattice")
 library("latticeExtra")
+library("ggforce")
 
 ```
 
@@ -253,8 +254,7 @@ Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
 colnames(Mcap.MBDBS.counts)[2] <- "type"
 Mcap.MBDBS.counts$method <- "MBDBS"
 Mcap.CpG.genes.all <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
-str(Mcap.MBDBS.counts)
-Mcap.CpG.genes.all$gene <- factor(Mcap.CpG.genes.all$gene, levels = All.circ.df $gene)
+Mcap.CpG.genes.all$gene <- factor(Mcap.CpG.genes.all$gene, levels = All.circ.df$gene)
 
 pdf("Output/Mcap_PA_genes.pdf")
 ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
@@ -281,38 +281,63 @@ Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
 
 Mcap.CpG.counts.present <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
 Mcap.CpG.counts.present$plusone <- log10(Mcap.CpG.counts.present$mean.TPM+1)
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+#cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
 
 Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="WGBS")
 Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="RRBS")
 Mcap.MBDBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="MBDBS")
 
+Mcap.WGBS.Hist <-hist(Mcap.WGBS.RelFreq$plusone, plot=F, breaks=200)
+Mcap.WGBS.Hist$counts <- Mcap.WGBS.Hist$counts / sum(Mcap.WGBS.Hist$counts)
+plot(Mcap.WGBS.Hist, freq=TRUE, ylab="Relative Frequency", color="green", ylim=c(0,0.1))
 
-#NEED TO GENERATE HISTOGRAM AND RELATIVE FREQUENCY
-par(mfrow=c(1,3))
-histogram(Mcap.WGBS.RelFreq$plusone, type = "percent",  #Specify the variable and type of histogram
-          main = "Mcap expression WGBS",  #Create a title for the chart
-          xlab = "Counts (log10(TPM+1))",  #Label the x-axis. Include units!
-          ylab = "Relative Frequency",
-          ylim = c(0,6),
-          breaks=seq(from=0,to=6,by=0.1),
-          col = "green")
+plot_multi_histogram <- function(df, feature, label_column) {
+    plt <- ggplot(df, aes(x=eval(parse(text=feature)), fill=eval(parse(text=label_column)))) +
+    geom_histogram(aes(y = stat(count) / sum(count)), bins = 50) +
+    scale_fill_manual(values=c("#E6550D", "#756BB1", "#31A354")) +
+    labs(x="Log10(Mean TPM +1)", y = "Relative Frequency")+
+    theme_classic()+
+    facet_zoom(ylim = c(0, 0.12))
+    plt + guides(fill=guide_legend(title=label_column))
+}
 
-histogram(Mcap.RRBS.RelFreq$plusone, type = "percent",  #Specify the variable and type of histogram
-          main = "Mcap expression RRBS",  #Create a title for the chart
-          xlab = "Counts (log10(TPM+1))",  #Label the x-axis. Include units!
-          ylab = "Relative Frequency",
-          ylim = c(0,6),
-          breaks=seq(from=0,to=6,by=0.1),
-          col = "purple") 
+#distribution of genes absent
+Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
+Mcap.WGBS.counts$WGBS[Mcap.WGBS.counts$WGBS==1] <- NA
+Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
+Mcap.WGBS.counts$method <- "WGBS"
+colnames(Mcap.WGBS.counts)[2] <- "type"
 
-histogram(Mcap.MBDBS.RelFreq$plusone, type = "percent",  #Specify the variable and type of histogram
-          main = "Mcap expression MBDBD",  #Create a title for the chart
-          xlab = "Counts (log10(TPM+1))",  #Label the x-axis. Include units!
-          ylab = "Relative Frequency",
-          ylim = c(0,6),
-          breaks=seq(from=0,to=6,by=0.1),
-          col = "red") 
+Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
+Mcap.RRBS.counts$RRBS[Mcap.RRBS.counts$RRBS==1] <- NA
+Mcap.RRBS.counts <- na.omit(Mcap.RRBS.counts)
+Mcap.RRBS.counts$method <- "RRBS"
+colnames(Mcap.RRBS.counts)[2] <- "type"
+
+Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
+Mcap.MBDBS.counts$MBDBS[Mcap.MBDBS.counts$MBDBS==1] <- NA
+Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
+Mcap.MBDBS.counts$method <- "MBDBS"
+colnames(Mcap.MBDBS.counts)[2] <- "type"
+
+Mcap.CpG.counts.absent <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
+Mcap.CpG.counts.absent$plusone <- log10(Mcap.CpG.counts.absent$mean.TPM+1)
+
+Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="WGBS")
+Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="RRBS")
+Mcap.MBDBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="MBDBS")
+
+# Plotting Distributions
+pdf("Output/gene_expression_present.pdf", width=8.5, height=6)
+McapEP <- plot_multi_histogram(Mcap.CpG.counts.present, 'plusone', 'method')
+dev.off()
+
+pdf("Output/gene_expression_absent.pdf", width=8.5, height=6)
+McapEA <- plot_multi_histogram(Mcap.CpG.counts.absent, 'plusone', 'method')
+dev.off()
+
+plot_grid(McapEP, McapEA, ncol=1, nrow=2, align="v", labels = c('A) Genes with CpG Present', 'B) Genes with CpG Absent'), label_size = 12)
+ggsave("Output/gene_expression_distributions.pdf", width=8.5, height=6)
 
 ```
 
@@ -329,12 +354,12 @@ colnames(WGBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth"
 
 Pact.WGBS.data <- rbind(WGBS.1041,WGBS.1471,WGBS.1637)
 Pact.WGBS.genes <- as.data.frame(unique(Pact.WGBS.data$gene))
-colnames(Pact.WGBS.genes) <- c("X.gene_id")
-Pact.WGBS.gene.annot <- left_join(Pact.WGBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.WGBS.genes) <- c("gene")
+Pact.WGBS.gene.annot <- left_join(Pact.WGBS.genes, Pact.annot, by="gene")
 nrow(Pact.WGBS.genes)
 Pact.WGBS.GO <- Pact.WGBS.gene.annot[,c(1,14)] #identify GOids
-splitted <- strsplit(as.character(Pact.WGBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.WGBS.GOs <- data.frame(v1 = rep.int(Pact.WGBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+splitted <- strsplit(as.character(Pact.WGBS.GO$GO.IDs), "; ") #split into multiple GO ids
+Pact.WGBS.GOs <- data.frame(v1 = rep.int(Pact.WGBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.WGBS.GO.terms <- Pact.WGBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.WGBS.GO.terms$v2))  
 
@@ -347,12 +372,12 @@ colnames(RRBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth"
 
 Pact.RRBS.data <- rbind(RRBS.1041,RRBS.1471,RRBS.1637)
 Pact.RRBS.genes <- as.data.frame(unique(Pact.RRBS.data$gene))
-colnames(Pact.RRBS.genes) <- c("X.gene_id")
-Pact.RRBS.gene.annot <- left_join(Pact.RRBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.RRBS.genes) <- c("gene")
+Pact.RRBS.gene.annot <- left_join(Pact.RRBS.genes, Pact.annot, by="gene")
 nrow(Pact.RRBS.genes)
 Pact.RRBS.GO <- Pact.RRBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(Pact.RRBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.RRBS.GOs <- data.frame(v1 = rep.int(Pact.RRBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.RRBS.GOs <- data.frame(v1 = rep.int(Pact.RRBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.RRBS.GO.terms <- Pact.RRBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.RRBS.GO.terms$v2))   
 
@@ -365,12 +390,12 @@ colnames(MBDBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth
 
 Pact.MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628)
 Pact.MBDBS.genes <- as.data.frame(unique(Pact.MBDBS.data$gene))
-colnames(Pact.MBDBS.genes) <- c("X.gene_id")
-Pact.MBDBS.gene.annot <- left_join(Pact.MBDBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.MBDBS.genes) <- c("gene")
+Pact.MBDBS.gene.annot <- left_join(Pact.MBDBS.genes, Pact.annot, by="gene")
 nrow(MBDBS.genes)
 Pact.MBDBS.GO <- Pact.MBDBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(Pact.MBDBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.MBDBS.GOs <- data.frame(v1 = rep.int(Pact.MBDBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.MBDBS.GOs <- data.frame(v1 = rep.int(Pact.MBDBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.MBDBS.GO.terms <- Pact.MBDBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.MBDBS.GO.terms$v2))
 
@@ -415,8 +440,8 @@ str(Pact.All.circ.data)
 
 
 #genes present by method
-Pact.CpG.gene.counts <- left_join(Pact.All.circ.data, PolyA.Pact.counts, by="gene")
-Pact.CpG.gene.counts <- Pact.CpG.gene.counts[,c(4,5,6,7,11)]
+Pact.CpG.gene.counts <- left_join(Pact.All.circ.data, Pact.counts, by="gene")
+Pact.CpG.gene.counts <- Pact.CpG.gene.counts[,c(4,5,6,7,18)]
 
 Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
 colnames(Pact.WGBS.counts)[2] <- "type"
@@ -427,7 +452,8 @@ Pact.RRBS.counts$method <- "RRBS"
 Pact.MBDBS.counts <- Pact.CpG.gene.counts[,c(1,4,5)]
 colnames(Pact.MBDBS.counts)[2] <- "type"
 Pact.MBDBS.counts$method <- "MBDBS"
-Pact.CpG.genes.all <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
+Pact.CpG.genes.all <- rbind(Pact.WGBS.counts,Pact.RRBS.counts, Pact.MBDBS.counts)
+Pact.CpG.genes.all$gene <- factor(Pact.CpG.genes.all$gene, levels = Pact.All.circ.df$gene)
 
 pdf("Output/Pact_PA_genes.pdf")
 ggplot(Pact.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
@@ -457,18 +483,18 @@ Pact.MBDBS.counts$type[Pact.MBDBS.counts$type==0] <- NA
 Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
 
 Pact.CpG.counts.present <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
-Pact.CpG.counts.present$plusone <- (Pact.CpG.counts.present$mean.count)+1
+Pact.CpG.counts.present$plusone <- log10(Pact.CpG.counts.present$mean.TPM+1)
 cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
 
+Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.present, method =="WGBS")
+Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.present, method =="RRBS")
+Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.present, method =="MBDBS")
 
-Pact_presentexpression_by_method <- ggplot(Pact.CpG.counts.present , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("C) Expression of Present Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+Pact.WGBS.Hist <-hist(Pact.WGBS.RelFreq$plusone, plot=F, breaks=200)
+Pact.WGBS.Hist$counts <- Pact.WGBS.Hist$counts / sum(Pact.WGBS.Hist$counts)
+plot(Pact.WGBS.Hist, freq=TRUE, ylab="Relative Frequency", color="green", ylim=c(0,0.1))
+
+plot_multi_histogram(Pact.CpG.counts.present, 'plusone', 'method')
 
 
 #distribution of genes absent
@@ -491,20 +517,19 @@ Pact.MBDBS.counts$method <- "MBDBS"
 colnames(Pact.MBDBS.counts)[2] <- "type"
 
 Pact.CpG.counts.absent <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
-Pact.CpG.counts.absent$plusone <- (Pact.CpG.counts.absent$mean.count)+1
+Pact.CpG.counts.absent$plusone <- log10(Pact.CpG.counts.absent$mean.TPM+1)
 
-Pact_absentexpression_by_method <- ggplot(Pact.CpG.counts.absent , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("D) Expression of Absent Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="WGBS")
+Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="RRBS")
+Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="MBDBS")
+
+#For Genes Absent in the 3 groups
+plot_multi_histogram(Pact.CpG.counts.absent, 'plusone', 'method')
 
 
-plot_grid(Pact_presentexpression_by_method, Pact_absentexpression_by_method, ncol=2, align="v")
-ggsave("Output/Pact_expression_dist.pdf", width=8.5, height=4)
+
+
+
 
 
 #GO Term union df
