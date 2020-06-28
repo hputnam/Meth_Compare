@@ -7,9 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-```
 
-```{r libraries}
 #source("https://bioconductor.org/biocLite.R")
 library("pheatmap")
 library("RColorBrewer")
@@ -55,8 +53,8 @@ Mcap.genes <- filter(Mcap.genes, V3 == "gene")
 colnames(Mcap.genes) <- c("scaffold", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 Mcap.genes$gene <- gsub("ID=", "", Mcap.genes$gene)
 Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
-xxx <-Mcap.genes[duplicated(Mcap.genes$gene),]
 
+#write output of gene gff only
 write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
             col.names = FALSE, row.names=FALSE, quote=FALSE)
 Mcap.genes <- Mcap.genes[,c(1,4,5,9)]
@@ -269,7 +267,10 @@ ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type, width = 1)) +
         panel.grid.minor = element_blank(), #Set the minor gridlines
         plot.background=element_blank()) #Set the plot background
 dev.off()
+```
 
+Gene expresion counts for genes with CpG identified by each method
+```{r}
 Mcap.WGBS.counts$type[Mcap.WGBS.counts$type==0] <- NA
 Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
 
@@ -339,6 +340,52 @@ dev.off()
 plot_grid(McapEP, McapEA, ncol=1, nrow=2, align="v", labels = c('A) Genes with CpG Present', 'B) Genes with CpG Absent'), label_size = 12)
 ggsave("Output/gene_expression_distributions.pdf", width=8.5, height=6)
 
+```
+
+Mcap GO Term comparison in genes identifed by each method
+```{r}
+#GO Term union df
+GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
+GO.ALL <- left_join(GO.ALL , MBDBS.GO.terms, by="v1", all=TRUE)
+
+# GO Slim
+fl <- "http://www.geneontology.org/ontology/subsets/goslim_generic.obo"
+slim <- getOBOCollection(fl)
+
+WGBS.Ids <- na.omit(as.character(WGBS.GO.terms$v2))
+WGBS.Collection <- GOCollection(WGBS.Ids)
+WGBS.slims <- goSlim(WGBS.Collection, slim, "BP", evidenceCode="TAS")
+WGBS.slims <- WGBS.slims[order(WGBS.slims$Term),]
+WGBS.slims$method <- "WGBS"
+WGBS.slims <- WGBS.slims[-5,]
+
+RRBS.Ids <- na.omit(as.character(RRBS.GO.terms$v2))
+RRBS.Collection <- GOCollection(RRBS.Ids)
+RRBS.slims <- goSlim(RRBS.Collection, slim, "BP", evidenceCode="TAS")
+RRBS.slims <- RRBS.slims[order(RRBS.slims$Term),]
+RRBS.slims$method <- "RRBS"
+RRBS.slims <- RRBS.slims[-5,]
+
+MBDBS.Ids <- na.omit(as.character(MBDBS.GO.terms$v2))
+MBDBS.Collection <- GOCollection(MBDBS.Ids)
+MBDBS.slims <- goSlim(MBDBS.Collection, slim, "BP", evidenceCode="TAS")
+MBDBS.slims <- MBDBS.slims[order(MBDBS.slims$Term),]
+MBDBS.slims$method <- "MBDBS"
+MBDBS.slims <- MBDBS.slims[-5,]
+
+All.slims <- rbind(WGBS.slims,RRBS.slims,MBDBS.slims)
+cat.cols <- c("springgreen4","orangered1", "skyblue3")
+
+#plot percent goslim per method   
+pdf("Output/Mcap_GOSlim_compare.pdf")
+ggplot(All.slims, aes(fill=method, y=Percent, x=Term)) + 
+    geom_bar(position="dodge", stat="identity") +
+    scale_fill_manual(values=cat.cols) +
+    theme(axis.text.x = element_text(angle = 90, size=4)) +
+    theme(legend.position = "none") +
+    theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+panel.background = element_blank(), axis.line = element_line(colour = "black"))
+dev.off()
 ```
 
 #P. acuta
@@ -484,7 +531,7 @@ Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
 
 Pact.CpG.counts.present <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
 Pact.CpG.counts.present$plusone <- log10(Pact.CpG.counts.present$mean.TPM+1)
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+#cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
 
 Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.present, method =="WGBS")
 Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.present, method =="RRBS")
@@ -493,9 +540,6 @@ Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.present, method =="MBDBS")
 Pact.WGBS.Hist <-hist(Pact.WGBS.RelFreq$plusone, plot=F, breaks=200)
 Pact.WGBS.Hist$counts <- Pact.WGBS.Hist$counts / sum(Pact.WGBS.Hist$counts)
 plot(Pact.WGBS.Hist, freq=TRUE, ylab="Relative Frequency", color="green", ylim=c(0,0.1))
-
-plot_multi_histogram(Pact.CpG.counts.present, 'plusone', 'method')
-
 
 #distribution of genes absent
 Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
@@ -523,10 +567,19 @@ Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="WGBS")
 Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="RRBS")
 Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="MBDBS")
 
-#For Genes Absent in the 3 groups
-plot_multi_histogram(Pact.CpG.counts.absent, 'plusone', 'method')
+# Plotting Distributions
+pdf("Output/gene_expression_present.pdf", width=8.5, height=6)
+PactEP <- plot_multi_histogram(Pact.CpG.counts.present, 'plusone', 'method')
+dev.off()
 
+pdf("Output/gene_expression_absent.pdf", width=8.5, height=6)
+PactEA <- plot_multi_histogram(Pact.CpG.counts.absent, 'plusone', 'method')
+dev.off()
 
+plot_grid(McapEP, PactEP, McapEA, PactEA, ncol=2, nrow=2, align="v", labels = c('A) M. Capitata', 'B) P. acuta', '', ''), label_size = 12)
+ggsave("Output/gene_expression_distributions.pdf", width=12, height=6)
+
+```
 
 
 
