@@ -1241,6 +1241,11 @@ PactCDSModel <- glmmTMB(CDS ~ seqMethod + (1|replicate),
 summary(PactCDSModel) #Look at model output.
 ```
 
+```{r}
+PactCDSPostHoc <- data.frame(emmeans(PactCDSModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCDSPostHoc) #Look at log odd ratio results
+```
+
 #### Introns
 
 ```{r}
@@ -1248,6 +1253,11 @@ PactIntronsModel <- glmmTMB(Introns ~ seqMethod + (1|replicate),
                             family = beta_family(link = "logit"),
                             data = PactFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(PactIntronsModel) #Look at model output.
+```
+
+```{r}
+PactIntronsPostHoc <- data.frame(emmeans(PactIntronsModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactIntronsPostHoc) #Look at log odd ratio results
 ```
 
 #### Upstream Flanks
@@ -1259,6 +1269,11 @@ PactUpstreamFlanksModel <- glmmTMB(Upstream.Flanks ~ seqMethod + (1|replicate),
 summary(PactUpstreamFlanksModel) #Look at model output
 ```
 
+```{r}
+PactUpstreamFlanksPostHoc <- data.frame(emmeans(PactUpstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactUpstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
 #### Downstream Flanks
 
 ```{r}
@@ -1266,6 +1281,11 @@ PactDownstreamFlanksModel <- glmmTMB(Downstream.Flanks ~ seqMethod + (1|replicat
                                      family = beta_family(link = "logit"),
                                      data = PactFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(PactDownstreamFlanksModel) #Look at model output
+```
+
+```{r}
+PactDownstreamFlanksPostHoc <- data.frame(emmeans(PactDownstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactDownstreamFlanksPostHoc) #Look at log odd ratio results
 ```
 
 #### Intergenic regions
@@ -1277,31 +1297,27 @@ PactIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(PactIntergenicModel) #Look at model output
 ```
 
+```{r}
+PactIntergenicPostHoc <- data.frame(emmeans(PactIntergenicModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactIntergenicPostHoc) #Look at log odd ratio results
+```
+
 #### Save statistical output
 
 ```{r}
-PactCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
-                                              "z.value" = c(summary(PactCDSModel)$coefficients$cond[8:9],
-                                                            summary(PactIntronsModel)$coefficients$cond[8:9],
-                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(PactDownstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(PactIntergenicModel)$coefficients$cond[8:9]),
-                                              "p.value" = c(summary(PactCDSModel)$coefficients$cond[11:12],
-                                                            summary(PactIntronsModel)$coefficients$cond[11:12],
-                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[11:12],
-                                                          summary(PactDownstreamFlanksModel)$coefficients$cond[11:12],
-                                                            summary(PactIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+PactCpGFeatureOverlapStatOutput <- rbind(PactCDSPostHoc,
+                                         PactIntronsPostHoc,
+                                         PactUpstreamFlanksPostHoc,
+                                         PactDownstreamFlanksPostHoc,
+                                         PactIntergenicPostHoc) #Create a dataframe with logs odd ratio output for each model
+PactCpGFeatureOverlapStatOutput$model <- c(rep("CDS", times = 3),
+                                           rep("Introns", times = 3),
+                                           rep("UpstreamFlanks", times = 3),
+                                           rep("DownstreamFlanks", times = 3),
+                                           rep("Intergenic", times = 3)) #Add model information
 head(PactCpGFeatureOverlapStatOutput) #Confirm dataframe creation
 ```
 
 ```{r}
 write.table(PactCpGFeatureOverlapStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Overlap-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
 ```
-
-
-
-
-
-
-
-
