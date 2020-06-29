@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("vegan") #Multivariate analysis package
 #install.packages("cluster") #Multivariate analysis package
 #install.packages("glmmTMB") #Linear modeling package
+#install.packages("emmeans")
 ```
 
 ```{r}
@@ -29,6 +30,7 @@ require(compositions)
 require(vegan)
 require(cluster)
 require(glmmTMB)
+require(emmeans)
 ```
 
 ```{r}
@@ -271,6 +273,10 @@ McapCpGHighModel <- glmmTMB(highMeth ~ seqMethod + (1|replicate),
 summary(McapCpGHighModel) #Look at model output.
 ```
 
+```{r}
+emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Specify FDR instead of Tukey post-hoc test (default)
+```
+
 #### Moderate methylation
 
 ```{r}
@@ -303,7 +309,7 @@ McapCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
 summary(McapCpGLowModel) #Look at model output.
 ```
 
-#### Correct p-values
+#### Save statistical output
 
 ```{r}
 McapCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
@@ -314,11 +320,6 @@ McapCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "s
                                               summary(McapCpGModModel)$coefficients$cond[11:12],
                                               summary(McapCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
 head(McapCpGMethStatusStatOutput) #Confirm dataframe creation
-```
-
-```{r}
-McapCpGMethStatusStatOutput$p.adj <- p.adjust(McapCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(McapCpGMethStatusStatOutput) #Confirm changes
 ```
 
 ```{r}
@@ -595,7 +596,7 @@ PactCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
 summary(PactCpGLowModel) #Look at model output.
 ```
 
-#### Correct p-values
+#### Save statistical output
 
 ```{r}
 PactCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
@@ -606,11 +607,6 @@ PactCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "s
                                               summary(PactCpGModModel)$coefficients$cond[11:12],
                                               summary(PactCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
 head(PactCpGMethStatusStatOutput) #Confirm dataframe creation
-```
-
-```{r}
-PactCpGMethStatusStatOutput$p.adj <- p.adjust(PactCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(PactCpGMethStatusStatOutput) #Confirm changes
 ```
 
 ```{r}
@@ -912,7 +908,7 @@ McapIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(McapIntergenicModel) #Look at model output
 ```
 
-#### Correct p-values
+#### Save statistical output
 
 ```{r}
 McapCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
@@ -927,11 +923,6 @@ McapCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB"
                                                           summary(McapDownstreamFlanksModel)$coefficients$cond[11:12],
                                                             summary(McapIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
 head(McapCpGFeatureOverlapStatOutput) #Confirm dataframe creation
-```
-
-```{r}
-McapCpGFeatureOverlapStatOutput$p.adj <- p.adjust(McapCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(McapCpGFeatureOverlapStatOutput) #Confirm changes
 ```
 
 ```{r}
@@ -1246,7 +1237,7 @@ PactIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(PactIntergenicModel) #Look at model output
 ```
 
-#### Correct p-values
+#### Save statistical output
 
 ```{r}
 PactCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
@@ -1261,11 +1252,6 @@ PactCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB"
                                                           summary(PactDownstreamFlanksModel)$coefficients$cond[11:12],
                                                             summary(PactIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
 head(PactCpGFeatureOverlapStatOutput) #Confirm dataframe creation
-```
-
-```{r}
-PactCpGFeatureOverlapStatOutput$p.adj <- p.adjust(PactCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(PactCpGFeatureOverlapStatOutput) #Confirm changes
 ```
 
 ```{r}
