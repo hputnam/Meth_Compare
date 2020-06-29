@@ -568,6 +568,11 @@ PactCpGHighModel <- glmmTMB(highMeth ~ seqMethod + (1|replicate),
 summary(PactCpGHighModel) #Look at model output.
 ```
 
+```{r}
+PactCpGHighPostHoc <- data.frame(emmeans(PactCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGHighPostHoc) #Look at log odd ratio results
+```
+
 #### Moderate methylation
 
 ```{r}
@@ -582,6 +587,11 @@ PactCpGModModel <- glmmTMB(modMeth ~ seqMethod + (1|replicate),
                            family = beta_family(link = "logit"),
                            data = PactCpGPercentsMod) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(PactCpGModModel) #Look at model output.
+```
+
+```{r}
+PactCpGModPostHoc <- data.frame(emmeans(PactCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGModPostHoc) #Look at log odd ratio results
 ```
 
 #### Low methylation
@@ -600,16 +610,18 @@ PactCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
 summary(PactCpGLowModel) #Look at model output.
 ```
 
+```{r}
+PactCpGLowPostHoc <- data.frame(emmeans(PactCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGLowPostHoc) #Look at log odd ratio results
+```
+
 #### Save statistical output
 
 ```{r}
-PactCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
-                                "z.value" = c(summary(PactCpGHighModel)$coefficients$cond[8:9],
-                                              summary(PactCpGModModel)$coefficients$cond[8:9],
-                                              summary(PactCpGLowModel)$coefficients$cond[8:9]),
-                                "p.value" = c(summary(PactCpGHighModel)$coefficients$cond[11:12],
-                                              summary(PactCpGModModel)$coefficients$cond[11:12],
-                                              summary(PactCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+PactCpGMethStatusStatOutput <- rbind(PactCpGHighPostHoc,
+                                     PactCpGModPostHoc,
+                                     PactCpGLowPostHoc) #Create a dataframe with logs odd ratio output for each model
+PactCpGMethStatusStatOutput$model <- c(rep("High", times = 3), rep("Mod", times = 3), rep("Low", times = 3)) #Add model information
 head(PactCpGMethStatusStatOutput) #Confirm dataframe creation
 ```
 
