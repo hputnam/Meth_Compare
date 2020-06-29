@@ -7,51 +7,78 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
-```
 
-```{r libraries}
 #source("https://bioconductor.org/biocLite.R")
 library("pheatmap")
 library("RColorBrewer")
-library("ggplot2")
 library("tidyverse")
 library("GSEABase")
-library("gridExtra")
 library("cowplot")
+library("lattice")
+library("latticeExtra")
+library("ggforce")
+library("goseq")
+
 ```
 
-# Goal is to identify and compare the genes captured by each method
-## Montipora capitata
+Goal is to identify and compare presence and absence and the expression levels of the genes captured by each method
 
+Load sample info, annotation, and counts
 ```{r load data}
 #load sample info
-sample.info <- read.csv(file="metadata/RNASeq_metadata.csv", header=T, sep=",", row.names=1) #load sample info
+sample.info <- read.csv(file="metadata/RNASeq_metadata.csv", header=T, sep=",", row.names=1)
+#separate sample info by species
 Mcap.sample.info <- subset(sample.info, Species == "Montipora capitata")
+#Mcap = Montipora capitata
 Pact.sample.info <- subset(sample.info, Species == "Pocillopora acuta")
+#Pact = Pocillopora acuta
 
-#Load Annotation Info
-Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") #load sample info
-colnames(Mcap.annot) <- c("Uniprot", "X.gene_id", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+#Load Mcap Annotation Info
+Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
+colnames(Mcap.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
 Mcap.annot <- Mcap.annot %>% 
-  distinct(X.gene_id, .keep_all = TRUE)
-Mcap.annot$X.gene_id <- gsub("augustus.", "", Mcap.annot$X.gene_id)
-Mcap.annot$X.gene_id <- gsub(".t1", "", Mcap.annot$X.gene_id)
+  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
+Mcap.annot$gene <- gsub("augustus.", "", Mcap.annot$gene) #remove excess characters from gene name
+Mcap.annot$gene <- gsub(".t1", "", Mcap.annot$gene) #remove excess characters from gene name
 
-Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") #load sample info
-colnames(Pact.annot) <- c("Uniprot", "X.gene_id", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+#Identify Mcap full set of GO terms
+Mcap.GO <- Mcap.annot[,c(2,14)] #identify GOids
+splitted <- strsplit(as.character(Mcap.GO$GO.IDs), "; ") #slit into multiple GO ids
+Mcap.GOs <- data.frame(v1 = rep.int(Mcap.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+Mcap.GO.terms <- Mcap.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(Mcap.GO.terms$v2)) #view number of go terms
+
+#Load Pact Annotation Info
+Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
+colnames(Pact.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
 Pact.annot <- Pact.annot %>% 
-  distinct(X.gene_id, .keep_all = TRUE)
+  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
 
-#Load gene gff
-Mcap.genes <- read.csv(file="genome-feature-files/Mcap.GFFannotation.gff", header=FALSE, sep="\t") #load sample info
+#Identify Mcap full set of GO terms
+Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
+splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
+Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+Pact.GO.terms <- Pact.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(Pact.GO.terms$v2)) #view number of go terms
+
+#Load Mcap gene gff
+Mcap.genes <- read.csv(file="genome-feature-files/Mcap.GFFannotation.gff", header=FALSE, sep="\t") 
 Mcap.genes <- filter(Mcap.genes, V3 == "gene")
+#load sample info
 colnames(Mcap.genes) <- c("scaffold", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 Mcap.genes$gene <- gsub("ID=", "", Mcap.genes$gene)
 Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
+
+Mcap.gene.len.df <- Mcap.genes 
+Mcap.gene.len.df$length <- Mcap.gene.len.df$gene.stop-Mcap.gene.len.df$gene.start
+
+
+#write output of gene gff only
 write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
             col.names = FALSE, row.names=FALSE, quote=FALSE)
 Mcap.genes <- Mcap.genes[,c(1,4,5,9)]
 
+#Load Pact gene gff
 Pact.genes <- read.csv(file="genome-feature-files/Pact_Structural_annotation_abintio.gff", header=FALSE, sep="\t", skip=22) #load sample info
 Pact.genes <- filter(Pact.genes, V3 == "gene")
 Pact.genes$V1 <- gsub("cov", "_cov", Pact.genes$V1)
@@ -60,23 +87,53 @@ write.table(Pact.genes, file="genome-feature-files/Pact.GFFannotation.genes.gff"
 Pact.genes <- Pact.genes[,c(1,4,5,9)]
 colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene")
 
+Pact.gene.len.df <- Pact.genes 
+Pact.gene.len.df$length <- Pact.gene.len.df$gene.stop-Pact.gene.len.df$gene.start
+
 #load expression data
-PolyA.Mcap.counts <- read.csv(file="RNASeq/PolyA/mapped/Mcap_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
-PolyA.Mcap.counts$mean.count <- rowMeans(PolyA.Mcap.counts[,2:4])
-range(PolyA.Mcap.counts$mean.count)
-mean(PolyA.Mcap.counts$mean.count)
-colnames(PolyA.Mcap.counts)[1] <- c("gene")
-RiboDep.Mcap.counts <- read.csv(file="RNASeq/RiboDep/mapped/Mcap_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
-PolyA.Pact.counts <- read.csv(file="RNASeq/PolyA/mapped/Pact_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
-PolyA.Pact.counts$mean.count <- rowMeans(PolyA.Pact.counts[,2:4])
-range(PolyA.Pact.counts$mean.count)
-mean(PolyA.Pact.counts$mean.count)
-colnames(PolyA.Pact.counts)[1] <- c("gene")
-RiboDep.Pact.counts <- read.csv(file="RNASeq/RiboDep/mapped/Pact_gene_count_matrix.csv", header=T, sep=",") #Load expression matrix
+#Montipora capitata counts
+Mcap.1101 <- read.csv(file="RNASeq/PolyA/1101_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Mcap.1101)[c(8,9)] <- c("Mcap.1101.FPKM", "Mcap.1101.TPM")
+Mcap.1548 <- read.csv(file="RNASeq/PolyA/1548_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Mcap.1548)[c(8,9)] <- c("Mcap.1548.FPKM", "Mcap.1548.TPM")
+Mcap.1628 <- read.csv(file="RNASeq/PolyA/1628_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Mcap.1628)[c(8,9)] <- c("Mcap.1628.FPKM", "Mcap.1628.TPM")
+
+Mcap.counts <- left_join(Mcap.1101,Mcap.1548, by="Gene.ID" )
+Mcap.counts <- left_join(Mcap.counts,Mcap.1628, by="Gene.ID" )
+Mcap.counts <- Mcap.counts[,c(1,3,5,6,8,9,16,17, 24,25)]
+Mcap.counts$mean.FPKM <- rowMeans(Mcap.counts[,c(5,7,9)])
+Mcap.counts$mean.TPM <- rowMeans(Mcap.counts[,c(6,8,10)])
+colnames(Mcap.counts) <- c("gene", "scaffold", "start", "stop",  "Mcap.1101.FPKM", "Mcap.1101.TPM", "Mcap.1548.FPKM", "Mcap.1548.TPM",
+                           "Mcap.1628.FPKM", "Mcap.1628.TPM", "mean.FPKM", "mean.TPM" )
+range(Mcap.counts$mean.FPKM)
+mean(Mcap.counts$mean.FPKM)
+range(Mcap.counts$mean.TPM)
+mean(Mcap.counts$mean.TPM)
+
+#Pocillopora acuta counts
+Pact.1041 <- read.csv(file="RNASeq/PolyA/1041_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Pact.1041)[c(8,9)] <- c("Pact.1041.FPKM", "Pact.1041.TPM")
+Pact.1471 <- read.csv(file="RNASeq/PolyA/1471_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Pact.1471)[c(8,9)] <- c("Pact.1471.FPKM", "Pact.1471.TPM")
+Pact.1637 <- read.csv(file="RNASeq/PolyA/1637_gene_abund.tab", header=TRUE, sep="\t") #Load expression matrix
+colnames(Pact.1637)[c(8,9)] <- c("Pact.1637.FPKM", "Pact.1637.TPM")
+
+Pact.counts <- left_join(Pact.1041,Pact.1471, by="Gene.ID" )
+Pact.counts <- left_join(Pact.counts,Pact.1637, by="Gene.ID" )
+Pact.counts <- Pact.counts[,c(1,3,5,6,8,9,16,17, 24,25)]
+Pact.counts$mean.FPKM <- rowMeans(Pact.counts[,c(5,7,9)])
+Pact.counts$mean.TPM <- rowMeans(Pact.counts[,c(6,8,10)])
+colnames(Pact.counts) <- c("gene", "scaffold", "start", "stop",  "Pact.1041.FPKM", "Pact.1041.TPM", "Pact.1548.FPKM", "Pact.1548.TPM",
+                           "Pact.1628.FPKM", "Pact.1628.TPM", "mean.FPKM", "mean.TPM" )
+range(Pact.counts$mean.FPKM)
+mean(Pact.counts$mean.FPKM)
+range(Pact.counts$mean.TPM)
+mean(Pact.counts$mean.TPM)
 
 ```
 
-#Obtain the gene sets with CpGs with 5x coverage
+Obtain the genes from both genomes that have CpG data with 5x coverage
 ```{bash}
 #Intersect Mcap CpG with genes
 for f in data/Mcap_tab/*5x.tab
@@ -99,7 +156,7 @@ intersectBed \
 done
 ```
 
-# M. capitata 
+Load M. capitata (Mcap) Methylation data and ID genes and GO terms in each method
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1101 1548 1628
@@ -111,17 +168,19 @@ WGBS.1628 <- read.csv("data/Mcap_tab/Meth12_R1_001_val_1_bismark_bt2_pe._5x.tab_
 colnames(WGBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 
 #Determine GO terms for the genes found with each method
-WGBS.data <- rbind(WGBS.1101,WGBS.1548,WGBS.1628)
-WGBS.genes <- as.data.frame(unique(WGBS.data$gene))
-colnames(WGBS.genes) <- c("X.gene_id")
-WGBS.gene.annot <- left_join(WGBS.genes, Mcap.annot, by="X.gene_id")
+# WGBS samples
+WGBS.data <- rbind(WGBS.1101,WGBS.1548,WGBS.1628) #combine samples into df by method
+WGBS.genes <- as.data.frame(unique(WGBS.data$gene)) #keep unique genes only
+colnames(WGBS.genes) <- c("gene") #name gene column
+WGBS.gene.annot <- left_join(WGBS.genes, Mcap.annot, by="gene") #combine genes and annotation
 nrow(WGBS.genes)
 WGBS.GO <- WGBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(WGBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-WGBS.GOs <- data.frame(v1 = rep.int(WGBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
-WGBS.GO.terms <- WGBS.GOs %>% distinct(v2, .keep_all = TRUE)
-length(unique(WGBS.GO.terms$v2))  
+WGBS.GOs <- data.frame(v1 = rep.int(WGBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+WGBS.GO.terms <- WGBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(WGBS.GO.terms$v2)) #view number of go terms
 
+#RRBS samples
 RRBS.1101 <- read.csv("data/Mcap_tab/Meth13_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(RRBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 RRBS.1548 <- read.csv("data/Mcap_tab/Meth14_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
@@ -129,16 +188,16 @@ colnames(RRBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth"
 RRBS.1628 <- read.csv("data/Mcap_tab/Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(RRBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 
-RRBS.data <- rbind(RRBS.1101,RRBS.1548,RRBS.1628)
-RRBS.genes <- as.data.frame(unique(RRBS.data$gene))
-colnames(RRBS.genes) <- c("X.gene_id")
-RRBS.gene.annot <- left_join(RRBS.genes, Mcap.annot, by="X.gene_id")
+RRBS.data <- rbind(RRBS.1101,RRBS.1548,RRBS.1628) #combine samples into df by method
+RRBS.genes <- as.data.frame(unique(RRBS.data$gene)) #keep unique genes only
+colnames(RRBS.genes) <- c("gene") #name gene column
+RRBS.gene.annot <- left_join(RRBS.genes, Mcap.annot, by="gene") #combine genes and annotation
 nrow(RRBS.genes)
 RRBS.GO <- RRBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(RRBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-RRBS.GOs <- data.frame(v1 = rep.int(RRBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
-RRBS.GO.terms <- RRBS.GOs %>% distinct(v2, .keep_all = TRUE)
-length(unique(RRBS.GO.terms$v2))   
+RRBS.GOs <- data.frame(v1 = rep.int(RRBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+RRBS.GO.terms <- RRBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(RRBS.GO.terms$v2)) #view number of go terms   
 
 MBDBS.1101 <- read.csv("data/Mcap_tab/Meth16_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(MBDBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
@@ -147,16 +206,16 @@ colnames(MBDBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth
 MBDBS.1628 <- read.csv("data/Mcap_tab/Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(MBDBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
 
-MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628)
-MBDBS.genes <- as.data.frame(unique(MBDBS.data$gene))
-colnames(MBDBS.genes) <- c("X.gene_id")
-MBDBS.gene.annot <- left_join(MBDBS.genes, Mcap.annot, by="X.gene_id")
+MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628) #combine samples into df by method
+MBDBS.genes <- as.data.frame(unique(MBDBS.data$gene)) #keep unique genes only
+colnames(MBDBS.genes) <- c("gene") #name gene column
+MBDBS.gene.annot <- left_join(MBDBS.genes, Mcap.annot, by="gene") #combine genes and annotation
 nrow(MBDBS.genes)
 MBDBS.GO <- MBDBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(MBDBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-MBDBS.GOs <- data.frame(v1 = rep.int(MBDBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
-MBDBS.GO.terms <- MBDBS.GOs %>% distinct(v2, .keep_all = TRUE)
-length(unique(MBDBS.GO.terms$v2))
+MBDBS.GOs <- data.frame(v1 = rep.int(MBDBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+MBDBS.GO.terms <- MBDBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(MBDBS.GO.terms$v2)) #view number of go terms
 
 #combine genes indentified by each method into dataframe for plotting
 WGBS.genes.circ <- as.data.frame(WGBS.genes)
@@ -171,7 +230,7 @@ MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
 MBDBS.genes.circ$method <- "MBDBS"
 colnames(MBDBS.genes.circ) <- c("gene", "method")
 
-
+#combine 3 methods together 
 All.circ <- left_join(Mcap.genes, WGBS.genes.circ, by="gene", keep=TRUE)
 colnames(All.circ)[4] <- "gene"
 All.circ <- left_join(All.circ, RRBS.genes.circ, by="gene", keep=TRUE)
@@ -179,46 +238,31 @@ colnames(All.circ)[4] <- "gene"
 All.circ <- left_join(All.circ, MBDBS.genes.circ, by="gene", keep=TRUE)
 colnames(All.circ) <- c("scaffold","gene.start", "gene.stop",  "gene","WGBS","method.WGBS", "RRBS", "method.RRBS",   "MBDBS", "method.MBDBS" )
 
+#order the dataframe by scaffold and gene start position
 All.circ.df <- arrange(All.circ,scaffold, gene.start)
 All.circ.data <- All.circ.df[,c(1:5,7,9)]
-str(All.circ.data)
+str(All.circ.data) 
 All.circ.data$WGBS <- as.character(as.factor(All.circ.data$WGBS))
 All.circ.data$RRBS <- as.character(as.factor(All.circ.data$RRBS))
 All.circ.data$MBDBS <- as.character(as.factor(All.circ.data$MBDBS))
 str(All.circ.data)
 
-# Genes with NA are not found in a dataset and assigned to 0
+# Genes with NA are those not found in a dataset and assigned to 0
 # Genes present are assigned a 1
 All.circ.data[is.na(All.circ.data)] <- 0 #change NA to 0
 All.circ.data$WGBS[All.circ.data$WGBS != 0] <- 1 #change gene to 1
 All.circ.data$RRBS[All.circ.data$RRBS != 0] <- 1 #change gene to 1
 All.circ.data$MBDBS[All.circ.data$MBDBS != 0] <- 1 #change gene to 1
 str(All.circ.data)
+#change 0 and 1 to numeric
 All.circ.data$WGBS <- as.numeric(as.character(All.circ.data$WGBS))
 All.circ.data$RRBS <- as.numeric(as.character(All.circ.data$RRBS))
 All.circ.data$MBDBS <- as.numeric(as.character(All.circ.data$MBDBS))
 str(All.circ.data)
 
-#set the presence absence matrix
-All.circ.mat <- as.matrix(All.circ.data[1:45000,5:7])
-rownames(All.circ.mat) <- All.circ.data$gene[1:45000]
-str(All.circ.mat)
-
-#set the factor info for the presence absence matrix
-All.circ.fac <- All.circ.data[1:45000,1:4]
-str(All.circ.fac)
-
-#Mcap heatmap
-pdf("Output/Mcap_heatmap_genes_present.pdf")
-Mcap.genepresence.heatmap <- pheatmap(All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
-         cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
-dev.off()
-
-
-All.circ.data
-#WGBS genes present
-Mcap.CpG.gene.counts <- left_join(All.circ.data, PolyA.Mcap.counts, by="gene")
-Mcap.CpG.gene.counts <- Mcap.CpG.gene.counts[,c(4,5,6,7,11)]
+#genes present by method
+Mcap.CpG.gene.counts <- left_join(All.circ.data, Mcap.counts, by="gene")
+Mcap.CpG.gene.counts <- Mcap.CpG.gene.counts[,c(4,5,6,7,18)]
 
 Mcap.WGBS.counts <- Mcap.CpG.gene.counts[,c(1,2,5)]
 colnames(Mcap.WGBS.counts)[2] <- "type"
@@ -230,37 +274,79 @@ Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
 colnames(Mcap.MBDBS.counts)[2] <- "type"
 Mcap.MBDBS.counts$method <- "MBDBS"
 Mcap.CpG.genes.all <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
+Mcap.CpG.genes.all$gene <- factor(Mcap.CpG.genes.all$gene, levels = All.circ.df$gene)
 
-pdf("Output/test.pdf")
-ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type)) + 
-  geom_tile()+
-  scale_fill_gradientn(colours=c("black", "yellow"))
+pdf("Output/Mcap_PresAbs_genes.pdf")
+ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
+  geom_tile() +
+  coord_fixed(ratio = 7000)+
+  scale_fill_gradientn(colours=c("black", "yellow"))+
+  ggtitle("A ")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size =1), #Set the text angle
+        axis.line = element_line(color = 'black'), #Set the axes color
+        panel.border = element_blank(), #Set the border
+        panel.grid.major = element_blank(), #Set the major gridlines
+        panel.grid.minor = element_blank(), #Set the minor gridlines
+        plot.background=element_blank()) #Set the plot background
 dev.off()
+```
 
-Mcap.WGBS.counts$WGBS[Mcap.WGBS.counts$WGBS==0] <- NA
+Gene expresion counts for genes with CpG identified by each method
+```{r}
+Mcap.WGBS.counts$type[Mcap.WGBS.counts$type==0] <- NA
 Mcap.WGBS.counts <- na.omit(Mcap.WGBS.counts)
 
-Mcap.RRBS.counts <- Mcap.CpG.gene.counts[,c(1,3,5)]
-Mcap.RRBS.counts$RRBS[Mcap.RRBS.counts$RRBS==0] <- NA
+Mcap.RRBS.counts$type[Mcap.RRBS.counts$type==0] <- NA
 Mcap.RRBS.counts <- na.omit(Mcap.RRBS.counts)
 
-Mcap.MBDBS.counts <- Mcap.CpG.gene.counts[,c(1,4,5)]
-Mcap.MBDBS.counts$MBDBS[Mcap.MBDBS.counts$MBDBS==0] <- NA
+Mcap.MBDBS.counts$type[Mcap.MBDBS.counts$type==0] <- NA
 Mcap.MBDBS.counts <- na.omit(Mcap.MBDBS.counts)
 
 Mcap.CpG.counts.present <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
-Mcap.CpG.counts.present$plusone <- (Mcap.CpG.counts.present$mean.count)+1
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+Mcap.CpG.counts.present$plusone <- log10(Mcap.CpG.counts.present$mean.TPM+1)
+#cat.cols <- c("#E6550D", "#756BB1", "#31A354") #WGBS, RRBS, MBDBS
 
+Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="WGBS")
+Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="RRBS")
+Mcap.MBDBS.RelFreq <- filter(Mcap.CpG.counts.present, method =="MBDBS")
 
-Mcap_presentexpression_by_method <- ggplot(Mcap.CpG.counts.present , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("A) Expression of Present Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+Mcap.WGBS.Hist <-hist(Mcap.WGBS.RelFreq$plusone, plot=F, breaks=200)
+Mcap.WGBS.Hist$counts <- Mcap.WGBS.Hist$counts / sum(Mcap.WGBS.Hist$counts)
+plot(Mcap.WGBS.Hist, freq=TRUE, ylab="Relative Frequency", color="green", ylim=c(0,0.1))
+
+plot_multi_histogram <- function(df, feature, label_column) {
+    plt <- ggplot(df, aes(x=eval(parse(text=feature)), fill=eval(parse(text=label_column)))) +
+    geom_histogram(aes(y = stat(count) / sum(count)), bins = 50) +
+    scale_fill_manual(values=c("#E6550D", "#756BB1", "#31A354")) +
+    labs(x="Log10(Mean TPM +1)", y = "Relative Frequency")+
+    theme_classic()+
+    facet_zoom(ylim = c(0, 0.12))
+    plt + guides(fill=guide_legend(title=label_column))
+}
+
+#GO Enrichment by method
+ALL<- Mcap.genes$gene #set the all transcripts list
+Meth <- Mcap.MBDBS.counts$gene #set the enrichment test list
+LENGTH <- Mcap.gene.len.df
+
+#change contig lists to vectors
+ALL.vector <-c(t(ALL))
+Meth.vector <-c(t(Meth))
+ID.vector <- LENGTH$gene
+LENGTH.vector <- LENGTH$length
+
+gene.vector=as.integer(ALL.vector%in%Meth.vector) #Construct new vector with 1 for DEG and 0 for others
+names(gene.vector)=ALL.vector #set names
+DEG.pwf<-nullp(gene.vector, ID.vector, bias.data=LENGTH.vector) #weight vector by length of gene
+
+#Find enriched GO terms, "selection-unbiased testing for category enrichment amongst differentially expressed (DE) genes for RNA-seq data"
+GO.wall<-goseq(DEG.pwf, ID.vector, gene2cat=Mcap.GO.terms, test.cats=c("GO:CC", "GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+#How many enriched GO terms do we have
+class(GO.wall)
+head(GO.wall)
+tail(GO.wall)
+nrow(GO.wall)
 
 
 #distribution of genes absent
@@ -283,24 +369,56 @@ Mcap.MBDBS.counts$method <- "MBDBS"
 colnames(Mcap.MBDBS.counts)[2] <- "type"
 
 Mcap.CpG.counts.absent <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
-Mcap.CpG.counts.absent$plusone <- (Mcap.CpG.counts.absent$mean.count)+1
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+Mcap.CpG.counts.absent$plusone <- log10(Mcap.CpG.counts.absent$mean.TPM+1)
+
+Mcap.WGBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="WGBS")
+Mcap.RRBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="RRBS")
+Mcap.MBDBS.RelFreq <- filter(Mcap.CpG.counts.absent, method =="MBDBS")
+
+#GO Enrichment by method
+ALL<- Mcap.genes$gene #set the all transcripts list
+Meth <- Mcap.WGBS.counts$gene #set the enrichment test list
+LENGTH <- Mcap.gene.len.df
+
+#change contig lists to vectors
+ALL.vector <-c(t(ALL))
+Meth.vector <-c(t(Meth))
+ID.vector <- LENGTH$gene
+LENGTH.vector <- LENGTH$length
+
+gene.vector=as.integer(ALL.vector%in%Meth.vector) #Construct new vector with 1 for DEG and 0 for others
+names(gene.vector)=ALL.vector #set names
+DEG.pwf<-nullp(gene.vector, ID.vector, bias.data=LENGTH.vector) #weight vector by length of gene
+
+#Find enriched GO terms, "selection-unbiased testing for category enrichment amongst differentially expressed (DE) genes for RNA-seq data"
+GO.wall<-goseq(DEG.pwf, ID.vector, gene2cat=Mcap.GO.terms, test.cats=c("GO:CC", "GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+#How many enriched GO terms do we have
+class(GO.wall)
+head(GO.wall)
+tail(GO.wall)
+nrow(GO.wall)
+
+```
 
 
-Mcap_absentexpression_by_method <- ggplot(Mcap.CpG.counts.absent , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("B) Expression of Absent Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+```{r}
+# Plotting Distributions
+pdf("Output/Mcap.gene_expression_present.pdf", width=8.5, height=6)
+McapEP <- plot_multi_histogram(Mcap.CpG.counts.present, 'plusone', 'method')
+dev.off()
 
+pdf("Output/Mcap.gene_expression_absent.pdf", width=8.5, height=6)
+McapEA <- plot_multi_histogram(Mcap.CpG.counts.absent, 'plusone', 'method')
+dev.off()
 
-plot_grid(Mcap_presentexpression_by_method, Mcap_absentexpression_by_method, ncol=2, align="v")
-ggsave("Output/Mcap_expression_dist.pdf", width=8.5, height=4)
+plot_grid(McapEP, McapEA, ncol=1, nrow=2, align="v", labels = c('A) Genes with CpG Present', 'B) Genes with CpG Absent'), label_size = 12)
+ggsave("Output/Mcap.gene_expression_distributions.pdf", width=8.5, height=6)
 
+```
 
+Mcap GO Slim Term comparison in genes identifed by each method
+```{r}
 #GO Term union df
 GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
 GO.ALL <- left_join(GO.ALL , MBDBS.GO.terms, by="v1", all=TRUE)
@@ -331,7 +449,6 @@ MBDBS.slims$method <- "MBDBS"
 MBDBS.slims <- MBDBS.slims[-5,]
 
 All.slims <- rbind(WGBS.slims,RRBS.slims,MBDBS.slims)
-
 cat.cols <- c("springgreen4","orangered1", "skyblue3")
 
 #plot percent goslim per method   
@@ -343,14 +460,11 @@ ggplot(All.slims, aes(fill=method, y=Percent, x=Term)) +
     theme(legend.position = "none") +
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
 panel.background = element_blank(), axis.line = element_line(colour = "black"))
-dev.off() 
-
-
-
-
+dev.off()
 ```
 
-#P. acuta
+
+Pocillopora acuta
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1041 1471 1637
@@ -363,12 +477,12 @@ colnames(WGBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth"
 
 Pact.WGBS.data <- rbind(WGBS.1041,WGBS.1471,WGBS.1637)
 Pact.WGBS.genes <- as.data.frame(unique(Pact.WGBS.data$gene))
-colnames(Pact.WGBS.genes) <- c("X.gene_id")
-Pact.WGBS.gene.annot <- left_join(Pact.WGBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.WGBS.genes) <- c("gene")
+Pact.WGBS.gene.annot <- left_join(Pact.WGBS.genes, Pact.annot, by="gene")
 nrow(Pact.WGBS.genes)
 Pact.WGBS.GO <- Pact.WGBS.gene.annot[,c(1,14)] #identify GOids
-splitted <- strsplit(as.character(Pact.WGBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.WGBS.GOs <- data.frame(v1 = rep.int(Pact.WGBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+splitted <- strsplit(as.character(Pact.WGBS.GO$GO.IDs), "; ") #split into multiple GO ids
+Pact.WGBS.GOs <- data.frame(v1 = rep.int(Pact.WGBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.WGBS.GO.terms <- Pact.WGBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.WGBS.GO.terms$v2))  
 
@@ -381,12 +495,12 @@ colnames(RRBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth"
 
 Pact.RRBS.data <- rbind(RRBS.1041,RRBS.1471,RRBS.1637)
 Pact.RRBS.genes <- as.data.frame(unique(Pact.RRBS.data$gene))
-colnames(Pact.RRBS.genes) <- c("X.gene_id")
-Pact.RRBS.gene.annot <- left_join(Pact.RRBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.RRBS.genes) <- c("gene")
+Pact.RRBS.gene.annot <- left_join(Pact.RRBS.genes, Pact.annot, by="gene")
 nrow(Pact.RRBS.genes)
 Pact.RRBS.GO <- Pact.RRBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(Pact.RRBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.RRBS.GOs <- data.frame(v1 = rep.int(Pact.RRBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.RRBS.GOs <- data.frame(v1 = rep.int(Pact.RRBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.RRBS.GO.terms <- Pact.RRBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.RRBS.GO.terms$v2))   
 
@@ -399,12 +513,12 @@ colnames(MBDBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth
 
 Pact.MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628)
 Pact.MBDBS.genes <- as.data.frame(unique(Pact.MBDBS.data$gene))
-colnames(Pact.MBDBS.genes) <- c("X.gene_id")
-Pact.MBDBS.gene.annot <- left_join(Pact.MBDBS.genes, Pact.annot, by="X.gene_id")
+colnames(Pact.MBDBS.genes) <- c("gene")
+Pact.MBDBS.gene.annot <- left_join(Pact.MBDBS.genes, Pact.annot, by="gene")
 nrow(MBDBS.genes)
 Pact.MBDBS.GO <- Pact.MBDBS.gene.annot[,c(1,14)] #identify GOids
 splitted <- strsplit(as.character(Pact.MBDBS.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.MBDBS.GOs <- data.frame(v1 = rep.int(Pact.MBDBS.GO$X.gene_id, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
+Pact.MBDBS.GOs <- data.frame(v1 = rep.int(Pact.MBDBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each assigned transcript
 Pact.MBDBS.GO.terms <- Pact.MBDBS.GOs %>% distinct(v2, .keep_all = TRUE)
 length(unique(Pact.MBDBS.GO.terms$v2))
 
@@ -447,56 +561,61 @@ Pact.All.circ.data$RRBS <- as.numeric(as.character(Pact.All.circ.data$RRBS))
 Pact.All.circ.data$MBDBS <- as.numeric(as.character(Pact.All.circ.data$MBDBS))
 str(Pact.All.circ.data)
 
-Pact.All.circ.mat <- as.matrix(Pact.All.circ.data[1:45000,5:7])
-rownames(Pact.All.circ.mat) <- Pact.All.circ.data$gene[1:45000]
-str(Pact.All.circ.mat)
 
-Pact.All.circ.fac <- Pact.All.circ.data[1:45000,1:4]
-str(Pact.All.circ.fac)
-
-#Heatmap
-pdf("Output/Pact_heatmap_genes_present.pdf")
-Pact.genepresence.heatmap <- pheatmap(Pact.All.circ.mat, color=c("black","yellow"), scale="none",show_rownames =FALSE, fontsize_row = 4, 
-         cluster_cols = FALSE, show_colnames=TRUE, cluster_rows = TRUE) #plot heatmap 
-dev.off()
-
-Pact.All.circ.data
-#WGBS genes present
-Pact.CpG.gene.counts <- left_join(Pact.All.circ.data, PolyA.Pact.counts, by="gene")
-Pact.CpG.gene.counts <- Pact.CpG.gene.counts[,c(4,5,6,7,11)]
+#genes present by method
+Pact.CpG.gene.counts <- left_join(Pact.All.circ.data, Pact.counts, by="gene")
+Pact.CpG.gene.counts <- Pact.CpG.gene.counts[,c(4,5,6,7,18)]
 
 Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
-Pact.WGBS.counts$WGBS[Pact.WGBS.counts$WGBS==0] <- NA
-Pact.WGBS.counts <- na.omit(Pact.WGBS.counts)
-Pact.WGBS.counts$method <- "WGBS"
 colnames(Pact.WGBS.counts)[2] <- "type"
-
+Pact.WGBS.counts$method <- "WGBS"
 Pact.RRBS.counts <- Pact.CpG.gene.counts[,c(1,3,5)]
-Pact.RRBS.counts$RRBS[Pact.RRBS.counts$RRBS==0] <- NA
-Pact.RRBS.counts <- na.omit(Pact.RRBS.counts)
-Pact.RRBS.counts$method <- "RRBS"
 colnames(Pact.RRBS.counts)[2] <- "type"
-
+Pact.RRBS.counts$method <- "RRBS"
 Pact.MBDBS.counts <- Pact.CpG.gene.counts[,c(1,4,5)]
-Pact.MBDBS.counts$MBDBS[Pact.MBDBS.counts$MBDBS==0] <- NA
-Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
-Pact.MBDBS.counts$method <- "MBDBS"
 colnames(Pact.MBDBS.counts)[2] <- "type"
+Pact.MBDBS.counts$method <- "MBDBS"
+Pact.CpG.genes.all <- rbind(Pact.WGBS.counts,Pact.RRBS.counts, Pact.MBDBS.counts)
+Pact.CpG.genes.all$gene <- factor(Pact.CpG.genes.all$gene, levels = Pact.All.circ.df$gene)
+
+pdf("Output/Pact_PresAbs_genes.pdf")
+ggplot(Pact.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
+  geom_tile() +
+  coord_fixed(ratio = 6000)+
+  scale_fill_gradientn(colours=c("black", "yellow"))+
+  ggtitle("B ")+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size =1), #Set the text angle
+        axis.line = element_line(color = 'black'), #Set the axes color
+        panel.border = element_blank(), #Set the border
+        panel.grid.major = element_blank(), #Set the major gridlines
+        panel.grid.minor = element_blank(), #Set the minor gridlines
+        plot.background=element_blank()) #Set the plot background
+dev.off()
+
+#plot_grid(Mcap.CpG.genes.heatmap, Pact.CpG.genes.heatmap, ncol=1, align="v")
+#ggsave("Output/gene_heatmaps.pdf", width=8.5, height=6)
+
+
+Pact.WGBS.counts$type[Pact.WGBS.counts$type==0] <- NA
+Pact.WGBS.counts <- na.omit(Pact.WGBS.counts)
+
+Pact.RRBS.counts$type[Pact.RRBS.counts$type==0] <- NA
+Pact.RRBS.counts <- na.omit(Pact.RRBS.counts)
+
+Pact.MBDBS.counts$type[Pact.MBDBS.counts$type==0] <- NA
+Pact.MBDBS.counts <- na.omit(Pact.MBDBS.counts)
 
 Pact.CpG.counts.present <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
-Pact.CpG.counts.present$plusone <- (Pact.CpG.counts.present$mean.count)+1
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+Pact.CpG.counts.present$plusone <- log10(Pact.CpG.counts.present$mean.TPM+1)
+#cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
 
+Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.present, method =="WGBS")
+Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.present, method =="RRBS")
+Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.present, method =="MBDBS")
 
-Pact_presentexpression_by_method <- ggplot(Pact.CpG.counts.present , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("A) Expression of Present Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
-
+Pact.WGBS.Hist <-hist(Pact.WGBS.RelFreq$plusone, plot=F, breaks=200)
+Pact.WGBS.Hist$counts <- Pact.WGBS.Hist$counts / sum(Pact.WGBS.Hist$counts)
+plot(Pact.WGBS.Hist, freq=TRUE, ylab="Relative Frequency", color="green", ylim=c(0,0.1))
 
 #distribution of genes absent
 Pact.WGBS.counts <- Pact.CpG.gene.counts[,c(1,2,5)]
@@ -518,28 +637,51 @@ Pact.MBDBS.counts$method <- "MBDBS"
 colnames(Pact.MBDBS.counts)[2] <- "type"
 
 Pact.CpG.counts.absent <- rbind(Pact.WGBS.counts, Pact.RRBS.counts, Pact.MBDBS.counts)
-Pact.CpG.counts.absent$plusone <- (Pact.CpG.counts.absent$mean.count)+1
-cat.cols <- c("#EDF8E9", "#F2F0F7", "#FEEDDE")
+Pact.CpG.counts.absent$plusone <- log10(Pact.CpG.counts.absent$mean.TPM+1)
+
+Pact.WGBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="WGBS")
+Pact.RRBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="RRBS")
+Pact.MBDBS.RelFreq <- filter(Pact.CpG.counts.absent, method =="MBDBS")
+
+# Plotting Distributions
+pdf("Output/Pact.gene_expression_present.pdf", width=8.5, height=6)
+PactEP <- plot_multi_histogram(Pact.CpG.counts.present, 'plusone', 'method')
+dev.off()
+
+pdf("Output/Pact.gene_expression_absent.pdf", width=8.5, height=6)
+PactEA <- plot_multi_histogram(Pact.CpG.counts.absent, 'plusone', 'method')
+dev.off()
+
+plot_grid(McapEP, PactEP, McapEA, PactEA, ncol=2, nrow=2, align="v", labels = c('A) M. Capitata', 'B) P. acuta', '', ''), label_size = 12)
+ggsave("Output/gene_expression_distributions.pdf", width=12, height=6)
+
+```
 
 
-Pact_absentexpression_by_method <- ggplot(Pact.CpG.counts.absent , aes(plusone, color = method)) +
-  coord_trans(x="log") +
-  geom_density(fill = NA)+
-  ggtitle("B) Expression of Absent Genes") +
-  xlab("Log of Mean Counts +1") + #label x axis
-  theme(axis.text.x = element_text(angle = 90, size=10)) +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-panel.background = element_blank(), axis.line = element_line(colour = "black"))
+
+```{r}
+#plotting both species together
+
+plot_grid(Mcap.PresAbs, Pact.PresAbs,  ncol=1, nrow=2, align="v", labels = c('A) M. Capitata', 'B) P. acuta', '', ''), label_size = 12)
+ggsave("Output/PresAbs_heatmaps.pdf", width=12, height=6)
+
+```
 
 
-plot_grid(Pact_presentexpression_by_method, Pact_absentexpression_by_method, ncol=2, align="v")
-ggsave("Output/Pact_expression_dist.pdf", width=8.5, height=4)
 
 
+
+
+
+
+
+
+
+
+```{r}
 #GO Term union df
 Pact.GO.ALL <- left_join(Pact.WGBS.GO.terms, Pact.RRBS.GO.terms, by="v1", all=TRUE)
 Pact.GO.ALL <- left_join(Pact.GO.ALL , Pact.MBDBS.GO.terms, by="v1", all=TRUE)
-
 
 Pact.WGBS.Ids <- na.omit(as.character(Pact.WGBS.GO.terms$v2))
 Pact.WGBS.Collection <- GOCollection(Pact.WGBS.Ids)
