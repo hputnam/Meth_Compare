@@ -289,6 +289,10 @@ McapCpGModModel <- glmmTMB(modMeth ~ seqMethod + (1|replicate),
 summary(McapCpGModModel) #Look at model output.
 ```
 
+```{r}
+emmeans(McapCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
+```
+
 #### Low methylation
 
 ```{r}
@@ -303,6 +307,10 @@ McapCpGLowModel <- glmmTMB(lowMeth ~ seqMethod + (1|replicate),
                            family = beta_family(link = "logit"),
                            data = McapCpGPercentsLow) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(McapCpGLowModel) #Look at model output.
+```
+
+```{r}
+emmeans(McapCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
 ```
 
 #### Save statistical output
