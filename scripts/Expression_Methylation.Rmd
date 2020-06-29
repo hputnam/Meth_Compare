@@ -276,12 +276,12 @@ Mcap.MBDBS.counts$method <- "MBDBS"
 Mcap.CpG.genes.all <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
 Mcap.CpG.genes.all$gene <- factor(Mcap.CpG.genes.all$gene, levels = All.circ.df$gene)
 
-pdf("Output/Mcap_PA_genes.pdf")
+pdf("Output/Mcap_PresAbs_genes.pdf")
 ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
   geom_tile() +
   coord_fixed(ratio = 7000)+
   scale_fill_gradientn(colours=c("black", "yellow"))+
-  ggtitle("A) M. capitata genes assayed by each method ")+
+  ggtitle("A ")+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size =1), #Set the text angle
         axis.line = element_line(color = 'black'), #Set the axes color
         panel.border = element_blank(), #Set the border
@@ -399,8 +399,10 @@ head(GO.wall)
 tail(GO.wall)
 nrow(GO.wall)
 
+```
 
 
+```{r}
 # Plotting Distributions
 pdf("Output/Mcap.gene_expression_present.pdf", width=8.5, height=6)
 McapEP <- plot_multi_histogram(Mcap.CpG.counts.present, 'plusone', 'method')
@@ -415,7 +417,7 @@ ggsave("Output/Mcap.gene_expression_distributions.pdf", width=8.5, height=6)
 
 ```
 
-Mcap GO Term comparison in genes identifed by each method
+Mcap GO Slim Term comparison in genes identifed by each method
 ```{r}
 #GO Term union df
 GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
@@ -462,6 +464,7 @@ dev.off()
 ```
 
 
+Pocillopora acuta
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1041 1471 1637
@@ -575,12 +578,12 @@ Pact.MBDBS.counts$method <- "MBDBS"
 Pact.CpG.genes.all <- rbind(Pact.WGBS.counts,Pact.RRBS.counts, Pact.MBDBS.counts)
 Pact.CpG.genes.all$gene <- factor(Pact.CpG.genes.all$gene, levels = Pact.All.circ.df$gene)
 
-pdf("Output/Pact_PA_genes.pdf")
+pdf("Output/Pact_PresAbs_genes.pdf")
 ggplot(Pact.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
   geom_tile() +
   coord_fixed(ratio = 6000)+
   scale_fill_gradientn(colours=c("black", "yellow"))+
-  ggtitle("B) P. acuta genes assayed by each method ")+
+  ggtitle("B ")+
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size =1), #Set the text angle
         axis.line = element_line(color = 'black'), #Set the axes color
         panel.border = element_blank(), #Set the border
@@ -656,6 +659,13 @@ ggsave("Output/gene_expression_distributions.pdf", width=12, height=6)
 
 
 
+```{r}
+#plotting both species together
+
+plot_grid(Mcap.PresAbs, Pact.PresAbs,  ncol=1, nrow=2, align="v", labels = c('A) M. Capitata', 'B) P. acuta', '', ''), label_size = 12)
+ggsave("Output/PresAbs_heatmaps.pdf", width=12, height=6)
+
+```
 
 
 
