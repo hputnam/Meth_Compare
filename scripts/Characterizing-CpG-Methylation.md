@@ -20,6 +20,7 @@ output in this script.
 #install.packages("vegan") #Multivariate analysis package
 #install.packages("cluster") #Multivariate analysis package
 #install.packages("glmmTMB") #Linear modeling package
+#install.packages("emmeans")
 ```
 
 ``` r
@@ -92,8 +93,10 @@ require(glmmTMB)
     ## Loading required package: glmmTMB
 
 ``` r
-source("biostats.R") #Multivariate analysis source script
+require(emmeans)
 ```
+
+    ## Loading required package: emmeans
 
 # Session information
 
@@ -116,19 +119,20 @@ sessionInfo()
     ## [1] stats     graphics  grDevices utils     datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] glmmTMB_1.0.1       cluster_2.1.0       vegan_2.5-6        
-    ##  [4] lattice_0.20-41     permute_0.9-5       compositions_1.40-5
-    ##  [7] bayesm_3.1-4        robustbase_0.93-6   tensorA_0.36.1     
-    ## [10] dichromat_2.0-0     RColorBrewer_1.1-2 
+    ##  [1] emmeans_1.4.8       glmmTMB_1.0.1       cluster_2.1.0      
+    ##  [4] vegan_2.5-6         lattice_0.20-41     permute_0.9-5      
+    ##  [7] compositions_1.40-5 bayesm_3.1-4        robustbase_0.93-6  
+    ## [10] tensorA_0.36.1      dichromat_2.0-0     RColorBrewer_1.1-2 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] Rcpp_1.0.4.6    TMB_1.7.16      knitr_1.28      magrittr_1.5   
-    ##  [5] splines_4.0.0   MASS_7.3-51.6   statmod_1.4.34  rlang_0.4.6    
-    ##  [9] minqa_1.2.4     stringr_1.4.0   tools_4.0.0     parallel_4.0.0 
-    ## [13] grid_4.0.0      nlme_3.1-147    mgcv_1.8-31     xfun_0.13      
-    ## [17] htmltools_0.4.0 lme4_1.1-23     yaml_2.2.1      digest_0.6.25  
-    ## [21] Matrix_1.2-18   nloptr_1.2.2.1  evaluate_0.14   rmarkdown_2.1  
-    ## [25] stringi_1.4.6   compiler_4.0.0  DEoptimR_1.0-8  boot_1.3-25
+    ##  [1] Rcpp_1.0.4.6     DEoptimR_1.0-8   compiler_4.0.0   nloptr_1.2.2.1  
+    ##  [5] TMB_1.7.16       tools_4.0.0      boot_1.3-25      digest_0.6.25   
+    ##  [9] lme4_1.1-23      statmod_1.4.34   evaluate_0.14    nlme_3.1-147    
+    ## [13] mgcv_1.8-31      rlang_0.4.6      Matrix_1.2-18    yaml_2.2.1      
+    ## [17] parallel_4.0.0   mvtnorm_1.1-0    xfun_0.13        coda_0.19-3     
+    ## [21] stringr_1.4.0    knitr_1.28       grid_4.0.0       rmarkdown_2.1   
+    ## [25] minqa_1.2.4      magrittr_1.5     htmltools_0.4.0  MASS_7.3-51.6   
+    ## [29] splines_4.0.0    xtable_1.8-4     stringi_1.4.6    estimability_1.3
 
 # CpG methylation status
 
@@ -258,21 +262,21 @@ barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ``` r
 barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, RRBS
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-12-2.png)<!-- -->
 
 ``` r
 barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, MBD-BSSeq
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-12-3.png)<!-- -->
 
 ### Create multipanel figure with all samples
 
@@ -304,7 +308,7 @@ barplot(t(McapCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = 
 barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 #dev.off() #Turn off plotting device
@@ -381,7 +385,7 @@ plot(McapCpGPercentsPCoA$eig/sum(McapCpGPercentsPCoA$eig)*100,
 lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 vec.McapCpGPercentsPCoA <- envfit(scores(McapCpGPercentsPCoA), McapCpGPercentsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
@@ -423,7 +427,7 @@ McapCpGPercentsTest #Look at test output.
     ## Terms added sequentially (first to last)
     ## 
     ##                   Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)   
-    ## sampleInformation  2   1.47302 0.73651  77.203 0.96259  0.002 **
+    ## sampleInformation  2   1.47302 0.73651  77.203 0.96259  0.004 **
     ## Residuals          6   0.05724 0.00954         0.03741          
     ## Total              8   1.53026                 1.00000          
     ## ---
@@ -450,7 +454,7 @@ ordiplot(McapCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites"
 plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 #### Pairwise perMANVOA
 
@@ -608,6 +612,16 @@ summary(McapCpGHighModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+McapCpGHighPostHoc <- data.frame(emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGHighPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate         SE df    t.ratio      p.value
+    ## 1    A - B  0.4337431 0.05959172  4   7.278579 0.0018932085
+    ## 2    A - C -0.6184525 0.04911135  4 -12.592863 0.0003433239
+    ## 3    B - C -1.0521955 0.05507614  4 -19.104380 0.0001326934
+
 #### Moderate methylation
 
 ``` r
@@ -655,6 +669,16 @@ summary(McapCpGModModel) #Look at model output.
     ## seqMethodC   0.03725    0.04511    0.83    0.409    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+McapCpGModPostHoc <- data.frame(emmeans(McapCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGModPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate         SE df     t.ratio      p.value
+    ## 1    A - B  0.86572311 0.05626762  4  15.3858144 0.0001561808
+    ## 2    A - C -0.03725136 0.04511108  4  -0.8257696 0.4553393386
+    ## 3    B - C -0.90297447 0.05600967  4 -16.1217614 0.0001561808
 
 #### Low methylation
 
@@ -704,39 +728,33 @@ summary(McapCpGLowModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-#### Correct p-values
+``` r
+McapCpGLowPostHoc <- data.frame(emmeans(McapCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGLowPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate         SE df   t.ratio      p.value
+    ## 1    A - B -0.7006236 0.02756550  4 -25.41669 2.134510e-05
+    ## 2    A - C  0.4159316 0.02315618  4  17.96202 5.646898e-05
+    ## 3    B - C  1.1165552 0.02660081  4  41.97448 5.776830e-06
+
+#### Save statistical output
 
 ``` r
-McapCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
-                                "z.value" = c(summary(McapCpGHighModel)$coefficients$cond[8:9],
-                                              summary(McapCpGModModel)$coefficients$cond[8:9],
-                                              summary(McapCpGLowModel)$coefficients$cond[8:9]),
-                                "p.value" = c(summary(McapCpGHighModel)$coefficients$cond[11:12],
-                                              summary(McapCpGModModel)$coefficients$cond[11:12],
-                                              summary(McapCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+McapCpGMethStatusStatOutput <- rbind(McapCpGHighPostHoc,
+                                     McapCpGModPostHoc,
+                                     McapCpGLowPostHoc) #Create a dataframe with logs odd ratio output for each model
+McapCpGMethStatusStatOutput$model <- c(rep("High", times = 3), rep("Mod", times = 3), rep("Low", times = 3)) #Add model information
 head(McapCpGMethStatusStatOutput) #Confirm dataframe creation
 ```
 
-    ##   coefficient     z.value       p.value
-    ## 1  seqMethodB  -7.2785787  3.373555e-13
-    ## 2  seqMethodC  12.5928629  2.311357e-36
-    ## 3  seqMethodB -15.3858144  2.037961e-53
-    ## 4  seqMethodC   0.8257696  4.089348e-01
-    ## 5  seqMethodB  25.4166870 1.649306e-142
-    ## 6  seqMethodC -17.9620152  3.865169e-72
-
-``` r
-McapCpGMethStatusStatOutput$p.adj <- p.adjust(McapCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(McapCpGMethStatusStatOutput) #Confirm changes
-```
-
-    ##   coefficient     z.value       p.value         p.adj
-    ## 1  seqMethodB  -7.2785787  3.373555e-13  4.048266e-13
-    ## 2  seqMethodC  12.5928629  2.311357e-36  3.467036e-36
-    ## 3  seqMethodB -15.3858144  2.037961e-53  4.075922e-53
-    ## 4  seqMethodC   0.8257696  4.089348e-01  4.089348e-01
-    ## 5  seqMethodB  25.4166870 1.649306e-142 9.895834e-142
-    ## 6  seqMethodC -17.9620152  3.865169e-72  1.159551e-71
+    ##   contrast    estimate         SE df     t.ratio      p.value model
+    ## 1    A - B  0.43374305 0.05959172  4   7.2785787 0.0018932085  High
+    ## 2    A - C -0.61845246 0.04911135  4 -12.5928629 0.0003433239  High
+    ## 3    B - C -1.05219551 0.05507614  4 -19.1043802 0.0001326934  High
+    ## 4    A - B  0.86572311 0.05626762  4  15.3858144 0.0001561808   Mod
+    ## 5    A - C -0.03725136 0.04511108  4  -0.8257696 0.4553393386   Mod
+    ## 6    B - C -0.90297447 0.05600967  4 -16.1217614 0.0001561808   Mod
 
 ``` r
 write.table(McapCpGMethStatusStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
@@ -888,21 +906,21 @@ barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = 
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-49-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
 
 ``` r
 barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, RRBS
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-49-2.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-50-2.png)<!-- -->
 
 ``` r
 barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, MBD-BSSeqc(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)"))
 axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-49-3.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-50-3.png)<!-- -->
 
 ### Create multipanel figure with all samples
 
@@ -934,7 +952,7 @@ barplot(t(PactCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = 
 barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-50-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-51-1.png)<!-- -->
 
 ``` r
 #dev.off() #Turn off plotting device
@@ -1011,7 +1029,7 @@ plot(PactCpGPercentsPCoA$eig/sum(PactCpGPercentsPCoA$eig)*100,
 lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-55-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-56-1.png)<!-- -->
 
 ``` r
 vec.PactCpGPercentsPCoA <- envfit(scores(PactCpGPercentsPCoA), PactCpGPercentsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
@@ -1021,10 +1039,10 @@ vec.PactCpGPercentsPCoA #Look at statistical results
     ## 
     ## ***VECTORS
     ## 
-    ##                       Dim1     Dim2 r2   Pr(>r)   
-    ## percentMeth        0.90008  0.43573  1 0.001998 **
-    ## percentSparseMeth -0.07269 -0.99735  1 0.001998 **
-    ## percentUnMeth     -0.82739  0.56163  1 0.001998 **
+    ##                       Dim1     Dim2 r2   Pr(>r)    
+    ## percentMeth        0.90008  0.43573  1 0.000999 ***
+    ## percentSparseMeth -0.07269 -0.99735  1 0.000999 ***
+    ## percentUnMeth     -0.82739  0.56163  1 0.000999 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## Permutation: free
@@ -1047,7 +1065,7 @@ PactCpGPercentsTest #Look at test output.
     ## Terms added sequentially (first to last)
     ## 
     ##                   Df SumsOfSqs MeanSqs F.Model      R2 Pr(>F)  
-    ## sampleInformation  2    5.8362 2.91808  11.847 0.79794  0.032 *
+    ## sampleInformation  2    5.8362 2.91808  11.847 0.79794  0.024 *
     ## Residuals          6    1.4778 0.24631         0.20206         
     ## Total              8    7.3140                 1.00000         
     ## ---
@@ -1076,7 +1094,7 @@ ordiplot(PactCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites"
 plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-59-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-60-1.png)<!-- -->
 
 #### Pairwise perMANVOA
 
@@ -1266,6 +1284,16 @@ summary(PactCpGHighModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+PactCpGHighPostHoc <- data.frame(emmeans(PactCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGHighPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate        SE df     t.ratio    p.value
+    ## 1    A - B  0.0309782 0.5277436  4  0.05869933 0.95600708
+    ## 2    A - C -2.4273402 0.4827296  4 -5.02836401 0.01101292
+    ## 3    B - C -2.4583184 0.4792234  4 -5.12979677 0.01101292
+
 #### Moderate methylation
 
 ``` r
@@ -1313,6 +1341,16 @@ summary(PactCpGModModel) #Look at model output.
     ## seqMethodC   0.78729    0.12352   6.374 1.85e-10 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+PactCpGModPostHoc <- data.frame(emmeans(PactCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGModPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate        SE df    t.ratio    p.value
+    ## 1    A - B  0.06241785 0.1431283  4  0.4360971 0.68527051
+    ## 2    A - C -0.78728528 0.1235213  4 -6.3736797 0.00466199
+    ## 3    B - C -0.84970313 0.1257500  4 -6.7570803 0.00466199
 
 #### Low methylation
 
@@ -1362,39 +1400,33 @@ summary(PactCpGLowModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-#### Correct p-values
+``` r
+PactCpGLowPostHoc <- data.frame(emmeans(PactCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCpGLowPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate        SE df    t.ratio   p.value
+    ## 1    A - B -0.05977305 0.4737729  4 -0.1261639 0.9056895
+    ## 2    A - C  1.49739892 0.4414523  4  3.3919834 0.0412195
+    ## 3    B - C  1.55717196 0.4529840  4  3.4375871 0.0412195
+
+#### Save statistical output
 
 ``` r
-PactCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
-                                "z.value" = c(summary(PactCpGHighModel)$coefficients$cond[8:9],
-                                              summary(PactCpGModModel)$coefficients$cond[8:9],
-                                              summary(PactCpGLowModel)$coefficients$cond[8:9]),
-                                "p.value" = c(summary(PactCpGHighModel)$coefficients$cond[11:12],
-                                              summary(PactCpGModModel)$coefficients$cond[11:12],
-                                              summary(PactCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+PactCpGMethStatusStatOutput <- rbind(PactCpGHighPostHoc,
+                                     PactCpGModPostHoc,
+                                     PactCpGLowPostHoc) #Create a dataframe with logs odd ratio output for each model
+PactCpGMethStatusStatOutput$model <- c(rep("High", times = 3), rep("Mod", times = 3), rep("Low", times = 3)) #Add model information
 head(PactCpGMethStatusStatOutput) #Confirm dataframe creation
 ```
 
-    ##   coefficient     z.value      p.value
-    ## 1  seqMethodB -0.05869933 9.531916e-01
-    ## 2  seqMethodC  5.02836401 4.946821e-07
-    ## 3  seqMethodB -0.43609714 6.627662e-01
-    ## 4  seqMethodC  6.37367973 1.845458e-10
-    ## 5  seqMethodB  0.12616392 8.996022e-01
-    ## 6  seqMethodC -3.39198335 6.938866e-04
-
-``` r
-PactCpGMethStatusStatOutput$p.adj <- p.adjust(PactCpGMethStatusStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(PactCpGMethStatusStatOutput) #Confirm changes
-```
-
-    ##   coefficient     z.value      p.value        p.adj
-    ## 1  seqMethodB -0.05869933 9.531916e-01 9.531916e-01
-    ## 2  seqMethodC  5.02836401 4.946821e-07 1.484046e-06
-    ## 3  seqMethodB -0.43609714 6.627662e-01 9.531916e-01
-    ## 4  seqMethodC  6.37367973 1.845458e-10 1.107275e-09
-    ## 5  seqMethodB  0.12616392 8.996022e-01 9.531916e-01
-    ## 6  seqMethodC -3.39198335 6.938866e-04 1.387773e-03
+    ##   contrast    estimate        SE df     t.ratio    p.value model
+    ## 1    A - B  0.03097820 0.5277436  4  0.05869933 0.95600708  High
+    ## 2    A - C -2.42734020 0.4827296  4 -5.02836401 0.01101292  High
+    ## 3    B - C -2.45831840 0.4792234  4 -5.12979677 0.01101292  High
+    ## 4    A - B  0.06241785 0.1431283  4  0.43609714 0.68527051   Mod
+    ## 5    A - C -0.78728528 0.1235213  4 -6.37367973 0.00466199   Mod
+    ## 6    B - C -0.84970313 0.1257500  4 -6.75708025 0.00466199   Mod
 
 ``` r
 write.table(PactCpGMethStatusStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
@@ -1962,7 +1994,7 @@ plot(McapFeatureOverlapsPCoA$eig/sum(McapFeatureOverlapsPCoA$eig)*100,
 lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-96-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-99-1.png)<!-- -->
 
 ``` r
 vec.McapFeatureOverlapsPCoA <- envfit(scores(McapFeatureOverlapsPCoA), McapFeatureOverlapsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
@@ -2000,7 +2032,7 @@ McapFeatureOverlapsTest #Look at test output.
     ## Terms added sequentially (first to last)
     ## 
     ##                   Df SumsOfSqs  MeanSqs F.Model      R2 Pr(>F)   
-    ## sampleInformation  2   0.62002 0.310011  66.997 0.95714  0.005 **
+    ## sampleInformation  2   0.62002 0.310011  66.997 0.95714  0.004 **
     ## Residuals          6   0.02776 0.004627         0.04286          
     ## Total              8   0.64779                  1.00000          
     ## ---
@@ -2029,7 +2061,7 @@ ordiplot(McapFeatureOverlapsPCoA, choices = c(1,2), type = "text", display = "si
 plot(vec.McapFeatureOverlapsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-100-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-103-1.png)<!-- -->
 
 #### Pairwise perMANVOA
 
@@ -2192,6 +2224,16 @@ summary(McapCDSModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+McapCDSPostHoc <- data.frame(emmeans(McapCDSModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCDSPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate         SE df    t.ratio      p.value
+    ## 1    A - B  0.4840726 0.03600087  4  13.446138 0.0002654640
+    ## 2    A - C -0.2006483 0.03121718  4  -6.427495 0.0030127358
+    ## 3    B - C -0.6847209 0.03497842  4 -19.575524 0.0001204761
+
 #### Introns
 
 ``` r
@@ -2224,6 +2266,16 @@ summary(McapIntronsModel) #Look at model output.
     ## seqMethodC  -0.241332   0.025152   -9.60   <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+McapIntronsPostHoc <- data.frame(emmeans(McapIntronsModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapIntronsPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast     estimate         SE df    t.ratio      p.value
+    ## 1    A - B -0.009153366 0.02460865  4 -0.3719573 0.7287912390
+    ## 2    A - C  0.241332148 0.02515172  4  9.5950548 0.0009891018
+    ## 3    B - C  0.250485514 0.02513586  4  9.9652651 0.0009891018
 
 #### Upstream Flanks
 
@@ -2258,6 +2310,16 @@ summary(McapUpstreamFlanksModel) #Look at model output
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+McapUpstreamFlanksPostHoc <- data.frame(emmeans(McapUpstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapUpstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate         SE df    t.ratio    p.value
+    ## 1    A - B -0.01346575 0.01552744  4 -0.8672224 0.43474706
+    ## 2    A - C  0.04314086 0.01572205  4  2.7439712 0.07754079
+    ## 3    B - C  0.05660661 0.01567698  4  3.6108114 0.06762104
+
 #### Downstream Flanks
 
 ``` r
@@ -2290,6 +2352,16 @@ summary(McapDownstreamFlanksModel) #Look at model output
     ## seqMethodC  -0.048863   0.010984    -4.4 8.65e-06 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+McapDownstreamFlanksPostHoc <- data.frame(emmeans(McapDownstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapDownstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate         SE df   t.ratio    p.value
+    ## 1    A - B 0.045592291 0.01097579  4 4.1538942 0.02132299
+    ## 2    A - C 0.048862585 0.01098397  4 4.4485355 0.02132299
+    ## 3    B - C 0.003270294 0.01109460  4 0.2947645 0.78283914
 
 #### Intergenic regions
 
@@ -2324,43 +2396,39 @@ summary(McapIntergenicModel) #Look at model output
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-#### Correct p-values
+``` r
+McapIntergenicPostHoc <- data.frame(emmeans(McapIntergenicModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapIntergenicPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate         SE df    t.ratio    p.value
+    ## 1    A - B -0.17287971 0.03299960  4 -5.2388432 0.01795698
+    ## 2    A - C -0.14430970 0.03302543  4 -4.3696535 0.01795698
+    ## 3    B - C  0.02857001 0.03281234  4  0.8707092 0.43304983
+
+#### Save statistical output
 
 ``` r
-McapCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
-                                              "z.value" = c(summary(McapCDSModel)$coefficients$cond[8:9],
-                                                            summary(McapIntronsModel)$coefficients$cond[8:9],
-                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(McapDownstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(McapIntergenicModel)$coefficients$cond[8:9]),
-                                              "p.value" = c(summary(McapCDSModel)$coefficients$cond[11:12],
-                                                            summary(McapIntronsModel)$coefficients$cond[11:12],
-                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[11:12],
-                                                          summary(McapDownstreamFlanksModel)$coefficients$cond[11:12],
-                                                            summary(McapIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+McapCpGFeatureOverlapStatOutput <- rbind(McapCDSPostHoc,
+                                         McapIntronsPostHoc,
+                                         McapUpstreamFlanksPostHoc,
+                                         McapDownstreamFlanksPostHoc,
+                                         McapIntergenicPostHoc) #Create a dataframe with logs odd ratio output for each model
+McapCpGFeatureOverlapStatOutput$model <- c(rep("CDS", times = 3),
+                                           rep("Introns", times = 3),
+                                           rep("UpstreamFlanks", times = 3),
+                                           rep("DownstreamFlanks", times = 3),
+                                           rep("Intergenic", times = 3)) #Add model information
 head(McapCpGFeatureOverlapStatOutput) #Confirm dataframe creation
 ```
 
-    ##   coefficient     z.value      p.value
-    ## 1  seqMethodB -13.4461382 3.243761e-41
-    ## 2  seqMethodC   6.4274948 1.297240e-10
-    ## 3  seqMethodB   0.3719573 7.099246e-01
-    ## 4  seqMethodC  -9.5950548 8.387254e-22
-    ## 5  seqMethodB   0.8672224 3.858202e-01
-    ## 6  seqMethodC  -2.7439712 6.070086e-03
-
-``` r
-McapCpGFeatureOverlapStatOutput$p.adj <- p.adjust(McapCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(McapCpGFeatureOverlapStatOutput) #Confirm changes
-```
-
-    ##   coefficient     z.value      p.value        p.adj
-    ## 1  seqMethodB -13.4461382 3.243761e-41 3.243761e-40
-    ## 2  seqMethodC   6.4274948 1.297240e-10 4.324134e-10
-    ## 3  seqMethodB   0.3719573 7.099246e-01 7.099246e-01
-    ## 4  seqMethodC  -9.5950548 8.387254e-22 4.193627e-21
-    ## 5  seqMethodB   0.8672224 3.858202e-01 4.286891e-01
-    ## 6  seqMethodC  -2.7439712 6.070086e-03 7.587608e-03
+    ##   contrast     estimate         SE df     t.ratio      p.value   model
+    ## 1    A - B  0.484072650 0.03600087  4  13.4461382 0.0002654640     CDS
+    ## 2    A - C -0.200648271 0.03121718  4  -6.4274948 0.0030127358     CDS
+    ## 3    B - C -0.684720921 0.03497842  4 -19.5755243 0.0001204761     CDS
+    ## 4    A - B -0.009153366 0.02460865  4  -0.3719573 0.7287912390 Introns
+    ## 5    A - C  0.241332148 0.02515172  4   9.5950548 0.0009891018 Introns
+    ## 6    B - C  0.250485514 0.02513586  4   9.9652651 0.0009891018 Introns
 
 ``` r
 write.table(McapCpGFeatureOverlapStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Overlap-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
@@ -2891,7 +2959,7 @@ plot(PactFeatureOverlapsPCoA$eig/sum(PactFeatureOverlapsPCoA$eig)*100,
 lines(bstick(35)*100, type = "b",lwd = 2, col = "red") #Compare eigenvalues to expectations according to the broken stick model
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-134-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-141-1.png)<!-- -->
 
 ``` r
 vec.PactFeatureOverlapsPCoA <- envfit(scores(PactFeatureOverlapsPCoA), PactFeatureOverlapsTrans, perm = 1000) #Extract PCs to calculate PC loadings (variable weights)
@@ -2903,9 +2971,9 @@ vec.PactFeatureOverlapsPCoA #Look at statistical results
     ## 
     ##                       Dim1     Dim2     r2   Pr(>r)    
     ## CDS                0.72564 -0.68807 0.9996 0.000999 ***
-    ## Introns           -0.84872 -0.52884 0.9930 0.001998 ** 
-    ## Upstream.Flanks   -0.88326  0.46888 0.7988 0.017982 *  
-    ## Downstream.Flanks -0.55180  0.83397 0.7641 0.009990 ** 
+    ## Introns           -0.84872 -0.52884 0.9930 0.000999 ***
+    ## Upstream.Flanks   -0.88326  0.46888 0.7988 0.027972 *  
+    ## Downstream.Flanks -0.55180  0.83397 0.7641 0.005994 ** 
     ## Intergenic         0.47933  0.87764 0.9962 0.000999 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -2929,7 +2997,7 @@ PactFeatureOverlapsTest #Look at test output.
     ## Terms added sequentially (first to last)
     ## 
     ##                   Df SumsOfSqs  MeanSqs F.Model      R2 Pr(>F)   
-    ## sampleInformation  2   0.32733 0.163666  6.1567 0.67237  0.007 **
+    ## sampleInformation  2   0.32733 0.163666  6.1567 0.67237  0.005 **
     ## Residuals          6   0.15950 0.026583         0.32763          
     ## Total              8   0.48683                  1.00000          
     ## ---
@@ -2958,7 +3026,7 @@ ordiplot(PactFeatureOverlapsPCoA, choices = c(1,2), type = "text", display = "si
 plot(vec.PactFeatureOverlapsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
 ```
 
-![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-138-1.png)<!-- -->
+![](Characterizing-CpG-Methylation_files/figure-gfm/unnamed-chunk-145-1.png)<!-- -->
 
 #### Pairwise perMANVOA
 
@@ -3161,6 +3229,16 @@ summary(PactCDSModel) #Look at model output.
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+PactCDSPostHoc <- data.frame(emmeans(PactCDSModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactCDSPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast    estimate         SE df    t.ratio      p.value
+    ## 1    A - B -0.05954505 0.01915706  4  -3.108256 0.0359324981
+    ## 2    A - C -0.36489635 0.01843196  4 -19.796934 0.0001122404
+    ## 3    B - C -0.30535130 0.01825347  4 -16.728395 0.0001122404
+
 #### Introns
 
 ``` r
@@ -3193,6 +3271,16 @@ summary(PactIntronsModel) #Look at model output.
     ## seqMethodC  -0.34951    0.10263  -3.405 0.000661 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+PactIntronsPostHoc <- data.frame(emmeans(PactIntronsModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactIntronsPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast  estimate         SE df  t.ratio    p.value
+    ## 1    A - B 0.1662213 0.09918039  4 1.675949 0.16905653
+    ## 2    A - C 0.3495125 0.10263437  4 3.405413 0.08142506
+    ## 3    B - C 0.1832912 0.10482778  4 1.748498 0.16905653
 
 #### Upstream Flanks
 
@@ -3227,6 +3315,16 @@ summary(PactUpstreamFlanksModel) #Look at model output
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+``` r
+PactUpstreamFlanksPostHoc <- data.frame(emmeans(PactUpstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactUpstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate         SE df    t.ratio    p.value
+    ## 1    A - B -0.0355048 0.04512554  4 -0.7868006 0.47539678
+    ## 2    A - C  0.1670052 0.04697131  4  3.5554721 0.03552299
+    ## 3    B - C  0.2025100 0.04667994  4  4.3382660 0.03552299
+
 #### Downstream Flanks
 
 ``` r
@@ -3259,6 +3357,16 @@ summary(PactDownstreamFlanksModel) #Look at model output
     ## seqMethodC  -0.14447    0.01674   -8.63  < 2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+``` r
+PactDownstreamFlanksPostHoc <- data.frame(emmeans(PactDownstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactDownstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast   estimate         SE df  t.ratio     p.value
+    ## 1    A - B 0.06077414 0.01644658  4 3.695246 0.020922336
+    ## 2    A - C 0.14447412 0.01673947  4 8.630749 0.002972874
+    ## 3    B - C 0.08369998 0.01693408  4 4.942694 0.011702647
 
 #### Intergenic regions
 
@@ -3293,43 +3401,39 @@ summary(PactIntergenicModel) #Look at model output
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-#### Correct p-values
+``` r
+PactIntergenicPostHoc <- data.frame(emmeans(PactIntergenicModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(PactIntergenicPostHoc) #Look at log odd ratio results
+```
+
+    ##   contrast     estimate         SE df    t.ratio   p.value
+    ## 1    A - B -0.089841570 0.08044225  4 -1.1168456 0.5560185
+    ## 2    A - C -0.081099262 0.08049291  4 -1.0075330 0.5560185
+    ## 3    B - C  0.008742309 0.07998344  4  0.1093015 0.9182273
+
+#### Save statistical output
 
 ``` r
-PactCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
-                                              "z.value" = c(summary(PactCDSModel)$coefficients$cond[8:9],
-                                                            summary(PactIntronsModel)$coefficients$cond[8:9],
-                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(PactDownstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(PactIntergenicModel)$coefficients$cond[8:9]),
-                                              "p.value" = c(summary(PactCDSModel)$coefficients$cond[11:12],
-                                                            summary(PactIntronsModel)$coefficients$cond[11:12],
-                                                            summary(PactUpstreamFlanksModel)$coefficients$cond[11:12],
-                                                          summary(PactDownstreamFlanksModel)$coefficients$cond[11:12],
-                                                            summary(PactIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+PactCpGFeatureOverlapStatOutput <- rbind(PactCDSPostHoc,
+                                         PactIntronsPostHoc,
+                                         PactUpstreamFlanksPostHoc,
+                                         PactDownstreamFlanksPostHoc,
+                                         PactIntergenicPostHoc) #Create a dataframe with logs odd ratio output for each model
+PactCpGFeatureOverlapStatOutput$model <- c(rep("CDS", times = 3),
+                                           rep("Introns", times = 3),
+                                           rep("UpstreamFlanks", times = 3),
+                                           rep("DownstreamFlanks", times = 3),
+                                           rep("Intergenic", times = 3)) #Add model information
 head(PactCpGFeatureOverlapStatOutput) #Confirm dataframe creation
 ```
 
-    ##   coefficient    z.value      p.value
-    ## 1  seqMethodB  3.1082564 1.881947e-03
-    ## 2  seqMethodC 19.7969338 3.163742e-87
-    ## 3  seqMethodB -1.6759493 9.374812e-02
-    ## 4  seqMethodC -3.4054135 6.606394e-04
-    ## 5  seqMethodB  0.7868006 4.313986e-01
-    ## 6  seqMethodC -3.5554721 3.773010e-04
-
-``` r
-PactCpGFeatureOverlapStatOutput$p.adj <- p.adjust(PactCpGFeatureOverlapStatOutput$p.value, method = "fdr") #Correct p-values using FDR
-head(PactCpGFeatureOverlapStatOutput) #Confirm changes
-```
-
-    ##   coefficient    z.value      p.value        p.adj
-    ## 1  seqMethodB  3.1082564 1.881947e-03 3.136579e-03
-    ## 2  seqMethodC 19.7969338 3.163742e-87 3.163742e-86
-    ## 3  seqMethodB -1.6759493 9.374812e-02 1.339259e-01
-    ## 4  seqMethodC -3.4054135 6.606394e-04 1.321279e-03
-    ## 5  seqMethodB  0.7868006 4.313986e-01 4.313986e-01
-    ## 6  seqMethodC -3.5554721 3.773010e-04 9.432524e-04
+    ##   contrast    estimate         SE df    t.ratio      p.value   model
+    ## 1    A - B -0.05954505 0.01915706  4  -3.108256 0.0359324981     CDS
+    ## 2    A - C -0.36489635 0.01843196  4 -19.796934 0.0001122404     CDS
+    ## 3    B - C -0.30535130 0.01825347  4 -16.728395 0.0001122404     CDS
+    ## 4    A - B  0.16622131 0.09918039  4   1.675949 0.1690565294 Introns
+    ## 5    A - C  0.34951246 0.10263437  4   3.405413 0.0814250626 Introns
+    ## 6    B - C  0.18329116 0.10482778  4   1.748498 0.1690565294 Introns
 
 ``` r
 write.table(PactCpGFeatureOverlapStatOutput, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Overlap-StatResults.txt", quote = FALSE, row.names = FALSE) #Save table
