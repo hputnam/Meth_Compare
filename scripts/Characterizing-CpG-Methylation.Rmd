@@ -888,6 +888,11 @@ McapCDSModel <- glmmTMB(CDS ~ seqMethod + (1|replicate),
 summary(McapCDSModel) #Look at model output.
 ```
 
+```{r}
+McapCDSPostHoc <- data.frame(emmeans(McapCDSModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCDSPostHoc) #Look at log odd ratio results
+```
+
 #### Introns
 
 ```{r}
@@ -895,6 +900,11 @@ McapIntronsModel <- glmmTMB(Introns ~ seqMethod + (1|replicate),
                             family = beta_family(link = "logit"),
                             data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(McapIntronsModel) #Look at model output.
+```
+
+```{r}
+McapIntronsPostHoc <- data.frame(emmeans(McapIntronsModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapIntronsPostHoc) #Look at log odd ratio results
 ```
 
 #### Upstream Flanks
@@ -906,6 +916,11 @@ McapUpstreamFlanksModel <- glmmTMB(Upstream.Flanks ~ seqMethod + (1|replicate),
 summary(McapUpstreamFlanksModel) #Look at model output
 ```
 
+```{r}
+McapUpstreamFlanksPostHoc <- data.frame(emmeans(McapUpstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapUpstreamFlanksPostHoc) #Look at log odd ratio results
+```
+
 #### Downstream Flanks
 
 ```{r}
@@ -913,6 +928,11 @@ McapDownstreamFlanksModel <- glmmTMB(Downstream.Flanks ~ seqMethod + (1|replicat
                                      family = beta_family(link = "logit"),
                                      data = McapFeatureOverlapsGLMData) #Run the model using a beta distribution and a logit link. Use replicate as a random effect
 summary(McapDownstreamFlanksModel) #Look at model output
+```
+
+```{r}
+McapDownstreamFlanksPostHoc <- data.frame(emmeans(McapDownstreamFlanksModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapDownstreamFlanksPostHoc) #Look at log odd ratio results
 ```
 
 #### Intergenic regions
@@ -924,20 +944,24 @@ McapIntergenicModel <- glmmTMB(Intergenic ~ seqMethod + (1|replicate),
 summary(McapIntergenicModel) #Look at model output
 ```
 
+```{r}
+McapIntergenicPostHoc <- data.frame(emmeans(McapIntergenicModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapIntergenicPostHoc) #Look at log odd ratio results
+```
+
 #### Save statistical output
 
 ```{r}
-McapCpGFeatureOverlapStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 5),
-                                              "z.value" = c(summary(McapCDSModel)$coefficients$cond[8:9],
-                                                            summary(McapIntronsModel)$coefficients$cond[8:9],
-                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(McapDownstreamFlanksModel)$coefficients$cond[8:9],
-                                                            summary(McapIntergenicModel)$coefficients$cond[8:9]),
-                                              "p.value" = c(summary(McapCDSModel)$coefficients$cond[11:12],
-                                                            summary(McapIntronsModel)$coefficients$cond[11:12],
-                                                            summary(McapUpstreamFlanksModel)$coefficients$cond[11:12],
-                                                          summary(McapDownstreamFlanksModel)$coefficients$cond[11:12],
-                                                            summary(McapIntergenicModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+McapCpGFeatureOverlapStatOutput <- rbind(McapCDSPostHoc,
+                                         McapIntronsPostHoc,
+                                         McapUpstreamFlanksPostHoc,
+                                         McapDownstreamFlanksPostHoc,
+                                         McapIntergenicPostHoc) #Create a dataframe with logs odd ratio output for each model
+McapCpGFeatureOverlapStatOutput$model <- c(rep("CDS", times = 3),
+                                           rep("Introns", times = 3),
+                                           rep("UpstreamFlanks", times = 3),
+                                           rep("DownstreamFlanks", times = 3),
+                                           rep("Intergenic", times = 3)) #Add model information
 head(McapCpGFeatureOverlapStatOutput) #Confirm dataframe creation
 ```
 
