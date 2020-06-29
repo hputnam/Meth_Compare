@@ -270,7 +270,8 @@ summary(McapCpGHighModel) #Look at model output.
 ```
 
 ```{r}
-emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
+McapCpGHighPostHoc <- data.frame(emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGHighPostHoc) #Look at log odd ratio results
 ```
 
 #### Moderate methylation
@@ -290,7 +291,8 @@ summary(McapCpGModModel) #Look at model output.
 ```
 
 ```{r}
-emmeans(McapCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
+McapCpGModPostHoc <- data.frame(emmeans(McapCpGModModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGModPostHoc) #Look at log odd ratio results
 ```
 
 #### Low methylation
@@ -310,19 +312,17 @@ summary(McapCpGLowModel) #Look at model output.
 ```
 
 ```{r}
-emmeans(McapCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
+McapCpGLowPostHoc <- data.frame(emmeans(McapCpGLowModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts) #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods in a dataframe format. Specify FDR instead of Tukey post-hoc test (default)
+head(McapCpGLowPostHoc) #Look at log odd ratio results
 ```
 
 #### Save statistical output
 
 ```{r}
-McapCpGMethStatusStatOutput <- data.frame("coefficient" = rep(c("seqMethodB", "seqMethodC"), times = 3),
-                                "z.value" = c(summary(McapCpGHighModel)$coefficients$cond[8:9],
-                                              summary(McapCpGModModel)$coefficients$cond[8:9],
-                                              summary(McapCpGLowModel)$coefficients$cond[8:9]),
-                                "p.value" = c(summary(McapCpGHighModel)$coefficients$cond[11:12],
-                                              summary(McapCpGModModel)$coefficients$cond[11:12],
-                                              summary(McapCpGLowModel)$coefficients$cond[11:12])) #Create a dataframe with coefficient, z-value, and p-value information from model summary
+McapCpGMethStatusStatOutput <- rbind(McapCpGHighPostHoc,
+                                     McapCpGModPostHoc,
+                                     McapCpGLowPostHoc) #Create a dataframe with logs odd ratio output for each model
+McapCpGMethStatusStatOutput$model <- c(rep("High", times = 3), rep("Mod", times = 3), rep("Low", times = 3)) #Add model information
 head(McapCpGMethStatusStatOutput) #Confirm dataframe creation
 ```
 
