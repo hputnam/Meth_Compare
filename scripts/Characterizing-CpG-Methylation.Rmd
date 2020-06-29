@@ -33,10 +33,6 @@ require(glmmTMB)
 require(emmeans)
 ```
 
-```{r}
-source("biostats.R") #Multivariate analysis source script
-```
-
 # Session information
 
 ```{r}
@@ -274,7 +270,7 @@ summary(McapCpGHighModel) #Look at model output.
 ```
 
 ```{r}
-emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Specify FDR instead of Tukey post-hoc test (default)
+emmeans(McapCpGHighModel, pairwise ~ seqMethod, adjust = "FDR")$contrasts #Run pairwise comparisons (estimated marginal means). Obtain log odd ratio results and not confidence intervals for individual methods. Specify FDR instead of Tukey post-hoc test (default)
 ```
 
 #### Moderate methylation
