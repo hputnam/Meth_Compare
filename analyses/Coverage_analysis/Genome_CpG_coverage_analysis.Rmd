@@ -294,6 +294,8 @@ Pact_Sample_CpG_stacked$coverage <- gsub("x","", Pact_Sample_CpG_stacked$coverag
 Pact_Sample_CpG_stacked$coverage <- as.numeric(Pact_Sample_CpG_stacked$coverage)
 #calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
 Pact_Sample_CpG_stacked$percent_CpG <- (Pact_Sample_CpG_stacked$percent_CpG/9155620)
+#convert MBD to MBDBS
+Pact_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Pact_Sample_CpG_stacked$method)
 
 #CpGs for pooled sample data
 #reformat to long
@@ -306,7 +308,8 @@ Pact_pool_Sample_CpG_stacked$coverage <- as.numeric(Pact_pool_Sample_CpG_stacked
 Pact_pool_Sample_CpG_stacked$percent_CpG <- (Pact_pool_Sample_CpG_stacked$percent_CpG/9155620)
 #reorder depth column and change to class factor for plotting
 Pact_pool_Sample_CpG_stacked$depth <- factor(Pact_pool_Sample_CpG_stacked$depth, levels = c("200", "150", "100", "50"))
-
+#convert MBD to MBDBS
+Pact_pool_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Pact_pool_Sample_CpG_stacked$method)
 
 #Mcap
 
@@ -343,6 +346,9 @@ Mcap_Sample_CpG_stacked$coverage <- gsub("x","", Mcap_Sample_CpG_stacked$coverag
 Mcap_Sample_CpG_stacked$coverage <- as.numeric(Mcap_Sample_CpG_stacked$coverage)
 #calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
 Mcap_Sample_CpG_stacked$percent_CpG <- (Mcap_Sample_CpG_stacked$percent_CpG/28684519)
+#convert MBD to MBDBS
+Mcap_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Mcap_Sample_CpG_stacked$method)
+
 
 #CpGs for pooled sample data
 #reformat to long
@@ -355,18 +361,20 @@ Mcap_pool_Sample_CpG_stacked$coverage <- as.numeric(Mcap_pool_Sample_CpG_stacked
 Mcap_pool_Sample_CpG_stacked$percent_CpG <- (Mcap_pool_Sample_CpG_stacked$percent_CpG/28684519)
 #reorder depth column and change to class factor for plotting
 Mcap_pool_Sample_CpG_stacked$depth <- factor(Mcap_pool_Sample_CpG_stacked$depth, levels = c("200", "150", "100", "50"))
+#convert MBD to MBDBS
+Mcap_pool_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Mcap_pool_Sample_CpG_stacked$method)
 ```
 
 plot coverage
 ```{r}
 # fraction of genome covered x method
 jpeg("../../Output/Pact_GenomecovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
-ggplot(Pact_samples_stacked[which(Pact_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
+ggplot(Pact_samples_stacked[which(Pact_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 
 #fraction of CpGs covered x method
 jpeg("../../Output/Pact_CpGcovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
-ggplot(Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+ggplot(Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 
 # fraction of genome covered by pooled samples
@@ -384,12 +392,12 @@ dev.off()
 
 # fraction of genome covered x method
 jpeg("../../Output/Mcap_GenomecovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
-ggplot(Mcap_samples_stacked[which(Mcap_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
+ggplot(Mcap_samples_stacked[which(Mcap_samples_stacked$coverage <= 50),], aes(x = coverage, y = percent_genome, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of genome") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 
 #fraction of CpGs covered x method
 jpeg("../../Output/Mcap_CpGcovXmethod_sample_avg.jpg", width = 4.5, height = 3, units = "in", res = 300)
-ggplot(Mcap_Sample_CpG_stacked[which(Mcap_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+ggplot(Mcap_Sample_CpG_stacked[which(Mcap_Sample_CpG_stacked$coverage <= 50),], aes(x = coverage, y = percent_CpG, color = method)) + geom_smooth(aes(fill = method)) + scale_x_continuous(breaks = seq(0,100,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
 dev.off()
 
 # fraction of genome covered by pooled samples
