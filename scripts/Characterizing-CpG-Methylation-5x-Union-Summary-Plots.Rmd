@@ -230,7 +230,7 @@ text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title tha
 ## Create multipanel plot
 
 ```{r}
-pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
+#pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
@@ -283,7 +283,7 @@ legend(x = 0.57, y = 0.90,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
 
-dev.off() #Turn off plotting device
+#dev.off() #Turn off plotting device
 ```
 
 # CpG feature overlaps
@@ -897,7 +897,7 @@ barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])),
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", "", ""), cex.names = 1.5,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
     xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
@@ -908,14 +908,14 @@ for (i in 1:4) {
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-text(expression(paste("a. ", italic("M. capitata"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+text(expression(paste(bold("A. "), bolditalic("M. capitata"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
 
 #Pact
 barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
         names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
     xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
@@ -926,7 +926,7 @@ for (i in 1:4) {
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-text(expression(paste("b. ", italic("P. acuta"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+text(expression(paste(bold("B. "), bolditalic("P. acuta"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
