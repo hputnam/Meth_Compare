@@ -3,6 +3,8 @@ title: "FormatMultiQC"
 author: "Shelly Trigg"
 date: "4/13/2020"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 load libraries
@@ -231,14 +233,14 @@ for(i in 4:ncol(multi_bismark_simp)){
 multi_bismark_simp$Sample <- NULL
 
 #change MBD ... to just MBD in method column
-multi_bismark_simp$Sequencing.Method <- gsub("MBD.*", "MBD", multi_bismark_simp$Sequencing.Method)
+multi_bismark_simp$Sequencing.Method <- gsub("MBD.*", "MBDBS", multi_bismark_simp$Sequencing.Method)
 
 #rename columns
 colnames(multi_bismark_simp) <- c("species", "method", "raw", "trimmed", "unaligned", "ambiguously aligned", "uniquely aligned", "uniquely aligned excluding duplicates")
 
 #pretty format
 kable(multi_bismark_simp, row.names = FALSE,align='ccccccc') %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))  %>% row_spec(c(1:3,10:12), color = 'black', background = "#EDF8E9") %>% row_spec(c(4:6,13:15), color = 'black', background = "#E0E4F0") %>% row_spec(c(7:9,16:18), color = 'black', background = '#FEE5D9') %>% column_spec (1:8,border_left = T, border_right = T)  %>% column_spec(column = 1, width = "100px")
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))  %>% row_spec(c(1:3,10:12), color = 'black', background = "#BAE4B3") %>% row_spec(c(4:6,13:15), color = 'black', background = "#CBC9E2") %>% row_spec(c(7:9,16:18), color = 'black', background = '#FDBE85') %>% column_spec (1:8,border_left = T, border_right = T) %>% column_spec(6:8, width = "4cm") %>% as_image(file = "../../Output/Summary_descriptive_statistics_Mcap_Pact.jpg")
 
 
 
