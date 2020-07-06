@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* 5x union bedgraphs for WGBS, RRBS, and MBD-BS.
+In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* 5x union bedgraphs for WGBS, RRBS, and MBDBS.
 
 # Install packages
 
@@ -105,7 +105,7 @@ par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 barplot(t(McapCpGTypePercents), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:ncol(t(McapCpGTypePercents))){
@@ -198,7 +198,7 @@ par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 barplot(t(PactCpGTypePercents), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:ncol(t(PactCpGTypePercents))){
@@ -230,7 +230,7 @@ text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title tha
 ## Create multipanel plot
 
 ```{r}
-#pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
+pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
@@ -238,7 +238,7 @@ barplot(t(McapCpGTypePercents),
         col= "white", 
         axes = FALSE, 
         names.arg = c("", "", ""),
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:ncol(t(McapCpGTypePercents))){
     xx <- t(McapCpGTypePercents)
@@ -249,14 +249,14 @@ for (i in 1:ncol(t(McapCpGTypePercents))){
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-text(expression(paste("a. ", italic("M. capitata"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+text(expression(paste(bold("A. "), bolditalic("M. capitata"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
 
 #Pact
 barplot(t(PactCpGTypePercents), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:ncol(t(PactCpGTypePercents))){
     xx <- t(PactCpGTypePercents)
@@ -267,7 +267,7 @@ for (i in 1:ncol(t(PactCpGTypePercents))){
 
 axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
 mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-text(expression(paste("b. ", italic("P. acuta"))), x = 0.06, y = 105, cex = 1.2, adj = 0) #Add italics species name
+text(expression(paste(bold("B. "), bolditalic("P. acuta"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
 
 #Add legend
 par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
@@ -283,7 +283,7 @@ legend(x = 0.57, y = 0.90,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
 
-#dev.off() #Turn off plotting device
+dev.off() #Turn off plotting device
 ```
 
 # CpG feature overlaps
@@ -421,7 +421,7 @@ par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
@@ -494,7 +494,7 @@ mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 2,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
@@ -553,7 +553,7 @@ mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #A
 
 legend("topright",
        xpd = TRUE,
-       legend = c("WGBS", "RRBS", "MBD-BS"),
+       legend = c("WGBS", "RRBS", "MBDBS"),
        pch = 22, 
         col = "black", 
         pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
@@ -581,7 +581,7 @@ mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #A
 
 legend("topright",
        xpd = TRUE,
-       legend = c("WGBS", "RRBS", "MBD-BS"),
+       legend = c("WGBS", "RRBS", "MBDBS"),
        pch = 22, 
         col = "black", 
         pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
@@ -715,7 +715,7 @@ par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
 barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
@@ -788,7 +788,7 @@ mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
 barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("WGBS", "RRBS", "MBD-BS"), cex.names = 2,
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 2,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
 
 for (i in 2:4) {
@@ -847,7 +847,7 @@ mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #A
 
 legend("topright",
        xpd = TRUE,
-       legend = c("WGBS", "RRBS", "MBD-BS"),
+       legend = c("WGBS", "RRBS", "MBDBS"),
        pch = 22, 
         col = "black", 
         pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
@@ -875,7 +875,7 @@ mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #A
 
 legend("topright",
        xpd = TRUE,
-       legend = c("WGBS", "RRBS", "MBD-BS"),
+       legend = c("WGBS", "RRBS", "MBDBS"),
        pch = 22, 
         col = "black", 
         pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
@@ -914,7 +914,7 @@ text(expression(paste("a. ", italic("M. capitata"))), x = 0.06, y = 105, cex = 1
 barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
-        names.arg = c("Genome", "WGBS", "RRBS", "MBD-BS"), cex.names = 1.5,
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
         ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
 
 for (i in 1:4) {
