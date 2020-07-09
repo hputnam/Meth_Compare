@@ -1,0 +1,69 @@
+---
+title: "Median Methylation"
+author: "Yaamini Venkataraman"
+date: "7/9/2020"
+output: html_document
+---
+
+In this script I will calculate median methylation of genes with 5x coverage in a sample.
+
+# Set up R Markdown Document
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# *M. capitata*
+
+## Import sample overlaps with genes
+
+All CpGs in samples were filtered for 5x coverage. Overlaps were characterized with gene tracks using `intersectBed`.
+
+```{bash}
+find ../analyses/Characterizing-CpG-Methylation-5x/Mcap/*bedgraph.bed-mcGenes #Check path for files needed
+```
+
+
+```{r}
+setwd("../analyses/Characterizing-CpG-Methylation-5x/Mcap/") #Set working directory within the notebook chunk for list.files to find the necessary files
+filesToImport <- list.files(pattern = "*bedgraph.bed-mcGenes") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
+list2env(lapply(setNames(filesToImport,
+                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed", "", filesToImport))),
+                read.delim),
+         envir = .GlobalEnv) #Import files to the .GlobalEnv with list2env. Use lapply to setNames of the files by taking all the common parts of their names out. Read files with read.delim (can only use defaults = header = TRUE, sep = "\t"). Files will be named Meth#-mcGenes
+head(Meth10.mcGenes) #Confirm import
+```
+
+## Format dataframes
+
+```{r}
+colnames(Meth10.mcGenes) <- c("chr", "start", "stop", "percentMeth") #Modify column names
+```
+
+```{r}
+Meth10.mcGenes$geneID <- paste(Meth10.mcGenes$chr, "-", Meth10.mcGenes$start, "-", Meth10.mcGenes$stop) #Combine chr, start, and stop position information to create a unique geneID
+```
+
+```{r}
+geneMeth10 <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Mcap/") #Import gene overlap file
+colnames(geneMeth10) <- c("chr", "start", "stop", "percentMeth") #Modify column names
+head(geneMeth10) #Confirm formatting
+```
+
+## Calculate median methylation by `geneID`
+
+```{r}
+percentMeth10-mcGene <- aggregate(percentMeth ~ geneID, data = Meth10-mcGene, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
+head(percentMeth10-mcGene) #Confirm percent methylation calculation
+```
+
+
+
+
+
