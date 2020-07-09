@@ -21,6 +21,16 @@ sessionInfo()
 
 # *M. capitata*
 
+```{bash}
+mkdir ../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations #Create directory for output
+```
+
+## Associate CpG loci with genes
+
+```{r}
+
+```
+
 ## Import sample overlaps with genes
 
 All CpGs in samples were filtered for 5x coverage. Overlaps were characterized with gene tracks using `intersectBed`.
@@ -43,23 +53,14 @@ head(Meth10.mcGenes) #Confirm import
 ## Format dataframes
 
 ```{r}
-colnames(Meth10.mcGenes) <- c("chr", "start", "stop", "percentMeth") #Modify column names
-```
-
-```{r}
-Meth10.mcGenes$geneID <- paste(Meth10.mcGenes$chr, "-", Meth10.mcGenes$start, "-", Meth10.mcGenes$stop) #Combine chr, start, and stop position information to create a unique geneID
-```
-
-```{r}
-geneMeth10 <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Mcap/") #Import gene overlap file
-colnames(geneMeth10) <- c("chr", "start", "stop", "percentMeth") #Modify column names
-head(geneMeth10) #Confirm formatting
+colnames(Meth10.mcGenes) <- c("chr", "start", "stop", "geneID", "percentMeth") #Modify column names
+head(Meth10.mcGenes) #Confirm column naming
 ```
 
 ## Calculate median methylation by `geneID`
 
 ```{r}
-percentMeth10-mcGene <- aggregate(percentMeth ~ geneID, data = Meth10-mcGene, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
+percentMeth10-mcGene <- aggregate(percentMeth ~ geneID, data = Meth10.mcGenes, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
 head(percentMeth10-mcGene) #Confirm percent methylation calculation
 ```
 
