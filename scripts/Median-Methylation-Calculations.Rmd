@@ -111,10 +111,107 @@ head(Meth17) #Confirm median methylation calculation
 ```
 
 ```{r}
-for (sample in 1:length(samplesMcap)) { #For each sample listed in samplesMcap
-  sample.tmp <- get(samplesMcap[i]) #Extract sample based on vector contents
+for (i in 1:length(samplesMcap)) { #For each sample listed in samplesMcap
+  sample <- get(samplesMcap[i]) #Extract sample based on vector contents
   fileName <- paste("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/", samplesMcap[i], "-Median-Methylation", ".txt", sep = "") #Assign filename for each sample
-  write.table(sample.tmp, file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
+  write.table(sample, file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
+}
+```
+
+# *P. acuta*
+
+```{bash}
+mkdir ../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations #Create directory for output
+```
+
+## Associate CpG loci with genes
+
+```{bash}
+head ../genome-feature-files/Pact.GFFannotation.Genes.gff #Look at format of Pact gene track. Gene ID is the last column
+```
+
+```{bash}
+#For each sample-gene overlap file (ends in *bedgraph.bed-paGenes)
+#Use intersectBed to find where loci and genes intersect, allowing loci to be mapped to genes
+#wb: Print all lines in the second file
+#a: sample-gene overlap file
+#b: gene track
+#Save output in a new file that has the same base name and ends in -geneID
+
+for f in ../analyses/Characterizing-CpG-Methylation-5x/Pact/*bedgraph.bed-paGenes
+do
+  /usr/local/bin/intersectBed \
+  -wb \
+  -a ${f} \
+  -b ../genome-feature-files/Pact.GFFannotation.Genes.gff \
+  > ${f}-geneID
+done
+```
+
+```{bash}
+find ../analyses/Characterizing-CpG-Methylation-5x/Pact/*geneID | wc -l #Confirm that 9 files were created (one per sample)
+```
+
+```{bash}
+mv ../analyses/Characterizing-CpG-Methylation-5x/Pact/*geneID ../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations #Move file to subdirectory for median methylation calculations
+```
+
+```{bash}
+head ../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth1_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID #Confirm files are in the new subdirectory and look at output
+```
+
+## Import sample overlaps with gene ID information
+
+```{r}
+setwd("../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations") #Set working directory within the notebook chunk for list.files to find the necessary files
+filesToImport <- list.files(pattern = "*geneID") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
+list2env(lapply(setNames(filesToImport,
+                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID", "", filesToImport))),
+                read.delim, header = FALSE),
+         envir = .GlobalEnv) #Import files to the .GlobalEnv with list2env. Use lapply to setNames of the files by taking all the common parts of their names out. Read files with read.delim and include header = FALSE. Files will be named Meth#
+head(Meth10) #Confirm import
+```
+
+## Format dataframes
+
+```{r}
+samplesPact <- c("Meth10",
+                 "Meth11",
+                 "Meth12",
+                 "Meth13",
+                 "Meth14",
+                 "Meth15",
+                 "Meth16",
+                 "Meth17",
+                 "Meth18") #Create a vector of sample names
+```
+
+```{r}
+for(sample in samplesPact) { #For each sample listed in samplesPact
+  sample.tmp <- get(sample) #Extract sample based on vector contents
+  sample.tmp <- sample.tmp[,-c(5:12)] #Remove extraneous columns
+  colnames(sample.tmp) <- c("chr", "start", "stop", "percentMeth", "geneID") #Rename columns
+  assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
+}
+head(Meth17) #Confirm formatting changes
+```
+
+## Calculate median methylation by `geneID`
+
+```{r}
+for(sample in samplesPact) { #For each sample listed in samplesPact
+  sample.tmp <- get(sample) #Extract sample based on vector contents
+  sample.tmp <- aggregate(percentMeth ~ geneID, data = sample.tmp, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
+  assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
+}
+head(Meth17) #Confirm median methylation calculation
+```
+
+```{r}
+for (i in 1:length(samplesPact)) { #For each sample listed in samplesPact
+  sample <- get(samplesPact[i]) #Extract sample based on vector contents
+  fileName <- paste("../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/", samplesPact[i], "-Median-Methylation", ".txt", sep = "") #Assign filename for each sample
+  write.table(sample, file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
 }
 ```
 

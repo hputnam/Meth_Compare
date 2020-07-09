@@ -1155,3 +1155,12 @@ analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID
 analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth1_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth2_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth3_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth4_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth5_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth6_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth7_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth8_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
+analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations/Meth9_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID
