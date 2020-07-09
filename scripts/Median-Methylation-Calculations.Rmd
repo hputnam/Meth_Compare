@@ -66,29 +66,57 @@ head ../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calcu
 ## Import sample overlaps with gene ID information
 
 ```{r}
-setwd("../analyses/Characterizing-CpG-Methylation-5x/Mcap/") #Set working directory within the notebook chunk for list.files to find the necessary files
+setwd("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations") #Set working directory within the notebook chunk for list.files to find the necessary files
 filesToImport <- list.files(pattern = "*geneID") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
 list2env(lapply(setNames(filesToImport,
-                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed", "", filesToImport))),
-                read.delim),
-         envir = .GlobalEnv) #Import files to the .GlobalEnv with list2env. Use lapply to setNames of the files by taking all the common parts of their names out. Read files with read.delim (can only use defaults = header = TRUE, sep = "\t"). Files will be named Meth#-mcGenes
-head(Meth10.mcGenes) #Confirm import
+                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID", "", filesToImport))),
+                read.delim, header = FALSE),
+         envir = .GlobalEnv) #Import files to the .GlobalEnv with list2env. Use lapply to setNames of the files by taking all the common parts of their names out. Read files with read.delim and include header = FALSE. Files will be named Meth#
+head(Meth10) #Confirm import
 ```
 
 ## Format dataframes
 
 ```{r}
-colnames(Meth10.mcGenes) <- c("chr", "start", "stop", "geneID", "percentMeth") #Modify column names
-head(Meth10.mcGenes) #Confirm column naming
+samplesMcap <- c("Meth10",
+                 "Meth11",
+                 "Meth12",
+                 "Meth13",
+                 "Meth14",
+                 "Meth15",
+                 "Meth16",
+                 "Meth17",
+                 "Meth18") #Create a vector of sample names
+```
+
+```{r}
+for(sample in samplesMcap) { #For each sample listed in samplesMcap
+  sample.tmp <- get(sample) #Extract sample based on vector contents
+  sample.tmp <- sample.tmp[,-c(5:12)] #Remove extraneous columns
+  colnames(sample.tmp) <- c("chr", "start", "stop", "percentMeth", "geneID") #Rename columns
+  assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
+}
+head(Meth17) #Confirm formatting changes
 ```
 
 ## Calculate median methylation by `geneID`
 
 ```{r}
-percentMeth10-mcGene <- aggregate(percentMeth ~ geneID, data = Meth10.mcGenes, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
-head(percentMeth10-mcGene) #Confirm percent methylation calculation
+for(sample in samplesMcap) { #For each sample listed in samplesMcap
+  sample.tmp <- get(sample) #Extract sample based on vector contents
+  sample.tmp <- aggregate(percentMeth ~ geneID, data = sample.tmp, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
+  assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
+}
+head(Meth17) #Confirm median methylation calculation
 ```
 
+```{r}
+for (sample in samplesMcap) { #For each sample listed in samplesMcap
+  sample.tmp <- get(sample) #Extract sample based on vector contents
+  fileName <- paste(sample.tmp, "-Median-Methylation", ".txt", sep = "") #Assign filename for each sample
+  write.table(as.data.frame(sample.tmp), file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
+}
+```
 
 
 
