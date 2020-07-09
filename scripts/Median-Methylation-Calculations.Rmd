@@ -27,22 +27,47 @@ mkdir ../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calc
 
 ## Associate CpG loci with genes
 
-```{r}
-
-```
-
-## Import sample overlaps with genes
-
-All CpGs in samples were filtered for 5x coverage. Overlaps were characterized with gene tracks using `intersectBed`.
+The overlap files generated in [this Jupyter notebook](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb) are missing gene ID information. I can get that from the previously-generated gene track previously generated using `intersectBed`.
 
 ```{bash}
-find ../analyses/Characterizing-CpG-Methylation-5x/Mcap/*bedgraph.bed-mcGenes #Check path for files needed
+head ../genome-feature-files/Mcap.GFFannotation.gene.gff #Look at format of Mcap gene track. Gene ID is the last column
 ```
 
+```{bash}
+#For each sample-gene overlap file (ends in *bedgraph.bed-mcGenes)
+#Use intersectBed to find where loci and genes intersect, allowing loci to be mapped to genes
+#wb: Print all lines in the second file
+#a: sample-gene overlap file
+#b: gene track
+#Save output in a new file that has the same base name and ends in -geneID
+
+for f in ../analyses/Characterizing-CpG-Methylation-5x/Mcap/*bedgraph.bed-mcGenes
+do
+  /usr/local/bin/intersectBed \
+  -wb \
+  -a ${f} \
+  -b ../genome-feature-files/Mcap.GFFannotation.gene.gff \
+  > ${f}-geneID
+done
+```
+
+```{bash}
+find ../analyses/Characterizing-CpG-Methylation-5x/Mcap/*geneID | wc -l #Confirm that 9 files were created (one per sample)
+```
+
+```{bash}
+mv ../analyses/Characterizing-CpG-Methylation-5x/Mcap/*geneID ../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations #Move file to subdirectory for median methylation calculations
+```
+
+```{bash}
+head ../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID #Confirm files are in the new subdirectory and look at output
+```
+
+## Import sample overlaps with gene ID information
 
 ```{r}
 setwd("../analyses/Characterizing-CpG-Methylation-5x/Mcap/") #Set working directory within the notebook chunk for list.files to find the necessary files
-filesToImport <- list.files(pattern = "*bedgraph.bed-mcGenes") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
+filesToImport <- list.files(pattern = "*geneID") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
 list2env(lapply(setNames(filesToImport,
                          make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed", "", filesToImport))),
                 read.delim),
