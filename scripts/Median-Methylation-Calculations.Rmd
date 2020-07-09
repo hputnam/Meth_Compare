@@ -111,10 +111,10 @@ head(Meth17) #Confirm median methylation calculation
 ```
 
 ```{r}
-for (sample in samplesMcap) { #For each sample listed in samplesMcap
-  sample.tmp <- get(sample) #Extract sample based on vector contents
-  fileName <- paste(sample.tmp, "-Median-Methylation", ".txt", sep = "") #Assign filename for each sample
-  write.table(as.data.frame(sample.tmp), file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
+for (sample in 1:length(samplesMcap)) { #For each sample listed in samplesMcap
+  sample.tmp <- get(samplesMcap[i]) #Extract sample based on vector contents
+  fileName <- paste("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Median-Methylation-Calculations/", samplesMcap[i], "-Median-Methylation", ".txt", sep = "") #Assign filename for each sample
+  write.table(sample.tmp, file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
 }
 ```
 
