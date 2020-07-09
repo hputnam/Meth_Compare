@@ -166,24 +166,24 @@ head ../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calcu
 setwd("../analyses/Characterizing-CpG-Methylation-5x/Pact/Median-Methylation-Calculations") #Set working directory within the notebook chunk for list.files to find the necessary files
 filesToImport <- list.files(pattern = "*geneID") #Create a file list for all 9 files to import. Only import overlaps for full samples (not divided by methylation status)
 list2env(lapply(setNames(filesToImport,
-                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-mcGenes-geneID", "", filesToImport))),
+                         make.names(gsub("_R1_001_val_1_bismark_bt2_pe._5x.bedgraph.bed-paGenes-geneID", "", filesToImport))),
                 read.delim, header = FALSE),
          envir = .GlobalEnv) #Import files to the .GlobalEnv with list2env. Use lapply to setNames of the files by taking all the common parts of their names out. Read files with read.delim and include header = FALSE. Files will be named Meth#
-head(Meth10) #Confirm import
+head(Meth1) #Confirm import
 ```
 
 ## Format dataframes
 
 ```{r}
-samplesPact <- c("Meth10",
-                 "Meth11",
-                 "Meth12",
-                 "Meth13",
-                 "Meth14",
-                 "Meth15",
-                 "Meth16",
-                 "Meth17",
-                 "Meth18") #Create a vector of sample names
+samplesPact <- c("Meth1",
+                 "Meth2",
+                 "Meth3",
+                 "Meth4",
+                 "Meth5",
+                 "Meth6",
+                 "Meth7",
+                 "Meth8",
+                 "Meth9") #Create a vector of sample names
 ```
 
 ```{r}
@@ -193,7 +193,7 @@ for(sample in samplesPact) { #For each sample listed in samplesPact
   colnames(sample.tmp) <- c("chr", "start", "stop", "percentMeth", "geneID") #Rename columns
   assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
 }
-head(Meth17) #Confirm formatting changes
+head(Meth7) #Confirm formatting changes
 ```
 
 ## Calculate median methylation by `geneID`
@@ -204,7 +204,7 @@ for(sample in samplesPact) { #For each sample listed in samplesPact
   sample.tmp <- aggregate(percentMeth ~ geneID, data = sample.tmp, FUN = median) #Use aggregate to group geneID and calculate median percent methylation
   assign(sample, sample.tmp) #Replace sample with edited sample.tmp contents
 }
-head(Meth17) #Confirm median methylation calculation
+head(Meth7) #Confirm median methylation calculation
 ```
 
 ```{r}
@@ -214,7 +214,4 @@ for (i in 1:length(samplesPact)) { #For each sample listed in samplesPact
   write.table(sample, file = fileName, sep = "\t", row.names = FALSE, col.names = TRUE) #Write out files into the Median-Methylation-Calculations subdirectory
 }
 ```
-
-
-
 
