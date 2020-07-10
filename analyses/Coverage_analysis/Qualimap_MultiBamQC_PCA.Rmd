@@ -12,6 +12,7 @@ load libraries
 library(data.table)
 library(ggplot2)
 library(dplyr)
+library(ggpubr)
 
 ```
 
@@ -44,9 +45,9 @@ set.seed(101)
 mcap_pca <- prcomp(mcap_summary[,-c(1,2)])
 mcap_pca_meta <- cbind(mcap_summary[,c(1:2)],mcap_pca$x)
 
-jpeg("../../Output/Mcap_pca.jpg", height = 5, width = 7, units = "in", res = 300 )
-ggplot(mcap_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab("PC2") + xlab("PC1")
-dev.off()
+
+a <- ggplot(mcap_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab("PC2") + xlab("PC1") + ggtitle(expression(italic("M.capitata")))
+
 
 #adds sample names to plot
 #ggplot(mcap_pca_meta, aes(PC1, PC2, label = Sample)) + geom_point(aes(color = Group)) + geom_text(size = 1.5,hjust=1,vjust=-1) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + theme_bw() + ylab("PC2") + xlab("PC1")
@@ -54,8 +55,11 @@ dev.off()
 pact_pca <- prcomp(pact_summary[,-c(1,2)])
 pact_pca_meta <- cbind(pact_summary[,c(1:2)],pact_pca$x)
 
-jpeg("../../Output/Pact_pca.jpg", height = 5, width = 7, units = "in", res = 300 )
-ggplot(pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab("PC2") + xlab("PC1")
+
+b <- ggplot(pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab("PC2") + xlab("PC1") + ggtitle(expression(italic("P.acuta")))
+
+jpeg("../../Output/PCA_AlignmentFeatures.jpg", height = 4, width = 10, units = "in", res = 300 )
+ggarrange(a,b, ncol = 2)
 dev.off()
 
 #adds sample names to plot
