@@ -1,4 +1,0 @@
- 4467799 Pact_union_5x-averages-MBDBS.bedgraph-unMeth
- 3230795 Pact_union_5x-averages-RRBS.bedgraph-unMeth
- 7199436 Pact_union_5x-averages-WGBS.bedgraph-unMeth
- 14898030 total
