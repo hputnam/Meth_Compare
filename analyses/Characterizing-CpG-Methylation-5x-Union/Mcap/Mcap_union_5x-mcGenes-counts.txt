@@ -1,0 +1,13 @@
+   88994 Mcap_union_5x-averages-MBDBS.bedgraph-Meth.bed-mcGenes
+   46573 Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-mcGenes
+  269683 Mcap_union_5x-averages-MBDBS.bedgraph-unMeth.bed-mcGenes
+  405250 Mcap_union_5x-averages-MBDBS.bedgraph.bed-mcGenes
+  202012 Mcap_union_5x-averages-RRBS.bedgraph-Meth.bed-mcGenes
+  101209 Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-mcGenes
+ 1408612 Mcap_union_5x-averages-RRBS.bedgraph-unMeth.bed-mcGenes
+ 1711833 Mcap_union_5x-averages-RRBS.bedgraph.bed-mcGenes
+  886585 Mcap_union_5x-averages-WGBS.bedgraph-Meth.bed-mcGenes
+  528822 Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-mcGenes
+ 3978285 Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed-mcGenes
+ 5393692 Mcap_union_5x-averages-WGBS.bedgraph.bed-mcGenes
+ 15021550 total
