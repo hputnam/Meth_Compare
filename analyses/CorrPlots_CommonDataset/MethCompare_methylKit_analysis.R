@@ -20,7 +20,7 @@ Pact_all_TG.list=list('Meth1_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_
                       'Meth6_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 #The following command reads coverage files - minimum 5x coverage
-myobj_Pact_all_TG=methRead(Pact_all_TG.list, sample.id = list("WGBS 1","WGBS 2","WGBS 3","MBD 1","MBD 2","MBD 3","RRBS 1","RRBS 2","RRBS 3"), assembly = "Pact_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage", mincov=5)
+myobj_Pact_all_TG=methRead(Pact_all_TG.list, sample.id = list("WGBS 1","WGBS 2","WGBS 3","MBDBS 1","MBDBS 2","MBDBS 3","RRBS 1","RRBS 2","RRBS 3"), assembly = "Pact_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage", mincov=5)
 
 #Identify CG covered across all samples and generate a correlation plot
 #unite#
@@ -124,7 +124,7 @@ Mcap_all_TG.list=list('Meth10_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG
                       'Meth15_R1_001_val_1_bismark_bt2_pe..CpG_report.merged_CpG_evidence.cov')
 
 #The following command reads coverage files - minimum 5x coverage
-myobj_Mcap_all_TG=methRead(Mcap_all_TG.list, sample.id = list("WGBS 1","WGBS 2","WGBS 3","MBD 1","MBD 2","MBD 3","RRBS 1","RRBS 2","RRBS 3"), assembly = "Mcap_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage", mincov = 5)
+myobj_Mcap_all_TG=methRead(Mcap_all_TG.list, sample.id = list("WGBS 1","WGBS 2","WGBS 3","MBDBS 1","MBDBS 2","MBDBS 3","RRBS 1","RRBS 2","RRBS 3"), assembly = "Mcap_genome", treatment = c(0,0,0,0,0,0,1,1,1), context = "CpG", pipeline = "bismarkCoverage", mincov = 5)
 
 #Identify CG covered across all samples and generate a correlation plot
 #unite#
