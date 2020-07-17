@@ -21,7 +21,7 @@ library("goseq")
 
 ```
 
-Goal is to identify and compare presence and absence and the expression levels of the genes captured by each method
+Goal is to identify and compare presence and absence number of CpG and the expression levels of the genes captured by each method
 
 Load sample info, annotation, and counts
 ```{r load data}
@@ -131,6 +131,82 @@ mean(Pact.counts$mean.FPKM)
 range(Pact.counts$mean.TPM)
 mean(Pact.counts$mean.TPM)
 
+
+# Load ortholog data
+Ortho.data <- read.csv(file="analyses/coral_ortho/Fastas/OrthoFinder/Results_Jul06/Orthologues/Orthologues_Mcap.protein/Mcap.protein__v__Pocillopora_acuta_protein.tsv", header=TRUE, sep="\t")
+
+#remove extra gene id characters
+Ortho.data$Mcap.protein <- gsub("augustus.", "", Ortho.data$Mcap.protein)
+Ortho.data$Mcap.protein <- gsub(".t1", "", Ortho.data$Mcap.protein)
+
+Ortho.data.1.1 <- Ortho.data %>% 
+  filter(!grepl(',', Mcap.protein))
+Ortho.data.1.1 <- Ortho.data.1.1 %>% 
+  filter(!grepl(',', Pocillopora_acuta_protein))
+Ortho.data.1.1$ID <- seq(from=1, to=nrow(Ortho.data.1.1), by=1)
+
+Mcap.ortho <- Ortho.data.1.1[,c(4,2)]
+colnames(Mcap.ortho) <- c("ID", "gene")
+Pact.ortho <- Ortho.data.1.1[,c(4,3)]
+colnames(Pact.ortho) <- c("ID", "gene")
+
+```
+
+Count CpG per gene sensu Dimond and Roberts 
+```{bash}
+#Mcap
+
+perl -e '$count=0; $len=0; while(<>) {s/\r?\n//; s/\t/ /g; if (s/^>//) { if ($. != 1) {print "\n"} s/ |$/\t/; $count++; $_ .= "\t";} else {s/ //g; $len += length($_)} print $_;} print "\n"; warn "\nConverted $count FASTA records in $. lines to tabular format\nTotal sequence length: $len\n\n";' \ data/fasta/Montipora_capitata_coding.fasta > data/fasta/Mcap_fasta2tab
+
+perl -e '$col = 2;' -e 'while (<>) { s/\r?\n//; @F = split /\t/, $_; $len = length($F[$col]); print "$_\t$len\n" } warn "\nAdded column with length of column $col for $. lines.\n\n";' \ data/fasta/Mcap_fasta2tab > data/fasta/Mcap_tab_1
+
+awk '{print $2}' data/fasta/Mcap_tab_1 > data/fasta/Mcap_tab_2
+
+echo "CG" | awk -F\[Cc][Gg] '{print NF-1}' data/fasta/Mcap_tab_2 > data/fasta/Mcap_CG
+
+awk '{print $1}' data/fasta/Mcap_tab_1 > data/fasta/Mcap_gene_names
+
+paste data/fasta/Mcap_gene_names data/fasta/Mcap_CG > data/fasta/Mcap_CpG_per_gene
+
+
+#Pact
+
+perl -e '$count=0; $len=0; while(<>) {s/\r?\n//; s/\t/ /g; if (s/^>//) { if ($. != 1) {print "\n"} s/ |$/\t/; $count++; $_ .= "\t";} else {s/ //g; $len += length($_)} print $_;} print "\n"; warn "\nConverted $count FASTA records in $. lines to tabular format\nTotal sequence length: $len\n\n";' \ data/fasta/Pocillopora_acuta_coding.fasta > data/fasta/Pact_fasta2tab
+
+perl -e '$col = 2;' -e 'while (<>) { s/\r?\n//; @F = split /\t/, $_; $len = length($F[$col]); print "$_\t$len\n" } warn "\nAdded column with length of column $col for $. lines.\n\n";' \ data/fasta/Pact_fasta2tab > data/fasta/Pact_tab_1
+
+awk '{print $2}' data/fasta/Pact_tab_1 > data/fasta/Pact_tab_2
+
+echo "CG" | awk -F\[Cc][Gg] '{print NF-1}' data/fasta/Pact_tab_2 > data/fasta/Pact_CG
+
+awk '{print $1}' data/fasta/Pact_tab_1 > data/fasta/Pact_gene_names
+
+paste data/fasta/Pact_gene_names data/fasta/Pact_CG > data/fasta/Pact_CpG_per_gene
+
+```
+
+Count CpG per gene via intersectBed with genes
+```{bash}
+
+#Mcap
+intersectBed \
+-wb \
+-a  genome-feature-files/Mcap_CpG.gff \
+-b genome-feature-files/Mcap.GFFannotation.genes.gff \
+> genome-feature-files/Mcap_CpG_per_gene
+
+awk '{print $NF}' genome-feature-files/Mcap_CpG_per_gene > genome-feature-files/Mcap_CpG_per_gene1
+
+#Pact
+intersectBed \
+-wb \
+-a  genome-feature-files/Pact_CpG.gff \
+-b genome-feature-files/Pact.GFFannotation.genes.gff \
+> genome-feature-files/Pact_CpG_per_gene
+
+awk '{print $NF}' genome-feature-files/Pact_CpG_per_gene > genome-feature-files/Pact_CpG_per_gene1
+
+
 ```
 
 Obtain the genes from both genomes that have CpG data with 5x coverage
@@ -156,20 +232,234 @@ intersectBed \
 done
 ```
 
-Load M. capitata (Mcap) Methylation data and ID genes and GO terms in each method
+Load M. capitata (Mcap) Methylation data and ID genes merge with one to one Orthologs
 ```{r}
 #load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
 #1101 1548 1628
 WGBS.1101 <- read.csv("data/Mcap_tab/Meth10_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(WGBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1101$rep <- "WGBS.1101"
 WGBS.1548 <- read.csv("data/Mcap_tab/Meth11_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(WGBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1548$rep <- "WGBS.1548"
 WGBS.1628 <- read.csv("data/Mcap_tab/Meth12_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
 colnames(WGBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1628$rep <- "WGBS.1628"
 
-#Determine GO terms for the genes found with each method
+#Determine the number of CpGs per gene for the orthologs
 # WGBS samples
 WGBS.data <- rbind(WGBS.1101,WGBS.1548,WGBS.1628) #combine samples into df by method
+WGBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene per replicate
+WGBS.CpG.by.Gene <- WGBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+WGBS.CpG.by.Gene <- WGBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+
+WGBS.CpG.by.Gene <- merge(WGBS.CpG.by.Gene, Mcap.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+
+Mcap.CpG.possible <- read.csv("genome-feature-files/Mcap_CpG_per_gene1", header=FALSE, sep="\t") 
+Mcap.CpG.possible$count <- 1 
+colnames(Mcap.CpG.possible) <- c("gene", "count")
+Mcap.CpG.possible.sum <- Mcap.CpG.possible %>%
+  group_by(gene) %>%
+  summarise(CpG.Poss = sum(count)) #Sum CpG per gene
+WGBS.CpG.by.Gene <- merge(WGBS.CpG.by.Gene, Mcap.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+WGBS.CpG.by.Gene <- merge(WGBS.CpG.by.Gene, Mcap.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+WGBS.CpG.by.Gene$species <- "M.capitata" #add species
+WGBS.CpG.by.Gene$method <- "WGBS" #add method
+WGBS.CpG.by.Gene <- arrange(WGBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#RRBS samples
+RRBS.1101 <- read.csv("data/Mcap_tab/Meth13_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1101$rep <- "RRBS.1101"
+RRBS.1548 <- read.csv("data/Mcap_tab/Meth14_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1548$rep <- "RRBS.1548"
+RRBS.1628 <- read.csv("data/Mcap_tab/Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1628$rep <- "RRBS.1628"
+
+#Determine the number of CpGs per gene for the orthologs
+# RRBS samples
+RRBS.data <- rbind(RRBS.1101,RRBS.1548,RRBS.1628) #combine samples into df by method
+RRBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene
+RRBS.CpG.by.Gene <- RRBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+RRBS.CpG.by.Gene <- RRBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+RRBS.CpG.by.Gene <- merge(RRBS.CpG.by.Gene, Mcap.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+RRBS.CpG.by.Gene <- merge(RRBS.CpG.by.Gene, Mcap.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+RRBS.CpG.by.Gene <- merge(RRBS.CpG.by.Gene, Mcap.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+RRBS.CpG.by.Gene$species <- "M.capitata" #add species
+RRBS.CpG.by.Gene$method <- "RRBS" #add method
+RRBS.CpG.by.Gene <- arrange(RRBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#load MBDBS data
+MBDBS.1101 <- read.csv("data/Mcap_tab/Meth16_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1101$rep <- "MBDBS.1101"
+MBDBS.1548 <- read.csv("data/Mcap_tab/Meth17_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1548$rep <- "MBDBS.1548"
+MBDBS.1628 <- read.csv("data/Mcap_tab/Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1628$rep <- "MBDBS.1628"
+
+#Determine the number of CpGs per gene for the orthologs
+# MBDBS samples
+MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628) #combine samples into df by method
+MBDBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene
+MBDBS.CpG.by.Gene <- MBDBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+MBDBS.CpG.by.Gene <- MBDBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+MBDBS.CpG.by.Gene <- merge(MBDBS.CpG.by.Gene, Mcap.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+MBDBS.CpG.by.Gene <- merge(MBDBS.CpG.by.Gene, Mcap.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+MBDBS.CpG.by.Gene <- merge(MBDBS.CpG.by.Gene, Mcap.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+MBDBS.CpG.by.Gene$species <- "M.capitata" #add species
+MBDBS.CpG.by.Gene$method <- "MBDBS" #add method
+MBDBS.CpG.by.Gene <- arrange(MBDBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#combine CpG per gene for orthologs dataframe
+Ortho.data.counts <- rbind(WGBS.CpG.by.Gene, RRBS.CpG.by.Gene, MBDBS.CpG.by.Gene)
+# NA remains for those genes that are orthologs but have no CpG data
+Ortho.data.counts$prop <- Ortho.data.counts$mean.CpG.Count/Ortho.data.counts$CpG.Poss
+range(na.omit(Ortho.data.counts$prop))
+which(Ortho.data.counts$prop ==0)
+
+pdf("Output/Mcap_CpGperGeneProportion.1to1.Orthologs.pdf", height=3, width=8)
+ggplot(Ortho.data.counts, aes(ID, method, fill=prop, width = 1)) + 
+  geom_tile() +
+  scale_fill_gradient2(low="cyan", mid="magenta", high="yellow", na.value = "black", midpoint=0.5)+
+  theme(axis.text.x = element_text(angle = 90, size=1)) +
+  ggtitle("A M. capitata")
+dev.off()
+
+```
+
+Load P. acuta (Pact) Methylation data and ID genes merge with one to one Orthologs
+```{r}
+#load methylation data with minimum of 5x coverage of CpGs that has intersected with genes
+#1041 1471 1637
+WGBS.1041 <- read.csv("data/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1041$rep <- "WGBS.1041"
+WGBS.1471 <- read.csv("data/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1471$rep <- "WGBS.1471"
+WGBS.1637 <- read.csv("data/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(WGBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+WGBS.1637$rep <- "WGBS.1637"
+
+#Determine the number of CpGs per gene for the orthologs
+# WGBS samples
+Pact.WGBS.data <- rbind(WGBS.1041,WGBS.1471,WGBS.1637) #combine samples into df by method
+Pact.WGBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene per replicate
+Pact.WGBS.CpG.by.Gene <-Pact.WGBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+Pact.WGBS.CpG.by.Gene <- Pact.WGBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+
+Pact.WGBS.CpG.by.Gene <- merge(Pact.WGBS.CpG.by.Gene, Pact.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+
+Pact.CpG.possible <- read.csv("genome-feature-files/Pact_CpG_per_gene1", header=FALSE, sep="\t") 
+Pact.CpG.possible$count <- 1 
+colnames(Pact.CpG.possible) <- c("gene", "count")
+Pact.CpG.possible.sum <- Pact.CpG.possible %>%
+  group_by(gene) %>%
+  summarise(CpG.Poss = sum(count)) #Sum CpG per gene
+Pact.WGBS.CpG.by.Gene <- merge(Pact.WGBS.CpG.by.Gene, Pact.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+Pact.WGBS.CpG.by.Gene <- merge(Pact.WGBS.CpG.by.Gene, Pact.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+Pact.WGBS.CpG.by.Gene$species <- "P.acuta" #add species
+Pact.WGBS.CpG.by.Gene$method <- "WGBS" #add method
+Pact.WGBS.CpG.by.Gene <- arrange(Pact.WGBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#RRBS samples
+RRBS.1041 <- read.csv("data/Pact_tab/Meth4_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1041$rep <- "RRBS.1041"
+RRBS.1471 <- read.csv("data/Pact_tab/Meth5_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1471$rep <- "RRBS.1471"
+RRBS.1637 <- read.csv("data/Pact_tab/Meth6_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(RRBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+RRBS.1637$rep <- "RRBS.1637"
+
+#Determine the number of CpGs per gene for the orthologs
+# RRBS samples
+Pact.RRBS.data <- rbind(RRBS.1041,RRBS.1471,RRBS.1637) #combine samples into df by method
+Pact.RRBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene
+Pact.RRBS.CpG.by.Gene <- Pact.RRBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+Pact.RRBS.CpG.by.Gene <- Pact.RRBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+Pact.RRBS.CpG.by.Gene <- merge(Pact.RRBS.CpG.by.Gene, Pact.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+Pact.RRBS.CpG.by.Gene <- merge(Pact.RRBS.CpG.by.Gene, Pact.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+Pact.RRBS.CpG.by.Gene <- merge(Pact.RRBS.CpG.by.Gene, Pact.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+Pact.RRBS.CpG.by.Gene$species <- "P.acuta" #add species
+Pact.RRBS.CpG.by.Gene$method <- "RRBS" #add method
+Pact.RRBS.CpG.by.Gene <- arrange(Pact.RRBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#load MBDBS data
+MBDBS.1041 <- read.csv("data/Pact_tab/Meth7_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1041) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1041$rep <- "MBDBS.1041"
+MBDBS.1471 <- read.csv("data/Pact_tab/Meth8_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1471) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1471$rep <- "MBDBS.1471"
+MBDBS.1637 <- read.csv("data/Pact_tab/Meth9_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
+colnames(MBDBS.1637) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+MBDBS.1637$rep <- "MBDBS.1637"
+
+#Determine the number of CpGs per gene for the orthologs
+# MBDBS samples
+Pact.MBDBS.data <- rbind(MBDBS.1041,MBDBS.1471,MBDBS.1637) #combine samples into df by method
+Pact.MBDBS.data$num <- 1 #add a column of 1's so they can be used to sum the number of CpGs per gene
+Pact.MBDBS.CpG.by.Gene <- Pact.MBDBS.data %>%
+  group_by(gene, rep) %>%
+  summarise(CpG.Count = sum(num)) #Sum CpG per gene per rep
+Pact.MBDBS.CpG.by.Gene <- Pact.MBDBS.CpG.by.Gene %>%
+  group_by(gene) %>%
+  summarise(mean.CpG.Count = mean(CpG.Count)) #mean CpG per gene
+Pact.MBDBS.CpG.by.Gene <- merge(Pact.MBDBS.CpG.by.Gene, Pact.genes, by="gene", all = TRUE) #merge with all genes to have full list available
+Pact.MBDBS.CpG.by.Gene <- merge(Pact.MBDBS.CpG.by.Gene, Pact.CpG.possible.sum, by="gene", all = TRUE) #merge to keep orthologs and possible CpG per gene
+Pact.MBDBS.CpG.by.Gene <- merge(Pact.MBDBS.CpG.by.Gene, Pact.ortho, by="gene", all = FALSE) #merge to keep orthologs only
+Pact.MBDBS.CpG.by.Gene$species <- "P.acuta" #add species
+Pact.MBDBS.CpG.by.Gene$method <- "MBDBS" #add method
+Pact.MBDBS.CpG.by.Gene <- arrange(Pact.MBDBS.CpG.by.Gene,scaffold, gene.start) #order by orthogroup
+
+#combine CpG per gene for orthologs dataframe
+Pact.Ortho.data.counts <- rbind(Pact.WGBS.CpG.by.Gene, Pact.RRBS.CpG.by.Gene, Pact.MBDBS.CpG.by.Gene)
+# NA remains for those genes that are orthologs but have no CpG data
+Pact.Ortho.data.counts$prop <- Pact.Ortho.data.counts$mean.CpG.Count/Pact.Ortho.data.counts$CpG.Poss
+range(na.omit(Pact.Ortho.data.counts$prop))
+which(Pact.Ortho.data.counts$prop ==0)
+
+pdf("Output/Pact_CpGperGeneProportion.1to1.Orthologs.pdf", height=3, width=8)
+ggplot(Pact.Ortho.data.counts, aes(ID, method, fill=prop, width = 1)) + 
+  geom_tile() +
+  scale_fill_gradient2(low="cyan", mid="magenta", high="yellow", na.value = "black", midpoint=0.5)+
+  theme(axis.text.x = element_text(angle = 90, size=1)) +
+  ggtitle("B P. acuta")
+dev.off()
+
+```
+
+
+```{r}
+#Determine GO terms for the genes found with each method
+# WGBS samples
 WGBS.genes <- as.data.frame(unique(WGBS.data$gene)) #keep unique genes only
 colnames(WGBS.genes) <- c("gene") #name gene column
 WGBS.gene.annot <- left_join(WGBS.genes, Mcap.annot, by="gene") #combine genes and annotation
@@ -180,15 +470,7 @@ WGBS.GOs <- data.frame(v1 = rep.int(WGBS.GO$gene, sapply(splitted, length)), v2 
 WGBS.GO.terms <- WGBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
 length(unique(WGBS.GO.terms$v2)) #view number of go terms
 
-#RRBS samples
-RRBS.1101 <- read.csv("data/Mcap_tab/Meth13_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(RRBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-RRBS.1548 <- read.csv("data/Mcap_tab/Meth14_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(RRBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-RRBS.1628 <- read.csv("data/Mcap_tab/Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(RRBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-
-RRBS.data <- rbind(RRBS.1101,RRBS.1548,RRBS.1628) #combine samples into df by method
+# RRBS samples
 RRBS.genes <- as.data.frame(unique(RRBS.data$gene)) #keep unique genes only
 colnames(RRBS.genes) <- c("gene") #name gene column
 RRBS.gene.annot <- left_join(RRBS.genes, Mcap.annot, by="gene") #combine genes and annotation
@@ -199,14 +481,7 @@ RRBS.GOs <- data.frame(v1 = rep.int(RRBS.GO$gene, sapply(splitted, length)), v2 
 RRBS.GO.terms <- RRBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
 length(unique(RRBS.GO.terms$v2)) #view number of go terms   
 
-MBDBS.1101 <- read.csv("data/Mcap_tab/Meth16_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(MBDBS.1101) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-MBDBS.1548 <- read.csv("data/Mcap_tab/Meth17_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(MBDBS.1548) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-MBDBS.1628 <- read.csv("data/Mcap_tab/Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab_gene", header=FALSE, sep="\t")
-colnames(MBDBS.1628) <- c("scaffold", "start", "stop", "permeth","meth", "unmeth", "intersection", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
-
-MBDBS.data <- rbind(MBDBS.1101,MBDBS.1548,MBDBS.1628) #combine samples into df by method
+# MBDBS samples
 MBDBS.genes <- as.data.frame(unique(MBDBS.data$gene)) #keep unique genes only
 colnames(MBDBS.genes) <- c("gene") #name gene column
 MBDBS.gene.annot <- left_join(MBDBS.genes, Mcap.annot, by="gene") #combine genes and annotation
@@ -216,19 +491,6 @@ splitted <- strsplit(as.character(MBDBS.GO$GO.IDs), "; ") #slit into multiple GO
 MBDBS.GOs <- data.frame(v1 = rep.int(MBDBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
 MBDBS.GO.terms <- MBDBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
 length(unique(MBDBS.GO.terms$v2)) #view number of go terms
-
-#combine genes indentified by each method into dataframe for plotting
-WGBS.genes.circ <- as.data.frame(WGBS.genes)
-WGBS.genes.circ$method <- "WGBS"
-colnames(WGBS.genes.circ) <- c("gene", "method")
-
-RRBS.genes.circ <- as.data.frame(RRBS.genes)
-RRBS.genes.circ$method <- "RRBS"
-colnames(RRBS.genes.circ) <- c("gene", "method")
-
-MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
-MBDBS.genes.circ$method <- "MBDBS"
-colnames(MBDBS.genes.circ) <- c("gene", "method")
 
 #combine 3 methods together 
 All.circ <- left_join(Mcap.genes, WGBS.genes.circ, by="gene", keep=TRUE)
@@ -276,19 +538,20 @@ Mcap.MBDBS.counts$method <- "MBDBS"
 Mcap.CpG.genes.all <- rbind(Mcap.WGBS.counts, Mcap.RRBS.counts, Mcap.MBDBS.counts)
 Mcap.CpG.genes.all$gene <- factor(Mcap.CpG.genes.all$gene, levels = All.circ.df$gene)
 
-pdf("Output/Mcap_PresAbs_genes.pdf")
-ggplot(Mcap.CpG.genes.all, aes(gene, method, fill=type, width = 1)) + 
-  geom_tile() +
-  coord_fixed(ratio = 7000)+
-  scale_fill_gradientn(colours=c("black", "yellow"))+
-  ggtitle("A ")+
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,size =1), #Set the text angle
-        axis.line = element_line(color = 'black'), #Set the axes color
-        panel.border = element_blank(), #Set the border
-        panel.grid.major = element_blank(), #Set the major gridlines
-        panel.grid.minor = element_blank(), #Set the minor gridlines
-        plot.background=element_blank()) #Set the plot background
-dev.off()
+#combine genes indentified by each method into dataframe for plotting
+WGBS.genes.circ <- as.data.frame(WGBS.genes)
+WGBS.genes.circ$method <- "WGBS"
+colnames(WGBS.genes.circ) <- c("gene", "method")
+
+RRBS.genes.circ <- as.data.frame(RRBS.genes)
+RRBS.genes.circ$method <- "RRBS"
+colnames(RRBS.genes.circ) <- c("gene", "method")
+
+MBDBS.genes.circ <- as.data.frame(MBDBS.genes)
+MBDBS.genes.circ$method <- "MBDBS"
+colnames(MBDBS.genes.circ) <- c("gene", "method")
+
+
 ```
 
 Gene expresion counts for genes with CpG identified by each method
