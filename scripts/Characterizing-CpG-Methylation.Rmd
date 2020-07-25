@@ -1345,125 +1345,61 @@ tail(plotCustomization) #Confirm dataframe creation
 
 ```{r}
 pdf("../Output/Supp-PCoA-Multipanel.pdf", height = 8.5, width = 11) #Save plot
-par(mfrow = c(2, 2), oma = c(5, 2, 2, 0), mar = c(3, 3, 3, 5)) #Set up parameters for multipanel plot
+par(mfrow = c(2, 2), oma = c(3, 3, 2, 0), mar = c(3, 3, 3, 5)) #Set up parameters for multipanel plot
 
 #Mcap methylation status
 
-fig.McapCpGPercentsPCoA <- ordiplot(McapCpGPercentsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
+fig.McapCpGPercentsPCoA <- ordiplot(McapCpGPercentsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "") #Use ordiplot to create base biplot with axes. Do not add any points or axis labels.
 points(fig.McapCpGPercentsPCoA, "sites", col = c(rep(plotColors[1], times = 3), rep(plotColors[4], times = 3), rep(plotColors[7], times = 3)), pch = c(rep(16, times = 3), rep(17, times = 3), rep(18, times = 3)), cex = 2) #Add each sample. Green = WGBS, purple = RRBS, orange = MBDBS.
-
-#Add multiple white boxes on top of the default black box to manually change the color
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
 
 ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "WGBS", col = plotColors[2]) #Add confidence ellipse around WGBS samples
 ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-
-axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "PCoA 1 (83.1%)", line = 3.5, cex = 1.5) #Add x-axis label
-
-axis(side =  2, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, text = "PCoA 2 (16.9%)", line = 3.5, cex = 1.5) #Add y-axis label
+mtext(side = 1, text = "PCoA 1 (83.1%)", line = 3, cex = 1) #Add x-axis label
+mtext(side = 2, text = "PCoA 2 (16.9%)", line = 3, cex = 1) #Add y-axis label
 
 plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
 
 #Mcap genomic location
 
-fig.McapFeatureOverlapsPCoA <- ordiplot(McapFeatureOverlapsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
+fig.McapFeatureOverlapsPCoA <- ordiplot(McapFeatureOverlapsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "") #Use ordiplot to create base biplot. Do not add any points
 points(fig.McapFeatureOverlapsPCoA, "sites", col = c(rep(plotColors[1], times = 3), rep(plotColors[4], times = 3), rep(plotColors[7], times = 3)), pch = c(rep(16, times = 3), rep(17, times = 3), rep(18, times = 3)), cex = 2) #Add each sample. Green = WGBS, purple = RRBS, orange = MBDBS.
-
-#Add multiple white boxes on top of the default black box to manually change the color
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
 
 ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "WGBS", col = plotColors[2]) #Add confidence ellipse around WGBS samples
 ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-
-axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "PCoA 1 (92.3%)", line = 3.5, cex = 1.5) #Add x-axis label
-
-axis(side =  2, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, text = "PCoA 2 (7.4%)", line = 3.5, cex = 1.5) #Add y-axis label
+mtext(side = 1, text = "PCoA 1 (92.3%)", line = 3, cex = 1) #Add x-axis label
+mtext(side = 2, text = "PCoA 2 (7.4%)", line = 3, cex = 1) #Add y-axis label
 
 plot(vec.McapFeatureOverlapsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
 
 #Pact methylation status
 
-fig.PactCpGPercentsPCoA <- ordiplot(PactCpGPercentsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
+fig.PactCpGPercentsPCoA <- ordiplot(PactCpGPercentsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "") #Use ordiplot to create base biplot. Do not add any points
 points(fig.PactCpGPercentsPCoA, "sites", col = c(rep(plotColors[1], times = 3), rep(plotColors[4], times = 3), rep(plotColors[7], times = 3)), pch = c(rep(16, times = 3), rep(17, times = 3), rep(18, times = 3)), cex = 2) #Add each sample. Green = WGBS, purple = RRBS, orange = MBDBS.
-
-#Add multiple white boxes on top of the default black box to manually change the color
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
 
 ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "WGBS", col = plotColors[2]) #Add confidence ellipse around WGBS samples
 ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-
-axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "PCoA 1 (97.9%)", line = 3.5, cex = 1.5) #Add x-axis label
-
-axis(side =  2, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, text = "PCoA 2 (2.1%)", line = 3.5, cex = 1.5) #Add y-axis label
+mtext(side = 1, text = "PCoA 1 (97.9%)", line = 3, cex = 1) #Add x-axis label
+mtext(side = 2, text = "PCoA 2 (2.1%)", line = 3, cex = 1) #Add y-axis label
 
 plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
 
 #Pact genomic location
 
-fig.PactFeatureOverlapsPCoA <- ordiplot(PactFeatureOverlapsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "", xaxt = "n", yaxt = "n") #Use ordiplot to create base biplot. Do not add any points
+fig.PactFeatureOverlapsPCoA <- ordiplot(PactFeatureOverlapsPCoA, choices = c(1,2), type = "none", display = "sites", cex = 0.5, xlab = "", ylab = "") #Use ordiplot to create base biplot. Do not add any points
 points(fig.PactFeatureOverlapsPCoA, "sites", col = c(rep(plotColors[1], times = 3), rep(plotColors[4], times = 3), rep(plotColors[7], times = 3)), pch = c(rep(16, times = 3), rep(17, times = 3), rep(18, times = 3)), cex = 2) #Add each sample. Green = WGBS, purple = RRBS, orange = MBDBS.
-
-#Add multiple white boxes on top of the default black box to manually change the color
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
-box(col = "white")
 
 ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "WGBS", col = plotColors[2]) #Add confidence ellipse around WGBS samples
 ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-
-axis(side =  1, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add x-axis
-mtext(side = 1, text = "PCoA 1 (82.5%)", line = 3.5, cex = 1.5) #Add x-axis label
-
-axis(side =  2, labels = TRUE, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, text = "PCoA 2 (15.0%)", line = 3.5, cex = 1.5) #Add y-axis label
+mtext(side = 1, text = "PCoA 1 (82.5%)", line = 3, cex = 1) #Add x-axis label
+mtext(side = 2, text = "PCoA 2 (15.0%)", line = 3, cex = 1) #Add y-axis label
 
 plot(vec.PactFeatureOverlapsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
 
