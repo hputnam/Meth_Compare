@@ -1345,7 +1345,7 @@ tail(plotCustomization) #Confirm dataframe creation
 
 ```{r}
 pdf("../Output/Supp-PCoA-Multipanel.pdf", height = 8.5, width = 11) #Save plot
-par(mfrow = c(2, 2), oma = c(3, 3, 2, 0), mar = c(3, 3, 3, 5)) #Set up parameters for multipanel plot
+par(mfrow = c(2, 2), oma = c(3, 3, 2, 0), mar = c(3, 3, 4, 5)) #Set up parameters for multipanel plot
 
 #Mcap methylation status
 
@@ -1356,12 +1356,12 @@ ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.group
 ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(McapCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
+plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "grey20", labels = c("High", "Moderate", "Low") ) #Plot loadings that are significant at the 0.05 level
 
 mtext(side = 1, text = "PCoA 1 (83.1%)", line = 3, cex = 1) #Add x-axis label
 mtext(side = 2, text = "PCoA 2 (16.9%)", line = 3, cex = 1) #Add y-axis label
 
-title(expression(paste(bold("A. "), bolditalic("M. capitata"))), cex = 1.5, adj = 0, line = 1) #Add panel and species name
+title(expression(paste(bold("A. "), bolditalic("M. capitata "))), cex = 1.5, adj = 0, line = 1) #Add panel and species name
 
 #Mcap genomic location
 
@@ -1372,7 +1372,7 @@ ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.g
 ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(McapFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-plot(vec.McapFeatureOverlapsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
+plot(vec.McapFeatureOverlapsPCoA, p.max = 0.05, col = "grey20", labels = c("CDS", "Introns", "Upstream", "Downstream", "Intergenic") ) #Plot loadings that are significant at the 0.05 level
 
 mtext(side = 1, text = "PCoA 1 (92.3%)", line = 3, cex = 1) #Add x-axis label
 mtext(side = 2, text = "PCoA 2 (7.4%)", line = 3, cex = 1) #Add y-axis label
@@ -1388,7 +1388,7 @@ ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.group
 ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(PactCpGPercentsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
+plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "grey20", labels = c("High", "Moderate", "Low") ) #Plot loadings that are significant at the 0.05 level
 
 mtext(side = 1, text = "PCoA 1 (97.9%)", line = 3, cex = 1) #Add x-axis label
 mtext(side = 2, text = "PCoA 2 (2.1%)", line = 3, cex = 1) #Add y-axis label
@@ -1404,7 +1404,7 @@ ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.g
 ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "RRBS", col = plotColors[5]) #Add confidence ellipse around RRBS samples
 ordiellipse(PactFeatureOverlapsPCoA, plotCustomization$sampleInformation, show.groups = "MBDBS", col = plotColors[8]) #Add confidence ellipse around MBDBS samples
 
-plot(vec.PactFeatureOverlapsPCoA, p.max = 0.05, col = "black") #Plot loadings that are significant at the 0.05 level
+plot(vec.PactFeatureOverlapsPCoA, p.max = 0.05, col = "grey20", labels = c("CDS", "  Introns", "    Upstream", "Downstream", "Intergenic") ) #Plot loadings that are significant at the 0.05 level
 
 mtext(side = 1, text = "PCoA 1 (82.5%)", line = 3, cex = 1) #Add x-axis label
 mtext(side = 2, text = "PCoA 2 (15.0%)", line = 3, cex = 1) #Add y-axis label
