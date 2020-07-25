@@ -1344,7 +1344,7 @@ tail(plotCustomization) #Confirm dataframe creation
 ## Create plot
 
 ```{r}
-pdf("../Output/Supp-PCoA-Multipanel.pdf", height = 8.5, width = 11) #Save plot
+#pdf("../Output/Supp-PCoA-Multipanel.pdf", height = 8.5, width = 11) #Save plot
 par(mfrow = c(2, 2), oma = c(3, 3, 2, 0), mar = c(3, 3, 4, 5)) #Set up parameters for multipanel plot
 
 #Mcap methylation status
@@ -1362,6 +1362,13 @@ mtext(side = 1, text = "PCoA 1 (83.1%)", line = 3, cex = 1) #Add x-axis label
 mtext(side = 2, text = "PCoA 2 (16.9%)", line = 3, cex = 1) #Add y-axis label
 
 title(expression(paste(bold("A. "), bolditalic("M. capitata "))), cex = 1.5, adj = 0, line = 1) #Add panel and species name
+
+legend("bottomleft", 
+       pch = c(16, 17, 18), 
+       legend = c("WGBS", "RRBS", "MBDBS"), 
+       col = c(plotColors[1], plotColors[4], plotColors[7]),
+       y.intersp = 1, x.intersp = 1,
+       cex = 1, bty = "n") #Add a legend
 
 #Mcap genomic location
 
@@ -1411,7 +1418,7 @@ mtext(side = 2, text = "PCoA 2 (15.0%)", line = 3, cex = 1) #Add y-axis label
 
 title(expression(paste(bold("D. "), bolditalic("P. acuta"))), cex = 1.5, adj = 0, line = 1) #Add panel and species name
 
-dev.off()
+#dev.off()
 ```
 
 
