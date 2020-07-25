@@ -274,10 +274,10 @@ par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
 legend(x = 0.57, y = 0.90, 
        xpd = TRUE,
-       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
+       legend = rev(c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)"))),
        pch = 22, 
         col = "black", 
-        pt.bg = c("grey20", "grey50", "grey80"),
+        pt.bg = rev(c("grey20", "grey50", "grey80")),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
@@ -933,10 +933,10 @@ par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
 legend(x = 0.57, y = 0.91, 
        xpd = TRUE,
-       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       legend = rev(c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic")),
        pch = 22, 
         col = "black", 
-        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+        pt.bg = rev(c("grey20", "grey40", "grey60", "grey80", "grey100")),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
