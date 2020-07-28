@@ -274,10 +274,10 @@ par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
 legend(x = 0.57, y = 0.90, 
        xpd = TRUE,
-       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
+       legend = rev(c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)"))),
        pch = 22, 
         col = "black", 
-        pt.bg = c("grey20", "grey50", "grey80"),
+        pt.bg = rev(c("grey20", "grey50", "grey80")),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
@@ -543,12 +543,12 @@ par(mar = c(5, 8, 1, 1),  oma = c(1, 5, 1, 1)) #Change figure boundaries
 barsMcap <- barplot(t(McapFeatureOverlapMethProps),
                     beside = TRUE, horiz = TRUE,
                     col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
-                    xlim = c(0,10),
+                    xlim = c(0,8),
                     axes = FALSE, names.arg = rep("", times = 5)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
 
 axis(side = 2, at = barsMcap[2,], labels = row.names(McapFeatureOverlapMethProps), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
 
-axis(side = 1, at = seq(from = 0, to = 10, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+axis(side = 1, at = seq(from = 0, to = 8, by = 2), cex = 1.2, col = "grey80") #Add x-axis
 mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
 
 legend("topright",
@@ -571,12 +571,12 @@ par(mar = c(5, 8, 1, 1),  oma = c(1, 0, 1, 1)) #Change figure boundaries
 barsMcap <- barplot(t(McapFeatureOverlapMethProps[-c(3,4),]),
                     beside = TRUE, horiz = TRUE,
                     col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
-                    xlim = c(0,10),
+                    xlim = c(0,8),
                     axes = FALSE, names.arg = rep("", times = 3)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
 
 axis(side = 2, at = barsMcap[2,], labels = row.names(McapFeatureOverlapMethProps[-c(3,4),]), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
 
-axis(side = 1, at = seq(from = 0, to = 10, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+axis(side = 1, at = seq(from = 0, to = 8, by = 2), cex = 1.2, col = "grey80") #Add x-axis
 mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
 
 legend("topright",
@@ -837,12 +837,12 @@ par(mar = c(5, 8, 1, 1),  oma = c(1, 5, 1, 1)) #Change figure boundaries
 barsPact <- barplot(t(PactFeatureOverlapMethProps),
                     beside = TRUE, horiz = TRUE,
                     col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
-                    xlim = c(0,20),
+                    xlim = c(0,6),
                     axes = FALSE, names.arg = rep("", times = 5)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
 
 axis(side = 2, at = barsPact[2,], labels = row.names(PactFeatureOverlapMethProps), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
 
-axis(side = 1, at = seq(from = 0, to = 20, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+axis(side = 1, at = seq(from = 0, to = 6, by = 2), cex = 1.2, col = "grey80") #Add x-axis
 mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
 
 legend("topright",
@@ -865,12 +865,12 @@ par(mar = c(5, 8, 1, 1),  oma = c(1, 0, 1, 1)) #Change figure boundaries
 barsPact <- barplot(t(PactFeatureOverlapMethProps[-c(3,4),]),
                     beside = TRUE, horiz = TRUE,
                     col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
-                    xlim = c(0,20),
+                    xlim = c(0,6),
                     axes = FALSE, names.arg = rep("", times = 3)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
 
 axis(side = 2, at = barsPact[2,], labels = row.names(PactFeatureOverlapMethProps[-c(3,4),]), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
 
-axis(side = 1, at = seq(from = 0, to = 20, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+axis(side = 1, at = seq(from = 0, to = 6, by = 2), cex = 1.2, col = "grey80") #Add x-axis
 mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
 
 legend("topright",
@@ -933,10 +933,10 @@ par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #
 plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
 legend(x = 0.57, y = 0.91, 
        xpd = TRUE,
-       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       legend = rev(c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic")),
        pch = 22, 
         col = "black", 
-        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+        pt.bg = rev(c("grey20", "grey40", "grey60", "grey80", "grey100")),
        bty = "n",
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
