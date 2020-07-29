@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-In this script, I'll create summary tables and figures for genome feature identification of various CpG categories. I'll also run statistical analyses to determine if distributions differ between these datasets.
+In this script, I'll create summary tables for genome feature identification of various CpG categories.
 
 # Install packages
 
