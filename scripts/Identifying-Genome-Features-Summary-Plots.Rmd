@@ -9,16 +9,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In this script, I'll create summary tables for genome feature identification of various CpG categories.
 
-# Install packages
-
-```{r}
-#install.packages("RColorBrewer")
-require(RColorBrewer) #Load RColorBrewer
-
-#install.packages("dichromat")
-require(dichromat)
-```
-
 # Session information
 
 ```{r}
