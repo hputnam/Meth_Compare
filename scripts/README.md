@@ -2,13 +2,6 @@
 
 Scripts are organized in the order they should be run.
 
-- [Generating-Genome-Feature-Tracks.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Generating-Genome-Feature-Tracks.ipynb): Create gene, CDS, intron, flanking region, and intergenic feature tracks for *M. capitata* and *P. acuta* genomes
-- [Characterizing-CpG-Methylation-5x.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb): Characterize methylation status and genomic locations of CpGs in individual sample data for both species using `bedtools`
-- [Characterizing-CpG-Methylation-5x-Union.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x-Union.ipynb): Characterize methylation status and genomic locations of CpGs from 5x union bedgraphs for both species using `bedtools`
-- [Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd): Create summary tables and stacked barplots to understand methylation status and genomic locations of 5x union CpGs in both species
-- [Identifying-Genomic-Locations.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genomic-Locations.ipynb): Characterize genomic locations of CpGs in upset plots and method-associated DMC using `bedtools`
-- [Identifying-Genome-Features-Summary-Plots.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genome-Features-Summary-Plots.Rmd): Create summary tables and perform statistical tests to compare CpG locations in various method-associated DMC categories
-
 ## Quality Control
 - [MethCompare_MultiQC.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/MethCompare_MultiQC.ipynb):  Script used to run MultiQC on FastQC output for trimmed BS reads that generates the input files for [FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/FormatMultiQC/FormatMultiQC.Rmd)
 - [FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/FormatMultiQC.Rmd):  This script produces Table 1 and Supplementary Tables X-X from MultiQC output files, including lambda alignments. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH.
@@ -41,4 +34,11 @@ Scripts are organized in the order they should be run.
 - [Generate\_UpsetPlot\_input.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Generate_UpsetPlot_input.ipynb):  This script sorts and merges by method sample bedgraphs of CpG loci with 5x coverage for each species. It then generates a union bed file for each species from merged begraphs, and genome CpG bedgraph (contains all CpG loci in the genome).
 - [GenerateUpsetPlot.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/GenerateUpsetPlot.Rmd):  This script generates an upset plot from the union bed graph for each species.
 
+## Methylation status and genomic locations
 
+- [Generating-Genome-Feature-Tracks.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Generating-Genome-Feature-Tracks.ipynb): Create gene, CDS, intron, flanking region, and intergenic feature tracks for *M. capitata* and *P. acuta* genomes
+- [Characterizing-CpG-Methylation-5x.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x.ipynb): Characterize methylation status and genomic locations of CpGs in individual sample data for both species using `bedtools`
+- [Characterizing-CpG-Methylation-5x-Union.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x-Union.ipynb): Characterize methylation status and genomic locations of CpGs from 5x union bedgraphs for both species using `bedtools`
+- [Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd): Create summary tables and stacked barplots to understand methylation status and genomic locations of 5x union CpGs in both species
+- [Identifying-Genomic-Locations.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genomic-Locations.ipynb): Characterize genomic locations of CpGs in upset plots and method-associated DMC using `bedtools`
+- [Identifying-Genome-Features-Summary-Plots.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genome-Features-Summary-Plots.Rmd): Create summary tables for upset plot data and various method-associated DMC categories
