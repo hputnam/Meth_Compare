@@ -289,37 +289,6 @@ head(McapUpsetFeatureOverlapsPercents) #Confirm calculations
 write.table(McapUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
-### Create plot
-
-```{r}
-#pdf("../Output/Mcap-Upset-Feature-Overlaps.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(0, 1, 1, 11)) #Change figure boundaries
-
-barplot(t(t(McapUpsetFeatureOverlapsPercents)), 
-        col= c("grey20", "grey40", "grey60", "grey80", "grey100"), 
-        axes = FALSE, 
-        names.arg = c("G", "WRM", "WR", "WM", "RM", "W", "R", "M", "None"), cex.names = 1.2,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-
-par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
-plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.57, y = 0.835, 
-       xpd = TRUE,
-       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
-       pch = 22, 
-        col = "black", 
-        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
-       bty = "n",
-       cex = 1.5, 
-       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Genome Feature", x = 0.785, y = 0.835, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
-```
-
 ## Pact
 
 ### Import file counts
@@ -406,35 +375,4 @@ head(PactUpsetFeatureOverlapsPercents) #Confirm calculations
 
 ```{r}
 write.table(PactUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
-```
-
-### Create plot
-
-```{r}
-#pdf("../Output/Pact-Upset-Feature-Overlaps.pdf", height = 8.5, width = 11)
-par(mar = c(3,5,0,1), oma = c(0, 1, 1, 11)) #Change figure boundaries
-
-barplot(t(t(PactUpsetFeatureOverlapsPercents)), 
-        col= c("grey20", "grey40", "grey60", "grey80", "grey100"), 
-        axes = FALSE, 
-        names.arg = c("G", "WRM", "WR", "WM", "RM", "W", "R", "M", "None"), cex.names = 1.2,
-        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
-
-axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
-mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
-
-par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
-plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
-legend(x = 0.57, y = 0.835, 
-       xpd = TRUE,
-       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
-       pch = 22, 
-        col = "black", 
-        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
-       bty = "n",
-       cex = 1.5, 
-       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
-text("Genome Feature", x = 0.785, y = 0.835, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
 ```
