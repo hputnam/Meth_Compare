@@ -1,3 +1,4 @@
-    2328 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paCDS
-    4676 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paCDS
-    7004 total
+    3421 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_RvM_TG50p.bed-paCDS
+    7328 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvM_TG50p.bed-paCDS
+    1102 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvR_TG50p.bed-paCDS
+   11851 total
