@@ -1,0 +1,368 @@
+---
+title: "Identifying Genome Features"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this script, I'll create summary tables for genome feature identification of various CpG categories.
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# DMC data
+
+## Mcap
+
+### Import file counts
+
+```{r}
+McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
+tail(McapGenomeFeatures) #Check import
+```
+
+```{r}
+McapDMCGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapDMCGeneOverlaps <- McapDMCGeneOverlaps[-4,] #Remove final row
+tail(McapDMCGeneOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapDMCCDSOverlaps <- McapDMCCDSOverlaps[-4,] #Remove final row
+tail(McapDMCCDSOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapDMCIntronsOverlaps <- McapDMCIntronsOverlaps[-4,] #Remove final row
+tail(McapDMCIntronsOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+McapDMCFlanksOverlaps <- McapDMCFlanksOverlaps[-4,] #Remove final row
+tail(McapDMCFlanksOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
+McapDMCUpstreamOverlaps <- McapDMCUpstreamOverlaps[-4,] #Remove final row
+tail(McapDMCUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
+McapDMCDownstreamOverlaps <- McapDMCDownstreamOverlaps[-4,] #Remove final row
+tail(McapDMCDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapDMCIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-data-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapDMCIntergenicOverlaps <- McapDMCIntergenicOverlaps[-4,] #Remove final row
+tail(McapDMCIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+McapDMCFeatureOverlaps <- cbind(McapDMCGeneOverlaps,
+                                McapDMCCDSOverlaps,
+                                McapDMCIntronsOverlaps,
+                                McapDMCFlanksOverlaps,
+                                McapDMCUpstreamOverlaps,
+                                McapDMCDownstreamOverlaps,
+                                McapDMCIntergenicOverlaps) #Use cbind to combine individual dataframes
+McapDMCFeatureOverlaps <- McapDMCFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+McapDMCFeatureOverlaps <- data.frame(t(McapDMCFeatureOverlaps)) #Transpose dataframe
+row.names(McapDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add row names
+colnames(McapDMCFeatureOverlaps) <- c("RvM", "WvM", "WvR") #Add column names based on original files
+McapDMCFeatureOverlaps$allCpGs <- McapGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+head(McapDMCFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+write.table(McapDMCFeatureOverlaps, "../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-Feature-Overlap-counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+```{r}
+McapDMCFeatureOverlapsPercents <- McapDMCFeatureOverlaps[-c(1,4),] #Remove gene overlap information and save as a new dataframe
+for (i in 1:length(McapDMCFeatureOverlapsPercents)) {
+  McapDMCFeatureOverlapsPercents[,i] <- (McapDMCFeatureOverlapsPercents[,i] / sum(McapDMCFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(McapDMCFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(McapDMCFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Mcap/Mcap-DMC-Feature-Overlap-percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+## Pact
+
+### Import line counts
+
+```{r}
+PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
+tail(PactGenomeFeatures) #Check import
+```
+
+```{r}
+PactDMCGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactDMCGeneOverlaps <- PactDMCGeneOverlaps[-4,] #Remove final row
+tail(PactDMCGeneOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactDMCCDSOverlaps <- PactDMCCDSOverlaps[-4,] #Remove final row
+tail(PactDMCCDSOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactDMCIntronsOverlaps <- PactDMCIntronsOverlaps[-4,] #Remove final row
+tail(PactDMCIntronsOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+PactDMCFlanksOverlaps <- PactDMCFlanksOverlaps[-4,] #Remove final row
+tail(PactDMCFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
+PactDMCUpstreamOverlaps <- PactDMCUpstreamOverlaps[-4,] #Remove final row
+tail(PactDMCUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
+PactDMCDownstreamOverlaps <- PactDMCDownstreamOverlaps[-4,] #Remove final row
+tail(PactDMCDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactDMCIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-DMC-data-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactDMCIntergenicOverlaps <- PactDMCIntergenicOverlaps[-4,] #Remove final row
+tail(PactDMCIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+PactDMCFeatureOverlaps <- cbind(PactDMCGeneOverlaps,
+                                PactDMCCDSOverlaps,
+                                PactDMCIntronsOverlaps,
+                                PactDMCFlanksOverlaps,
+                                PactDMCUpstreamOverlaps,
+                                PactDMCDownstreamOverlaps,
+                                PactDMCIntergenicOverlaps) #Use cbind to combine individual dataframes
+PactDMCFeatureOverlaps <- PactDMCFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+PactDMCFeatureOverlaps <- data.frame(t(PactDMCFeatureOverlaps)) #Transpose dataframe
+row.names(PactDMCFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add row names
+colnames(PactDMCFeatureOverlaps) <- c("RvM", "WvM", "WvR") #Add column names based on original files
+PactDMCFeatureOverlaps$allCpGs <- PactGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+head(PactDMCFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+write.table(PactDMCFeatureOverlaps, "../analyses/Identifying-genomic-locations/Pact/Pact-DMC-Feature-Overlap-counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+```{r}
+PactDMCFeatureOverlapsPercents <- PactDMCFeatureOverlaps[-c(1,4),] #Remove gene overlap information and save as a new dataframe
+for (i in 1:length(PactDMCFeatureOverlapsPercents)) {
+  PactDMCFeatureOverlapsPercents[,i] <- (PactDMCFeatureOverlapsPercents[,i] / sum(PactDMCFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(PactDMCFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(PactDMCFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Pact/Pact-DMC-Feature-Overlap-percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+# Upset plot data
+
+## Mcap
+
+### Import file counts
+
+```{r}
+McapUpsetGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapUpsetGeneOverlaps <- McapUpsetGeneOverlaps[-9,] #Remove final row
+tail(McapUpsetGeneOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapUpsetCDSOverlaps <- McapUpsetCDSOverlaps[-9,] #Remove final row
+tail(McapUpsetCDSOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapUpsetIntronsOverlaps <- McapUpsetIntronsOverlaps[-9,] #Remove final row
+tail(McapUpsetIntronsOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+McapUpsetFlanksOverlaps <- McapUpsetFlanksOverlaps[-9,] #Remove final row
+tail(McapUpsetFlanksOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+McapUpsetUpstreamOverlaps <- McapUpsetUpstreamOverlaps[-9,] #Remove final row
+tail(McapUpsetUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flank overlaps
+McapUpsetDownstreamOverlaps <- McapUpsetDownstreamOverlaps[-9,] #Remove final row
+tail(McapUpsetDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapUpsetIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapUpsetIntergenicOverlaps <- McapUpsetIntergenicOverlaps[-9,] #Remove final row
+tail(McapUpsetIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+McapUpsetFeatureOverlaps <- cbind(McapUpsetGeneOverlaps,
+                                McapUpsetCDSOverlaps,
+                                McapUpsetIntronsOverlaps,
+                                McapUpsetFlanksOverlaps,
+                                McapUpsetUpstreamOverlaps,
+                                McapUpsetDownstreamOverlaps,
+                                McapUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+colnames(McapUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add column names
+row.names(McapUpsetFeatureOverlaps) <- c("MBD",
+                                         "RRBS.MBD",
+                                         "RRBS",
+                                         "WGBS.MBD",
+                                         "WGBS.RRBS.MBD",
+                                         "WGBS.RRBS",
+                                         "WGBS",
+                                         "None") #Add rownames based on original files
+McapUpsetFeatureOverlaps <- data.frame(t(McapUpsetFeatureOverlaps)) #Transpose dataframe
+McapUpsetFeatureOverlaps$allCpGs <- McapGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+McapUpsetFeatureOverlaps <- McapUpsetFeatureOverlaps[,c(9,5,6,4,2,7,3,1,8)] #Reorganize columns
+tail(McapUpsetFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+write.table(McapUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
+McapUpsetFeatureOverlapsPercents <- McapUpsetFeatureOverlaps[-c(1,4),] #Duplicate but without gene and total flank information
+for (i in 1:length(McapUpsetFeatureOverlapsPercents)) {
+  McapUpsetFeatureOverlapsPercents[,i] <- (McapUpsetFeatureOverlapsPercents[,i] / sum(McapUpsetFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(McapUpsetFeatureOverlapsPercents) #Confirm calculations
+```
+
+```{r}
+write.table(McapUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Mcap/Mcap-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+## Pact
+
+### Import file counts
+
+```{r}
+PactUpsetGeneOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactUpsetGeneOverlaps <- PactUpsetGeneOverlaps[-9,] #Remove final row
+tail(PactUpsetGeneOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetCDSOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactUpsetCDSOverlaps <- PactUpsetCDSOverlaps[-9,] #Remove final row
+tail(PactUpsetCDSOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetIntronsOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactUpsetIntronsOverlaps <- PactUpsetIntronsOverlaps[-9,] #Remove final row
+tail(PactUpsetIntronsOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetFlanksOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+PactUpsetFlanksOverlaps <- PactUpsetFlanksOverlaps[-9,] #Remove final row
+tail(PactUpsetFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetUpstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+PactUpsetUpstreamOverlaps <- PactUpsetUpstreamOverlaps[-9,] #Remove final row
+tail(PactUpsetUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetDownstreamOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flank overlaps
+PactUpsetDownstreamOverlaps <- PactUpsetDownstreamOverlaps[-9,] #Remove final row
+tail(PactUpsetDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactUpsetIntergenicOverlaps <- read.table("../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactUpsetIntergenicOverlaps <- PactUpsetIntergenicOverlaps[-9,] #Remove final row
+tail(PactUpsetIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+PactUpsetFeatureOverlaps <- cbind(PactUpsetGeneOverlaps,
+                                  PactUpsetCDSOverlaps,
+                                  PactUpsetIntronsOverlaps,
+                                  PactUpsetFlanksOverlaps,
+                                  PactUpsetUpstreamOverlaps,
+                                  PactUpsetDownstreamOverlaps,
+                                  PactUpsetIntergenicOverlaps) #Use cbind to combine individual dataframes
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(seq(1,14,2))] #Only keep count columns
+colnames(PactUpsetFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Add column names
+row.names(PactUpsetFeatureOverlaps) <- c("MBD",
+                                         "RRBS.MBD",
+                                         "RRBS",
+                                         "WGBS.MBD",
+                                         "WGBS.RRBS.MBD",
+                                         "WGBS.RRBS",
+                                         "WGBS",
+                                         "None") #Add rownames based on original files
+PactUpsetFeatureOverlaps <- data.frame(t(PactUpsetFeatureOverlaps)) #Transpose dataframe
+PactUpsetFeatureOverlaps$allCpGs <- PactGenomeFeatures[c(5,1,7,3,4,2,6),1] #Add genome information
+PactUpsetFeatureOverlaps <- PactUpsetFeatureOverlaps[,c(9,5,6,4,2,7,3,1,8)] #Reorganize columns
+tail(PactUpsetFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+write.table(PactUpsetFeatureOverlaps, "../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-Feature-Overlap-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
+PactUpsetFeatureOverlapsPercents <- PactUpsetFeatureOverlaps[-c(1,4),] #Duplicate but without gene and total flank information
+for (i in 1:length(PactUpsetFeatureOverlapsPercents)) {
+  PactUpsetFeatureOverlapsPercents[,i] <- (PactUpsetFeatureOverlapsPercents[,i] / sum(PactUpsetFeatureOverlapsPercents[,i])) * 100
+} #Calculate percentages
+head(PactUpsetFeatureOverlapsPercents) #Confirm calculations
+```
+
+```{r}
+write.table(PactUpsetFeatureOverlapsPercents, "../analyses/Identifying-genomic-locations/Pact/Pact-upset-data-Feature-Overlap-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```

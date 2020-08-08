@@ -1,3 +1,4 @@
-    1301 ../../Pact_methDiff/Pact_RvM_50pMethDiff.bed-paFlanksUpstream
-    2372 ../../Pact_methDiff/Pact_WvM_50pMethDiff.bed-paFlanksUpstream
-    3673 total
+    1817 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_RvM_TG50p.bed-paFlanksUpstream
+    3767 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvM_TG50p.bed-paFlanksUpstream
+     401 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvR_TG50p.bed-paFlanksUpstream
+    5985 total

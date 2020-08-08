@@ -1,0 +1,947 @@
+---
+title: "Chacterizing CpG Methylation (5x Union Data)"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this script, I'll create summary tables and figures to characterize CpG methylation in *M. capitata* and *P. acuta* 5x union bedgraphs for WGBS, RRBS, and MBDBS.
+
+# Install packages
+
+```{r}
+#install.packages("RColorBrewer")
+require(RColorBrewer) #Load RColorBrewer
+
+#install.packages("dichromat")
+require(dichromat)
+```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# CpG distributions
+
+## Mcap
+
+### Import file counts
+
+```{r}
+McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapAll <- McapAll[-4,] #Remove last row (total lines for all files)
+tail(McapAll) #Confirm import
+```
+
+```{r}
+McapMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapMeth <- McapMeth[-4,] #Remove last row (total lines for all files)
+tail(McapMeth) #Confirm import
+```
+
+```{r}
+McapSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapSparseMeth <- McapSparseMeth[-4,] #Remove last row (total lines for all files)
+tail(McapSparseMeth) #Confirm import
+```
+
+```{r}
+McapUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapUnMeth <- McapUnMeth[-4,] #Remove last row (total lines for all files)
+tail(McapUnMeth) #Confirm import
+```
+
+### Create summary table
+
+```{r}
+McapCpGType <- cbind(McapAll, McapMeth, McapSparseMeth, McapUnMeth) #Mash tables together by column
+McapCpGType <- McapCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(McapCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+McapCpGType <- McapCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
+tail(McapCpGType) #Confirm table mashing
+```
+
+```{r}
+McapCpGType$percentMeth <- (McapCpGType$Meth / McapCpGType$totalLines) * 100 #Calculate percent methylated loci
+McapCpGType$percentSparseMeth <- (McapCpGType$sparseMeth / McapCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+McapCpGType$percentUnMeth <- (McapCpGType$unMeth / McapCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+McapCpGType <- McapCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(McapCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+### Create plot
+
+```{r}
+McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only percent information
+head(McapCpGTypePercents) #Confirm changes
+```
+
+```{r}
+plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
+                rev(RColorBrewer::brewer.pal(3, "Purples")), 
+                rev(RColorBrewer::brewer.pal(3, "Oranges"))) #Create vector of WGBS, RRBS, and MBD colors
+
+barplot(t(McapCpGTypePercents), col = c(rev(RColorBrewer::brewer.pal(3, "Greens")))) #Check greens
+barplot(t(McapCpGTypePercents), col = c(rev(RColorBrewer::brewer.pal(3, "Purples")))) #Check blues
+barplot(t(McapCpGTypePercents), col = c(rev(RColorBrewer::brewer.pal(3, "Oranges")))) #Check reds
+
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Greens"))))) #Check greens
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Purples"))))) #Check blues
+barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3, "Oranges"))))) #Check reds
+```
+
+```{r}
+#pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
+
+barplot(t(McapCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(McapCpGTypePercents))){
+    xx <- t(McapCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.54, y = 0.87, 
+       xpd = TRUE,
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey50", "grey80"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+## Pact
+
+### Import file counts
+
+```{r}
+PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- PactAll[-4,] #Remove last row (total lines for all files)
+tail(PactAll) #Confirm import
+```
+
+```{r}
+PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- PactMeth[-4,] #Remove last row (total lines for all files)
+tail(PactMeth) #Confirm import
+```
+
+```{r}
+PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- PactSparseMeth[-4,] #Remove last row (total lines for all files)
+tail(PactSparseMeth) #Confirm import
+```
+
+```{r}
+PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- PactUnMeth[-4,] #Remove last row (total lines for all files)
+tail(PactUnMeth) #Confirm import
+```
+
+### Create summary table
+
+```{r}
+PactCpGType <- cbind(PactAll, PactMeth, PactSparseMeth, PactUnMeth) #Mash tables together by column
+PactCpGType <- PactCpGType[,-c(2,4,6,8)] #Remove filename columns
+rownames(PactCpGType) <- c("MBDBS", "RRBS", "WGBS") #Add rownames
+PactCpGType <- PactCpGType[c(3,2,1),] #Order rows: WGBS, RRBS, MBDBS
+tail(PactCpGType) #Confirm table mashing
+```
+
+```{r}
+PactCpGType$percentMeth <- (PactCpGType$Meth / PactCpGType$totalLines) * 100 #Calculate percent methylated loci
+PactCpGType$percentSparseMeth <- (PactCpGType$sparseMeth / PactCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
+PactCpGType$percentUnMeth <- (PactCpGType$unMeth / PactCpGType$totalLines) * 100 #Calculate percent unmethylated loci
+PactCpGType <- PactCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+tail(PactCpGType) #Confirm calculations
+```
+
+```{r}
+write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+```
+
+### Create plot
+
+```{r}
+PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only percent information
+head(PactCpGTypePercents) #Confirm changes
+```
+
+```{r}
+#pdf("../Output/Pact_union-CpG-Type.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
+
+barplot(t(PactCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(PactCpGTypePercents))){
+    xx <- t(PactCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.54, y = 0.87, 
+       xpd = TRUE,
+       legend = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)")),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey50", "grey80"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+## Create multipanel plot
+
+```{r}
+#pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
+
+#Mcap
+barplot(t(McapCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(McapCpGTypePercents))){
+    xx <- t(McapCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste(bold("A. "), bolditalic("M. capitata"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
+
+#Pact
+barplot(t(PactCpGTypePercents), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:ncol(t(PactCpGTypePercents))){
+    xx <- t(PactCpGTypePercents)
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors[(3*i)-2], plotColors[(3*i)-1], plotColors[(3*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste(bold("B. "), bolditalic("P. acuta"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.90, 
+       xpd = TRUE,
+       legend = rev(c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Low ("<="10%)"))),
+       pch = 22, 
+        col = "black", 
+        pt.bg = rev(c("grey20", "grey50", "grey80")),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+# CpG feature overlaps
+
+## Mcap
+
+### Import file counts
+
+```{r}
+McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
+tail(McapGenomeFeatures) #Check import
+```
+
+```{r}
+McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapGeneOverlaps <- McapGeneOverlaps[-13,] #Remove final row
+tail(McapGeneOverlaps) #Confirm import
+```
+
+```{r}
+McapCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapCDSOverlaps <- McapCDSOverlaps[-13,] #Remove final row
+tail(McapCDSOverlaps) #Confirm import
+```
+
+```{r}
+McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapIntronsOverlaps <- McapIntronsOverlaps[-13,] #Remove final row
+tail(McapIntronsOverlaps) #Confirm import
+```
+
+```{r}
+McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksOverlaps <- McapFlanksOverlaps[-13,] #Remove final row
+tail(McapFlanksOverlaps) #Confirm import
+```
+
+```{r}
+McapFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-13,] #Remove final row
+tail(McapFlanksUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksDownstreamOverlaps <- McapFlanksDownstreamOverlaps[-13,] #Remove final row
+tail(McapFlanksDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapIntergenicOverlaps <- McapIntergenicOverlaps[-13,] #Remove final row
+tail(McapIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+McapFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 7),
+                                  "MBDBSMeth" = rep(0, times = 7),
+                                  "MBDBSsparseMeth" = rep(0, times = 7),
+                                  "MBDBSunMeth" = rep(0, times = 7),
+                                  "MBDBS" = rep(0, times = 7),
+                                  "RRBSMeth" = rep(0, times = 7),
+                                  "RRBSsparseMeth" = rep(0, times = 7),
+                                  "RRBSunMeth" = rep(0, times = 7),
+                                  "RRBS" = rep(0, times = 7),
+                                  "WGBSMeth" = rep(0, times = 7),
+                                  "WGBSsparseMeth" = rep(0, times = 7),
+                                  "WGBSunMeth" = rep(0, times = 7),                                  
+                                  "WGBS" = rep(0, times = 7)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(McapFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanking Regions", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
+head(McapFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+McapFeatureOverlaps$allCpGs <- c(McapGenomeFeatures$counts[5],
+                                 McapGenomeFeatures$counts[1],
+                                 McapGenomeFeatures$counts[7],
+                                 McapGenomeFeatures$counts[3],
+                                 McapGenomeFeatures$counts[4],
+                                 McapGenomeFeatures$counts[2],
+                                 McapGenomeFeatures$counts[6]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
+head(McapFeatureOverlaps) #Confirm modification
+```
+
+```{r}
+for (i in 1:length(McapGeneOverlaps$counts)) {
+  McapFeatureOverlaps[1,i+1] <- McapGeneOverlaps[i,1]
+  McapFeatureOverlaps[2,i+1] <- McapCDSOverlaps[i,1]
+  McapFeatureOverlaps[3,i+1] <- McapIntronsOverlaps[i,1]
+  McapFeatureOverlaps[4,i+1] <- McapFlanksOverlaps[i,1]
+  McapFeatureOverlaps[5,i+1] <- McapFlanksUpstreamOverlaps[i,1]
+  McapFeatureOverlaps[6,i+1] <- McapFlanksDownstreamOverlaps[i,1]
+  McapFeatureOverlaps[7,i+1] <- McapIntergenicOverlaps[i,1]
+} #For each table with feature overlap information, paste the contents of the count column in the assigned row
+tail(McapFeatureOverlaps) #Check summary table
+```
+
+```{r}
+write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+### Create plot
+
+```{r}
+McapFeatureOverlapsPercents <- McapFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
+for (i in 1:length(McapFeatureOverlaps)) {
+  McapFeatureOverlapsPercents[,i] <- (McapFeatureOverlapsPercents[,i] / (sum(McapFeatureOverlapsPercents[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
+head(McapFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+```{r}
+plotColors2 <- c("grey20", "grey40", "grey60", "grey80", "grey100", 
+                rev(RColorBrewer::brewer.pal(5, "Greens")), 
+                rev(RColorBrewer::brewer.pal(5, "Purples")), 
+                rev(RColorBrewer::brewer.pal(5, "Oranges"))) #Create vector of all, WGBS, RRBS, and MBD colors
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Greens"))))) #Check greens
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Purples"))))) #Check blues
+barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::brewer.pal(5, "Oranges"))))) #Check reds
+```
+
+#### All data
+
+```{r}
+#pdf("../Output/Mcap_union-CpG-Features.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
+
+barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.87, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+#### CpG feature overlap by methylation status
+
+```{r}
+#pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
+
+#High methylation
+barplot(t(t(McapFeatureOverlapsPercents[,c(10,6,2)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(10,6,2)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
+
+#Moderate methylation
+barplot(t(t(McapFeatureOverlapsPercents[,c(11,7,3)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(11,7,3)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
+
+#Low methylation
+barplot(t(t(McapFeatureOverlapsPercents[,c(12,8,4)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 2,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(12,8,4)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.73, y = 0.97, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+### Create comparative barplots
+
+```{r}
+McapFeatureOverlapMethProps <- data.frame("WBGS" = (McapFeatureOverlaps$WGBSMeth / McapFeatureOverlaps$allCpGs),
+                                          "RRBS" = (McapFeatureOverlaps$RRBSMeth / McapFeatureOverlaps$allCpGs),
+                                          "MBDBS" = (McapFeatureOverlaps$MBDBSMeth / McapFeatureOverlaps$allCpGs)) #Divide # strong meth loci by all CpGs in a feature to get proportions
+McapFeatureOverlapMethProps <- McapFeatureOverlapMethProps * 100 #Multiply by 100 to get percents
+row.names(McapFeatureOverlapMethProps) <- row.names(McapFeatureOverlaps) #Assign row names
+McapFeatureOverlapMethProps <- McapFeatureOverlapMethProps[-c(1,4),] #Remove genes and total flanks information
+head(McapFeatureOverlapMethProps) #Confirm proportions
+```
+
+```{r}
+#pdf("../Output/Mcap_union-StrongMeth-CpG-Features.pdf", width = 11, height = 8.5) #Save file
+par(mar = c(5, 8, 1, 1),  oma = c(1, 5, 1, 1)) #Change figure boundaries
+
+barsMcap <- barplot(t(McapFeatureOverlapMethProps),
+                    beside = TRUE, horiz = TRUE,
+                    col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+                    xlim = c(0,8),
+                    axes = FALSE, names.arg = rep("", times = 5)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
+
+axis(side = 2, at = barsMcap[2,], labels = row.names(McapFeatureOverlapMethProps), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
+
+axis(side = 1, at = seq(from = 0, to = 8, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
+
+legend("topright",
+       xpd = TRUE,
+       legend = c("WGBS", "RRBS", "MBDBS"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+       bty = "n",
+       cex = 1.5,
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+
+#dev.off()
+```
+
+```{r}
+#pdf("../Output/Mcap_union-StrongMeth-CpG-Features-NoFlanks.pdf", width = 11, height = 8.5) #Save file
+par(mar = c(5, 8, 1, 1),  oma = c(1, 0, 1, 1)) #Change figure boundaries
+
+barsMcap <- barplot(t(McapFeatureOverlapMethProps[-c(3,4),]),
+                    beside = TRUE, horiz = TRUE,
+                    col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+                    xlim = c(0,8),
+                    axes = FALSE, names.arg = rep("", times = 3)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
+
+axis(side = 2, at = barsMcap[2,], labels = row.names(McapFeatureOverlapMethProps[-c(3,4),]), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
+
+axis(side = 1, at = seq(from = 0, to = 8, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
+
+legend("topright",
+       xpd = TRUE,
+       legend = c("WGBS", "RRBS", "MBDBS"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+       bty = "n",
+       cex = 1.5,
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+
+#dev.off()
+```
+
+## Pact
+
+### Import file counts
+
+```{r}
+PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
+tail(PactGenomeFeatures) #Check import
+```
+
+```{r}
+PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactGeneOverlaps <- PactGeneOverlaps[-13,] #Remove final row
+tail(PactGeneOverlaps) #Confirm import
+```
+
+```{r}
+PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactCDSOverlaps <- PactCDSOverlaps[-13,] #Remove final row
+tail(PactCDSOverlaps) #Confirm import
+```
+
+```{r}
+PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactIntronsOverlaps <- PactIntronsOverlaps[-13,] #Remove final row
+tail(PactIntronsOverlaps) #Confirm import
+```
+
+```{r}
+PactFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactFlanksOverlaps <- PactFlanksOverlaps[-13,] #Remove final row
+tail(PactFlanksOverlaps) #Confirm import
+```
+
+```{r}
+PactFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactFlanksUpstreamOverlaps <- PactFlanksUpstreamOverlaps[-13,] #Remove final row
+tail(PactFlanksUpstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactFlanksDownstreamOverlaps <- PactFlanksDownstreamOverlaps[-13,] #Remove final row
+tail(PactFlanksDownstreamOverlaps) #Confirm import
+```
+
+```{r}
+PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactIntergenicOverlaps <- PactIntergenicOverlaps[-13,] #Remove final row
+tail(PactIntergenicOverlaps) #Confirm import
+```
+
+### Create summary tables
+
+```{r}
+PactFeatureOverlaps <- data.frame("allCpGs" = rep(0, times = 7),
+                                  "MBDBSMeth" = rep(0, times = 7),
+                                  "MBDBSsparseMeth" = rep(0, times = 7),
+                                  "MBDBSunMeth" = rep(0, times = 7),
+                                  "MBDBS" = rep(0, times = 7),
+                                  "RRBSMeth" = rep(0, times = 7),
+                                  "RRBSsparseMeth" = rep(0, times = 7),
+                                  "RRBSunMeth" = rep(0, times = 7),
+                                  "RRBS" = rep(0, times = 7),
+                                  "WGBSMeth" = rep(0, times = 7),
+                                  "WGBSsparseMeth" = rep(0, times = 7),
+                                  "WGBSunMeth" = rep(0, times = 7),                                  
+                                  "WGBS" = rep(0, times = 7)) #Create blank dataframe with information for various CpG categories and methylation status. Match columns to the order of columns in the overlap count files
+row.names(PactFeatureOverlaps) <- c("Genes", "CDS", "Introns", "Flanks", "Upstream Flanks", "Downstream Flanks", "Intergenic") #Assign row names
+head(PactFeatureOverlaps) #Confirm changes
+```
+
+```{r}
+PactFeatureOverlaps$allCpGs <- c(PactGenomeFeatures$counts[5],
+                                 PactGenomeFeatures$counts[1],
+                                 PactGenomeFeatures$counts[7],
+                                 PactGenomeFeatures$counts[3],
+                                 PactGenomeFeatures$counts[4],
+                                 PactGenomeFeatures$counts[2],
+                                 PactGenomeFeatures$counts[6]) #Assign information for CG motif overlaps with genome features. Use 0 for totalLines
+head(PactFeatureOverlaps) #Confirm modification
+```
+
+```{r}
+for (i in 1:length(PactGeneOverlaps$counts)) {
+  PactFeatureOverlaps[1,i+1] <- PactGeneOverlaps[i,1]
+  PactFeatureOverlaps[2,i+1] <- PactCDSOverlaps[i,1]
+  PactFeatureOverlaps[3,i+1] <- PactIntronsOverlaps[i,1]
+  PactFeatureOverlaps[4,i+1] <- PactFlanksOverlaps[i,1]
+  PactFeatureOverlaps[5,i+1] <- PactFlanksUpstreamOverlaps[i,1]
+  PactFeatureOverlaps[6,i+1] <- PactFlanksDownstreamOverlaps[i,1]
+  PactFeatureOverlaps[7,i+1] <- PactIntergenicOverlaps[i,1]
+} #For each table with feature overlap information, paste the contents of the count column in the assigned row
+tail(PactFeatureOverlaps) #Check summary table
+```
+
+```{r}
+write.table(PactFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+### Create stacked barplot
+
+```{r}
+PactFeatureOverlapsPercents <- PactFeatureOverlaps[-c(1,4),] #Duplicate dataframe but remove gene and total flank rows
+for (i in 1:length(PactFeatureOverlaps)) {
+  PactFeatureOverlapsPercents[,i] <- (PactFeatureOverlapsPercents[,i] / (sum(PactFeatureOverlapsPercents[,i]))) * 100
+} #Divide every entry by sum of the column and multiply by 100 to get percentages. Do not include gene information
+head(PactFeatureOverlapsPercents) #Check calculations
+```
+
+```{r}
+write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+```
+
+#### All data
+
+```{r}
+#pdf("../Output/Pact_union-CpG-Features.pdf", height = 8.5, width = 11)
+par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
+
+barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.87, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+#### CpG feature overlap by methylation status
+
+```{r}
+#pdf("../Output/Pact_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
+
+#High methylation
+barplot(t(t(PactFeatureOverlapsPercents[,c(10,6,2)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(10,6,2)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% High", line = 3, cex = 1.5) #Add y-axis label
+
+#Moderate methylation
+barplot(t(t(PactFeatureOverlapsPercents[,c(11,7,3)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", ""),
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(11,7,3)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Moderate", line = 3, cex = 1.5) #Add y-axis label
+
+#Low methylation
+barplot(t(t(PactFeatureOverlapsPercents[,c(12,8,4)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("WGBS", "RRBS", "MBDBS"), cex.names = 2,
+        ylim = c(0, 110)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs.
+
+for (i in 2:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(12,8,4)]))
+    xx[,-(i-1)] <- NA
+    colnames(xx)[-(i-1)] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% Low", line = 3, cex = 1.5) #Add y-axis label
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.73, y = 0.97, 
+       xpd = TRUE,
+       legend = c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c("grey20", "grey40", "grey60", "grey80", "grey100"),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
+### Create comparative barplots
+
+```{r}
+PactFeatureOverlapMethProps <- data.frame("WBGS" = (PactFeatureOverlaps$WGBSMeth / PactFeatureOverlaps$allCpGs),
+                                          "RRBS" = (PactFeatureOverlaps$RRBSMeth / PactFeatureOverlaps$allCpGs),
+                                          "MBDBS" = (PactFeatureOverlaps$MBDBSMeth / PactFeatureOverlaps$allCpGs)) #Divide # strong meth loci by all CpGs in a feature to get proportions
+PactFeatureOverlapMethProps <- PactFeatureOverlapMethProps * 100 #Multiply by 100 to get percents
+row.names(PactFeatureOverlapMethProps) <- row.names(PactFeatureOverlaps) #Assign row names
+PactFeatureOverlapMethProps <- PactFeatureOverlapMethProps[-c(1,4),] #Remove genes and total flanks information
+head(PactFeatureOverlapMethProps) #Confirm proportions
+```
+
+```{r}
+#pdf("../Output/Pact_union-StrongMeth-CpG-Features.pdf", width = 11, height = 8.5) #Save file
+par(mar = c(5, 8, 1, 1),  oma = c(1, 5, 1, 1)) #Change figure boundaries
+
+barsPact <- barplot(t(PactFeatureOverlapMethProps),
+                    beside = TRUE, horiz = TRUE,
+                    col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+                    xlim = c(0,6),
+                    axes = FALSE, names.arg = rep("", times = 5)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
+
+axis(side = 2, at = barsPact[2,], labels = row.names(PactFeatureOverlapMethProps), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
+
+axis(side = 1, at = seq(from = 0, to = 6, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
+
+legend("topright",
+       xpd = TRUE,
+       legend = c("WGBS", "RRBS", "MBDBS"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+       bty = "n",
+       cex = 1.5,
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+
+#dev.off()
+```
+
+```{r}
+#pdf("../Output/Pact_union-StrongMeth-CpG-Features-NoFlanks.pdf", width = 11, height = 8.5) #Save file
+par(mar = c(5, 8, 1, 1),  oma = c(1, 0, 1, 1)) #Change figure boundaries
+
+barsPact <- barplot(t(PactFeatureOverlapMethProps[-c(3,4),]),
+                    beside = TRUE, horiz = TRUE,
+                    col = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+                    xlim = c(0,6),
+                    axes = FALSE, names.arg = rep("", times = 3)) #Create a horizontal barplot with comparative proportions. Color based on sequencing method and do not include any axes. Use blanks as y-axis labels. Save barplot information.
+
+axis(side = 2, at = barsPact[2,], labels = row.names(PactFeatureOverlapMethProps[-c(3,4),]), tick = FALSE, las = 2, col = "grey80", cex.axis = 1.5) #Add y-axis labels at the center of grouped bars. Remove tick marks and change label orientation.
+
+axis(side = 1, at = seq(from = 0, to = 6, by = 2), cex = 1.2, col = "grey80") #Add x-axis
+mtext(side = 1, "Strongly Methylated CpGs/All CpGs (%)", line = 3, cex = 1.5) #Add x-axis label
+
+legend("topright",
+       xpd = TRUE,
+       legend = c("WGBS", "RRBS", "MBDBS"),
+       pch = 22, 
+        col = "black", 
+        pt.bg = c(plotColors2[7], plotColors2[12], plotColors2[17]),
+       bty = "n",
+       cex = 1.5,
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+
+#dev.off()
+```
+
+## Create multipanel plot
+
+```{r}
+#pdf("../Output/Union-CpG-Features-Multipanel.pdf", height = 8.5, width = 11)
+par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
+
+#Mcap
+barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("", "", "", ""), cex.names = 1.5,
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste(bold("A. "), bolditalic("M. capitata"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
+
+#Pact
+barplot(t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)])), 
+        col= "white", 
+        axes = FALSE, 
+        names.arg = c("Genome", "WGBS", "RRBS", "MBDBS"), cex.names = 1.5,
+        ylim = c(0, 113)) #Create base plot. Everything should be white. Do not plot axes. Include sequencing type as labels and set size. Set y-axis specs. 
+
+for (i in 1:4) {
+    xx <- t(t(PactFeatureOverlapsPercents[,c(1,13,9,5)]))
+    xx[,-i] <- NA
+    colnames(xx)[-i] <- NA
+    barplot(xx, col = c(plotColors2[(5*i)-4], plotColors2[(5*i)-3], plotColors2[(5*i)-2], plotColors2[(5*i)-1], plotColors2[(5*i)]), add = TRUE, axes = FALSE, names.arg = c("", "", "", "")) 
+} #Make each bar in the stacked barplot a different color gradient. Create a new dataframe with data for the plot and ignore all additional columns and column names. Plot the single bar with the correct color from plotColors. Do not add axes and add blank names for each column.
+
+axis(side = 2, at = seq(0, 100, by = 10), las = 2, col = "grey80", cex.axis = 1.2) #Add y-axis
+mtext(side = 2, "% CpGs", line = 3, cex = 1.5) #Add y-axis label
+text(expression(paste(bold("B. "), bolditalic("P. acuta"))), x = 0.06, y = 108, cex = 1.5, adj = 0) #Add italics species name
+
+#Add legend
+par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), mar = c(0, 0, 0, 0), new = TRUE) #Create new plot
+plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n") #Add new plot on top of current plot
+legend(x = 0.57, y = 0.91, 
+       xpd = TRUE,
+       legend = rev(c("CDS", "Introns", "Upstream Flank", "Downstream Flank", "Intergenic")),
+       pch = 22, 
+        col = "black", 
+        pt.bg = rev(c("grey20", "grey40", "grey60", "grey80", "grey100")),
+       bty = "n",
+       cex = 1.5, 
+       x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
+text("Genome Feature", x = 0.785, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
+
+#dev.off() #Turn off plotting device
+```
+
