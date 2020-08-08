@@ -179,7 +179,9 @@ Pact_union.MBDBS$avg <- Pact_union.MBDBS$avg/100
 pdf('../Output/Pact_genes_CpG_3methods_top5.pdf')
 circos.clear()
 
-#circos.initializeWithIdeogram(Pact.cytoband.df, species = NULL, sort.chr = TRUE)
+#cell padding bottom, left, top and right
+circos.par(gap.after=5, canvas.xlim=c(-1.143,1.143))
+
 circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, sort.chr = TRUE)
 circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
@@ -196,5 +198,26 @@ circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0
                       circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
                     })
 dev.off()
+
+```
+
+
+
+
+KaryoPlotR
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+  BiocManager::install("karyoploteR")
+library(karyoploteR)
+```
+
+
+```{r}
+kp <- plotKaryotype(genome="TAIR9", main="Methylation level per Mb", cex=2)
+kpAddBaseNumbers(kp, tick.dist = 5000000, minor.tick.dist = 1000000, add.units = TRUE, cex = 0.8)
+kpLines(kp, data=cpgs, y=cpgs$mean.meth, col="gray50")
+kpPoints(kp, data = cpgs, y=cpgs$mean.meth, cex=1.2)
+kpAxis(kp, ymin=0, ymax=100)
 
 ```
