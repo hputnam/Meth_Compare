@@ -1127,7 +1127,7 @@ find /Volumes/web/seashell/bu-mox/scrubbed/031520-TG-bs \
 working directory: [https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200410/](https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200410/)
 
 ```
-#compare files with awk: if an MD5 hash matches between files, the hash from each input file will be printed; if a hash does not match, only the hash and corresponding file name from the second input file will be printed. 
+#compare files with awk: if an MD5 hash matches between files, the hash from each input file will be printed; if a hash does not match, only the hash and corresponding file name from the second input file will be printed.
 
 awk 'NR==FNR{a[$1]=$1;next}{if($1 in a)print a[$1],$1;else print $1, "no_match", $2}' \
 all_031520-TG-bs_files_MOX_md5sum.txt  \
@@ -1135,16 +1135,16 @@ all_031520-TG-bs_files_GANNET_md5sum.txt \
 > awk_matchALLbmrk_results.txt
 
 cat awk_matchALLbmrk_results.txt | \
-awk '{if($2=="no_match")print $0}' 
+awk '{if($2=="no_match")print $0}'
 
 cat awk_matchALLbmrk_results.txt | \
 awk '{if($2!~/no_match/)print $0}'
 
 cat awk_matchALLbmrk_results.txt | \
 awk '{if($2!~/no_match/)print $0}' |\
-wc -l 
+wc -l
 
-wc -l all_031520-TG-bs_files_MOX_md5sum.txt 
+wc -l all_031520-TG-bs_files_MOX_md5sum.txt
 
 ```
 
