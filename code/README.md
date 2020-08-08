@@ -1,13 +1,15 @@
-# scripts
+# code
 
-Scripts are organized in the order they should be run.
+## DNA Sequencing Processing
+- [00-Meth_Compare_Pipeline.md](00-Meth_Compare_Pipeline.md): Markdown file with code used corresponding toe "DNA Sequence Processing" section in Methods. From raw data to calling of methlyation state at all loci.
+
 
 ## Quality Control
 - [MethCompare_MultiQC.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/MethCompare_MultiQC.ipynb):  Script used to run MultiQC on FastQC output for trimmed BS reads that generates the input files for [FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/FormatMultiQC/FormatMultiQC.Rmd)
 - [FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/FormatMultiQC.Rmd):  This script produces Table 1 and Supplementary Tables X-X from MultiQC output files, including lambda alignments. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH.
-- [CompareConversionEfficiency.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/CompareConversionEfficiency.Rmd):  This script generates a table showing conversion efficiency based on lambda alignments and estimated conversion efficiency based on coral alignments for each sample. 
-- [20200416_qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200416_qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species). 
-- [Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species. 
+- [CompareConversionEfficiency.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/CompareConversionEfficiency.Rmd):  This script generates a table showing conversion efficiency based on lambda alignments and estimated conversion efficiency based on coral alignments for each sample.
+- [20200416_qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200416_qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
+- [Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
 
 ## Coverage analysis
 
@@ -20,7 +22,7 @@ Scripts are organized in the order they should be run.
 - [20200527_SubsamplePicardMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200527_SubsamplePicardMcap.sh):  This script runs Picard CollectWgsMetrics on on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files from downsampled P.acuta reads.
 
 #### CpG Coverage
-- [Mcap\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Mcap_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _M. capitata_ samples and for pooled _M. capitata_ samples based on method and downsampled to different sequencing depths. 
+- [Mcap\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Mcap_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _M. capitata_ samples and for pooled _M. capitata_ samples based on method and downsampled to different sequencing depths.
 - [Pact\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Pact_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _P. acuta_ samples and for pooled _P. acuta_ samples based on method and downsampled to different sequencing depths.
 
 #### Genome Coverage
