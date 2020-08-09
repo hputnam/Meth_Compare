@@ -1,4 +1,4 @@
-# Comparison of DNA Methylation Methods for Reef Building Corals
+# Performance of Bisulfite Sequencing Methods in Invertebrates
 
 
 
