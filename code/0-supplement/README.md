@@ -1,3 +1,0 @@
-# supplement
-
-Supplementary code.
