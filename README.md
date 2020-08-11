@@ -1,9 +1,24 @@
 # Performance of Bisulfite Sequencing Methods in Invertebrates
 
 [![issues](https://img.shields.io/github/issues/hputnam/Meth_Compare.svg)](https://img.shields.io/github/issues/hputnam/Meth_Compare)
-[![NSF-1921149](https://img.shields.io/badge/NSF-1921149-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1921149) 
+[![NSF-1921149](https://img.shields.io/badge/NSF-1921149-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1921149)
 [![NSF-1921149](https://img.shields.io/badge/NSF-1921465-blue.svg)](https://nsf.gov/awardsearch/showAward?AWD_ID=1921465)
 [![OSF](https://img.shields.io/badge/OSF-x5waz-blueviolet.svg)](https://osf.io/x5waz/)
+
+
+## Repository Structure
+
+- [metadata](https://github.com/hputnam/Meth_Compare/tree/master/metadata): Sample metadata
+- [lab-methods](https://github.com/hputnam/Meth_Compare/tree/master/lab-methods): Commercial protocols, kit information, and lab notebook entries for DNA extraction, enrichment, and library preparation
+- [genome-feature-tracks](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files): Genome feature tracks generated for *M. capitata* and *P. acuta*
+- [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
+- [analyses](https://github.com/hputnam/Meth_Compare/tree/master/analyses): Individual subdirectories for each analysis along with intermediate output
+- [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Finalized figures and tables from each analysis
+
+
+
+
+
 
 
 ## Abstract
@@ -22,12 +37,3 @@ The elucidation of potential genome to phenome pathways is essential for our und
 	- [Figure 5](): Matrix of pairwise scatter plots for CpG loci covered at > 5x across all samples for A) M. capitata (n=4,666 common loci) and B) P. acuta (n=93,714 common loci). The red lines represent linear regression fits and the green lines are polynomial regression fits. Pearson correlation coefficients for each pairwise comparison are presented in the upper right boxes. Methods are color coded on the X and Y axes (WGBS = green, MBDBS = purple, and RRBS = orange) and replicate samples are indicated on the diagonal along with histograms of % CpG methylation (*code [here]()*).
 	- [Figure 6](): Mean proportion (n=3 samples per method) of CpGs per gene that have at least 5x coverage in all of the one-to-one orthologous genes, as identified by OrthoFinder (Supplemental File X) for A) Montipora capitata and B) Pocillopora acuta. The heatmaps are ordered by orthogroup for the groups with one to one gene matches (*code [here]()*).
 - [Supplementary Tables and Figures]()
-
-## Repository Structure
-
-- [metadata](https://github.com/hputnam/Meth_Compare/tree/master/metadata): Sample metadata
-- [lab-methods](https://github.com/hputnam/Meth_Compare/tree/master/lab-methods): Commercial protocols, kit information, and lab notebook entries for DNA extraction, enrichment, and library preparation
-- [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
-- [genome-feature-tracks](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files): Genome feature tracks generated for *M. capitata* and *P. acuta*
-- [analyses](https://github.com/hputnam/Meth_Compare/tree/master/analyses): Individual subdirectories for each analysis along with intermediate output
-- [Output](https://github.com/hputnam/Meth_Compare/tree/master/Output): Finalized figures and tables from each analysis
