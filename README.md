@@ -11,16 +11,9 @@
 - [metadata](https://github.com/hputnam/Meth_Compare/tree/master/metadata): Sample metadata
 - [lab-methods](https://github.com/hputnam/Meth_Compare/tree/master/lab-methods): Commercial protocols, kit information, and lab notebook entries for DNA extraction, enrichment, and library preparation
 - [genome-feature-tracks](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files): Genome feature tracks generated for *M. capitata* and *P. acuta*
-
 - [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
 - [analyses](https://github.com/hputnam/Meth_Compare/tree/master/analyses): Individual subdirectories for each analysis along with intermediate output
-    - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Finalized figures and tables from each analysis
-
-
-
-
-
-
+    - [output](https://github.com/hputnam/Meth_Compare/tree/master/analyses/output): Finalized figures and tables from each analysis, including supplementary information.
 
 ## Abstract
 
