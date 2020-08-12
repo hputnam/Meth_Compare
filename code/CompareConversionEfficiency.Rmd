@@ -176,7 +176,7 @@ generate plots to match ANOVAs
 a <- ggplot(df_l_long[which(df_l_long$convr_method=="lambda"),]) + geom_boxplot(aes(y = perc_conv, x = Method, color = Method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + ylab("lambda conversion efficiency (%)") 
 
 #plot lambda conversion efficiency for each method facetted by species
-b <- ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = convr_method, color = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + ylab("conversion efficiency (%)") + labs(color = "conversion efficiency\ncalcuation")
+b <- ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = convr_method, color = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + ylab("conversion efficiency (%)") + labs(color = "conversion efficiency\ncalcuation method")
 
 
 jpeg("OLD_Output/BS_conversion_efficiency.jpg", width = 9, height = 6, units = "in", res = 300)
