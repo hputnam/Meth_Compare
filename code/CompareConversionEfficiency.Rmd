@@ -12,18 +12,19 @@ library(dplyr)
 library(tidyr)
 library(broom)
 library(purrr)
+library(ggpubr)
 ```
 
 read in data
 ```{r}
 #lambda data
-df_l <- read.csv("Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+df_l <- read.csv("OLD_Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
 
 #Pact/Mcap data
-df_pm <- read.csv("Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+df_pm <- read.csv("OLD_Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
 
 #meta data
-meta_data <- read.csv("metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
+meta_data <- read.csv("metadata/30-244831635_sample_submission_form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
 ```
 
 create column for total chh and total chg counts
@@ -89,25 +90,27 @@ df_l <- merge(meta_data, df_l, by = "Sample")
 
 write table
 ```{r}
-write.csv(df_l, "Output/lamda_vs_estimated_conversion_efficiency.csv", row.names = FALSE, quote = FALSE)
+write.csv(df_l, "OLD_Output/lamda_vs_estimated_conversion_efficiency.csv", row.names = FALSE, quote = FALSE)
 ```
 
-
-run ANOVA on method within each species
+convert to long format for ANOVA
 ```{r}
-#convert to long format for ANOVA
 df_l_long <- gather(df_l, "convr_method", "perc_conv", 4:5)
 
 #simplify convr method column
 df_l_long$convr_method <- gsub(".*lambda", "lambda", df_l_long$convr_method)
 
 df_l_long$convr_method <- gsub("est.*", "estimated", df_l_long$convr_method)
+```
 
-#run anova
-aov_convr <- df_l_long %>% group_by(Species, Method) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
+run anova on lambda conversion efficiency ~ BS method
+```{r}
+
+#run anova on lambda conversion efficiency ~ BS method for Pact samples and for Mcap samples
+#The following code produces a list of anova model outputs for each species
+aov_convr <- df_l_long[which(df_l_long$convr_method=="lambda"),] %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ Method, data =.))
 
 #make a tidy table with p.values
-
 aov_convr_tidy <- aov_convr %>% ungroup %>% 
     pull(aov_models) %>% 
     map_dfr(tidy, .id = "grp")
@@ -125,10 +128,59 @@ aov_convr_tidy_w <-aov_convr_tidy_w[colSums(!is.na(aov_convr_tidy_w)) > 0]
 aov_convr_stats <- merge(aov_convr_glance,aov_convr_tidy_w,by = "grp")
 
 #add group names back in
-aov_convr_stats <- cbind(aov_convr[,1:2], aov_convr_stats[,-1])
+aov_convr_stats <- cbind(aov_convr[,1], aov_convr_stats[,-1])
+
+#transpose df
+aov_convr_stats_t <- setNames(data.frame(t(aov_convr_stats[,-1])), aov_convr_stats[,1])
 
 #write table
 
-write.csv(aov_convr_stats, "Output/lamda_vs_estimated_conversion_efficiency_stats.csv", row.names = FALSE, quote = FALSE)
+write.csv(aov_convr_stats_t, "OLD_Output/lamda_conversion_efficiency_stats.csv", quote = FALSE)
+```
+
+compare lambda to estimated conversion efficiency by species
+```{r}
+aov_convr_cmpr <- df_l_long %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
+
+#make a tidy table with p.values
+aov_convr_cmpr_tidy <- aov_convr_cmpr %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(tidy, .id = "grp")
+#make a tidy table with glance stats
+aov_convr_cmpr_glance <- aov_convr_cmpr %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(glance, .id = "grp")
+#spread resid. data 
+aov_convr_cmpr_tidy_w <- data.frame(pivot_wider(aov_convr_cmpr_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
+
+#remove columns with all NAs
+aov_convr_cmpr_tidy_w <-aov_convr_cmpr_tidy_w[colSums(!is.na(aov_convr_cmpr_tidy_w)) > 0]
+
+#merge all stats into one table
+aov_convr_cmpr_stats <- merge(aov_convr_cmpr_glance,aov_convr_cmpr_tidy_w,by = "grp")
+
+#add group names back in
+aov_convr_cmpr_stats <- cbind(aov_convr_cmpr[,1], aov_convr_cmpr_stats[,-1])
+
+#transpose df
+aov_convr_cmpr_stats_t <- setNames(data.frame(t(aov_convr_cmpr_stats[,-1])), aov_convr_cmpr_stats[,1])
+
+#write table
+
+write.csv(aov_convr_cmpr_stats_t, "OLD_Output/lamda_vs_estimated_conversion_efficiency_stats.csv", quote = FALSE)
+```
+
+generate plots to match ANOVAs
+```{r}
+#plot lambda conversion efficiency for each method facetted by species
+a <- ggplot(df_l_long[which(df_l_long$convr_method=="lambda"),]) + geom_boxplot(aes(y = perc_conv, x = Method, color = Method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + ylab("lambda conversion efficiency (%)") 
+
+#plot lambda conversion efficiency for each method facetted by species
+b <- ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = convr_method, color = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + ylab("conversion efficiency (%)") + labs(color = "conversion efficiency\ncalcuation")
+
+
+jpeg("OLD_Output/BS_conversion_efficiency.jpg", width = 9, height = 6, units = "in", res = 300)
+ggarrange(a,b,labels = "AUTO", nrow = 2, align = "hv")
+dev.off()
 ```
 
