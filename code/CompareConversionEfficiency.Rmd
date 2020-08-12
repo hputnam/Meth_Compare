@@ -17,8 +17,8 @@ library(ggpubr)
 
 read in data
 ```{r}
-#lambda data
-df_l <- read.csv("OLD_Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+#lambda data (intermediate file)
+df <- read.csv("OLD_Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
 
 #Pact/Mcap data
 df_pm <- read.csv("OLD_Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
@@ -56,18 +56,13 @@ df_pm$estConvEffCHG_CHH <- (df_pm$unmeth_chh_chg/df_pm$tot_chh_chg)*100
 
 merge dfs
 ```{r}
-df_l <- merge(df_l[,c("Sample", "conversion_efficiency")], df_pm[,c("Sample","estConvEffCHG_CHH")], by = "Sample")
+df_l <- merge(df[,c("Sample", "conversion_efficiency")], df_pm[,c("Sample","estConvEffCHG_CHH")], by = "Sample")
 
 ```
 
 rename columns
 ```{r}
 colnames(df_l) <- c("Sample", "conversion_efficiency_lambda", "est_conversion_efficiency_umCHG_umCHH")
-```
-
-order table by sample
-```{r}
-df_l <- df_l[mixedorder(df_l$Sample),]
 ```
 
 combine with meta data
@@ -86,6 +81,14 @@ meta_data$Method <- gsub("Pico.*", "WGBS", meta_data$Method)
 #merge meta data with conversion efficiency data
 
 df_l <- merge(meta_data, df_l, by = "Sample")
+
+#merge descriptive stats with conversion efficiency data
+df_l <- merge(df_l, within(df,rm(conversion_efficiency)), by = "Sample")
+
+#order table by sample
+
+df_l <- df_l[mixedorder(df_l$Sample),]
+
 ```
 
 write table
