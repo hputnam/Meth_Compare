@@ -8,45 +8,60 @@ output: html_document
 load library
 ```{r}
 library(gtools)
+library(dplyr)
+library(tidyr)
+library(broom)
+library(purrr)
 ```
 
 read in data
 ```{r}
 #lambda data
-df_l <- read.csv("../../Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+df_l <- read.csv("Output/lamda_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
 
 #Pact/Mcap data
-df_pm <- read.csv("../../Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+df_pm <- read.csv("Output/Pact_Mcap_alignments_descriptive_stats.csv", stringsAsFactors = FALSE)
+
+#meta data
+meta_data <- read.csv("metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
 ```
 
-estimate conversion effiency from %unmeth CHH
+create column for total chh and total chg counts
 ```{r}
 #first need to make column for total CHH counts
 df_pm$tot_chh <- df_pm$meth_chh + df_pm$unmeth_chh
 
-#now calculate estimated conversion effiency from %unmeth CHH
-df_pm$estConvEffCHH <- (df_pm$unmeth_chh/df_pm$tot_chh)*100
-```
-
-estimate conversion effiency from %unmeth CHG
-```{r}
-#first need to make column for total CHH counts
+#first need to make column for total CHG counts
 df_pm$tot_chg <- df_pm$meth_chg + df_pm$unmeth_chg
 
-#now calculate estimated conversion effiency from %unmeth CHH
-df_pm$estConvEffCHG <- (df_pm$unmeth_chg/df_pm$tot_chg)*100
+```
+
+create columns for combined unmeth CHG and unmeth CHH, and for combined total CHH and CHG counts
+```{r}
+#combined totals
+df_pm$tot_chh_chg <- df_pm$tot_chh + df_pm$tot_chg
+
+#combined unmeth
+df_pm$unmeth_chh_chg <- df_pm$unmeth_chh + df_pm$unmeth_chg
+
+```
+
+estimate conversion efficiency 
+```{r}
+#now calculate estimated conversion efficiency from %unmeth CHH
+df_pm$estConvEffCHG_CHH <- (df_pm$unmeth_chh_chg/df_pm$tot_chh_chg)*100
 ```
 
 
 merge dfs
 ```{r}
-df_l <- merge(df_l[,c("Sample", "conversion_efficiency")], df_pm[,c("Sample","estConvEffCHG", "estConvEffCHH")], by = "Sample")
+df_l <- merge(df_l[,c("Sample", "conversion_efficiency")], df_pm[,c("Sample","estConvEffCHG_CHH")], by = "Sample")
 
 ```
 
 rename columns
 ```{r}
-colnames(df_l) <- c("Sample", "conversion_efficiency_lambda", "est_conversion_efficiency_umCHG", "est_conversion_efficiency_umCHH")
+colnames(df_l) <- c("Sample", "conversion_efficiency_lambda", "est_conversion_efficiency_umCHG_umCHH")
 ```
 
 order table by sample
@@ -54,7 +69,66 @@ order table by sample
 df_l <- df_l[mixedorder(df_l$Sample),]
 ```
 
+combine with meta data
+```{r}
+#subset meta data for sample name, library prep, and species
+meta_data <- meta_data[,c("Sample.Name.", "Species.Strain.", "Library.Prep.Kit.Used.")]
+
+#re-name columns
+colnames(meta_data) <- c("Sample", "Species", "Method")
+
+#simplify method column
+meta_data$Method <- gsub("MBD.*", "MBDBS", meta_data$Method)
+meta_data$Method <- gsub(".* RRBS.*", "RRBS", meta_data$Method)
+meta_data$Method <- gsub("Pico.*", "WGBS", meta_data$Method)
+
+#merge meta data with conversion efficiency data
+
+df_l <- merge(meta_data, df_l, by = "Sample")
+```
+
 write table
 ```{r}
-write.csv(df_l, "../../Output/lamda_vs_estimated_conversion_efficiency.csv", row.names = FALSE, quote = FALSE)
+write.csv(df_l, "Output/lamda_vs_estimated_conversion_efficiency.csv", row.names = FALSE, quote = FALSE)
 ```
+
+
+run ANOVA on method within each species
+```{r}
+#convert to long format for ANOVA
+df_l_long <- gather(df_l, "convr_method", "perc_conv", 4:5)
+
+#simplify convr method column
+df_l_long$convr_method <- gsub(".*lambda", "lambda", df_l_long$convr_method)
+
+df_l_long$convr_method <- gsub("est.*", "estimated", df_l_long$convr_method)
+
+#run anova
+aov_convr <- df_l_long %>% group_by(Species, Method) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
+
+#make a tidy table with p.values
+
+aov_convr_tidy <- aov_convr %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(tidy, .id = "grp")
+#make a tidy table with glance stats
+aov_convr_glance <- aov_convr %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(glance, .id = "grp")
+#spread resid. data 
+aov_convr_tidy_w <- data.frame(pivot_wider(aov_convr_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
+
+#remove columns with all NAs
+aov_convr_tidy_w <-aov_convr_tidy_w[colSums(!is.na(aov_convr_tidy_w)) > 0]
+
+#merge all stats into one table
+aov_convr_stats <- merge(aov_convr_glance,aov_convr_tidy_w,by = "grp")
+
+#add group names back in
+aov_convr_stats <- cbind(aov_convr[,1:2], aov_convr_stats[,-1])
+
+#write table
+
+write.csv(aov_convr_stats, "Output/lamda_vs_estimated_conversion_efficiency_stats.csv", row.names = FALSE, quote = FALSE)
+```
+
