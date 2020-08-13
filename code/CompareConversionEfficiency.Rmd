@@ -136,9 +136,8 @@ aov_convr_stats <- cbind(aov_convr[,1], aov_convr_stats[,-1])
 #transpose df
 aov_convr_stats_t <- setNames(data.frame(t(aov_convr_stats[,-1])), aov_convr_stats[,1])
 
-#write table
-
-write.csv(aov_convr_stats_t, "OLD_Output/lamda_conversion_efficiency_stats.csv", quote = FALSE)
+#add model column
+aov_convr_stats_t$model <- "conversion efficiency ~ library prep method"
 ```
 
 compare lambda to estimated conversion efficiency by species
@@ -168,10 +167,19 @@ aov_convr_cmpr_stats <- cbind(aov_convr_cmpr[,1], aov_convr_cmpr_stats[,-1])
 #transpose df
 aov_convr_cmpr_stats_t <- setNames(data.frame(t(aov_convr_cmpr_stats[,-1])), aov_convr_cmpr_stats[,1])
 
-#write table
+#add model column
+aov_convr_cmpr_stats_t$model <- "conversion efficiency ~ calculation method"
 
-write.csv(aov_convr_cmpr_stats_t, "OLD_Output/lamda_vs_estimated_conversion_efficiency_stats.csv", quote = FALSE)
 ```
+
+write out ANOVA stats table
+```{r}
+#combine summary tables
+aov_convr_stats_all <- rbind(aov_convr_stats_t,aov_convr_cmpr_stats_t)
+
+write.csv(aov_convr_stats_all, "OLD_Output/conversion_efficiency_stats.csv", quote = FALSE)
+```
+
 
 generate plots to match ANOVAs
 ```{r}

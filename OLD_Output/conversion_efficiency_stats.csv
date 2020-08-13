@@ -1,0 +1,27 @@
+,M. capitata,P. acuta,model
+logLik,16.6004304121005,3.94327751864256,conversion efficiency ~ library prep method
+AIC,-25.200860824201,0.113444962714875,conversion efficiency ~ library prep method
+BIC,-24.4119625148562,0.902343272059754,conversion efficiency ~ library prep method
+deviance,0.0131723278468952,0.21938296403998,conversion efficiency ~ library prep method
+nobs,9,9,conversion efficiency ~ library prep method
+df_Method,2,2,conversion efficiency ~ library prep method
+df_Residuals,6,6,conversion efficiency ~ library prep method
+sumsq_Method,0.501531622026702,0.529483181111919,conversion efficiency ~ library prep method
+sumsq_Residuals,0.0131723278468952,0.21938296403998,conversion efficiency ~ library prep method
+meansq_Method,0.250765811013351,0.26474159055596,conversion efficiency ~ library prep method
+meansq_Residuals,0.00219538797448254,0.0365638273399967,conversion efficiency ~ library prep method
+statistic_Method,114.223915739749,7.24053278378661,conversion efficiency ~ library prep method
+p.value_Method,1.67615852743005e-05,0.0251417849543601,conversion efficiency ~ library prep method
+logLik1,-5.46381030579695,-9.61604903195902,conversion efficiency ~ calculation method
+AIC1,16.9276206115939,25.232098063918,conversion efficiency ~ calculation method
+BIC1,19.5987358852824,27.9032133376065,conversion efficiency ~ calculation method
+deviance1,1.93398903122083,3.06775058303266,conversion efficiency ~ calculation method
+nobs1,18,18,conversion efficiency ~ calculation method
+df_convr_method,1,1,conversion efficiency ~ calculation method
+df_Residuals1,16,16,conversion efficiency ~ calculation method
+sumsq_convr_method,0.110636542299514,0.117741355039169,conversion efficiency ~ calculation method
+sumsq_Residuals1,1.93398903122083,3.06775058303266,conversion efficiency ~ calculation method
+meansq_convr_method,0.110636542299514,0.117741355039169,conversion efficiency ~ calculation method
+meansq_Residuals1,0.120874314451302,0.191734411439541,conversion efficiency ~ calculation method
+statistic_convr_method,0.915302335336823,0.614085672755177,conversion efficiency ~ calculation method
+p.value_convr_method,0.352945002400193,0.444699862997837,conversion efficiency ~ calculation method
