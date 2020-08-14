@@ -1,0 +1,9 @@
+   38172 Pact_MBD_only_CpGs.bed-paIntergenic
+    5419 Pact_RRBS_MBD_only_CpGs.bed-paIntergenic
+   83994 Pact_RRBS_only_CpGs.bed-paIntergenic
+  791839 Pact_WGBS_MBD_only_CpGs.bed-paIntergenic
+  446394 Pact_WGBS_RRBS_MBD_only_CpGs.bed-paIntergenic
+  331576 Pact_WGBS_RRBS_only_CpGs.bed-paIntergenic
+ 1082691 Pact_WGBS_only_CpGs.bed-paIntergenic
+ 1208659 Pact_no_method_CpGs.bed-paIntergenic
+ 3988744 total

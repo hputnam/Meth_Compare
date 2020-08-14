@@ -1,0 +1,9 @@
+    5143 Mcap_MBD_only_CpGs.bed-mcFlanksUpstream
+    1188 Mcap_RRBS_MBD_only_CpGs.bed-mcFlanksUpstream
+   97613 Mcap_RRBS_only_CpGs.bed-mcFlanksUpstream
+   35459 Mcap_WGBS_MBD_only_CpGs.bed-mcFlanksUpstream
+   11175 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcFlanksUpstream
+  125659 Mcap_WGBS_RRBS_only_CpGs.bed-mcFlanksUpstream
+  512876 Mcap_WGBS_only_CpGs.bed-mcFlanksUpstream
+  809361 Mcap_no_method_CpGs.bed-mcFlanksUpstream
+ 1598474 total

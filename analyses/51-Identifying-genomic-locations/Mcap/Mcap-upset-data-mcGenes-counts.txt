@@ -1,9 +1,0 @@
-   32304 Mcap_MBD_only_CpGs.bed-mcGenes
-    7213 Mcap_RRBS_MBD_only_CpGs.bed-mcGenes
-  522515 Mcap_RRBS_only_CpGs.bed-mcGenes
-  208880 Mcap_WGBS_MBD_only_CpGs.bed-mcGenes
-   61140 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcGenes
-  716214 Mcap_WGBS_RRBS_only_CpGs.bed-mcGenes
- 3154364 Mcap_WGBS_only_CpGs.bed-mcGenes
- 4747934 Mcap_no_method_CpGs.bed-mcGenes
- 9450564 total

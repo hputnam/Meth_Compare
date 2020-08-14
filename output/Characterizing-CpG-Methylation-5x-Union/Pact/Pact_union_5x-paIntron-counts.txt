@@ -1,0 +1,13 @@
+   59034 Pact_union_5x-averages-MBDBS.bedgraph-Meth.bed-paIntron
+   69890 Pact_union_5x-averages-MBDBS.bedgraph-sparseMeth.bed-paIntron
+  684492 Pact_union_5x-averages-MBDBS.bedgraph-unMeth.bed-paIntron
+  813416 Pact_union_5x-averages-MBDBS.bedgraph.bed-paIntron
+    8910 Pact_union_5x-averages-RRBS.bedgraph-Meth.bed-paIntron
+   31460 Pact_union_5x-averages-RRBS.bedgraph-sparseMeth.bed-paIntron
+  447615 Pact_union_5x-averages-RRBS.bedgraph-unMeth.bed-paIntron
+  487985 Pact_union_5x-averages-RRBS.bedgraph.bed-paIntron
+   42237 Pact_union_5x-averages-WGBS.bedgraph-Meth.bed-paIntron
+   62188 Pact_union_5x-averages-WGBS.bedgraph-sparseMeth.bed-paIntron
+ 1601175 Pact_union_5x-averages-WGBS.bedgraph-unMeth.bed-paIntron
+ 1705600 Pact_union_5x-averages-WGBS.bedgraph.bed-paIntron
+ 6014002 total

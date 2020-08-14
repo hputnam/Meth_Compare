@@ -1,0 +1,4 @@
+     141 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_RvM_TG50p.bed-mcIntergenic
+      43 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvM_TG50p.bed-mcIntergenic
+     332 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvR_TG50p.bed-mcIntergenic
+     516 total
