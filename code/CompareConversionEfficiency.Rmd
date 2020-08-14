@@ -223,7 +223,7 @@ write.csv(aov_convr_stats_all, "OLD_Output/conversion_efficiency_stats.csv", quo
 generate plots to match ANOVAs
 ```{r}
 #plot lambda conversion efficiency for each method facetted by species
-jpeg("OLD_Output/BS_conversion_efficiency.jpg", width = 9, height = 6, units = "in", res = 300)
+jpeg("OLD_Output/BS_conversion_efficiency.jpg", width = 6, height = 3, units = "in", res = 300)
 ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = Method, color = Method, fill = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + ylab("conversion efficiency (%)") + scale_fill_grey() + labs(color = "library prep method",fill = "conversion efficiency\ncalcuation method")
 dev.off()
 ```
