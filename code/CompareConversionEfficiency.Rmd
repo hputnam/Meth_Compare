@@ -111,42 +111,81 @@ run anova on lambda conversion efficiency ~ BS method
 
 #run anova on lambda conversion efficiency ~ BS method for Pact samples and for Mcap samples
 #The following code produces a list of anova model outputs for each species
-aov_convr <- df_l_long[which(df_l_long$convr_method=="lambda"),] %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ Method, data =.))
+aov_convr_lam <- df_l_long[which(df_l_long$convr_method=="lambda"),] %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ Method, data =.))
 
 #make a tidy table with p.values
-aov_convr_tidy <- aov_convr %>% ungroup %>% 
+aov_convr_lam_tidy <- aov_convr_lam %>% ungroup %>% 
     pull(aov_models) %>% 
     map_dfr(tidy, .id = "grp")
 #make a tidy table with glance stats
-aov_convr_glance <- aov_convr %>% ungroup %>% 
+aov_convr_lam_glance <- aov_convr_lam %>% ungroup %>% 
     pull(aov_models) %>% 
     map_dfr(glance, .id = "grp")
 #spread resid. data 
-aov_convr_tidy_w <- data.frame(pivot_wider(aov_convr_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
+aov_convr_lam_tidy_w <- data.frame(pivot_wider(aov_convr_lam_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
 
 #remove columns with all NAs
-aov_convr_tidy_w <-aov_convr_tidy_w[colSums(!is.na(aov_convr_tidy_w)) > 0]
+aov_convr_lam_tidy_w <-aov_convr_lam_tidy_w[colSums(!is.na(aov_convr_lam_tidy_w)) > 0]
 
 #merge all stats into one table
-aov_convr_stats <- merge(aov_convr_glance,aov_convr_tidy_w,by = "grp")
+aov_convr_lam_stats <- merge(aov_convr_lam_glance,aov_convr_lam_tidy_w,by = "grp")
 
 #add group names back in
-aov_convr_stats <- cbind(aov_convr[,1], aov_convr_stats[,-1])
+aov_convr_lam_stats <- cbind(aov_convr_lam[,1], aov_convr_lam_stats[,-1])
 
 #transpose df
-aov_convr_stats_t <- setNames(data.frame(t(aov_convr_stats[,-1])), aov_convr_stats[,1])
+aov_convr_lam_stats_t <- setNames(data.frame(t(aov_convr_lam_stats[,-1])), aov_convr_lam_stats[,1])
 
 #add model column
-aov_convr_stats_t$model <- "conversion efficiency ~ library prep method"
+aov_convr_lam_stats_t$model <- "conversion efficiency ~ library prep method"
 ```
+
+run anova on estimated conversion efficiency ~ BS method
+```{r}
+
+#run anova on estimated conversion efficiency ~ BS method for Pact samples and for Mcap samples
+#The following code produces a list of anova model outputs for each species
+aov_convr_est <- df_l_long[which(df_l_long$convr_method=="estimated"),] %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ Method, data =.))
+
+#make a tidy table with p.values
+aov_convr_est_tidy <- aov_convr_est %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(tidy, .id = "grp")
+#make a tidy table with glance stats
+aov_convr_est_glance <- aov_convr_est %>% ungroup %>% 
+    pull(aov_models) %>% 
+    map_dfr(glance, .id = "grp")
+#spread resid. data 
+aov_convr_est_tidy_w <- data.frame(pivot_wider(aov_convr_est_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
+
+#remove columns with all NAs
+aov_convr_est_tidy_w <-aov_convr_est_tidy_w[colSums(!is.na(aov_convr_est_tidy_w)) > 0]
+
+#merge all stats into one table
+aov_convr_est_stats <- merge(aov_convr_est_glance,aov_convr_est_tidy_w,by = "grp")
+
+#add group names back in
+aov_convr_est_stats <- cbind(aov_convr_est[,1], aov_convr_est_stats[,-1])
+
+#transpose df
+aov_convr_est_stats_t <- setNames(data.frame(t(aov_convr_est_stats[,-1])), aov_convr_est_stats[,1])
+
+#add model column
+aov_convr_est_stats_t$model <- "conversion efficiency ~ library prep method"
+```
+
+
+
+
+
 
 compare lambda to estimated conversion efficiency by species
 ```{r}
-aov_convr_cmpr <- df_l_long %>% group_by(Species) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
+aov_convr_cmpr <- df_l_long %>% group_by(Species, Method) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
 
 #make a tidy table with p.values
 aov_convr_cmpr_tidy <- aov_convr_cmpr %>% ungroup %>% 
-    pull(aov_models) %>% 
+    pull(t_models) %>% 
     map_dfr(tidy, .id = "grp")
 #make a tidy table with glance stats
 aov_convr_cmpr_glance <- aov_convr_cmpr %>% ungroup %>% 
@@ -162,10 +201,10 @@ aov_convr_cmpr_tidy_w <-aov_convr_cmpr_tidy_w[colSums(!is.na(aov_convr_cmpr_tidy
 aov_convr_cmpr_stats <- merge(aov_convr_cmpr_glance,aov_convr_cmpr_tidy_w,by = "grp")
 
 #add group names back in
-aov_convr_cmpr_stats <- cbind(aov_convr_cmpr[,1], aov_convr_cmpr_stats[,-1])
+aov_convr_cmpr_stats <- cbind(aov_convr_cmpr[,1:2], aov_convr_cmpr_stats[,-1])
 
 #transpose df
-aov_convr_cmpr_stats_t <- setNames(data.frame(t(aov_convr_cmpr_stats[,-1])), aov_convr_cmpr_stats[,1])
+aov_convr_cmpr_stats_t <- setNames(data.frame(t(aov_convr_cmpr_stats[,-1])), aov_convr_cmpr_stats[,1:2])
 
 #add model column
 aov_convr_cmpr_stats_t$model <- "conversion efficiency ~ calculation method"
@@ -184,14 +223,8 @@ write.csv(aov_convr_stats_all, "OLD_Output/conversion_efficiency_stats.csv", quo
 generate plots to match ANOVAs
 ```{r}
 #plot lambda conversion efficiency for each method facetted by species
-a <- ggplot(df_l_long[which(df_l_long$convr_method=="lambda"),]) + geom_boxplot(aes(y = perc_conv, x = Method, color = Method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + ylab("lambda conversion efficiency (%)") 
-
-#plot lambda conversion efficiency for each method facetted by species
-b <- ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = convr_method, color = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + ylab("conversion efficiency (%)") + labs(color = "conversion efficiency\ncalcuation method")
-
-
 jpeg("OLD_Output/BS_conversion_efficiency.jpg", width = 9, height = 6, units = "in", res = 300)
-ggarrange(a,b,labels = "AUTO", nrow = 2, align = "hv")
+ggplot(df_l_long) + geom_boxplot(aes(y = perc_conv, x = Method, color = Method, fill = convr_method),outlier.shape = NA) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank(),strip.background =element_rect(fill="white"),strip.text = element_text(face = "italic")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + ylab("conversion efficiency (%)") 
 dev.off()
 ```
 
