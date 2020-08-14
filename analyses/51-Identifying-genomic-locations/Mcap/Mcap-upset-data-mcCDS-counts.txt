@@ -1,9 +1,0 @@
-    6318 Mcap_MBD_only_CpGs.bed-mcCDS
-    1444 Mcap_RRBS_MBD_only_CpGs.bed-mcCDS
-   71568 Mcap_RRBS_only_CpGs.bed-mcCDS
-   76504 Mcap_WGBS_MBD_only_CpGs.bed-mcCDS
-   21396 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcCDS
-  149890 Mcap_WGBS_RRBS_only_CpGs.bed-mcCDS
-  746460 Mcap_WGBS_only_CpGs.bed-mcCDS
-  876856 Mcap_no_method_CpGs.bed-mcCDS
- 1950436 total

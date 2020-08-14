@@ -1,0 +1,9 @@
+   70784 Pact_MBD_only_CpGs.bed
+   10526 Pact_RRBS_MBD_only_CpGs.bed
+  148043 Pact_RRBS_only_CpGs.bed
+ 2360477 Pact_WGBS_MBD_only_CpGs.bed
+ 1262249 Pact_WGBS_RRBS_MBD_only_CpGs.bed
+  844961 Pact_WGBS_RRBS_only_CpGs.bed
+ 2629257 Pact_WGBS_only_CpGs.bed
+ 1829323 Pact_no_method_CpGs.bed
+ 9155620 total

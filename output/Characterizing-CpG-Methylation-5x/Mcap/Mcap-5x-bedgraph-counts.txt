@@ -1,0 +1,10 @@
+ 4571288 Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 4661716 Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 8791700 Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 3173254 Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 2648697 Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 3176517 Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+  583599 Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+  242390 Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+  153392 Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+ 28002553 total

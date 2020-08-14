@@ -1,0 +1,9 @@
+Meth16_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth12_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth17_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth10_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth18_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth11_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth14_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth15_R1_001_val_1_bismark_bt2_pe._5x.bedgraph
+Meth13_R1_001_val_1_bismark_bt2_pe._5x.bedgraph

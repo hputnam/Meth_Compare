@@ -1,0 +1,9 @@
+   16811 Pact_MBD_only_CpGs.bed-paFlanks
+    2751 Pact_RRBS_MBD_only_CpGs.bed-paFlanks
+   35794 Pact_RRBS_only_CpGs.bed-paFlanks
+  584556 Pact_WGBS_MBD_only_CpGs.bed-paFlanks
+  308431 Pact_WGBS_RRBS_MBD_only_CpGs.bed-paFlanks
+  244170 Pact_WGBS_RRBS_only_CpGs.bed-paFlanks
+  724216 Pact_WGBS_only_CpGs.bed-paFlanks
+  335155 Pact_no_method_CpGs.bed-paFlanks
+ 2251884 total

@@ -1,0 +1,173 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "7/9/2020"
+output: html_document
+---
+
+
+load libraries
+```{r}
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+```
+
+
+read in data from Qualimap MultiBamQC summary tables
+```{r}
+pact_summary <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Pact/multibamQC/raw_data_multisampleBamQcReport/Pact_MultiBamQC_Summary.txt")
+
+mcap_summary <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200416/Mcap/multibamQC/raw_data_multisampleBamQcReport/Mcap_MultiBamQC_Summary.txt")
+
+```
+
+convert MBD to MBDBS
+```{r}
+mcap_summary$Group <- gsub("MBD", "MBDBS", mcap_summary$Group)
+
+pact_summary$Group <- gsub("MBD", "MBDBS", pact_summary$Group)
+```
+
+Add new sample names to match corr plots
+```{r}
+#mcap_summary$new_sample_name <- rep(c(1,2,3),3)
+
+```
+
+read in data
+```{r}
+#read in union bedgraph for Mcap
+Mcap <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Mcap_union_5x.bedgraph")
+
+#read in union bedgraph for Pact
+Pact <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Pact_union_5x.bedgraph")
+```
+
+convert N/A to NA
+```{r}
+Mcap[Mcap == "N/A"] <- NA
+Pact[Pact == "N/A"] <- NA
+```
+
+filter for loci covered in all samples by removing lines with NA
+```{r}
+Mcap_complete <- data.frame(Mcap[complete.cases(Mcap),])
+Pact_complete <- data.frame(Pact[complete.cases(Pact),])
+
+```
+
+see the structure of the df
+```{r}
+str(Mcap_complete)
+str(Pact_complete)
+
+```
+
+The % methylation columns are character vectors because they initially contained "N/A" so convert all % methylation columns from character to numeric
+```{r}
+Mcap_complete[,-c(1:3)] <- sapply(Mcap_complete[,-c(1:3)], as.numeric)
+Pact_complete[,-c(1:3)] <- sapply(Pact_complete[,-c(1:3)], as.numeric)
+
+```
+
+check the structure again
+```{r}
+str(Mcap_complete)
+str(Pact_complete)
+
+```
+The conversion worked.
+
+create rownames that is the loci ID (chrom:start-stop)
+```{r}
+row.names(Mcap_complete) <- paste0(Mcap_complete$chrom,":", Mcap_complete$start,"-",Mcap_complete$end)
+
+row.names(Pact_complete) <- paste0(Pact_complete$chrom,":", Pact_complete$start,"-",Pact_complete$end)
+```
+
+remove chrom, start, and end columns
+```{r}
+Mcap_complete <- Mcap_complete[,-c(1:3)]
+Pact_complete <- Pact_complete[,-c(1:3)]
+```
+
+
+swap sample numbers for sample names in colnames
+```{r}
+colnames(Mcap_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
+
+colnames(Pact_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
+```
+
+write out input files for QC
+```{r}
+write.table(Mcap_complete, "../../Output/Mcap_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
+
+write.table(Mcap_complete, "../../Output/Pact_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
+
+```
+
+create a meta data df
+```{r}
+Mcap_meta <- data.frame(row.names = colnames(Mcap_complete), Method = gsub("_.*","",colnames(Mcap_complete)))
+
+Pact_meta <- data.frame(row.names = colnames(Pact_complete), Method = gsub("_.*","",colnames(Pact_complete)))
+```
+
+run PCA
+```{r}
+set.seed(101)
+Mcap_pca <- prcomp(t(Mcap_complete))
+Pact_pca <- prcomp(t(Pact_complete))
+```
+
+add method for plotting
+```{r}
+Mcap_pca_meta <- merge(Mcap_meta,Mcap_pca$x, by = "row.names")
+Pact_pca_meta <- merge(Pact_meta,Pact_pca$x, by = "row.names")
+```
+
+PCA of qualimap summary data
+
+```{r}
+set.seed(101)
+mcap_summary_pca <- prcomp(mcap_summary[,-c(1,2)])
+mcap_summary_pca_meta <- cbind(mcap_summary[,c(1:2)],mcap_summary_pca$x)
+
+#adds sample names to plot
+#ggplot(mcap_pca_meta, aes(PC1, PC2, label = Sample)) + geom_point(aes(color = Group)) + geom_text(size = 1.5,hjust=1,vjust=-1) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + theme_bw() + ylab("PC2") + xlab("PC1")
+set.seed(101)
+pact_summary_pca <- prcomp(pact_summary[,-c(1,2)])
+pact_summary_pca_meta <- cbind(pact_summary[,c(1:2)],pact_summary_pca$x)
+
+```
+
+plot PC 1 and 2 scores
+
+```{r}
+#PCA of qualimap summary for Mcap
+a <- ggplot(mcap_summary_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(mcap_summary_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(mcap_summary_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("M.capitata")))
+
+#PCA of qualimap summary for Pact
+b <- ggplot(pact_summary_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Group), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(pact_summary_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(pact_summary_pca)[[6]][[2]]*100,2),"% variation explained)"))  + labs(color = "method") + ggtitle(expression(italic("P.acuta")))
+
+#PCA of union bed for Mcap
+c <- ggplot(Mcap_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Mcap_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("M.capitata")))
+
+#PCA of union bed for Pact
+d <- ggplot(Pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Pact_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("P.acuta")))
+
+figure <- ggarrange(a, b, c, d, labels = c("A", "B", "C", "D"), ncol = 2, nrow = 2,common.legend = TRUE, legend = "bottom")
+
+jpeg("Output/PCA_supp_fig.jpg", width = 9, height = 7, units = "in", res = 300)
+figure
+dev.off()
+
+#adds sample names to plot
+#ggplot(pact_pca_meta, aes(PC1, PC2, label = Sample)) + geom_point(aes(color = Group)) + geom_text(size = 1.5,hjust=1,vjust=-1) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + theme_bw() + ylab("PC2") + xlab("PC1")
+
+```
+
+

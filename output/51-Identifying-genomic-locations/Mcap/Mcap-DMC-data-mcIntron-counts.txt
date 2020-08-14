@@ -1,0 +1,4 @@
+     101 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_RvM_TG50p.bed-mcIntron
+      24 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvM_TG50p.bed-mcIntron
+     475 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvR_TG50p.bed-mcIntron
+     600 total
