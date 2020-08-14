@@ -1,9 +1,0 @@
-   17048 Pact_MBD_only_CpGs.bed-paIntron
-    2222 Pact_RRBS_MBD_only_CpGs.bed-paIntron
-   33512 Pact_RRBS_only_CpGs.bed-paIntron
-  764481 Pact_WGBS_MBD_only_CpGs.bed-paIntron
-  338445 Pact_WGBS_RRBS_MBD_only_CpGs.bed-paIntron
-  295081 Pact_WGBS_RRBS_only_CpGs.bed-paIntron
-  949785 Pact_WGBS_only_CpGs.bed-paIntron
-  340695 Pact_no_method_CpGs.bed-paIntron
- 2741269 total

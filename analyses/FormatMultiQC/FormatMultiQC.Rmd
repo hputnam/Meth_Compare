@@ -36,7 +36,7 @@ multiqc_g <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_
 #lambda alignment stats
 multiqc_l <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/multiqc_data/multiqc_bismark_alignment.txt", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-meta_data <- read.csv("../../metadata/30-244831635 sample submission form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
+meta_data <- read.csv("../../metadata/30-244831635_sample_submission_form.csv", skip = 1, header = TRUE, quote = "", row.names = NULL)
 
 
 
@@ -106,7 +106,7 @@ multiqc_l$conversion_efficiency <- (multiqc_l$unmeth_chg_chh/multiqc_l$tot_chg_c
 multiqc_l <- multiqc_l[,-grep("strand_",colnames(multiqc_l))]
 
 #write out table
-write.csv(multiqc_l, "../../Output/lamda_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+write.csv(multiqc_l, "../../OLD_Output/lamda_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
 
 ```
 
@@ -143,7 +143,7 @@ colnames(trim_multiqc) <- gsub("FastQC_mqc-generalstats-","", colnames(trim_mult
 #order table by Sample.ID 
 trim_multiqc <- trim_multiqc[mixedorder(trim_multiqc$File.ID),]
 
-write.csv(trim_multiqc, "../../Output/Raw_trimmed_data_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+write.csv(trim_multiqc, "../../OLD_Output/Raw_trimmed_data_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
 
 ```
 
@@ -195,7 +195,7 @@ multi_bismark$Sample.path <- NULL
 multi_bismark <- multi_bismark[mixedorder(as.character(multi_bismark$Sample)),]
 
 #write out alignments table
-write.csv(multi_bismark,"../../Output/Pact_Mcap_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
+write.csv(multi_bismark,"../../OLD_Output/Pact_Mcap_alignments_descriptive_stats.csv", row.names = FALSE, quote = FALSE)
 ```
 
 generate simplified table for manuscript main text
@@ -219,15 +219,6 @@ for(i in 1:nrow(multi_bismark_simp)){
   }
 }
 
-#convert to sci not.
-#for(i in 4:ncol(multi_bismark_simp)){
-#  multi_bismark_simp[,i] <- formatC(multi_bismark_simp[,i], format = "e", digits = 2)
-#}
-
-#put table in terms of M reads
-for(i in 4:ncol(multi_bismark_simp)){
-  multi_bismark_simp[,i] <- round((multi_bismark_simp[,i]/1000000),2)
-}
 
 #remove sample column
 multi_bismark_simp$Sample <- NULL
@@ -235,19 +226,54 @@ multi_bismark_simp$Sample <- NULL
 #change MBD ... to just MBD in method column
 multi_bismark_simp$Sequencing.Method <- gsub("MBD.*", "MBDBS", multi_bismark_simp$Sequencing.Method)
 
+#remove trailing space from RRBS and WGBS
+multi_bismark_simp$Sequencing.Method <- gsub("S.*", "S", multi_bismark_simp$Sequencing.Method)
+
+
 #rename columns
 colnames(multi_bismark_simp) <- c("species", "method", "raw", "trimmed", "unaligned", "ambiguously aligned", "uniquely aligned", "uniquely aligned excluding duplicates")
 
+
+#convert to sci not.
+#for(i in 4:ncol(multi_bismark_simp)){
+#  multi_bismark_simp[,i] <- formatC(multi_bismark_simp[,i], format = "e", digits = 2)
+#}
+
+#create a new df with rounded numbers 
+multi_bismark_simp <- multi_bismark_simp_round
+#put table in terms of M reads
+for(i in 4:ncol(multi_bismark_simp_round)){
+  multi_bismark_simp_round[,i] <- round((multi_bismark_simp_round[,i]/1000000),2)
+}
+
 #pretty format
-kable(multi_bismark_simp, row.names = FALSE,align='ccccccc') %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))  %>% row_spec(c(1:3,10:12), color = 'black', background = "#BAE4B3") %>% row_spec(c(4:6,13:15), color = 'black', background = "#CBC9E2") %>% row_spec(c(7:9,16:18), color = 'black', background = '#FDBE85') %>% column_spec (1:8,border_left = T, border_right = T) %>% column_spec(6:8, width = "4cm") %>% as_image(file = "../../Output/Summary_descriptive_statistics_Mcap_Pact.jpg")
-
-
-
-
+kable(multi_bismark_simp_round, row.names = FALSE,align='ccccccc') %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))  %>% row_spec(c(1:3,10:12), color = 'black', background = "#BAE4B3") %>% row_spec(c(4:6,13:15), color = 'black', background = "#CBC9E2") %>% row_spec(c(7:9,16:18), color = 'black', background = '#FDBE85') %>% column_spec (1:8,border_left = T, border_right = T) %>% column_spec(6:8, width = "4cm") %>% as_image(file = "../../OLD_Output/Summary_descriptive_statistics_Mcap_Pact.jpg")
 ```
 
 ## plot different stats
+
+```{r}
+#calculate category differences for plotting stacked bar
+#first create a new df
+multi_bismark_simp_stacked <- multi_bismark_simp
+
+#calculate difference between raw and trimmed
+multi_bismark_simp_stacked$raw <- multi_bismark_simp$raw - multi_bismark_simp$trimmed
+#calculate difference between trim and unaligned/aligned
+multi_bismark_simp_stacked$trimmed <- multi_bismark_simp$trimmed - (multi_bismark_simp$unaligned + multi_bismark_simp$`ambiguously aligned` + multi_bismark_simp$`uniquely aligned`)
+#calculate difference between aligned uniquely and no dup
+multi_bismark_simp_stacked$`uniquely aligned` <- multi_bismark_simp$`uniquely aligned` - multi_bismark_simp$`uniquely aligned excluding duplicates`
+
+#reformat table to long 
+multi_bismark_simp_stacked_l <- tidyr::gather(multi_bismark_simp_stacked, "category", "reads",3:8)
+
+#plot alignment categories as stacked bars with SE bars for each species faceted by method
+jpeg("../../OLD_Output/Mcap_Pact_stacked_bars_methodXmappingStat.jpg", width = 8, height= 5, units = "in", res = 300 )
+ggbarplot(multi_bismark_simp_stacked_l, x = "species", y = "reads", add = "mean_sd", palette = "jco", color = "category", facet.by = "method", scales = "free_y") + theme(axis.title.x=element_blank(),axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,face = "italic"), strip.background =element_rect(fill="white"))
+dev.off()
+```
+
 
 percent reads with unique alignment 
 ```{r}
@@ -266,6 +292,7 @@ dev.off()
 ## Other potential plots
 percent reads with any alignment (unique or ambig)
 ```{r}
+
 ggplot(multi_bismark) + geom_boxplot(aes(x =Sequencing.Method,y = ((uniq_aligned_reads + ambig_reads)/total_reads),group = Sequencing.Method, fill = Sequencing.Method)) + facet_wrap(~Species) + theme_bw() + theme(axis.title.x = element_blank(), axis.text.x = element_blank(), axis.ticks.x=element_blank()) + ylab("mapped reads (%)")
 
 ```

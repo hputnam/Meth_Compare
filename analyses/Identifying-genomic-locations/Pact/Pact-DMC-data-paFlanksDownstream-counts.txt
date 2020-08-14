@@ -1,4 +1,0 @@
-    2038 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_RvM_TG50p.bed-paFlanksDownstream
-    4217 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvM_TG50p.bed-paFlanksDownstream
-     383 ../../../analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Pact_WvR_TG50p.bed-paFlanksDownstream
-    6638 total

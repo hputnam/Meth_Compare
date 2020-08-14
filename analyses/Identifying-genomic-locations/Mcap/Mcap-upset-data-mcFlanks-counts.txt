@@ -1,9 +1,0 @@
-    9646 Mcap_MBD_only_CpGs.bed-mcFlanks
-    2230 Mcap_RRBS_MBD_only_CpGs.bed-mcFlanks
-  177685 Mcap_RRBS_only_CpGs.bed-mcFlanks
-   65175 Mcap_WGBS_MBD_only_CpGs.bed-mcFlanks
-   20206 Mcap_WGBS_RRBS_MBD_only_CpGs.bed-mcFlanks
-  226831 Mcap_WGBS_RRBS_only_CpGs.bed-mcFlanks
-  966286 Mcap_WGBS_only_CpGs.bed-mcFlanks
- 1558168 Mcap_no_method_CpGs.bed-mcFlanks
- 3026227 total

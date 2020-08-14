@@ -1,0 +1,9 @@
+   20887 Pact_MBD_only_CpGs.bed-paGenes
+    3125 Pact_RRBS_MBD_only_CpGs.bed-paGenes
+   37213 Pact_RRBS_only_CpGs.bed-paGenes
+ 1125285 Pact_WGBS_MBD_only_CpGs.bed-paGenes
+  584366 Pact_WGBS_RRBS_MBD_only_CpGs.bed-paGenes
+  322665 Pact_WGBS_RRBS_only_CpGs.bed-paGenes
+  978232 Pact_WGBS_only_CpGs.bed-paGenes
+  366125 Pact_no_method_CpGs.bed-paGenes
+ 3437898 total
