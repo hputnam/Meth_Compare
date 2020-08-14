@@ -136,8 +136,14 @@ aov_convr_lam_stats <- cbind(aov_convr_lam[,1], aov_convr_lam_stats[,-1])
 #transpose df
 aov_convr_lam_stats_t <- setNames(data.frame(t(aov_convr_lam_stats[,-1])), aov_convr_lam_stats[,1])
 
+#add stats column
+aov_convr_lam_stats_t$statistic <- as.character(rownames(aov_convr_lam_stats_t))
+
+#remove rownames
+rownames(aov_convr_lam_stats_t) <- NULL
+
 #add model column
-aov_convr_lam_stats_t$model <- "conversion efficiency ~ library prep method"
+aov_convr_lam_stats_t$model <- "lambda conversion efficiency ~ library prep method"
 ```
 
 run anova on estimated conversion efficiency ~ BS method
@@ -170,8 +176,17 @@ aov_convr_est_stats <- cbind(aov_convr_est[,1], aov_convr_est_stats[,-1])
 #transpose df
 aov_convr_est_stats_t <- setNames(data.frame(t(aov_convr_est_stats[,-1])), aov_convr_est_stats[,1])
 
+#stats column 
+aov_convr_est_stats_t$statistic <- as.character(rownames(aov_convr_est_stats_t))
+
+#remove rownames
+rownames(aov_convr_est_stats_t) <- NULL
+
 #add model column
-aov_convr_est_stats_t$model <- "conversion efficiency ~ library prep method"
+aov_convr_est_stats_t$model <- " estimiated conversion efficiency ~ library prep method"
+
+
+
 ```
 
 
@@ -179,42 +194,53 @@ aov_convr_est_stats_t$model <- "conversion efficiency ~ library prep method"
 
 
 
-compare lambda to estimated conversion efficiency by species
+compare lambda to estimated conversion efficiency by species and method
 ```{r}
-aov_convr_cmpr <- df_l_long %>% group_by(Species, Method) %>% do(aov_models = aov(perc_conv ~ convr_method, data =.))
+t_convr_cmpr <- df_l_long %>% group_by(Species, Method) %>% do(t_models = t.test(perc_conv ~ convr_method, data =.))
 
 #make a tidy table with p.values
-aov_convr_cmpr_tidy <- aov_convr_cmpr %>% ungroup %>% 
+t_convr_cmpr_stats <- t_convr_cmpr %>% ungroup %>% 
     pull(t_models) %>% 
     map_dfr(tidy, .id = "grp")
 #make a tidy table with glance stats
-aov_convr_cmpr_glance <- aov_convr_cmpr %>% ungroup %>% 
-    pull(aov_models) %>% 
-    map_dfr(glance, .id = "grp")
+#aov_convr_cmpr_glance <- aov_convr_cmpr %>% ungroup %>% 
+#    pull(aov_models) %>% 
+#    map_dfr(glance, .id = "grp")
 #spread resid. data 
-aov_convr_cmpr_tidy_w <- data.frame(pivot_wider(aov_convr_cmpr_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
+#aov_convr_cmpr_tidy_w <- data.frame(pivot_wider(aov_convr_cmpr_tidy, names_from = term, values_from=c(df, sumsq, meansq, statistic, p.value)))
 
 #remove columns with all NAs
-aov_convr_cmpr_tidy_w <-aov_convr_cmpr_tidy_w[colSums(!is.na(aov_convr_cmpr_tidy_w)) > 0]
+#aov_convr_cmpr_tidy_w <-aov_convr_cmpr_tidy_w[colSums(!is.na(aov_convr_cmpr_tidy_w)) > 0]
 
 #merge all stats into one table
-aov_convr_cmpr_stats <- merge(aov_convr_cmpr_glance,aov_convr_cmpr_tidy_w,by = "grp")
+#aov_convr_cmpr_stats <- merge(aov_convr_cmpr_glance,aov_convr_cmpr_tidy_w,by = "grp")
 
 #add group names back in
-aov_convr_cmpr_stats <- cbind(aov_convr_cmpr[,1:2], aov_convr_cmpr_stats[,-1])
-
-#transpose df
-aov_convr_cmpr_stats_t <- setNames(data.frame(t(aov_convr_cmpr_stats[,-1])), aov_convr_cmpr_stats[,1:2])
+t_convr_cmpr_stats <- cbind(t_convr_cmpr[,1:2], t_convr_cmpr_stats[,-1])
 
 #add model column
-aov_convr_cmpr_stats_t$model <- "conversion efficiency ~ calculation method"
+t_convr_cmpr_stats$model <- "estimated ~ lambda"
+
+#add lib. prep method to model
+t_convr_cmpr_stats$model <- paste(t_convr_cmpr_stats$Method, t_convr_cmpr_stats$model, t_convr_cmpr_stats$alternative, t_convr_cmpr_stats$method)
+
+#remove lib method column
+t_convr_cmpr_stats$Method <- NULL
+t_convr_cmpr_stats$method <- NULL
+t_convr_cmpr_stats$alternative <- NULL
+
+#transpose df
+#t_convr_cmpr_stats_t <- setNames(data.frame(t(t_convr_cmpr_stats[,-c(1:2)])),c(t_convr_cmpr_stats[,1]))
+
+#format to long
+t_convr_cmpr_stats_t <- tidyr::spread(tidyr::gather( t_convr_cmpr_stats, "statistic", "value", 2:9), "Species", "value")
 
 ```
 
 write out ANOVA stats table
 ```{r}
 #combine summary tables
-aov_convr_stats_all <- rbind(aov_convr_stats_t,aov_convr_cmpr_stats_t)
+aov_convr_stats_all <- rbind(aov_convr_lam_stats_t,aov_convr_est_stats_t,t_convr_cmpr_stats_t)
 
 write.csv(aov_convr_stats_all, "OLD_Output/conversion_efficiency_stats.csv", quote = FALSE)
 ```
