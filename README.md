@@ -14,7 +14,7 @@
 - [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
 - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Individual subdirectories for each analysis along with intermediate output
     - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures and tables in the manuscript
-    - [supplemental-info](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-info): supplemental material referenced in manuscript
+    - [supplemental-material](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-material): supplemental material referenced in manuscript
 
 ## Abstract
 
