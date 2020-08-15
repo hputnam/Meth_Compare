@@ -13,8 +13,8 @@
 - [genome-feature-tracks](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files): Genome feature tracks generated for *M. capitata* and *P. acuta*
 - [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
 - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Individual subdirectories for each analysis along with intermediate output
-    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Finalized figures and tables from each analysis
-    - [supplemental-info](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-info): Finalized figures and tables from each analysis
+    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures and tables in the manuscript
+    - [supplemental-info](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-info): supplemental material referenced in manuscript
 
 ## Abstract
 
