@@ -51,18 +51,21 @@ Mcap.sizes <- Mcap.cytoband %>%
   arrange(-count)
 
 Mcap.gene.cytoband <- Mcap.gene.cytoband %>%
-  filter(V1 == 2 )
-
+  filter(V1 == 2)
 
 Mcap_union <- Mcap %>%
   filter(chrom== 2)
 str(Mcap_union)
 
 Mcap.gene.cytoband.head <- c(2,0,1,0,1)
-Mcap.gene.cytoband.tail <- c(2,max(Mcap_union$end)+1,max(Mcap_union$end)+2,0,1)
+
+Mcap.scaffold.lengths <- read.table("../data/Mcap.genome_assembly-sequence-lengths.txt", sep = "\t",  header = FALSE) %>%
+  filter(V1 == 2)
+Mcap.gene.cytoband.tail <- c(2,Mcap.scaffold.lengths[1,2]-1,Mcap.scaffold.lengths[1,2],0,1)
 
 Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband.head, Mcap.gene.cytoband)
 Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband,Mcap.gene.cytoband.tail)
+str(Mcap.gene.cytoband)
 
 #scale the data from 0-1
 Mcap_union.WGBS <- Mcap_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
@@ -105,14 +108,13 @@ dev.off()
 Pocillopora acuta
 ```{r}
 #read in the 5x coverage bedgraph of CpG for all 9 samples, 3 reps x 3 methods 
-Pact <- read.table("../data/Pact_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+Pact <- read.table("../data/Pact_union_5x.bedgraph", sep = "\t", header = TRUE, na.strings = "N/A")
 head(Pact)
 str(Pact)
 
 #load in all genes gff from a genome
 Pact.cytoband <- read.table("../genome-feature-files/Pact.GFFannotation.genes.gff", sep = "\t",  
-                       header = FALSE,colClasses = c("character","character","character", "numeric",
-                       "numeric",  "numeric", "character", "character", "character") )
+                            header = FALSE)
 
 #remove extra coloumns from gene gff
 Pact.cytoband.df <- Pact.cytoband[,c(1,4,5,6,9)]
@@ -122,12 +124,11 @@ head(Pact.cytoband.df)
 n_distinct(Pact.cytoband$V1)
 
 Pact.gene.cytoband <- Pact.cytoband[,c(1,4,5,6,7)]
-Pact.gene.cytoband$V4 <-as.numeric(Pact.gene.cytoband$V4)
+Pact.gene.cytoband$V4 <- as.numeric(Pact.gene.cytoband$V4)
 Pact.gene.cytoband$V5 <- as.numeric(Pact.gene.cytoband$V5)
 Pact.gene.cytoband$V6 <- as.numeric(0.5)
 Pact.gene.cytoband$V7 <- as.numeric(1.0)
-Pact.gene.cytoband <- Pact.gene.cytoband %>%
-  filter(V1 == "scaffold502_cov107" )
+str(Pact.gene.cytoband)
 
 #examine scaffolds for the number of genes in a scaffold 
 Pact.sizes <- Pact.cytoband %>% 
@@ -135,86 +136,78 @@ Pact.sizes <- Pact.cytoband %>%
   summarise(count=n()) %>%
   arrange(-count)
 
-which(Pact.cytoband.df$V1=='scaffold502cov107')
+Pact.gene.cytoband <- Pact.gene.cytoband %>%
+  filter(V1 == "scaffold502_cov107" )
+str(Pact.gene.cytoband)
 
-Pact.cytoband.df <- Pact.cytoband.df %>%
-  filter(V1 == "scaffold502_cov107")
+Pact.gene.cytoband$V1
 
 Pact_union <- Pact %>%
   filter(chrom== "scaffold502_cov107")
+str(Pact_union)
 
-#Pact_union$chrom <- gsub("_", "", Pact_union$chrom)
+Pact_union$chrom <- 1
 
-#which(Pact_union$chrom=='scaffold502_cov107')
+Pact.gene.cytoband.head <- c(1,0,1,0,1)
 
-#set all CpG data as numeric
-Pact_union$X1 <-as.numeric(Pact_union$X1)
-Pact_union$X2 <-as.numeric(Pact_union$X2)
-Pact_union$X3 <-as.numeric(Pact_union$X3)
-Pact_union$X4 <-as.numeric(Pact_union$X4)
-Pact_union$X5 <-as.numeric(Pact_union$X5)
-Pact_union$X6 <-as.numeric(Pact_union$X6)
-Pact_union$X7 <-as.numeric(Pact_union$X7)
-Pact_union$X8 <-as.numeric(Pact_union$X8)
-Pact_union$X9 <-as.numeric(Pact_union$X9)
+Pact.scaffold.lengths <- read.table("../data/Pact.genome_assembly-sequence-lengths.txt", sep = "\t",  stringsAsFactors=FALSE, header = FALSE) %>%
+  filter(V1 == "scaffold502_cov107")
+Pact.gene.cytoband.tail <- c(1,Pact.scaffold.lengths[1,2]-1,Pact.scaffold.lengths[1,2],0,1)
+
+str(Pact.gene.cytoband)
+
+Pact.gene.cytoband <- rbind(Pact.gene.cytoband.head, Pact.gene.cytoband)
+str(Pact.gene.cytoband)
+Pact.gene.cytoband <- rbind(Pact.gene.cytoband,Pact.gene.cytoband.tail)
+str(Pact.gene.cytoband)
+
+#Pact.gene.cytoband
+#Pact.gene.cytoband$V1 <- as.numeric(1)
+#Pact.gene.cytoband$V4 <- as.numeric(Pact.gene.cytoband$V4)
+#Pact.gene.cytoband$V5 <- as.numeric(Pact.gene.cytoband$V5)
+#Pact.gene.cytoband$V6 <- as.numeric(Pact.gene.cytoband$V6)
+#Pact.gene.cytoband$V7 <- as.numeric(Pact.gene.cytoband$V7)
+#str(Pact.gene.cytoband)
+
 
 #scale the data from 0-1
 Pact_union.WGBS <- Pact_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
 Pact_union.WGBS <- Pact_union.WGBS[,c(1,2,3,13)]
 Pact_union.WGBS$avg <- Pact_union.WGBS$avg/100
+Pact_union.WGBS$avg[is.nan(Pact_union.WGBS$avg)] <- NA
 Pact_union.RRBS <- Pact_union %>% mutate(avg = rowMeans(.[7:9], na.rm=TRUE))
 Pact_union.RRBS <- Pact_union.RRBS[,c(1,2,3,13)]
 Pact_union.RRBS$avg <- Pact_union.RRBS$avg/100
+Pact_union.RRBS$avg[is.nan(Pact_union.RRBS$avg)] <- NA
 Pact_union.MBDBS <- Pact_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
 Pact_union.MBDBS <- Pact_union.MBDBS[,c(1,2,3,13)]
 Pact_union.MBDBS$avg <- Pact_union.MBDBS$avg/100
+Pact_union.MBDBS$avg[is.nan(Pact_union.MBDBS$avg)] <- NA
 
-
-
-
-#plot top 5 scaffolds with the greatest number of gene 
+#plot top 5 scaffolds with the greatest number of gene
 pdf('../Output/Pact_genes_CpG_3methods_top5.pdf')
 circos.clear()
 
-#cell padding bottom, left, top and right
-circos.par(gap.after=5, canvas.xlim=c(-1.143,1.143))
+set.seed(123)
+circos.par("track.height" = 0.1, start.degree = 0, gap.degree = 10, cell.padding = c(0.01,1,0.01,1))
 
-circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, sort.chr = TRUE)
-circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
-                    panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
+circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, plotType = c("ideogram", "labels"))
+circos.track(factors=Pact_union.WGBS$chrom, x=Pact_union.WGBS$start, y=Pact_union.WGBS$avg, ylim=c(0,1),
+                    panel.fun = function(x,y) {
+                      circos.points(x=x, y=y, pch = ".", col="#31A354")
                     })
-
-circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1),track.height = 0.1,
-                    panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
+circos.track(factors=Pact_union.RRBS$chrom, x=Pact_union.RRBS$start, y=Pact_union.RRBS$avg, ylim=c(0,1),
+                    panel.fun = function(x,y) {
+                      circos.points(x=x, y=y, pch = ".", col="#756BB1")
                     })
-
-circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
-                    panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
+circos.track(factors=Pact_union.MBDBS$chrom, x=Pact_union.MBDBS$start, y=Pact_union.MBDBS$avg, ylim=c(0,1),
+                    panel.fun = function(x,y) {
+                      circos.points(x=x, y=y, pch = ".", col="#E6550D")
                     })
 dev.off()
 
+
+
 ```
 
 
-
-
-KaryoPlotR
-```{r}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-  BiocManager::install("karyoploteR")
-library(karyoploteR)
-```
-
-
-```{r}
-kp <- plotKaryotype(genome="TAIR9", main="Methylation level per Mb", cex=2)
-kpAddBaseNumbers(kp, tick.dist = 5000000, minor.tick.dist = 1000000, add.units = TRUE, cex = 0.8)
-kpLines(kp, data=cpgs, y=cpgs$mean.meth, col="gray50")
-kpPoints(kp, data = cpgs, y=cpgs$mean.meth, cex=1.2)
-kpAxis(kp, ymin=0, ymax=100)
-
-```
