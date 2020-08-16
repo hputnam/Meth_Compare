@@ -23,7 +23,7 @@ Generate Circos plots
 Montipora capitata
 ```{r}
 #read in the 5x coverage bedgraph of CpG for all 9 samples, 3 reps x 3 methods 
-Mcap <- read.table("../data/Mcap_union_5x.bedgraph", sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+Mcap <- read.table("../data/Mcap_union_5x.bedgraph", sep = "\t", header = TRUE, na.strings = "N/A")
 head(Mcap)
 str(Mcap)
 
@@ -43,8 +43,6 @@ Mcap.gene.cytoband$V4 <-as.numeric(Mcap.gene.cytoband$V4)
 Mcap.gene.cytoband$V5 <- as.numeric(Mcap.gene.cytoband$V5)
 Mcap.gene.cytoband$V6 <- as.numeric(0.5)
 Mcap.gene.cytoband$V7 <- as.numeric(1.0)
-Mcap.gene.cytoband <- Mcap.gene.cytoband %>%
-  filter(V1 == 2 )
 
 #examine scaffolds for the number of genes in a scaffold 
 Mcap.sizes <- Mcap.cytoband %>% 
@@ -52,54 +50,58 @@ Mcap.sizes <- Mcap.cytoband %>%
   summarise(count=n()) %>%
   arrange(-count)
 
-
-Mcap.cytoband.df <- Mcap.cytoband.df %>%
+Mcap.gene.cytoband <- Mcap.gene.cytoband %>%
   filter(V1 == 2 )
+
 
 Mcap_union <- Mcap %>%
   filter(chrom== 2)
+str(Mcap_union)
 
-#set all CpG data as numeric
-Mcap_union$X10 <-as.numeric(Mcap_union$X10)
-Mcap_union$X11 <-as.numeric(Mcap_union$X11)
-Mcap_union$X12 <-as.numeric(Mcap_union$X12)
-Mcap_union$X13 <-as.numeric(Mcap_union$X13)
-Mcap_union$X14 <-as.numeric(Mcap_union$X14)
-Mcap_union$X15 <-as.numeric(Mcap_union$X15)
-Mcap_union$X16 <-as.numeric(Mcap_union$X16)
-Mcap_union$X17 <-as.numeric(Mcap_union$X17)
-Mcap_union$X18 <-as.numeric(Mcap_union$X18)
+max.end <- max(Mcap_union$end)+1
+
+Mcap.gene.cytoband.head <- c(2,0,1,0,1)
+Mcap.gene.cytoband.tail <- c(2,max(Mcap_union$end)+1,max(Mcap_union$end)+2,0,1)
+
+Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband.head, Mcap.gene.cytoband)
+Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband,Mcap.gene.cytoband.tail)
 
 #scale the data from 0-1
 Mcap_union.WGBS <- Mcap_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
 Mcap_union.WGBS <- Mcap_union.WGBS[,c(1,2,3,13)]
 Mcap_union.WGBS$avg <- Mcap_union.WGBS$avg/100
+Mcap_union.WGBS$avg[is.nan(Mcap_union.WGBS$avg)] <- NA
 Mcap_union.RRBS <- Mcap_union %>% mutate(avg = rowMeans(.[7:9], na.rm=TRUE))
 Mcap_union.RRBS <- Mcap_union.RRBS[,c(1,2,3,13)]
 Mcap_union.RRBS$avg <- Mcap_union.RRBS$avg/100
+Mcap_union.RRBS$avg[is.nan(Mcap_union.RRBS$avg)] <- NA
 Mcap_union.MBDBS <- Mcap_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
 Mcap_union.MBDBS <- Mcap_union.MBDBS[,c(1,2,3,13)]
 Mcap_union.MBDBS$avg <- Mcap_union.MBDBS$avg/100
+Mcap_union.MBDBS$avg[is.nan(Mcap_union.MBDBS$avg)] <- NA
 
 #plot top 5 scaffolds with the greatest number of gene
 pdf('../Output/Mcap_genes_CpG_3methods_top5.pdf')
 circos.clear()
 
-#circos.initializeWithIdeogram(Mcap.cytoband.df, species = NULL, sort.chr = TRUE)
-circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, sort.chr = TRUE)
-circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
-                    panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
+set.seed(123)
+circos.par("track.height" = 0.1, start.degree = 0, gap.degree = 10, cell.padding = c(0.01,1,0.01,1))
+
+circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, plotType = c("ideogram", "labels"))
+circos.track(factors=Mcap_union.WGBS$chrom, x=Mcap_union.WGBS$start, y=Mcap_union.WGBS$avg, ylim=c(0,1),
+                    panel.fun = function(x,y) {
+                      circos.points(x=x, y=y, pch = ".", col="#31A354")
                     })
+dev.off()
 
 circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1),track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
                     })
 
 circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
                     })
 dev.off()
 
