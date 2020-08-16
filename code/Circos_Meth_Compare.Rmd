@@ -93,14 +93,24 @@ circos.track(factors=Mcap_union.WGBS$chrom, x=Mcap_union.WGBS$start, y=Mcap_unio
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#31A354")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
 circos.track(factors=Mcap_union.RRBS$chrom, x=Mcap_union.RRBS$start, y=Mcap_union.RRBS$avg, ylim=c(0,1),
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#756BB1")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
 circos.track(factors=Mcap_union.MBDBS$chrom, x=Mcap_union.MBDBS$start, y=Mcap_union.MBDBS$avg, ylim=c(0,1),
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#E6550D")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
+lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
+
+draw(lgd,  just = c("top"))
+
 dev.off()
 
 ```
@@ -176,26 +186,39 @@ Pact_union.MBDBS <- Pact_union.MBDBS[,c(1,2,3,13)]
 Pact_union.MBDBS$avg <- Pact_union.MBDBS$avg/100
 Pact_union.MBDBS$avg[is.nan(Pact_union.MBDBS$avg)] <- NA
 
+clrs <- c("#31A354","#756BB1","#E6550D")
+
 #plot top 5 scaffolds with the greatest number of gene
 pdf('../Output/Pact_genes_CpG_3methods_top5.pdf')
 circos.clear()
 
 set.seed(123)
-circos.par("track.height" = 0.1, start.degree = 0, gap.degree = 10, cell.padding = c(0.01,1,0.01,1))
+circos.par("track.height" = 0.2, start.degree = 0, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
 
 circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, plotType = c("ideogram", "labels"))
+
 circos.track(factors=Pact_union.WGBS$chrom, x=Pact_union.WGBS$start, y=Pact_union.WGBS$avg, ylim=c(0,1),
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#31A354")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
 circos.track(factors=Pact_union.RRBS$chrom, x=Pact_union.RRBS$start, y=Pact_union.RRBS$avg, ylim=c(0,1),
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#756BB1")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
 circos.track(factors=Pact_union.MBDBS$chrom, x=Pact_union.MBDBS$start, y=Pact_union.MBDBS$avg, ylim=c(0,1),
                     panel.fun = function(x,y) {
                       circos.points(x=x, y=y, pch = ".", col="#E6550D")
                     })
+circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+
+lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
+
+draw(lgd,  just = c("top"))
+
 dev.off()
 
 ```
