@@ -13,8 +13,8 @@
 - [genome-feature-tracks](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files): Genome feature tracks generated for *M. capitata* and *P. acuta*
 - [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data
 - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Individual subdirectories for each analysis along with intermediate output
-    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Finalized figures and tables from each analysis
-    - [supplemental-info](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-info): Finalized figures and tables from each analysis
+    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures and tables in the manuscript
+    - [supplemental-material](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-material): supplemental material referenced in manuscript
 
 ## Abstract
 
@@ -31,4 +31,4 @@ The elucidation of potential genome to phenome pathways is essential for our und
 	- [Figure 4](https://github.com/hputnam/Meth_Compare/blob/master/Output/Union-CpG-Features-Multipanel.pdf): Percent of CpGs detected by sequencing methods in coding sequences (CDS), introns, 1 kb flanking regions upstream (Upstream Flank) or downstream of genes (Downstream Flank), and intergenic regions A) for M. capitata and B) P. acuta (*code [here](https://github.com/hputnam/Meth_Compare/blob/master/code/Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd)*).
 	- [Figure 5](): Matrix of pairwise scatter plots for CpG loci covered at > 5x across all samples for A) M. capitata (n=4,666 common loci) and B) P. acuta (n=93,714 common loci). The red lines represent linear regression fits and the green lines are polynomial regression fits. Pearson correlation coefficients for each pairwise comparison are presented in the upper right boxes. Methods are color coded on the X and Y axes (WGBS = green, MBDBS = purple, and RRBS = orange) and replicate samples are indicated on the diagonal along with histograms of % CpG methylation (*code [here]()*).
 	- [Figure 6](): Mean proportion (n=3 samples per method) of CpGs per gene that have at least 5x coverage in all of the one-to-one orthologous genes, as identified by OrthoFinder (Supplemental File X) for A) Montipora capitata and B) Pocillopora acuta. The heatmaps are ordered by orthogroup for the groups with one to one gene matches (*code [here]()*).
-- [Supplementary Tables and Figures]()
+- [Supplementary Tables and Figures](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-material)
