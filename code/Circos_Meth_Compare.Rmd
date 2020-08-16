@@ -155,20 +155,12 @@ Pact.scaffold.lengths <- read.table("../data/Pact.genome_assembly-sequence-lengt
 Pact.gene.cytoband.tail <- c(1,Pact.scaffold.lengths[1,2]-1,Pact.scaffold.lengths[1,2],0,1)
 
 str(Pact.gene.cytoband)
+Pact.gene.cytoband$V1 <- 1
 
 Pact.gene.cytoband <- rbind(Pact.gene.cytoband.head, Pact.gene.cytoband)
 str(Pact.gene.cytoband)
 Pact.gene.cytoband <- rbind(Pact.gene.cytoband,Pact.gene.cytoband.tail)
 str(Pact.gene.cytoband)
-
-#Pact.gene.cytoband
-#Pact.gene.cytoband$V1 <- as.numeric(1)
-#Pact.gene.cytoband$V4 <- as.numeric(Pact.gene.cytoband$V4)
-#Pact.gene.cytoband$V5 <- as.numeric(Pact.gene.cytoband$V5)
-#Pact.gene.cytoband$V6 <- as.numeric(Pact.gene.cytoband$V6)
-#Pact.gene.cytoband$V7 <- as.numeric(Pact.gene.cytoband$V7)
-#str(Pact.gene.cytoband)
-
 
 #scale the data from 0-1
 Pact_union.WGBS <- Pact_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
@@ -205,8 +197,6 @@ circos.track(factors=Pact_union.MBDBS$chrom, x=Pact_union.MBDBS$start, y=Pact_un
                       circos.points(x=x, y=y, pch = ".", col="#E6550D")
                     })
 dev.off()
-
-
 
 ```
 
