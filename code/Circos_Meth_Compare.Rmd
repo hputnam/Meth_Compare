@@ -172,17 +172,17 @@ circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.paddin
 circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, sort.chr = TRUE)
 circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#31A354")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
@@ -199,17 +199,17 @@ circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.paddin
 circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, sort.chr = TRUE)
 circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#31A354")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
-                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
                     })
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
