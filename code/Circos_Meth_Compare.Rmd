@@ -157,69 +157,68 @@ Pact_union.MBDBS$avg[is.nan(Pact_union.MBDBS$avg)] <- NA
 
 ```
 
-Plotting
+
 ```{r}
-#plot top 5 scaffolds with the greatest number of gene
-pdf('../Output/Circos_plots/Coral_genes_CpG_3methods_topscaff.pdf', width=6, height=12)
+#plot top scaffolds with the greatest number of gene
+
+pdf('../Output/Circos_plots/Circos_topscaff.pdf', width=6, height=10)
 par(mfrow=c(2,1))
 circos.clear()
 
+#Montipora
 set.seed(123)
-circos.par("track.height" = 0.2, start.degree = 0, gap.degree = 45, cell.padding = c(0.01,1,0.01,1))
+circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
 
-circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, plotType = c("ideogram", "labels"))
-circos.track(factors=Mcap_union.WGBS$chrom, x=Mcap_union.WGBS$start, y=Mcap_union.WGBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#31A354")
+circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, sort.chr = TRUE)
+circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
-
-circos.track(factors=Mcap_union.RRBS$chrom, x=Mcap_union.RRBS$start, y=Mcap_union.RRBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#756BB1")
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
-
-circos.track(factors=Mcap_union.MBDBS$chrom, x=Mcap_union.MBDBS$start, y=Mcap_union.MBDBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#E6550D")
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
-
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
 lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
 
 draw(lgd,  just = c("bottom"))
 
 
+#Pocillopora
 circos.clear()
 
 set.seed(123)
-circos.par("track.height" = 0.2, start.degree = 0, gap.degree = 45, cell.padding = c(0.01,1,0.01,1))
+circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
 
-circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, plotType = c("ideogram", "labels"))
-
-circos.track(factors=Pact_union.WGBS$chrom, x=Pact_union.WGBS$start, y=Pact_union.WGBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#31A354")
+circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, sort.chr = TRUE)
+circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#31A354")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
-
-circos.track(factors=Pact_union.RRBS$chrom, x=Pact_union.RRBS$start, y=Pact_union.RRBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#756BB1")
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#756BB1")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
-
-circos.track(factors=Pact_union.MBDBS$chrom, x=Pact_union.MBDBS$start, y=Pact_union.MBDBS$avg, ylim=c(0,1),
-                    panel.fun = function(x,y) {
-                      circos.points(x=x, y=y, pch = ".", col="#E6550D")
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.2, col="#E6550D")
                     })
-circos.yaxis(side="right", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
+
+draw(lgd,  just = c("bottom"))
 
 
 
 dev.off()
 
 ```
-
 
