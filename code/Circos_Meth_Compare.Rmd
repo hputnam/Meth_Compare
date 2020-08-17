@@ -37,8 +37,10 @@ Mcap.cytoband.df <- Mcap.cytoband[,c(1,4,5,6,9)]
 str(Mcap.cytoband.df)
 head(Mcap.cytoband.df)
 
+#look at distinct numner of scaffolds
 n_distinct(Mcap.cytoband$V1)
 
+#subset the columns of data
 Mcap.gene.cytoband <- Mcap.cytoband[,c(1,4,5,6,7)]
 Mcap.gene.cytoband$V4 <-as.numeric(Mcap.gene.cytoband$V4)
 Mcap.gene.cytoband$V5 <- as.numeric(Mcap.gene.cytoband$V5)
@@ -50,20 +52,28 @@ Mcap.sizes <- Mcap.cytoband %>%
   group_by(V1) %>% 
   summarise(count=n()) %>%
   arrange(-count)
+Mcap.sizes[1,1]
 
+#filter the gene information for the scaffold with the highest number of genes
 Mcap.gene.cytoband <- Mcap.gene.cytoband %>%
   filter(V1 == 2)
 
+#filter the CpG data for the scaffold with the highest number of genes
 Mcap_union <- Mcap %>%
   filter(chrom== 2)
 str(Mcap_union)
 
+#add a top row to start the scaffold at 0
 Mcap.gene.cytoband.head <- c(2,0,1,0,1)
 
+#identify scaffold lengths
 Mcap.scaffold.lengths <- read.table("../data/Mcap.genome_assembly-sequence-lengths.txt", sep = "\t",  header = FALSE) %>%
   filter(V1 == 2)
+
+#add a bottom row to stop the scaffold at max length
 Mcap.gene.cytoband.tail <- c(2,Mcap.scaffold.lengths[1,2]-1,Mcap.scaffold.lengths[1,2],0,1)
 
+#combine top, data, and bottom rows
 Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband.head, Mcap.gene.cytoband)
 Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband,Mcap.gene.cytoband.tail)
 str(Mcap.gene.cytoband)
@@ -100,8 +110,10 @@ Pact.cytoband.df <- Pact.cytoband[,c(1,4,5,6,9)]
 str(Pact.cytoband.df)
 head(Pact.cytoband.df)
 
+#look at distinct numner of scaffolds
 n_distinct(Pact.cytoband$V1)
 
+#subset the columns of data
 Pact.gene.cytoband <- Pact.cytoband[,c(1,4,5,6,7)]
 Pact.gene.cytoband$V4 <- as.numeric(Pact.gene.cytoband$V4)
 Pact.gene.cytoband$V5 <- as.numeric(Pact.gene.cytoband$V5)
@@ -114,28 +126,38 @@ Pact.sizes <- Pact.cytoband %>%
   group_by(V1) %>% 
   summarise(count=n()) %>%
   arrange(-count)
+Pact.sizes[1,1]
 
+#filter the gene information for the scaffold with the highest number of genes
 Pact.gene.cytoband <- Pact.gene.cytoband %>%
   filter(V1 == "scaffold502_cov107" )
 str(Pact.gene.cytoband)
 
-Pact.gene.cytoband$V1
-
+#filter the CpG data for the scaffold with the highest number of genes
 Pact_union <- Pact %>%
   filter(chrom== "scaffold502_cov107")
 str(Pact_union)
 
+#set the scaffold identifier as numeric (need to track actual scaffold id from Pact.sizes[1,1])
 Pact_union$chrom <- 1
 
+#add a top row to start the scaffold at 0
 Pact.gene.cytoband.head <- c(1,0,1,0,1)
 
+#identify scaffold lengths
 Pact.scaffold.lengths <- read.table("../data/Pact.genome_assembly-sequence-lengths.txt", sep = "\t",  stringsAsFactors=FALSE, header = FALSE) %>%
   filter(V1 == "scaffold502_cov107")
+
+#add a bottom row to stop the scaffold at max length
 Pact.gene.cytoband.tail <- c(1,Pact.scaffold.lengths[1,2]-1,Pact.scaffold.lengths[1,2],0,1)
 
+#view datafram information
 str(Pact.gene.cytoband)
+
+#set the scaffold identifier as numeric (need to track actual scaffold id from Pact.sizes[1,1])
 Pact.gene.cytoband$V1 <- 1
 
+#combine top, data, and bottom rows
 Pact.gene.cytoband <- rbind(Pact.gene.cytoband.head, Pact.gene.cytoband)
 str(Pact.gene.cytoband)
 Pact.gene.cytoband <- rbind(Pact.gene.cytoband,Pact.gene.cytoband.tail)
@@ -162,61 +184,80 @@ Pact_union.MBDBS$avg[is.nan(Pact_union.MBDBS$avg)] <- NA
 #plot top scaffolds with the greatest number of gene
 
 pdf('../Output/Circos_plots/Circos_topscaff.pdf', width=6, height=10)
+
+#set plotting parameters for pdf
 par(mfrow=c(2,1))
+
+#clear 
 circos.clear()
 
 #Montipora
 set.seed(123)
+
+#set plotting parameters for circlize
 circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
 
+#add outer scaffold band
 circos.initializeWithIdeogram(Mcap.gene.cytoband, species = NULL, sort.chr = TRUE)
+#add data track
 circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#31A354")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add data track
 circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add data track
 circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add legend
 lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
-
 draw(lgd,  just = c("bottom"))
 
-
 #Pocillopora
+#clear before next plot
 circos.clear()
 
 set.seed(123)
+#set plotting parameters for circlize
 circos.par("track.height" = 0.2, start.degree = 90, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
 
+#add outer scaffold band
 circos.initializeWithIdeogram(Pact.gene.cytoband, species = NULL, sort.chr = TRUE)
+#add data track
 circos.genomicTrack(Pact_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#31A354")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add data track
 circos.genomicTrack(Pact_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add data track
 circos.genomicTrack(Pact_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
                     panel.fun = function(region, value, ...) {
                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
                     })
+#labal y axis of data track
 circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add legend
 lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
-
 draw(lgd,  just = c("bottom"))
-
-
 
 dev.off()
 
