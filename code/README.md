@@ -1,6 +1,6 @@
 # code
 
-## 00-DNA Sequencing Processing
+## 00-DNA Sequencing Alignment
 - [00.01-DNA-sequence-processing.md](00.01-DNA-sequence-processing.md): Markdown file with code used corresponding toe "DNA Sequence Processing" section in Methods. From raw data to calling of methlyation state at all loci.
 - 00.02-lambda-alignment.sh
 
