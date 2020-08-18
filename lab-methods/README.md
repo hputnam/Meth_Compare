@@ -8,7 +8,7 @@ Commercial protocols, kit information, and lab notebook entries for DNA extracti
 - [EZ-DNA-Methylation-RRBS-Library-Prep-Kit.pdf](https://github.com/hputnam/Meth_Compare/blob/master/lab-methods/commercial-protocols/EZ-DNA-Methylation-RRBS-Library-Prep-Kit.pdf): RRBS library preparation kit
 - [Invitrogen-MethylMiner-Manual.pdf](https://github.com/hputnam/Meth_Compare/blob/master/lab-methods/commercial-protocols/Invitrogen-MethylMiner-Manual.pdf): MBD enrichment kit
 - [Pico-Methyl-Seq-Library-Prep-Kit.pdf](https://github.com/hputnam/Meth_Compare/blob/master/lab-methods/commercial-protocols/Pico-Methyl-Seq-Library-Prep-Kit.pdf): WGBS and MBDBS library preparation kit
-- [Illumina-UDI-Indexes-For-Customers.csv](https://github.com/hputnam/Meth_Compare/blob/master/lab-methods/Illumina-UDI-Indexes-For-Customers.csv): Illumina index information
+
 
 **Lab notebook entries**:
 
