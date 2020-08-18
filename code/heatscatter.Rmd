@@ -28,10 +28,10 @@ mcap.corrs <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv")
 pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 
 pdf('Output/corrplot1.pdf', width=10, height=10)
-#par(mfrow=c(1,2))
+par(mfrow=c(1,2))
 pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, 
              smoother=TRUE, gap=0.5, hist.col="black")
-#pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5)
+pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5)
 dev.off()
 
 
