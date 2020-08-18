@@ -1,0 +1,57 @@
+---
+title: "heatscatter"
+author: "HM Putnam"
+date: "8/17/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+load libraries
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(RColorBrewer)
+library(wesanderson)
+library(stats)
+library(gridExtra)
+library(psych)
+```
+
+correlation of common loci
+```{r}
+
+#load corr data
+mcap.corrs <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv")
+pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
+
+pdf('Output/corrplot1.pdf', width=10, height=10)
+#par(mfrow=c(1,2))
+pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, 
+             smoother=TRUE, gap=0.5, hist.col="black")
+#pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5)
+dev.off()
+
+
+```
+
+```{r}
+mcap.corrs_w1_w2 <- mcap.corrs[,c(1,2)]
+mcap.corrs_w1_w3 <- mcap.corrs[,c(1,3)]
+mcap.corrs_w2_w3 <- mcap.corrs[,c(2,3)]
+
+
+k <- 11
+my.cols <- wes_palette("Zissou1", 100, type = "continuous")
+pdf('Output/corrplot2.pdf', width=10, height=10)
+par(mfrow=c(2,2))
+smoothScatter(mcap.corrs1, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
+smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
+smoothScatter(mcap.corrs2, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
+smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
+dev.off()
+# 
+
+```
