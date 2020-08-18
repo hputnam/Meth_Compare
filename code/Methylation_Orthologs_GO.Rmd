@@ -26,14 +26,6 @@ Goal is to identify and compare presence and proportion of CpG in genes captured
 
 Load sample info, annotation, and counts
 ```{r load data}
-#load sample info
-sample.info <- read.csv(file="metadata/RNASeq_metadata.csv", header=T, sep=",", row.names=1)
-#separate sample info by species
-Mcap.sample.info <- subset(sample.info, Species == "Montipora capitata")
-#Mcap = Montipora capitata
-Pact.sample.info <- subset(sample.info, Species == "Pocillopora acuta")
-#Pact = Pocillopora acuta
-
 #Load Mcap Annotation Info
 Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
 colnames(Mcap.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
@@ -42,7 +34,7 @@ Mcap.annot <- Mcap.annot %>%
 Mcap.annot$gene <- gsub("augustus.", "", Mcap.annot$gene) #remove excess characters from gene name
 Mcap.annot$gene <- gsub(".t1", "", Mcap.annot$gene) #remove excess characters from gene name
 
-#Identify Mcap full set of GO terms
+#Identify full set of GO terms
 Mcap.GO <- Mcap.annot[,c(2,14)] #identify GOids
 splitted <- strsplit(as.character(Mcap.GO$GO.IDs), "; ") #slit into multiple GO ids
 Mcap.GOs <- data.frame(v1 = rep.int(Mcap.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
@@ -55,7 +47,7 @@ colnames(Pact.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Nam
 Pact.annot <- Pact.annot %>% 
   distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
 
-#Identify Mcap full set of GO terms
+#Identify full set of GO terms
 Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
 splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
 Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
@@ -72,7 +64,6 @@ Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
 
 Mcap.gene.len.df <- Mcap.genes 
 Mcap.gene.len.df$length <- Mcap.gene.len.df$gene.stop-Mcap.gene.len.df$gene.start
-
 
 #write output of gene gff only
 write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
@@ -92,7 +83,7 @@ Pact.gene.len.df <- Pact.genes
 Pact.gene.len.df$length <- Pact.gene.len.df$gene.stop-Pact.gene.len.df$gene.start
 
 # Load ortholog data
-Ortho.data <- read.csv(file="analyses/coral_ortho/Fastas/OrthoFinder/Results_Jul06/Orthologues/Orthologues_Mcap.protein/Mcap.protein__v__Pocillopora_acuta_protein.tsv", header=TRUE, sep="\t")
+Ortho.data <- read.csv(file="Output/coral_ortho/Orthologues/Orthologues_Mcap.protein/Mcap.protein__v__Pocillopora_acuta_protein.tsv", header=TRUE, sep="\t")
 
 #remove extra gene id characters
 Ortho.data$Mcap.protein <- gsub("augustus.", "", Ortho.data$Mcap.protein)
@@ -411,11 +402,12 @@ PA <- ggplot(Pact.Ortho.data.counts, aes(ID, method, fill=prop, width = 1)) +
   theme(axis.text.x = element_text(angle = 90, size=1)) +
   ggtitle("B P. acuta")
 PA
+```
 
+Plotting Proportion of CpGs covered in one to one Orthologs
+```{r}
 Fig <- ggarrange(MC,PA, ncol = 1, nrow = 2)
-ggsave("Output/CpGperGeneProportion.1to1.Orthologs.pdf", Fig, width=6, height=6)
-
-
+ggsave("Output/figures/Fig_6.pdf", Fig, width=6, height=6)
 ```
 
 Determine Mcap GO terms for the genes found with each method
@@ -453,7 +445,6 @@ splitted <- strsplit(as.character(MBDBS.GO$GO.IDs), "; ") #slit into multiple GO
 MBDBS.GOs <- data.frame(v1 = rep.int(MBDBS.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
 MBDBS.GO.terms <- MBDBS.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
 length(unique(MBDBS.GO.terms$v2)) #view number of go terms
-
 
 #GO Term union df
 GO.ALL <- left_join(WGBS.GO.terms, RRBS.GO.terms, by="v1", all=TRUE)
@@ -596,7 +587,3 @@ ggplot(BS.All.slims, aes(fill=method, y=Percent, x=Term)) +
 dev.off()
 
 ```
-
-
-
-
