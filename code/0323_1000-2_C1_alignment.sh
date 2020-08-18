@@ -258,3 +258,10 @@ do
   cat "${f}" | awk -F $'\t' 'BEGIN {OFS = FS} {if ($5+$6 >= 5) {print $1, $2, $3, $4, $5, $6}}' \
   > "${STEM}"_5x.tab
 done
+
+####################################################
+####################  OUTPUT #######################
+####################################################
+# All output from this script is here:
+
+#  https://gannet.fish.washington.edu/seashell/bu-mox/scrubbed/032320-Pact-C1/Pact_C1/
