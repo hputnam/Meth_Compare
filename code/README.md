@@ -4,13 +4,9 @@
 - [00.01-DNA-sequence-processing.md](00.01-DNA-sequence-processing.md): Markdown file with code used corresponding toe "DNA Sequence Processing" section in Methods. From raw data to calling of methlyation state at all loci.
 - 00.02-C1-alignment.sh
 - 00.03-lambda-alignment.sh
-
-
-
-## 01-Quality Control
+- 00.04-FormatMultiQC.Rmd:  This script produces Figure 1 and Supplementary Tables 1-3 from MultiQC output files. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH and generates an intermediate file lamda_alignments_descriptive_stats.csv.
+- 00.05-CompareConversionEfficiency.Rmd: This script generates Supplementary Tables 4-5 showing lamda alignments descriptive stats, conversion efficiency based on lambda alignments, estimated conversion efficiency based on coral alignments for each sample, and ANOVA statistics comparing conversion efficiency calculation methods across library preparation methods.
 - 01.01-MethCompare_MultiQC.ipynb - Script used to run MultiQC on FastQC output for trimmed BS reads that generates the input files for ...
-- 01.02-FormatMultiQC.Rmd:  This script produces Table 1 and Supplementary Tables X-X from MultiQC output files, including lambda alignments. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH.
-- 01.03-CompareConversionEfficiency.Rmd:  This script generates a table showing conversion efficiency based on lambda alignments and estimated conversion efficiency based on coral alignments for each sample.
 - [20200416_qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200416_qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
 - [Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
 
