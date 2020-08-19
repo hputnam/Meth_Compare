@@ -28,9 +28,9 @@
 - [01.10-Mcap-Canonical-Coverage-Track.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.10-Mcap-Canonical-Coverage-Track.ipynb)
 - [01.11-Pact-Canonical-Coverage-Track.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.11-Pact-Canonical-Coverage-Track.ipynb)
 
-## Upset plots
-- [Generate\_UpsetPlot\_input.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Generate_UpsetPlot_input.ipynb):  This script sorts and merges by method sample bedgraphs of CpG loci with 5x coverage for each species. It then generates a union bed file for each species from merged begraphs, and genome CpG bedgraph (contains all CpG loci in the genome).
-- [GenerateUpsetPlot.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/GenerateUpsetPlot.Rmd):  This script generates an upset plot from the union bed graph for each species.
+#### Upset plots
+- [01.12-Generate\_UpsetPlot\_input.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.12-Generate_UpsetPlot_input.ipynb):  This script sorts and merges by method sample bedgraphs of CpG loci with 5x coverage for each species. It then generates a union bed file for each species from merged begraphs, and genome CpG bedgraph (contains all CpG loci in the genome).
+- [01.13-GenerateUpsetPlot.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.13-GenerateUpsetPlot.Rmd):  This script generates an upset plot from the union bed graph for each species.
 
 ## Methylation status and genomic locations
 
