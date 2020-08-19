@@ -11,7 +11,7 @@
 ## Coverage analysis
 
 - [01.01-qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.01-qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
-- [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
+- [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compareblob/master/code/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
 
 
 #### Downsampling analysis
