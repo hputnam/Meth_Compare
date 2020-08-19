@@ -17,3 +17,5 @@
 - [ST7](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST7.png): Supplementary Table 7: Results from post-hoc estimated marginal mean calculations for methylation status
 - [ST8](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST8.png): Supplementary Table 8: Results from perMANOVA and beta-dispersion tests for genomic location
 - [ST9](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST9.png): Supplementary Table 9: Results from post-hoc estimated marginal mean calculations for genomic location
+
+**[Supplemental_Material.pdf](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/Supplemental_Material.pdf)**: PDF of all supplementary material
