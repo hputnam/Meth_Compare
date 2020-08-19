@@ -11,7 +11,7 @@
 ## 01-CpG Coverage
 
 - [01.01-qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.01-qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
-- [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
+- [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates Supplementary Figure 2 score plots for each species.
 - [01.03-Mcap\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.03-Mcap_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _M. capitata_ samples and for pooled _M. capitata_ samples based on method and downsampled to different sequencing depths.
 - [01.04-Pact\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.04-Pact_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _P. acuta_ samples and for pooled _P. acuta_ samples based on method and downsampled to different sequencing depths.
 
