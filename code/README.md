@@ -8,10 +8,11 @@
 - [00.05-FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/00.05-FormatMultiQC.Rmd): This script produces Figure 1 and Supplementary Tables 1-3 from MultiQC output files. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH and generates an intermediate file lamda_alignments_descriptive_stats.csv that is the input file for 00.06-CompareConversionEfficiency.Rmd.
 - [00.06-CompareConversionEfficiency.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/00.06-CompareConversionEfficiency.Rmd): This script generates Supplementary Tables 4-5 showing lamda alignments descriptive stats, conversion efficiency based on lambda alignments, estimated conversion efficiency based on coral alignments for each sample, and ANOVA statistics comparing conversion efficiency calculation methods across library preparation methods.
 
-- [20200416_qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200416_qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
-- [Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
-
 ## Coverage analysis
+
+- [01.01-20200416_qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/01.01-20200416_qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
+- [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
+
 
 #### Downsampling analysis
 - [20200505_SubsampleFQs2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200505_SubsampleFQs2.sh):  This script pools trimmed reads by method for P. acuta samples and randomly downsamples read pairs at 50M, 100M, 150M, and 200M.
