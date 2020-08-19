@@ -22,7 +22,7 @@
 - [01.08-SubsampleBmrkMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.08-SubsampleBmrkMcap.sh):  This script performs Bismark alignment of M. capitata downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
 
 #### Coverage plots
-- [01.09-Genome\_CpG\_coverage\_analysis.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.09-Genome_CpG_coverage_analysis.Rmd):  This script generates genome and CpG coverage plots from CpG_coverageXdepth script outputs and CollectWgsMetrics output for individual samples and downsampling analysis output.
+- [01.09-Genome\_CpG\_coverage\_analysis.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.09-Genome_CpG_coverage_analysis.Rmd):  This script generates genome and CpG coverage plots from CpG_coverageXdepth script outputs for individual samples and downsampling analysis output.
 
 
 ## Upset plots
