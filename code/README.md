@@ -40,3 +40,11 @@
 - [Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Characterizing-CpG-Methylation-5x-Union-Summary-Plots.Rmd): Create summary tables and stacked barplots to understand methylation status and genomic locations of 5x union CpGs in both species
 - [Identifying-Genomic-Locations.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genomic-Locations.ipynb): Characterize genomic locations of CpGs in upset plots and method-associated DMC using `bedtools`
 - [Identifying-Genome-Features-Summary.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Identifying-Genome-Features-Summary.Rmd): Create summary tables for upset plot data and various method-associated DMC categories
+
+## 03-Genomic Location of Methylation
+
+
+## 04-Correlation of Percent Methylation of Shared CpG Loci 
+
+
+## 05-Proportion of Detected CpGs for Orthologs
