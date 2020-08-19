@@ -24,6 +24,9 @@
 #### Coverage plots and sequencing saturation estimation
 - [01.09-Genome\_CpG\_coverage\_analysis.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.09-Genome_CpG_coverage_analysis.Rmd):  This script generates Figure 2 CpG coverage plots from CpG_coverageXdepth script outputs for individual samples and downsampling analysis output. It also perform sequencing saturation estimation based on a Michaelis-Menten model and generates Supplementary Figure 3.
 
+#### Generate union bedgraphs for CpGs with 5x coverage
+- [01.10-Mcap-Canonical-Coverage-Track.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.10-Mcap-Canonical-Coverage-Track.ipynb)
+- [01.11-Pact-Canonical-Coverage-Track.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.11-Pact-Canonical-Coverage-Track.ipynb)
 
 ## Upset plots
 - [Generate\_UpsetPlot\_input.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/scripts/Generate_UpsetPlot_input.ipynb):  This script sorts and merges by method sample bedgraphs of CpG loci with 5x coverage for each species. It then generates a union bed file for each species from merged begraphs, and genome CpG bedgraph (contains all CpG loci in the genome).
