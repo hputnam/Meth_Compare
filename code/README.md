@@ -8,7 +8,7 @@
 - [00.05-FormatMultiQC.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/00.05-FormatMultiQC.Rmd): This script produces Figure 1 and Supplementary Tables 1-3 from MultiQC output files. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH and generates an intermediate file lamda_alignments_descriptive_stats.csv that is the input file for 00.06-CompareConversionEfficiency.Rmd.
 - [00.06-CompareConversionEfficiency.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/00.06-CompareConversionEfficiency.Rmd): This script generates Supplementary Tables 4-5 showing lamda alignments descriptive stats, conversion efficiency based on lambda alignments, estimated conversion efficiency based on coral alignments for each sample, and ANOVA statistics comparing conversion efficiency calculation methods across library preparation methods.
 
-## CpG Coverage
+## 01-CpG Coverage
 
 - [01.01-qualimap2.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.01-qualimap2.sh):  This script runs Qualimap bamqc and multi-bamQC on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files for each species, and produces both individual sample Qualimap reports and multi-sample BAM QC reports (which include PCAs for each species).
 - [01.02-Qualimap\_MultiBamQC\_PCA.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.02-Qualimap_MultiBamQC_PCA.Rmd):  This script takes in the sample summary tables reported in the multi-sample BAM QC reports, runs PCA, and generates score plots for each species.
@@ -16,15 +16,10 @@
 - [01.04-Pact\_CpG\_coverageXdepth.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/01.04-Pact_CpG_coverageXdepth.ipynb):  This script totals CpGs at different levels of coverage for individual _P. acuta_ samples and for pooled _P. acuta_ samples based on method and downsampled to different sequencing depths.
 
 #### Downsampling analysis
-- [20200505_SubsampleFQs2.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200505_SubsampleFQs2.sh):  This script pools trimmed reads by method for P. acuta samples and randomly downsamples read pairs at 50M, 100M, 150M, and 200M.
-- [20200525_SubsampleFQsMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200525_SubsampleFQsMcap.sh):  This script pools trimmed reads by method for M. capitata samples and randomly downsamples read pairs at 50M, 100M, 150M, and 200M.
-- [20200512_SubsampleBmrkPact.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200512_SubsampleBmrkPact.sh):  This script performs Bismark alignment of P. acuta downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
-- [20200527_SubsampleBmrkMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200527_SubsampleBmrkMcap.sh):  This script performs Bismark alignment of M. capitata downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
-- [20200513_SubsamplePicardPact.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200513_SubsamplePicardPact.sh):  This script runs Picard CollectWgsMetrics on on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files from downsampled P.acuta reads.
-- [20200527_SubsamplePicardMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/scripts/20200527_SubsamplePicardMcap.sh):  This script runs Picard CollectWgsMetrics on on deduplicated WBGS and MDBBS and non-deduplicated RRBS sorted bam files from downsampled P.acuta reads.
-
-
-
+- [01.05-SubsampleFQsPact.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.05-SubsampleFQsPact.sh):  This script pools trimmed reads by method for P. acuta samples and randomly downsamples read pairs at 50M, 100M, 150M, and 200M.
+- [01.06-SubsampleFQsMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.05-SubsampleFQsMcap.sh):  This script pools trimmed reads by method for M. capitata samples and randomly downsamples read pairs at 50M, 100M, 150M, and 200M.
+- [01.07-SubsampleBmrkPact.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.07-SubsampleBmrkPact.sh):  This script performs Bismark alignment of P. acuta downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
+- [01.07-SubsampleBmrkMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.07-SubsampleBmrkPact.sh):  This script performs Bismark alignment of M. capitata downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
 
 #### Coverage plots
 - [Genome\_CpG\_coverage_analysis.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/analyses/Coverage_analysis/Genome_CpG_coverage_analysis.Rmd):  This script generates genome and CpG coverage plots from CpG_coverageXdepth script outputs and CollectWgsMetrics output for individual samples and downsampling analysis output.
