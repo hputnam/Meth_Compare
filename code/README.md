@@ -21,7 +21,7 @@
 - [01.07-SubsampleBmrkPact.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.07-SubsampleBmrkPact.sh):  This script performs Bismark alignment of P. acuta downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
 - [01.08-SubsampleBmrkMcap.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/01.08-SubsampleBmrkMcap.sh):  This script performs Bismark alignment of M. capitata downsampled reads, methylation extraction, deduplicates WGBS and MBDBS downsampled reads, generates cytosine reports, generates sorted bam files, and generates 5x coverage files.
 
-#### Coverage plots and Sequencing Saturation estimation
+#### Coverage plots and sequencing saturation estimation
 - [01.09-Genome\_CpG\_coverage\_analysis.Rmd](https://github.com/hputnam/Meth_Compare/blob/master/code/01.09-Genome_CpG_coverage_analysis.Rmd):  This script generates Figure 2 CpG coverage plots from CpG_coverageXdepth script outputs for individual samples and downsampling analysis output. It also perform sequencing saturation estimation based on a Michaelis-Menten model and generates Supplementary Figure 3.
 
 
