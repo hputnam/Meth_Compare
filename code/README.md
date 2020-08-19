@@ -2,8 +2,8 @@
 
 ## 00-DNA Sequencing Alignment
 - [00.01-DNA-sequence-processing.md](00.01-DNA-sequence-processing.md): Markdown file with code used corresponding toe "DNA Sequence Processing" section in Methods. From raw data to calling of methlyation state at all loci.
-- 00.02-C1-alignment.sh
-- 00.03-lambda-alignment.sh
+- [00.02-C1-alignment.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/00.02-C1-alignment.sh)
+- [00.03-lambda-alignment.sh](https://github.com/hputnam/Meth_Compare/blob/master/code/00.03-lambda-alignment.sh)
 - 00.04-MethCompare_MultiQC.ipynb: Script used to run MultiQC on trimmed and aligned BS reads that generates the input files for 00.05-FormatMultiQC.Rmd.
 - 00.05-FormatMultiQC.Rmd: This script produces Figure 1 and Supplementary Tables 1-3 from MultiQC output files. It also calculates lambda conversion efficiency based on the ratio of the sum of all unmethylated cytosines in CHG and CHH context to the sum of methylated and unmethylated cytosines in CHG and CHH and generates an intermediate file lamda_alignments_descriptive_stats.csv that is the input file for 00.06-CompareConversionEfficiency.Rmd.
 - 00.06-CompareConversionEfficiency.Rmd: This script generates Supplementary Tables 4-5 showing lamda alignments descriptive stats, conversion efficiency based on lambda alignments, estimated conversion efficiency based on coral alignments for each sample, and ANOVA statistics comparing conversion efficiency calculation methods across library preparation methods.
