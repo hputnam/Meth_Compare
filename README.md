@@ -15,7 +15,7 @@
 - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Individual subdirectories for each analysis along with intermediate output
     - [intermediate-files]()
          - _subdirectories_
-    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures and tables in the manuscript
+    - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures in the manuscript main text
     - [supplemental-material](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-material): supplemental material referenced in manuscript
 
 ## Abstract
