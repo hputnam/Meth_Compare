@@ -5,7 +5,7 @@
 - [SF2.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF2.png): Supplementary Figure 2: PCA of alignment features presented in the summary section of Qualimap MultiBamQC reports. 
 - [SF3.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF3.png): Supplementary Figure 3: Estimated fraction of genome-wide CpG loci covered by at least 5 reads with different sequencing depths for each species.
 - [SF4.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF4.png): Supplementary Figure 4: PCA of CpG methylation for loci covered at 5x read depth in all samples for each species.
-- [SF5.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF5.png): Supplementary Figure 5: Methylation status and genomic location PCoAs
+- [SF5.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/Supp-PCoA-Multipanel.pdf): Supplementary Figure 5: Methylation status and genomic location PCoAs
 
 ### Supplementary Tables
 - [ST1](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST1.csv): Supplementary Table 1: Trimming statistics 
