@@ -20,6 +20,23 @@ library(gridExtra)
 library(psych)
 ```
 
+add border color to histogram
+```{r}
+#trace(pairs.panels, edit = T)
+
+# add border argument to "panel.hist.density" code
+
+  #rect(breaks - interbreak, 0, breaks + interbreak, 
+  #               y, col = hist.col, border = "black")
+
+#add colramp argument to "panel.smoother" code
+  # if (smoother) {
+#              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(colorRamps::matlab.like2(10)))
+         }
+
+
+```
+
 correlation of common loci
 ```{r}
 
@@ -27,10 +44,10 @@ correlation of common loci
 mcap.corrs <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv")
 pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 
-pdf('Output/corrplot1.pdf', width=10, height=10)
+pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
 par(mfrow=c(1,2))
 pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, 
-             smoother=TRUE, gap=0.5, hist.col="black")
+             smoother=TRUE, gap=0.5, hist.col="light gray")
 pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5)
 dev.off()
 
@@ -45,7 +62,7 @@ mcap.corrs_w2_w3 <- mcap.corrs[,c(2,3)]
 
 k <- 11
 my.cols <- wes_palette("Zissou1", 100, type = "continuous")
-pdf('Output/corrplot2.pdf', width=10, height=10)
+pdf('OLD_Output/corrplot2.pdf', width=10, height=10)
 par(mfrow=c(2,2))
 smoothScatter(mcap.corrs1, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
 smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
