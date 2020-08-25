@@ -473,6 +473,12 @@ dev.off()
 ```
 
 
+
+
+
+
+
+
 model coverage needed to saturate CpGs covered
 ```{r}
 #create object that is a vector of the methods
@@ -491,6 +497,11 @@ for (i in 1:length(methods)){
   Km <- data.frame(tibble(coef(m1)))[2,]
   #create model df to save model for each iteration
   mm <- data.frame(cbind(summary(m1)[[3]],rbind(summary(m1)[[13]], summary(m1)[[13]])))
+  #create a Vmax and Km SE high and low
+  Vmax_SE_low <- Vmax - mm$Std..Error[1]
+  Vmax_SE_high <- Vmax + mm$Std..Error[1]
+  Km_SE_low <- Km - mm$Std..Error[2]
+  Km_SE_high <- Km + mm$Std..Error[2]
   #add method column
   mm$method <- rep(methods[i],2)
   #combine model info with model info master df
@@ -503,21 +514,32 @@ for (i in 1:length(methods)){
   for (j in 1:length(prediction)){
     #calculate the estimated percent CpGs covered (using MM model coefficients)
     perc_CpG <- (Vmax*prediction[j]/(Km+prediction[j]))
+    # calculate perc_CpG for SE high and low
+    perc_CpG_SE_high <- (Vmax_SE_high*prediction[j]/(Km_SE_high+prediction[j]))
+    perc_CpG_SE_low <- (Vmax_SE_low*prediction[j]/(Km_SE_low+prediction[j]))
     #save the depth as an object
     depth <- prediction[j]
     #save the percent CpGs covered and the depth as a data frame
-    pred_perc_CpG <- data.frame(perc_CpG,depth)
+    pred_perc_CpG <- data.frame(perc_CpG,perc_CpG_SE_low,perc_CpG_SE_high,depth)
     #combine data frame for each depth in a master data frame
     predicted_CpG_cov <- rbind(predicted_CpG_cov,pred_perc_CpG)
   }
-
+  #create column for denoting series
+  #predicted_CpG_cov <- tidyr::gather(predicted_CpG_cov,"subseries", "perc_CpG", 1:3)
+  #predicted_CpG_cov$subseries <- gsub("perc_CpG", "estimated", predicted_CpG_cov$subseries)
   predicted_CpG_cov$series <- "estimated"
   #create an object for the actual CpGs covered at known depths
   actual_CpG_cov <- data.frame(perc_CpG = Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage==5 & Mcap_pool_Sample_CpG_stacked$method == methods[i]),c("percent_CpG")],depth = as.integer(as.character(Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage==5 & Mcap_pool_Sample_CpG_stacked$method == methods[i]),c("depth")])),series = "observed")
+  #actual_CpG_cov$subseries <- "observed"
+  actual_CpG_cov$perc_CpG_SE_low <- NA
+  actual_CpG_cov$perc_CpG_SE_high <- NA
   pred_act_cov <- rbind(predicted_CpG_cov, actual_CpG_cov) 
   pred_act_cov$method <- methods[i]
   predicted_CpG_cov_all_methods <- rbind(predicted_CpG_cov_all_methods,pred_act_cov)
 }
+
+#threshold Vmax to 1
+predicted_CpG_cov_all_methods$perc_CpG_SE_high[predicted_CpG_cov_all_methods$perc_CpG_SE_high > 1] <- 1
 
 model_df$coefficient <- rownames(model_df)
 model_df$coefficient <- gsub("d.*","Vmax", model_df$coefficient)
@@ -528,14 +550,18 @@ mcap_model_df <- model_df %>% tidyr::pivot_longer(names_to = "statistic", values
 mcap_model_df$species <- "M.capitata"
 
 ```
-fixed = c(1000,NA), names = c("d", "e")
+
 plot saturation curves per method
 ```{r}
-a <- ggplot(predicted_CpG_cov_all_methods) + geom_point(aes(x = depth, y = perc_CpG, color = method, alpha = series)) + scale_x_continuous(breaks = seq(0,4000,100))+ scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2), limits = c(0,1)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("M. capitata") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_alpha_manual(values=c(0.3, 1))
+#a <- ggplot(predicted_CpG_cov_all_methods,aes(x = depth, y = perc_CpG, color = method, alpha = series)) + geom_point() + geom_pointrange(aes(ymin=perc_CpG_SE_low, ymax=perc_CpG_SE_high)) + scale_x_continuous(breaks = seq(0,4000,100))+ scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2), limits = c(0,1)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("M. capitata") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_alpha_manual(values=c(0.3, 1))
+
+
+a <- ggplot(predicted_CpG_cov_all_methods,aes(x = depth, y = perc_CpG, color = method, alpha = series)) + geom_point(size = 0.5) + geom_line() + geom_ribbon(aes(ymin=perc_CpG_SE_low,ymax=perc_CpG_SE_high,fill=method),color="grey70",alpha=0.2, size = 0.1) + scale_x_continuous(breaks = seq(0,4000,100))+ scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("M. capitata") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354")) +  scale_alpha_manual(values=c(0.3, 1))
 ```
 
 do the same for pact
 model coverage needed to saturate CpGs covered
+
 ```{r}
 #create object that is a vector of the methods
 methods <- unique(Pact_pool_Sample_CpG_stacked$method)
@@ -553,6 +579,11 @@ for (i in 1:length(methods)){
   Km <- data.frame(tibble(coef(m1)))[2,]
   #create model df to save model for each iteration
   mm <- data.frame(cbind(summary(m1)[[3]],rbind(summary(m1)[[13]], summary(m1)[[13]])))
+  #create a Vmax and Km SE high and low
+  Vmax_SE_low <- Vmax - mm$Std..Error[1]
+  Vmax_SE_high <- Vmax + mm$Std..Error[1]
+  Km_SE_low <- Km - mm$Std..Error[2]
+  Km_SE_high <- Km + mm$Std..Error[2]
   #add method column
   mm$method <- rep(methods[i],2)
   #combine model info with model info master df
@@ -569,19 +600,26 @@ for (i in 1:length(methods)){
       y <- which(abs(x-0.5)==min(abs(x-0.5)))
       Km <- as.numeric(as.character(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage==5 & Pact_pool_Sample_CpG_stacked$method == methods[i] & Pact_pool_Sample_CpG_stacked$percent_CpG == x[[y]]),"depth"]))
     perc_CpG <- (1*prediction[j]/(Km+prediction[j]))
+     # calculate perc_CpG for SE high and low
+    perc_CpG_SE_high <- ((1+mm$Std..Error[1])*prediction[j]/(Km+prediction[j]))
+    perc_CpG_SE_low <- ((1-mm$Std..Error[1])*prediction[j]/(Km_SE_low+prediction[j]))
     #save the depth as an object
     depth <- prediction[j]
     #save the percent CpGs covered and the depth as a data frame
-    pred_perc_CpG <- data.frame(perc_CpG,depth)
+    pred_perc_CpG <- data.frame(perc_CpG, perc_CpG_SE_low,perc_CpG_SE_high,depth)
     #combine data frame for each depth in a master data frame
     predicted_CpG_cov <- rbind(predicted_CpG_cov,pred_perc_CpG)
     }
     else{
     perc_CpG <- (Vmax*prediction[j]/(Km+prediction[j]))
+     # calculate perc_CpG for SE high and low
+    perc_CpG_SE_high <- (Vmax_SE_high*prediction[j]/(Km_SE_high+prediction[j]))
+    perc_CpG_SE_low <- (Vmax_SE_low*prediction[j]/(Km_SE_low+prediction[j]))
+    
     #save the depth as an object
     depth <- prediction[j]
     #save the percent CpGs covered and the depth as a data frame
-    pred_perc_CpG <- data.frame(perc_CpG,depth)
+    pred_perc_CpG <- data.frame(perc_CpG, perc_CpG_SE_low, perc_CpG_SE_high,depth)
     #combine data frame for each depth in a master data frame
     predicted_CpG_cov <- rbind(predicted_CpG_cov,pred_perc_CpG)
     }
@@ -589,11 +627,15 @@ for (i in 1:length(methods)){
   predicted_CpG_cov$series <- "estimated"
   #create an object for the actual CpGs covered at known depths
   actual_CpG_cov <- data.frame(perc_CpG = Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage==5 & Pact_pool_Sample_CpG_stacked$method == methods[i]),c("percent_CpG")],depth = as.integer(as.character(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage==5 & Pact_pool_Sample_CpG_stacked$method == methods[i]),c("depth")])),series = "observed")
+  actual_CpG_cov$perc_CpG_SE_low <- NA
+  actual_CpG_cov$perc_CpG_SE_high <- NA
   pred_act_cov <- rbind(predicted_CpG_cov, actual_CpG_cov) 
   pred_act_cov$method <- methods[i]
   predicted_CpG_cov_all_methods <- rbind(predicted_CpG_cov_all_methods,pred_act_cov)
 }
 
+#threshold Vmax to 1
+predicted_CpG_cov_all_methods$perc_CpG_SE_high[predicted_CpG_cov_all_methods$perc_CpG_SE_high > 1] <- 1
 
 model_df$coefficient <- rownames(model_df)
 model_df$coefficient <- gsub("d.*","Vmax", model_df$coefficient)
@@ -606,7 +648,10 @@ pact_model_df$species <- "P.acuta"
 
 plot saturation curves per method
 ```{r}
-b <- ggplot(predicted_CpG_cov_all_methods) + geom_point(aes(x = depth, y = perc_CpG, color = method, alpha = series)) + scale_x_continuous(breaks = seq(0,4000,100)) + scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2), limits = c(0,1),)+ theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("P. acuta") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_alpha_manual(values=c(0.3, 1))
+#b <- ggplot(predicted_CpG_cov_all_methods) + geom_point(aes(x = depth, y = perc_CpG, color = method, alpha = series)) + scale_x_continuous(breaks = seq(0,4000,100)) + scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2), limits = c(0,1),)+ theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("P. acuta") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_alpha_manual(values=c(0.3, 1))
+
+
+b <- ggplot(predicted_CpG_cov_all_methods,aes(x = depth, y = perc_CpG, color = method, alpha = series)) + geom_point(size = 0.5) + geom_line() + geom_ribbon(aes(ymin=perc_CpG_SE_low,ymax=perc_CpG_SE_high,fill=method),color="grey70",alpha=0.2, size = 0.1) + scale_x_continuous(breaks = seq(0,4000,100))+ scale_y_continuous(labels = as.character(seq(0,1.0,0.2)),breaks = seq(0,1,0.2)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, hjust = 1),strip.background =element_rect(fill="white"), plot.title =  element_text(face = "italic")) + ylab("fraction of genome-wide\nCpGs covered") + xlab("depth (M reads)") + labs(color = "method" ) + ggtitle("P. acuta") + scale_color_manual(values =c("#E6550D","#756BB1","#31A354")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354")) +  scale_alpha_manual(values=c(0.3, 1))
 
 ```
 
@@ -622,6 +667,79 @@ output model statistics for pact and mcap
 ```{r}
 model_df_all <- rbind(mcap_model_df,pact_model_df)
 write.csv(model_df_all, "Output/Seq_satur_est_CpGcov_Mcap_Pact.csv", quote = F, row.names = F)
+```
+
+
+
+
+
+TRY WITH FIXED VMAX; model coverage needed to saturate CpGs covered
+```{r}
+#create object that is a vector of the methods
+methods <- unique(Mcap_pool_Sample_CpG_stacked$method)
+#create empty df
+predicted_CpG_cov_all_methods <- data.frame()
+#create an empty data frame to save the model info in
+model_df <- data.frame()
+#loop through data 
+for (i in 1:length(methods)){
+  # use the two parameter MM model (MM.2)
+  m1 <- drm(percent_CpG ~ as.integer(as.character(depth)), data =Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage==5 & Mcap_pool_Sample_CpG_stacked$method == methods[i]),], fct = MM.2(fixed = c(1, NA), names = c("d", "e")))
+  #create vmax object from model
+  Vmax <- 1
+  #create K object from model
+  Km <- data.frame(tibble(coef(m1)))[1,]
+  #create model df to save model for each iteration
+  mm <- data.frame(cbind(summary(m1)[[3]],summary(m1)[[13]]))
+  #create a Vmax and Km SE high and low
+  #Vmax_SE_low <- Vmax - mm$Std..Error[1]
+  #Vmax_SE_high <- Vmax + mm$Std..Error[1]
+  #Km_SE_low <- Km - mm$Std..Error[2]
+  #Km_SE_high <- Km + mm$Std..Error[2]
+  #add method column
+  mm$method <- rep(methods[i],1)
+  #combine model info with model info master df
+  model_df <- rbind(model_df, mm)
+  #create empty df
+  predicted_CpG_cov <- data.frame()
+  #create a series of numbers 50-3000 by 50s that will be the estimated depth
+  prediction <- seq(50,4000, by = 50)
+  #loop through the depths 
+  for (j in 1:length(prediction)){
+    #calculate the estimated percent CpGs covered (using MM model coefficients)
+    perc_CpG <- (Vmax*prediction[j]/(Km+prediction[j]))
+    # calculate perc_CpG for SE high and low
+   # perc_CpG_SE_high <- (Vmax_SE_high*prediction[j]/(Km_SE_high+prediction[j]))
+    #perc_CpG_SE_low <- (Vmax_SE_low*prediction[j]/(Km_SE_low+prediction[j]))
+    #save the depth as an object
+    depth <- prediction[j]
+    #save the percent CpGs covered and the depth as a data frame
+    pred_perc_CpG <- data.frame(perc_CpG,depth)
+    #combine data frame for each depth in a master data frame
+    predicted_CpG_cov <- rbind(predicted_CpG_cov,pred_perc_CpG)
+  }
+  #create column for denoting series
+  #predicted_CpG_cov <- tidyr::gather(predicted_CpG_cov,"subseries", "perc_CpG", 1:3)
+  #predicted_CpG_cov$subseries <- gsub("perc_CpG", "estimated", predicted_CpG_cov$subseries)
+  predicted_CpG_cov$series <- "estimated"
+  #create an object for the actual CpGs covered at known depths
+  actual_CpG_cov <- data.frame(perc_CpG = Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage==5 & Mcap_pool_Sample_CpG_stacked$method == methods[i]),c("percent_CpG")],depth = as.integer(as.character(Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage==5 & Mcap_pool_Sample_CpG_stacked$method == methods[i]),c("depth")])),series = "observed")
+  #actual_CpG_cov$subseries <- "observed"
+  #actual_CpG_cov$perc_CpG_SE_low <- NA
+  #actual_CpG_cov$perc_CpG_SE_high <- NA
+  pred_act_cov <- rbind(predicted_CpG_cov, actual_CpG_cov) 
+  pred_act_cov$method <- methods[i]
+  predicted_CpG_cov_all_methods <- rbind(predicted_CpG_cov_all_methods,pred_act_cov)
+}
+
+model_df$coefficient <- rownames(model_df)
+model_df$coefficient <- gsub("d.*","Vmax", model_df$coefficient)
+model_df$coefficient <- gsub("e.*", "Km", model_df$coefficient)
+
+mcap_model_df <- model_df %>% tidyr::pivot_longer(names_to = "statistic", values_to = "value",1:6)%>% tidyr::pivot_wider(names_from = coefficient, values_from = value)
+
+mcap_model_df$species <- "M.capitata"
+
 ```
 
 
