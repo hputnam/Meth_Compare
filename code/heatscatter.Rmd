@@ -51,9 +51,9 @@ pact.corrs <- pact.corrs[,order(colnames(pact.corrs))]
 
 pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
 par(mfrow=c(1,2))
-pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, 
+pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, 
              smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
-pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
 dev.off()
 
 
