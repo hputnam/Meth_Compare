@@ -44,11 +44,16 @@ correlation of common loci
 mcap.corrs <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv")
 pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 
+#order colums the same
+mcap.corrs <- mcap.corrs[,order(colnames(mcap.corrs))]
+pact.corrs <- pact.corrs[,order(colnames(pact.corrs))]
+
+
 pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
 par(mfrow=c(1,2))
 pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, 
-             smoother=TRUE, gap=0.5, hist.col="light gray")
-pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5)
+             smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
 dev.off()
 
 
