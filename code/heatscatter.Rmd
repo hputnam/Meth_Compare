@@ -18,6 +18,8 @@ library(wesanderson)
 library(stats)
 library(gridExtra)
 library(psych)
+library(colorRamps)
+
 ```
 
 add border color to histogram
@@ -48,12 +50,20 @@ pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 mcap.corrs <- mcap.corrs[,order(colnames(mcap.corrs))]
 pact.corrs <- pact.corrs[,order(colnames(pact.corrs))]
 
-
+#create pdf file that plots will be saved in
 pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
+
+#format the PDF
 par(mfrow=c(1,2))
+
+#create corr plot for Mcap
 pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, 
              smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+
+#create corr plot for Pact
 pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+
+#save all plots in PDF
 dev.off()
 
 
