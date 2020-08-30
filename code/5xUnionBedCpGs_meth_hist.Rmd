@@ -135,8 +135,27 @@ Pact_l_m_tag <- as_tibble(Pact_l_m) %>% mutate(tag = case_when(perc_meth < 10 ~ 
 #order group_simp
 Pact_l_m_tag$group_simp <- factor(Pact_l_m_tag$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"))
 
-#create a df for plotting the num CpGs above the stacked bar plots
-temp <- data.frame(methods=c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"), place=c(rep(1.02,7)), numObs=as.numeric(table(Pact_l_m_tag$group_simp)))
+#simplify df for plotting; this creates a shorter df
+#followed these: 
+
+# plot percentage instead of counts
+#https://stackoverflow.com/questions/24776200/ggplot-replace-count-with-percentage-in-geom-bar/48602277
+
+#add num observations to top of plot
+#https://stackoverflow.com/questions/46984296/proportion-with-ggplot-geom-bar
+
+#expand space between facet label and plot area
+#https://www.datanovia.com/en/blog/ggplot-facet-how-to-add-space-between-labels-on-the-top-of-the-chart-and-the-plot-border/
+
+Pact_l_m_tag_STACKED <- Pact_l_m_tag %>% group_by(group_simp, method, tag) %>% summarise(count=n()) %>% 
+  mutate(perc_CpG=count/sum(count), cumsum = cumsum(perc_CpG), label = ifelse(tag=="[90-100]",paste0("N=", sum(count)),""))
+
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod.jpg", width = 8, height = 8, units = "in", res = 300)
+ggplot(Pact_l_m_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + facet_wrap(~group_simp) +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 2.5) + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())
+dev.off()
+
+
 
 jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars.jpg", width = 8, height = 8, units = "in", res = 300)
 ggplot(Pact_l_m_tag,aes(x = group_simp, y = ..count.., fill = group_simp, alpha = tag )) + geom_bar(position = "fill", color = "black") + scale_y_continuous(labels=scales::percent) + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black"))  + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation")
@@ -145,8 +164,14 @@ dev.off()
 
 #histograms
 jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_Histograms.jpg", width = 8, height = 8, units = "in", res = 300)
-ggplot(Pact_l_m_tag,aes(x = perc_meth, fill = group_simp, color = "black")) + geom_histogram(binwidth = 10) + ylab("num CpGs") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + facet_wrap(~group_simp, scale = "free") + xlab("% methylation") + scale_color_manual(values = "black") + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black")) + theme(legend.position="none")
+ggplot(Pact_l_m_tag,aes(x = perc_meth, fill = group_simp,group = method, color = "black")) + geom_histogram(position = "dodge",binwidth = 10) + ylab("num CpGs") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + facet_wrap(~group_simp, scale = "free") + xlab("% methylation") + scale_color_manual(values = "black") + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black")) + theme(legend.position="none")
 dev.off()
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_Histograms_colbyMethod.jpg", width = 8, height = 8, units = "in", res = 300)
+ggplot(Pact_l_m_tag,aes(x = perc_meth, fill = method,group = method, color = "black")) + geom_histogram(position = "dodge",binwidth = 10) + ylab("num CpGs") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + facet_wrap(~group_simp, scale = "free") + xlab("% methylation") + scale_color_manual(values = "black") + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))
+dev.off()
+
+
 ```
 
 This chuck is just a test I did to figure out the plotting parameters 
@@ -155,10 +180,10 @@ This chuck is just a test I did to figure out the plotting parameters
 tail.Pact_l_m <- tail(Pact_l_m,100000)
 
 #add column for simplifying overlap groups
-# tail.Pact_l_m$group_more_simp <- tail.Pact_l_m$group_simp
-# tail.Pact_l_m$group_more_simp <- gsub("^MBD$|^RRBS$|^WGBS$", "1.method",tail.Pact_l_m$group_more_simp)
-# tail.Pact_l_m$group_more_simp <- gsub("^MBD, WGBS$|^RRBS, WGBS$", "2.methods",tail.Pact_l_m$group_more_simp)
-# tail.Pact_l_m$group_more_simp <- gsub("^MBD, RRBS, WGBS$", "3.methods",tail.Pact_l_m$group_more_simp)
+tail.Pact_l_m$group_more_simp <- tail.Pact_l_m$group_simp
+tail.Pact_l_m$group_more_simp <- gsub("^MBD$|^RRBS$|^WGBS$", "1.method",tail.Pact_l_m$group_more_simp)
+tail.Pact_l_m$group_more_simp <- gsub("^MBD, WGBS$|^RRBS, WGBS$", "2.methods",tail.Pact_l_m$group_more_simp)
+tail.Pact_l_m$group_more_simp <- gsub("^MBD, RRBS, WGBS$", "3.methods",tail.Pact_l_m$group_more_simp)
 
 ## add bin column
 
@@ -174,12 +199,15 @@ tail.Pact_l_m_tag <- as_tibble(tail.Pact_l_m) %>% mutate(tag = case_when(perc_me
 #order group_simp
 tail.Pact_l_m_tag$group_simp <- factor(tail.Pact_l_m$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"))
 
+tail.Pact_l_m_tag_STACKED <- tail.Pact_l_m_tag %>% group_by(group_simp, method, tag) %>% summarise(count=n()) %>% 
+  mutate(perc_CpG=count/sum(count), cumsum = cumsum(perc_CpG), label = ifelse(tag=="[90-100]",paste0("N=", sum(count)),""))
 
-temp <- data.frame(methods=c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"), place=c(rep(1.02,7)), numObs=as.numeric(table(tail.Pact_l_m_tag$group_simp)))
 
-ggplot(tail.Pact_l_m_tag,aes(x = group_simp, y = ..count.., fill = group_simp, alpha = tag )) + geom_bar(position = "fill", color = "black") + scale_y_continuous(labels=scales::percent) + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black"))  + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation")
+ggplot(tail.Pact_l_m_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + facet_wrap(~group_simp) +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 3) + guides(fill=guide_legend(reverse=T))
+
+
 
 #histograms
-ggplot(tail.Pact_l_m_tag,aes(x = perc_meth, fill = group_simp, color = "black")) + geom_histogram(binwidth = 10) + ylab("num CpGs") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + facet_wrap(~group_simp, scale = "free") + xlab("% methylation") + scale_color_manual(values = "black") + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black")) + theme(legend.position="none")
+ggplot(tail.Pact_l_m_tag,aes(x = perc_meth, fill = method, group = method, color = "black")) + geom_histogram(position = "dodge",binwidth = 10) + ylab("num CpGs") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + facet_wrap(~group_simp, scale = "free") + xlab("% methylation") + scale_color_manual(values = c("black")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354")) + theme(legend.position="none")
 ```
 
