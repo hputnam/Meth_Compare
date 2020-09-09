@@ -1,0 +1,299 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "9/3/2020"
+output: html_document
+---
+
+
+load libraries
+```{r}
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(tidyr)
+```
+
+#read in union bedgraph for Pact
+```{r}
+
+#Pact_meth <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200903/Pact_union_Meth.bedgraph"))
+
+Pact <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Pact_union_5x.bedgraph")
+
+#Pact_cov <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200903/Pact_union_CpG_cov.bedgraph"))
+
+Pact_cov <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200903/Pact_union_CpG_cov_5x.bedgraph"))
+```
+
+```{r}
+Pact_meth_l <- tidyr::gather(data.frame(Pact),"Sample","perc_meth",4:12)
+Pact_cov_l <- tidyr::gather(data.frame(Pact_cov),"Sample","reads",4:12)
+```
+
+```{r}
+Pact_cov_l[Pact_cov_l == "N/A"] <- NA
+Pact_meth_l[Pact_meth_l == "N/A"] <- NA
+
+
+Pact_cov_l <- data.frame(Pact_cov_l[complete.cases(Pact_cov_l),])
+Pact_meth_l <- data.frame(Pact_meth_l[complete.cases(Pact_meth_l),])
+
+
+Pact_cov_l$loci <- paste0(Pact_cov_l$chrom,":", Pact_cov_l$start,"-",Pact_cov_l$end)
+
+Pact_meth_l$loci <- paste0(Pact_meth_l$chrom,":", Pact_meth_l$start,"-",Pact_meth_l$end)
+
+
+Pact_cov_l <- Pact_cov_l[,-c(1:3)]
+Pact_meth_l <- Pact_meth_l[,-c(1:3)]
+
+
+Pact_cov_l$Sample <- gsub("X","", Pact_cov_l$Sample)
+Pact_meth_l$Sample <- gsub("X","", Pact_meth_l$Sample)
+
+
+Pact_cov_l$Sample <- as.numeric(as.character(Pact_cov_l$Sample))
+Pact_meth_l$Sample <- as.numeric(as.character(Pact_meth_l$Sample))
+
+
+Pact_cov_l$reads <- as.numeric(as.character(Pact_cov_l$reads))
+Pact_meth_l$perc_meth <- as.numeric(as.character(Pact_meth_l$perc_meth))
+
+
+Pact_cov_l$method <- Pact_cov_l$Sample
+Pact_cov_l$method <- gsub("1|2|3","WGBS",Pact_cov_l$method)
+Pact_cov_l$method <- gsub("4|5|6","RRBS",Pact_cov_l$method)
+Pact_cov_l$method <- gsub("7|8|9","MBD",Pact_cov_l$method)
+
+Pact_meth_l$method <- Pact_meth_l$Sample
+Pact_meth_l$method <- gsub("1|2|3","WGBS",Pact_meth_l$method)
+Pact_meth_l$method <- gsub("4|5|6","RRBS",Pact_meth_l$method)
+Pact_meth_l$method <- gsub("7|8|9","MBD",Pact_meth_l$method)
+
+
+head(Pact_cov_l)
+head(Pact_meth_l)
+```
+
+calculate stats for each unique loci
+```{r}
+
+
+Pact_meth_stats <- Pact_meth_l  %>% group_by(loci,method) %>% summarise(medn = median(perc_meth), average = mean(perc_meth), stdev = sd(perc_meth), count = n())
+```
+
+
+check integrity of df
+```{r}
+View(table(Pact_meth_stats[,c("method","count")]))
+
+
+```
+
+filter for loci that are covered 3 samples/method
+```{r}
+Pact_meth_stats_3x <- Pact_meth_stats[which(Pact_meth_stats$count==3),]
+
+```
+
+
+Create group column with methods listed as string
+```{r}
+Pact_loci_method_3x <- Pact_meth_stats_3x %>% dplyr::group_by(loci) %>% dplyr::summarise(group = toString(method))
+
+Pact_loci_method_1x <- Pact_meth_stats %>% dplyr::group_by(loci) %>% dplyr::summarise(group = toString(method))
+
+table(Pact_loci_method_3x$group)
+
+#remove duplicate methods (e.g. convert RRBS, RRBS, RRBS to RRBS)
+#create a short test dataset
+#tail.Pact_l <- tail(Pact_l, 100)
+#tail.Pact_l <- tail.Pact_l %>% dplyr::group_by(loci) %>% dplyr::summarise(group = toString(method))
+#create function to convert methods for common loci into a string then split the methods string into a character vector, and use unique function to keep only unique characters
+uniqMethod.FUN <- function(x){paste(sort(unique(unlist(strsplit(x, split =", "), use.names = F))), collapse = ", ")}
+#apply the function to each row in the df, and save the output in a new column
+#tail.Pact_l$group_simp <- sapply(tail.Pact_l$group, uniqMethod.FUN, USE.NAMES = F)
+#str(tail.Pact_l)
+# the function works so apply to full df
+#table(tail.Pact_l$group_simp)
+#looks good so apply to full df
+Pact_loci_method_3x$group_simp <- sapply(Pact_loci_method_3x$group, uniqMethod.FUN, USE.NAMES = F)
+
+Pact_loci_method_1x$group_simp <- sapply(Pact_loci_method_1x$group, uniqMethod.FUN, USE.NAMES = F)
+
+#check df
+
+str(Pact_loci_method_1x)
+table(Pact_loci_method_1x$group_simp)
+
+str(Pact_loci_method_3x)
+table(Pact_loci_method_3x$group_simp)
+
+#combine back with main table
+nrow(Pact_loci_method_3x)
+nrow(Pact_meth_stats_3x)
+
+nrow(Pact_loci_method_1x)
+nrow(Pact_meth_stats)
+
+Pact_l_m_3x <- merge(Pact_loci_method_3x,Pact_meth_stats_3x, by = "loci")
+nrow(Pact_l_m_3x)
+str(Pact_l_m_3x)
+
+Pact_l_m_1x <- merge(Pact_loci_method_1x,Pact_meth_stats, by = "loci")
+nrow(Pact_l_m_1x)
+str(Pact_l_m_1x)
+
+```
+
+
+make bar plot of data
+```{r}
+
+##binning data
+## found this useful: https://www.jdatalab.com/data_science_and_data_mining/2017/01/30/data-binning-plot.html
+
+## add bin column
+# specify interval/bin labels
+tags <- c("[0-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-60]", "[60-70]", "[70-80]","[80-90]", "[90-100]")
+
+# bucketing values into bins
+
+Pact_l_m_3x_tag <- as_tibble(Pact_l_m_3x) %>% mutate(tag = case_when(median < 10 ~ tags[1],median >= 10 & median < 20 ~ tags[2],median >= 20 & median < 30 ~ tags[3],median >= 30 & median < 40 ~ tags[4],median >= 40 & median < 50 ~ tags[5], median >= 50 & median < 60 ~ tags[6], median >= 60 & median < 70 ~ tags[7], median >= 70 & median < 80 ~ tags[8], median >= 80 & median < 90 ~ tags[9], median >= 90 & median <= 100 ~ tags[10]))
+
+Pact_l_m_1x_tag <- as_tibble(Pact_l_m_1x) %>% mutate(tag = case_when(median < 10 ~ tags[1],median >= 10 & median < 20 ~ tags[2],median >= 20 & median < 30 ~ tags[3],median >= 30 & median < 40 ~ tags[4],median >= 40 & median < 50 ~ tags[5], median >= 50 & median < 60 ~ tags[6], median >= 60 & median < 70 ~ tags[7], median >= 70 & median < 80 ~ tags[8], median >= 80 & median < 90 ~ tags[9], median >= 90 & median <= 100 ~ tags[10]))
+
+#order group_simp
+Pact_l_m_3x_tag$group_simp <- factor(Pact_l_m_3x_tag$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"))
+
+Pact_l_m_1x_tag$group_simp <- factor(Pact_l_m_1x_tag$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"))
+
+#simplify df for plotting; this creates a shorter df
+#followed these: 
+
+# plot percentage instead of counts
+#https://stackoverflow.com/questions/24776200/ggplot-replace-count-with-percentage-in-geom-bar/48602277
+
+#add num observations to top of plot
+#https://stackoverflow.com/questions/46984296/proportion-with-ggplot-geom-bar
+
+#expand space between facet label and plot area
+#https://www.datanovia.com/en/blog/ggplot-facet-how-to-add-space-between-labels-on-the-top-of-the-chart-and-the-plot-border/
+
+Pact_l_m_3x_tag_STACKED <- data.frame(Pact_l_m_3x_tag) %>% group_by(group_simp, method, tag) %>% summarise(count_meth=n()) %>% 
+  mutate(perc_CpG=count_meth/sum(count_meth), cumsum = cumsum(perc_CpG), label = ifelse(tag=="[90-100]",paste0("N=", sum(count_meth)),""))
+
+Pact_l_m_1x_tag_STACKED <- data.frame(Pact_l_m_1x_tag) %>% group_by(group_simp, method, tag) %>% summarise(count_meth=n()) %>% 
+  mutate(perc_CpG=count_meth/sum(count_meth), cumsum = cumsum(perc_CpG), label = ifelse(tag=="[90-100]",paste0("N=", sum(count_meth)),""))
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod_1x.jpg", width = 10, height = 6, units = "in", res = 300)
+
+a <- ggplot(Pact_l_m_1x_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 2.5) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_grid(~ group_simp, space="free_x", scales="free_x") + theme(strip.background = element_rect(fill=NA,colour="grey50"),panel.spacing=unit(0,"cm"))
+
+dev.off()
+
+
+#wgbs zoomed
+c <- ggplot(Pact_l_m_1x_tag_STACKED[which(Pact_l_m_1x_tag_STACKED$tag!="[0-10]" & Pact_l_m_1x_tag_STACKED$tag!="[10-20]" & Pact_l_m_1x_tag_STACKED$method=="WGBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, WGBS"),],aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "stack", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + scale_alpha_manual(values=c(seq(0.3,1, length.out = 8)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_wrap(~group_simp, scale="free") + theme(strip.background = element_rect(fill=NA,colour="grey50"))
+
+#RRBS zoomed
+b <- ggplot(Pact_l_m_1x_tag_STACKED[which(Pact_l_m_1x_tag_STACKED$tag!="[0-10]" & Pact_l_m_1x_tag_STACKED$tag!="[10-20]" & Pact_l_m_1x_tag_STACKED$method=="RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, WGBS"),],aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "stack", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#756BB1"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + scale_alpha_manual(values=c(seq(0.3,1, length.out = 8)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_wrap(~group_simp, scale="free") + theme(strip.background = element_rect(fill=NA,colour="grey50"))
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod_1x_multi.jpg", width = 10, height = 6, units = "in", res = 300)
+ggarrange(
+  a,                # First row with line plot
+  # Second row with box and dot plots
+  ggarrange(b, c, ncol = 2, labels = c("B", "C"),legend = "none"), 
+  nrow = 2, 
+  labels = "A",       # Label of the line plot
+  common.legend = TRUE, heights = c(1.5,1)
+  ) 
+dev.off()
+
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod_3x.jpg", width = 10, height = 6, units = "in", res = 300)
+d <- ggplot(Pact_l_m_3x_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 2.5) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_grid(~ group_simp, space="free_x", scales="free_x") + theme(strip.background = element_rect(fill=NA,colour="grey50"),panel.spacing=unit(0,"cm"))
+dev.off()
+
+
+#wgbs zoomed
+f <- ggplot(Pact_l_m_3x_tag_STACKED[which(Pact_l_m_1x_tag_STACKED$tag!="[0-10]" & Pact_l_m_1x_tag_STACKED$tag!="[10-20]" & Pact_l_m_1x_tag_STACKED$method=="WGBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, WGBS"),],aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "stack", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + scale_alpha_manual(values=c(seq(0.3,1, length.out = 8)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_wrap(~group_simp, scale="free") + theme(strip.background = element_rect(fill=NA,colour="grey50"))
+
+#RRBS zoomed
+e <- ggplot(Pact_l_m_1x_tag_STACKED[which(Pact_l_m_1x_tag_STACKED$tag!="[0-10]" & Pact_l_m_1x_tag_STACKED$tag!="[10-20]" & Pact_l_m_1x_tag_STACKED$method=="RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, RRBS" & Pact_l_m_1x_tag_STACKED$group_simp!="MBD, WGBS"),],aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "stack", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#756BB1"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1))) + scale_alpha_manual(values=c(seq(0.3,1, length.out = 8)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank()) + facet_wrap(~group_simp, scale="free") + theme(strip.background = element_rect(fill=NA,colour="grey50"))
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod_3x_multi.jpg", width = 10, height = 6, units = "in", res = 300)
+ggarrange(
+  d,                # First row with line plot
+  # Second row with box and dot plots
+  ggarrange(e, f, ncol = 2, labels = c("B", "C"),legend = "none"), 
+  nrow = 2, 
+  labels = "A",       # Label of the line plot
+  common.legend = TRUE, heights = c(1.5,1)
+  ) 
+dev.off()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod.jpg", width = 8, height = 8, units = "in", res = 300)
+ggplot(Pact_l_m_3x_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + facet_wrap(~group_simp) +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 2.5) + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())
+
+ggplot(Pact_l_m_1x_tag_STACKED,aes(x = method, y = perc_CpG*100, fill = as.factor(method), alpha = tag, group = method )) + geom_bar(stat = "identity",position = "fill", color = "black") + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("#E6550D","#756BB1","#31A354"))  + scale_y_continuous(expand = expansion(mult = c(0, 0.1)),labels=scales::percent) + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation") + facet_wrap(~group_simp) +  geom_text(aes(y=cumsum, label=label), vjust=-0.5, size = 2.5) + guides(fill=guide_legend(reverse=T)) + theme(axis.title.x=element_blank(),axis.text.x=element_blank(),axis.ticks.x=element_blank())
+
+#dev.off()
+
+
+
+jpeg("OLD_Output/Pact_5xCpGmeth_overlapMethods_StackedBars.jpg", width = 8, height = 8, units = "in", res = 300)
+ggplot(Pact_l_m_3x_tag,aes(x = group_simp, y = ..count.., fill = group_simp, alpha = tag )) + geom_bar(position = "fill", color = "black") + scale_y_continuous(labels=scales::percent) + theme_bw() + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1), axis.title = element_text(size = 12, face = "bold")) + scale_fill_manual(values =c("red","red","red", "blue", "blue","blue", "black"))  + scale_alpha_manual(values=c(seq(0.1,1, length.out = 10)))+ labs(x = "method", y = "% CpGs",fill = "method", alpha = "% methylation")
+dev.off()
+
+
+
+Pact_cov_perc <- merge(Pact_cov_l, Pact_meth_l, by = c("Sample", "loci", "method"), all = T)
+
+head(Pact_cov_perc)
+
+
+Pact_cov_perc_sample <- Pact_cov_perc[sample(nrow(Pact_cov_perc), 10000), ]
+
+
+ggplot(Pact_cov_perc_sample, aes(log(reads,10), perc_meth, color = method)) + geom_point(alpha = 0.5) + scale_color_manual(values = c("#E6550D","#756BB1","#31A354"))
+
+
+Pact_10x_cov_perc_sample <- Pact_cov_perc[which(Pact_cov_perc$reads <= 10), ]
+
+ggplot(Pact_10x_cov_perc_sample, aes(reads, perc_meth, color = method)) + geom_point(alpha = 0.5) + scale_color_manual(values = c("#E6550D","#756BB1","#31A354"))
+
+Pact_20x_cov_perc_sample <- Pact_cov_perc[which(Pact_cov_perc$reads =< 20), ]
+
+
+# specify interval/bin labels
+tags <- c("[0-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-60]", "[60-70]", "[70-80]","[80-90]", "[90-100]")
+
+# bucketing values into bins
+
+Pact_cov_perc_tag <- as_tibble(Pact_cov_perc) %>% mutate(tag = case_when(perc_meth < 10 ~ tags[1],perc_meth >= 10 & perc_meth < 20 ~ tags[2],perc_meth >= 20 & perc_meth < 30 ~ tags[3],perc_meth >= 30 & perc_meth < 40 ~ tags[4],perc_meth >= 40 & perc_meth < 50 ~ tags[5], perc_meth >= 50 & perc_meth < 60 ~ tags[6], perc_meth >= 60 & perc_meth < 70 ~ tags[7], perc_meth >= 70 & perc_meth < 80 ~ tags[8], perc_meth >= 80 & perc_meth < 90 ~ tags[9], perc_meth >= 90 & perc_meth <= 100 ~ tags[10]))
+
+
+
+```
