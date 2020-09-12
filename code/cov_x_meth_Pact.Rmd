@@ -1,0 +1,262 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "9/3/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+
+load libraries
+```{r}
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(tidyr)
+```
+
+#read in union bedgraph for Pact
+```{r}
+
+Pact_meth <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200903/Pact_union_Meth.bedgraph"))
+
+Pact_cov <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200903/Pact_union_CpG_cov.bedgraph"))
+```
+
+```{r}
+Pact_meth_l <- tidyr::gather(data.frame(Pact_meth),"Sample","perc_meth",4:12)
+Pact_cov_l <- tidyr::gather(data.frame(Pact_cov),"Sample","reads",4:12)
+```
+
+```{r}
+Pact_cov_l[Pact_cov_l == "N/A"] <- NA
+Pact_meth_l[Pact_meth_l == "N/A"] <- NA
+
+
+Pact_cov_l <- data.frame(Pact_cov_l[complete.cases(Pact_cov_l),])
+Pact_meth_l <- data.frame(Pact_meth_l[complete.cases(Pact_meth_l),])
+
+
+Pact_cov_l$loci <- paste0(Pact_cov_l$chrom,":", Pact_cov_l$start,"-",Pact_cov_l$end)
+
+Pact_meth_l$loci <- paste0(Pact_meth_l$chrom,":", Pact_meth_l$start,"-",Pact_meth_l$end)
+
+
+Pact_cov_l <- Pact_cov_l[,-c(1:3)]
+Pact_meth_l <- Pact_meth_l[,-c(1:3)]
+
+
+Pact_cov_l$Sample <- gsub("X","", Pact_cov_l$Sample)
+Pact_meth_l$Sample <- gsub("X","", Pact_meth_l$Sample)
+
+
+Pact_cov_l$Sample <- as.numeric(as.character(Pact_cov_l$Sample))
+Pact_meth_l$Sample <- as.numeric(as.character(Pact_meth_l$Sample))
+
+
+Pact_cov_l$reads <- as.numeric(as.character(Pact_cov_l$reads))
+Pact_meth_l$perc_meth <- as.numeric(as.character(Pact_meth_l$perc_meth))
+
+
+Pact_cov_l$method <- Pact_cov_l$Sample
+Pact_cov_l$method <- gsub("1|2|3","WGBS",Pact_cov_l$method)
+Pact_cov_l$method <- gsub("4|5|6","RRBS",Pact_cov_l$method)
+Pact_cov_l$method <- gsub("7|8|9","MBD",Pact_cov_l$method)
+
+Pact_meth_l$method <- Pact_meth_l$Sample
+Pact_meth_l$method <- gsub("1|2|3","WGBS",Pact_meth_l$method)
+Pact_meth_l$method <- gsub("4|5|6","RRBS",Pact_meth_l$method)
+Pact_meth_l$method <- gsub("7|8|9","MBD",Pact_meth_l$method)
+
+
+head(Pact_cov_l)
+head(Pact_meth_l)
+
+```
+
+
+
+Make column to specify individual
+```{r}
+
+#Pact_cov_perc$individual <- Pact_cov_perc$Sample
+#Pact_cov_perc$individual <- gsub("1|4|7","A",Pact_cov_perc$individual)
+#Pact_cov_perc$individual <- gsub("2|5|8","B",Pact_cov_perc$individual)
+#Pact_cov_perc$individual <- gsub("3|6|9","C",Pact_cov_perc$individual)
+```
+
+# bin read coverage
+```{r}
+# # specify interval/bin labels
+# meth_tags <- c("[0-10%]","[10-20%]", "[20-30%]", "[30-40%]", "[40-50%]", "[50-60%]", "[60-70%]", "[70-80%]","[80-90%]", "[90-100%]")
+# 
+# # specify interval/bin labels
+# cov_tags <- c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]")
+# 
+# # bucketing values into bins
+# 
+# Pact_meth_tag <- as_tibble(Pact_meth_l) %>% mutate(meth_tag = case_when(perc_meth < 10 ~ meth_tags[1],perc_meth >= 10 & perc_meth < 20 ~ meth_tags[2],perc_meth >= 20 & perc_meth < 30 ~ meth_tags[3],perc_meth >= 30 & perc_meth < 40 ~ meth_tags[4],perc_meth >= 40 & perc_meth < 50 ~ meth_tags[5], perc_meth >= 50 & perc_meth < 60 ~ meth_tags[6], perc_meth >= 60 & perc_meth < 70 ~ meth_tags[7], perc_meth >= 70 & perc_meth < 80 ~ meth_tags[8], perc_meth >= 80 & perc_meth < 90 ~ meth_tags[9], perc_meth >= 90 & perc_meth <= 100 ~ meth_tags[10]))
+# 
+# Pact_cov_tag <- as_tibble(Pact_cov_l) %>% mutate(cov_tag = case_when(reads < 5 ~ cov_tags[1],reads >= 5 & reads < 10 ~ cov_tags[2],reads >= 10 & reads < 20 ~ cov_tags[3],reads >= 20 & reads < 30 ~ cov_tags[4],reads >= 30 & reads < 40 ~ cov_tags[5], reads >= 40 & reads < 50 ~ cov_tags[6], reads >= 50 & reads < 100 ~ cov_tags[7], reads >=100 & reads < 500 ~ cov_tags[8], reads >=500 & reads < 1000 ~ cov_tags[9], reads >=1000 ~ cov_tags[10]))
+```
+
+
+#combine coverage and methylation data
+```{r}
+Pact_cov_perc <- merge(Pact_cov_l, Pact_meth_l, by = c("Sample", "loci", "method"), all = T)
+
+head(Pact_cov_perc)
+```
+
+calculate median methylation and coverage
+```{r}
+Pact_meth_stats <- Pact_cov_perc  %>% group_by(loci,method) %>% summarise(medn_meth = median(perc_meth),medn_cov = median(reads),indivd = n())
+
+
+nrow(Pact_meth_stats)
+str(Pact_meth_stats)
+head(Pact_meth_stats)
+```
+
+add labels for % meth and coverage bins
+```{r}
+# specify % meth interval bin labels
+meth_tags <- c("[0-10%]","[10-20%]", "[20-30%]", "[30-40%]", "[40-50%]", "[50-60%]", "[60-70%]", "[70-80%]","[80-90%]", "[90-100%]")
+
+# specify coverage bin labels
+cov_tags <- c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]")
+
+# bucketing values into bins
+
+Pact_meth_stats_tag <- as_tibble(Pact_meth_stats) %>% mutate(meth_tag = case_when(medn_meth < 10 ~ meth_tags[1],medn_meth >= 10 & medn_meth < 20 ~ meth_tags[2],medn_meth >= 20 & medn_meth < 30 ~ meth_tags[3],medn_meth >= 30 & medn_meth < 40 ~ meth_tags[4],medn_meth >= 40 & medn_meth < 50 ~ meth_tags[5], medn_meth >= 50 & medn_meth < 60 ~ meth_tags[6], medn_meth >= 60 & medn_meth < 70 ~ meth_tags[7], medn_meth >= 70 & medn_meth < 80 ~ meth_tags[8], medn_meth >= 80 & medn_meth < 90 ~ meth_tags[9], medn_meth >= 90 & medn_meth <= 100 ~ meth_tags[10]), cov_tag = case_when(medn_cov < 5 ~ cov_tags[1],medn_cov >= 5 & medn_cov < 10 ~ cov_tags[2],medn_cov >= 10 & medn_cov < 20 ~ cov_tags[3],medn_cov >= 20 & medn_cov < 30 ~ cov_tags[4],medn_cov >= 30 & medn_cov < 40 ~ cov_tags[5], medn_cov >= 40 & medn_cov < 50 ~ cov_tags[6], medn_cov >= 50 & medn_cov < 100 ~ cov_tags[7], medn_cov >=100 & medn_cov < 500 ~ cov_tags[8], medn_cov >=500 & medn_cov < 1000 ~ cov_tags[9], medn_cov >=1000 ~ cov_tags[10]))
+
+
+head(Pact_meth_stats_tag)
+nrow(Pact_meth_stats_tag)
+```
+
+
+create df for loci where all three individuals per method show coverage
+```{r}
+Pact_meth_stats_tag_3x <- Pact_meth_stats_tag[which(Pact_meth_stats_tag$indivd == 3),]
+
+```
+
+
+add group column
+```{r}
+Pact_cov_perc_group <- Pact_meth_stats_tag %>% group_by(loci) %>% mutate(group = toString(method))
+
+uniqMethod.FUN <- function(x){paste(sort(unique(unlist(strsplit(x, split =", "), use.names = F))), collapse = ", ")}
+
+Pact_cov_perc_group$group_simp <- sapply(Pact_cov_perc_group$group, uniqMethod.FUN, USE.NAMES = F)
+
+#do the same for 3x
+Pact_cov_perc_group_3x <- Pact_meth_stats_tag_3x %>% group_by(loci) %>% mutate(group = toString(method))
+
+uniqMethod.FUN <- function(x){paste(sort(unique(unlist(strsplit(x, split =", "), use.names = F))), collapse = ", ")}
+
+Pact_cov_perc_group_3x$group_simp <- sapply(Pact_cov_perc_group_3x$group, uniqMethod.FUN, USE.NAMES = F)
+
+#check df integrity
+str(Pact_cov_perc_group)
+table(Pact_cov_perc_group$group_simp)
+nrow(Pact_cov_perc_group)
+
+str(Pact_cov_perc_group_3x)
+table(Pact_cov_perc_group_3x$group_simp)
+nrow(Pact_cov_perc_group_3x)
+```
+
+
+
+summarize data
+```{r}
+#collapse loci and just count the number of loci for each methylation and coverage bin
+#Pact_cov_perc_STACKED <- data.frame(Pact_cov_perc_group) %>% group_by(group_simp, method,meth_tag, cov_tag) %>% summarise(count=n())
+
+
+# do the same for 3x loci
+#Pact_cov_perc_3x_STACKED <- data.frame(Pact_cov_perc_group_3x) %>% group_by(group_simp, method, meth_tag, cov_tag) %>% summarise(count=n())
+
+
+#Pact_cov_perc_STACKED %>% group_by(group_simp) %>% summarise(method_total_count = sum(count))
+
+# calculate the percent CpGs for each 
+#Pact_cov_perc_STACKED <- Pact_cov_perc_STACKED %>% group_by(group_simp,method) %>% mutate(perc_CpG=count/sum(count))
+
+#Pact_cov_perc_3x_STACKED <- Pact_cov_perc_3x_STACKED %>% group_by(group_simp,method) %>% mutate(perc_CpG=count/sum(count))
+
+```
+
+create a df with MBD vs. WGBS data
+```{r}
+#remove RRBS data
+Pact_cov_perc_group_3x_mbd_rel <- Pact_cov_perc_group_3x[which(Pact_cov_perc_group_3x$method != "RRBS"),]
+#subset WGBS groups
+Pact_cov_perc_group_3x_mbd_rel <- Pact_cov_perc_group_3x_mbd_rel[grep("WGBS", Pact_cov_perc_group_3x_mbd_rel$group_simp),]
+
+
+#set cov_tag to zero for CpGs not covered by MBD but covered by WGBS
+Pact_cov_perc_group_3x_mbd_rel$mbd_cov_tag <- ifelse(Pact_cov_perc_group_3x_mbd_rel$method == "WGBS" & !grepl("MBD",Pact_cov_perc_group_3x_mbd_rel$group_simp),"[0]", Pact_cov_perc_group_3x_mbd_rel$cov_tag)
+
+#set WGBS cov_tag to NA for CpGs covered by WGBS and by MBD since we're gonna use the MBD cov_tags
+Pact_cov_perc_group_3x_mbd_rel$mbd_cov_tag <- ifelse(Pact_cov_perc_group_3x_mbd_rel$method == "WGBS" & grepl("MBD",Pact_cov_perc_group_3x_mbd_rel$group_simp),NA, Pact_cov_perc_group_3x_mbd_rel$mbd_cov_tag)
+
+#Set methylation to NA for CpGs covered by MBD
+Pact_cov_perc_group_3x_mbd_rel$wgbs_meth_tag <- ifelse(Pact_cov_perc_group_3x_mbd_rel$method == "WGBS",Pact_cov_perc_group_3x_mbd_rel$meth_tag,NA)
+
+
+#remove all columns except loci, group, mbd_cov_tag, and wgbs_meth_tag
+#convert to long format and filter out rows with NAs 
+#convert to wide format so that only mbd_cov_tag and wgbs_meth_tag values remain
+Pact_cov_perc_group_3x_mbd_rel_reshape <- Pact_cov_perc_group_3x_mbd_rel[,c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+
+table(Pact_cov_perc_group_3x_mbd_rel_reshape$group_simp)
+
+#summarize the data for plotting
+Pact_cov_perc_group_3x_mbd_rel_sum <- Pact_cov_perc_group_3x_mbd_rel_reshape %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact.jpg", width = 6, height = 5, units = "in", res = 300 )
+ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") 
+dev.off()
+```
+
+
+
+
+plot data
+```{r}
+ggplot(data = Pact_cov_perc_STACKED, aes(x=meth_tag, y=factor(cov_tag, levels = cov_tags), fill=log(count,10))) + geom_tile() + facet_wrap(~group_simp) + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1))
+
+
+ggplot(data = Pact_cov_perc_STACKED, aes(x=meth_tag, y=factor(cov_tag, levels = cov_tags), fill=perc_CpG)) + 
+  geom_tile() + facet_wrap(~group_simp) + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1))
+```
+
+
+plot data
+```{r}
+ggplot(Pact_cov_perc, aes(log(reads,10), perc_meth, color = method)) + geom_point(alpha = 0.5) + scale_color_manual(values = c("#E6550D","#756BB1","#31A354")) + facet_wrap(~individual)
+
+```
+Pact_cov_perc_sample <- Pact_cov_perc[sample(nrow(Pact_cov_perc), 10000), ]
+
+
+ggplot(Pact_cov_perc_sample, aes(log(reads,10), perc_meth, color = method)) + geom_point(alpha = 0.5) + scale_color_manual(values = c("#E6550D","#756BB1","#31A354"))
+
+
+Pact_10x_cov_perc_sample <- Pact_cov_perc[which(Pact_cov_perc$reads <= 10), ]
+
+ggplot(Pact_10x_cov_perc_sample, aes(reads, perc_meth, color = method)) + geom_point(alpha = 0.5) + scale_color_manual(values = c("#E6550D","#756BB1","#31A354"))
+
+Pact_20x_cov_perc_sample <- Pact_cov_perc[which(Pact_cov_perc$reads =< 20), ]
+
+
+
+
+
+```
