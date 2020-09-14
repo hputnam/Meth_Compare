@@ -281,7 +281,7 @@ Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_re
 plot data
 ```{r}
 jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact_thresholds.jpg", width = 6, height = 5, units = "in", res = 300 )
-ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("wgbs_1x","wgbs_5x","wgbs_10x","wgbs_20x","wgbs_30x","wgbs_40x","wgbs_50x","wgbs_100x")))
+ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("wgbs_1x","wgbs_5x","wgbs_10x","wgbs_20x","wgbs_30x","wgbs_40x","wgbs_50x","wgbs_100x")), nrow = 2)
 dev.off()
 
 
