@@ -225,11 +225,67 @@ ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum, aes(x=wgbs_meth_tag, y=factor(
 dev.off()
 ```
 
+filter for loci covered by WGBS at 5x, 10x, 50x, 100x
+```{r}
+loci_lessthan5x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[1-5]"),"loci"]
 
+loci_lessthan10x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[1-5]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[5-10]" ),"loci"]
+
+loci_lessthan20x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[1-5]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[5-10]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[10-20]"),"loci"]
+
+loci_lessthan30x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[1-5]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[5-10]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[10-20]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[20-30]"),"loci"]
+
+loci_lessthan40x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[1-5]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[5-10]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[10-20]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[20-30]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[30-40]"),"loci"]
+
+loci_greaterthan50x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[50-100]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[100-500]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[500-1000]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[>1000]"),"loci"]
+
+loci_greaterthan100x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[100-500]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[500-1000]" | Pact_cov_perc_group_3x_mbd_rel$method=="WGBS"  & Pact_cov_perc_group_3x_mbd_rel$cov_tag == "[>1000]"),"loci"]
+
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs5x <- Pact_cov_perc_group_3x_mbd_rel[which(!(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_lessthan5x$loci)),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs10x <- Pact_cov_perc_group_3x_mbd_rel[which(!(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_lessthan10x$loci)),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs20x <- Pact_cov_perc_group_3x_mbd_rel[which(!(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_lessthan20x$loci)),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs30x <- Pact_cov_perc_group_3x_mbd_rel[which(!(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_lessthan30x$loci)),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs40x <- Pact_cov_perc_group_3x_mbd_rel[which(!(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_lessthan40x$loci)),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs50x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_greaterthan50x$loci),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+
+Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs100x <- Pact_cov_perc_group_3x_mbd_rel[which(Pact_cov_perc_group_3x_mbd_rel$loci %in% loci_greaterthan100x$loci),c("loci","group_simp", "mbd_cov_tag", "wgbs_meth_tag")] %>% gather("tag", "value", mbd_cov_tag:wgbs_meth_tag) %>% na.omit() %>% spread("tag", "value")
+#summarize the data for plotting
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs5x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs5x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs10x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs10x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs20x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs20x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs30x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs30x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs40x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs40x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs50x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs50x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x <- Pact_cov_perc_group_3x_mbd_rel_reshape_wgbs100x %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
+
+
+#create a df with all subsets
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- dplyr::bind_rows(list(wgbs_1x=Pact_cov_perc_group_3x_mbd_rel_sum, wgbs_5x=Pact_cov_perc_group_3x_mbd_rel_sum_wgbs5x, wgbs_10x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs10x, wgbs_20x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs20x,wgbs_30x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs30x,wgbs_40x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs40x,wgbs_50x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs50x, wgbs_100x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x), .id = "id")
+
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id) %>% mutate(perc_CpG = CpGs/sum(CpGs)*100)
+```
 
 
 plot data
 ```{r}
+jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact_thresholds.jpg", width = 6, height = 5, units = "in", res = 300 )
+ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("wgbs_1x","wgbs_5x","wgbs_10x","wgbs_20x","wgbs_30x","wgbs_40x","wgbs_50x","wgbs_100x")))
+dev.off()
+
+
+
 ggplot(data = Pact_cov_perc_STACKED, aes(x=meth_tag, y=factor(cov_tag, levels = cov_tags), fill=log(count,10))) + geom_tile() + facet_wrap(~group_simp) + theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1))
 
 
