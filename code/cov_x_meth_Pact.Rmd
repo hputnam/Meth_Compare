@@ -274,7 +274,7 @@ Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x <- Pact_cov_perc_group_3x_mbd_rel_re
 #create a df with all subsets
 Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- dplyr::bind_rows(list(wgbs_1x=Pact_cov_perc_group_3x_mbd_rel_sum, wgbs_5x=Pact_cov_perc_group_3x_mbd_rel_sum_wgbs5x, wgbs_10x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs10x, wgbs_20x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs20x,wgbs_30x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs30x,wgbs_40x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs40x,wgbs_50x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs50x, wgbs_100x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x), .id = "id")
 
-Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id) %>% mutate(perc_CpG = CpGs/sum(CpGs)*100)
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(perc_CpG = CpGs/sum(CpGs)*100)
 ```
 
 
@@ -283,6 +283,28 @@ plot data
 jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact_thresholds.jpg", width = 6, height = 5, units = "in", res = 300 )
 ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("wgbs_1x","wgbs_5x","wgbs_10x","wgbs_20x","wgbs_30x","wgbs_40x","wgbs_50x","wgbs_100x")), nrow = 2)
 dev.off()
+```
+
+
+
+This code generates 3 heatmaps showing %methylation x # of reads for each method to see if any method is biased against detecting highly methylated reads (e.g. WGBS)
+```{r}
+#subset loci for those only covered by WGBS data and only keep 
+
+#subset loci for those only covered by WGBS data,
+#only keep the loci, cov_tag, and meth_tag columns,
+# and total the CpGs for each bin
+Pact_cov_perc_group_3x_sum <- Pact_cov_perc_group_3x %>% group_by(method,cov_tag, meth_tag) %>% summarise(CpGs =n())
+
+Pact_cov_perc_group_3x_sum$cov_tag <- factor(Pact_cov_perc_group_3x_sum$cov_tag, levels = cov_tags)
+
+#plot the WGBS % meth x coverage
+jpeg("~/strigg/analyses/20200910/method_x_cov_x_meth_heatmap_Pact.jpg", width = 10, height = 4, units = "in", res = 300 )
+ggplot(data = Pact_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation", y = "number of reads", fill = "number of\nCpGs (log10)")
+dev.off()
+
+```
+
 
 
 
