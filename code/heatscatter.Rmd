@@ -36,7 +36,6 @@ add border color to histogram
 #              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(colorRamps::matlab.like2(10)))
          }
 
-
 ```
 
 correlation of common loci
@@ -50,24 +49,59 @@ pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 mcap.corrs <- mcap.corrs[,order(colnames(mcap.corrs))]
 pact.corrs <- pact.corrs[,order(colnames(pact.corrs))]
 
-#create pdf file that plots will be saved in
-pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
-
-#format the PDF
-par(mfrow=c(1,2))
+#create one pdf file that plots will be saved in
+#pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
+#format the plot axis size
+par(mfrow =c(2,1),cex.axis = 1.5)
 
 #create corr plot for Mcap
-pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, 
-             smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+#pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE,smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
 
 #create corr plot for Pact
-pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 2, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+#pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
 
 #save all plots in PDF
+#dev.off()
+
+
+#create separate PDFs for each plot
+
+#mcap first
+jpeg('output/intermediate-files/CorrPlots_CommonDataset/corrplot_Mcap.jpg', width=10, height=10, units = "in", res = 300)
+#format the plot axis size
+par(cex.axis = 1.5)
+#create corr plot for Mcap
+pairs.panels(mcap.corrs, smooth=TRUE, scale=FALSE, density=FALSE, show.points=FALSE, ellipses=FALSE,smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+dev.off()
+
+#create corr plot for Pact
+jpeg('output/intermediate-files/CorrPlots_CommonDataset/corrplot_Pact.jpg', width=10, height=10, units = "in", res = 300)
+#format the PDF
+par(cex.axis = 1.5)
+pairs.panels(pact.corrs, smooth=TRUE, scale=FALSE, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
 dev.off()
 
 
+
+
 ```
+
+Save plots in 'output' dir
+```{r}
+#create corr plot for Mcap
+a <- pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE,smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+
+#create corr plot for Pact
+b <- pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
+
+jpeg("output/figures/Fig_6.jpg", width = 5, height = 10, units = "in", res = 300)
+ggarrange(a,b,nrow = 2,labels = "AUTO")
+dev.off()
+
+
+
+```
+
 
 ```{r}
 mcap.corrs_w1_w2 <- mcap.corrs[,c(1,2)]
