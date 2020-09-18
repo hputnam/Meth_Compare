@@ -221,7 +221,7 @@ table(Pact_cov_perc_group_3x_mbd_rel_reshape$group_simp)
 Pact_cov_perc_group_3x_mbd_rel_sum <- Pact_cov_perc_group_3x_mbd_rel_reshape %>% group_by(mbd_cov_tag, wgbs_meth_tag) %>% summarise(CpGs =n())
 
 jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact.jpg", width = 6, height = 5, units = "in", res = 300 )
-ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") 
+ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + scale_fill_continuous(high = "#132B43", low = "#b5dfff")
 dev.off()
 ```
 
@@ -275,13 +275,16 @@ Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x <- Pact_cov_perc_group_3x_mbd_rel_re
 Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- dplyr::bind_rows(list(wgbs_1x=Pact_cov_perc_group_3x_mbd_rel_sum, wgbs_5x=Pact_cov_perc_group_3x_mbd_rel_sum_wgbs5x, wgbs_10x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs10x, wgbs_20x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs20x,wgbs_30x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs30x,wgbs_40x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs40x,wgbs_50x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs50x, wgbs_100x= Pact_cov_perc_group_3x_mbd_rel_sum_wgbs100x), .id = "id")
 
 Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(perc_CpG = CpGs/sum(CpGs)*100)
+
+#make wgbs capitalized
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id <- gsub("wgbs", "WGBS", Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id)
 ```
 
 
 plot data
 ```{r}
 jpeg("~/strigg/analyses/20200910/MBDcov_x_WGBSmeth_heatmap_Pact_thresholds.jpg", width = 6, height = 5, units = "in", res = 300 )
-ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("wgbs_1x","wgbs_5x","wgbs_10x","wgbs_20x","wgbs_30x","wgbs_40x","wgbs_50x","wgbs_100x")), nrow = 2)
+ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff")
 dev.off()
 ```
 
@@ -300,7 +303,7 @@ Pact_cov_perc_group_3x_sum$cov_tag <- factor(Pact_cov_perc_group_3x_sum$cov_tag,
 
 #plot the WGBS % meth x coverage
 jpeg("~/strigg/analyses/20200910/method_x_cov_x_meth_heatmap_Pact.jpg", width = 10, height = 4, units = "in", res = 300 )
-ggplot(data = Pact_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation", y = "number of reads", fill = "number of\nCpGs (log10)")
+ggplot(data = Pact_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation", y = "number of reads", fill = "number of\nCpGs (log10)") + scale_fill_continuous(high = "#132B43", low = "#b5dfff")
 dev.off()
 
 ```
