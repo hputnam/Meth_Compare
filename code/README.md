@@ -49,7 +49,7 @@
 
 *Scripts 02.02-02.05 in the Methylation Characterzation section also produce information associated with Genomic Location of Methylation*
 
-- [03.01-Generating-Genome-Feature-Tracks.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/03.01-Generating-Genome-Feature-Tracks.ipynb): Creates gene, CDS, intron, flanking region, and intergenic feature tracks for *M. capitata* and *P. acuta* genomes that are used for downstream analyses.
+- [03.01-Generating-Genome-Feature-Tracks.ipynb](https://github.com/hputnam/Meth_Compare/blob/master/code/03.01-Generating-Genome-Feature-Tracks.ipynb): Creates gene, CDS, intron, flanking region, and intergenic feature tracks for *M. capitata* and *P. acuta* genomes that are used for downstream analyses. The output is found in the [genome-feature-file folder](https://github.com/hputnam/Meth_Compare/tree/master/genome-feature-files)
 
 ## 04-Correlation of Percent Methylation of Shared CpG Loci
 
