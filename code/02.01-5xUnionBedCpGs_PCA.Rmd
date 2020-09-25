@@ -184,9 +184,9 @@ h <- ggplot(Pact_100x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method),
 #PCA of union bed for Pact
 #b <- ggplot(Pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Pact_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("P.acuta")))
 
-figure <- ggarrange(a, b,c,d,e,f,g,h, labels = "AUTO" , ncol = 4,nrow = 2,common.legend = TRUE, legend = "top")
+figure <- ggarrange(a, b,c,d,e,f,g,h, labels = "AUTO",font.label = list(size = 18) , ncol = 4,nrow = 2,common.legend = TRUE, legend = "top")
 
-jpeg("OLD_Output/5x-100xCpG_Methylation.jpg", width = 15, height = 8, units = "in", res = 300)
+jpeg("output/intermediate-files/methPCA/5x-100xCpG_Methylation.jpg", width = 15, height = 8, units = "in", res = 300)
 figure
 dev.off()
 
