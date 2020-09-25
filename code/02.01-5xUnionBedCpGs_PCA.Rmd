@@ -17,101 +17,145 @@ library(ggpubr)
 read in union bed methylation data
 ```{r}
 #read in union bedgraph for Mcap
-Mcap <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Mcap_union_5x.bedgraph")
+#Mcap <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Mcap_union_5x.bedgraph")
 
 #read in union bedgraph for Pact
-Pact <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Pact_union_5x.bedgraph")
+#Pact <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Pact_union_5x.bedgraph")
+
+
+Mcap_5x <- read.table("output/intermediate-files/methPCA/Mcap_percmeth_5x.txt", header = T)
+Mcap_10x <- read.table("output/intermediate-files/methPCA/Mcap_percmeth_10x.txt", header = T)
+Mcap_50x <- read.table("output/intermediate-files/methPCA/Mcap_percmeth_50x.txt", header = T)
+Mcap_100x <- read.table("output/intermediate-files/methPCA/Mcap_percmeth_100x.txt", header = T)
+
+Pact_5x <- read.table("output/intermediate-files/methPCA/Pact_percmeth_5x.txt", header = T)
+Pact_10x <- read.table("output/intermediate-files/methPCA/Pact_percmeth_10x.txt", header = T)
+Pact_50x <- read.table("output/intermediate-files/methPCA/Pact_percmeth_50x.txt", header = T)
+Pact_100x <- read.table("output/intermediate-files/methPCA/Pact_percmeth_100x.txt", header =T)
+
+
+
+
+#read in union bedgraph for Pact
+#Pact <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200424/10-unionbedg/Pact_union_5x.bedgraph")
+
+
 ```
 
 convert N/A to NA
 ```{r}
-Mcap[Mcap == "N/A"] <- NA
-Pact[Pact == "N/A"] <- NA
+#Mcap[Mcap == "N/A"] <- NA
+#Pact[Pact == "N/A"] <- NA
 ```
 
 filter for loci covered in all samples by removing lines with NA
 ```{r}
-Mcap_complete <- data.frame(Mcap[complete.cases(Mcap),])
-Pact_complete <- data.frame(Pact[complete.cases(Pact),])
+#Mcap_complete <- data.frame(Mcap[complete.cases(Mcap),])
+#Pact_complete <- data.frame(Pact[complete.cases(Pact),])
 
 ```
 
 see the structure of the df
 ```{r}
-str(Mcap_complete)
-str(Pact_complete)
+#str(Mcap_complete)
+#str(Pact_complete)
 
 ```
 
 The % methylation columns are character vectors because they initially contained "N/A" so convert all % methylation columns from character to numeric
 ```{r}
-Mcap_complete[,-c(1:3)] <- sapply(Mcap_complete[,-c(1:3)], as.numeric)
-Pact_complete[,-c(1:3)] <- sapply(Pact_complete[,-c(1:3)], as.numeric)
+#Mcap_complete[,-c(1:3)] <- sapply(Mcap_complete[,-c(1:3)], as.numeric)
+#Pact_complete[,-c(1:3)] <- sapply(Pact_complete[,-c(1:3)], as.numeric)
 
 ```
 
 check the structure again
 ```{r}
-str(Mcap_complete)
-str(Pact_complete)
+#str(Mcap_complete)
+#str(Pact_complete)
 
 ```
 The conversion worked.
 
 create rownames that is the loci ID (chrom:start-stop)
 ```{r}
-row.names(Mcap_complete) <- paste0(Mcap_complete$chrom,":", Mcap_complete$start,"-",Mcap_complete$end)
+#row.names(Mcap_complete) <- paste0(Mcap_complete$chrom,":", Mcap_complete$start,"-",Mcap_complete$end)
 
-row.names(Pact_complete) <- paste0(Pact_complete$chrom,":", Pact_complete$start,"-",Pact_complete$end)
+#row.names(Pact_complete) <- paste0(Pact_complete$chrom,":", Pact_complete$start,"-",Pact_complete$end)
 ```
 
 remove chrom, start, and end columns
 ```{r}
-Mcap_complete <- Mcap_complete[,-c(1:3)]
-Pact_complete <- Pact_complete[,-c(1:3)]
+#Mcap_complete <- Mcap_complete[,-c(1:3)]
+#Pact_complete <- Pact_complete[,-c(1:3)]
 ```
 
 
 swap sample numbers for sample names in colnames
 ```{r}
-colnames(Mcap_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
+#colnames(Mcap_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
 
-colnames(Pact_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
+#colnames(Pact_complete) <- c("WGBS_1", "WGBS_2", "WGBS_3", "RRBS_1", "RRBS_2", "RRBS_3", "MBDBS_1", "MBDBS_2", "MBDBS_3")
 ```
 
 write out input files for QC
 ```{r}
-write.table(Mcap_complete, "OLD_Output/Mcap_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
+#write.table(Mcap_complete, "OLD_Output/Mcap_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
 
-write.table(Pact_complete, "OLD_Output/Pact_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
+#write.table(Pact_complete, "OLD_Output/Pact_union5xCpG_PCAinput.tsv", sep ="\t", quote = F)
 
 ```
 
 ```{r}
-Mcap_complete <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv", sep = "\t", stringsAsFactors = F)
+#Mcap_complete <- read.table("OLD_Output/Mcap_union5xCpG_PCAinput.tsv", sep = "\t", stringsAsFactors = F, header = T, row.names = 1)
 
-Pact_complete <-read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv", sep = "\t", stringsAsFactors = F)
+#Pact_complete <-read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv", sep = "\t", stringsAsFactors = F,header = T, row.names = 1)
 ```
 
 
 create a meta data df
 ```{r}
-Mcap_meta <- data.frame(row.names = colnames(Mcap_complete), Method = gsub("_.*","",colnames(Mcap_complete)))
+#Mcap_meta <- data.frame(row.names = colnames(Mcap_complete), Method = gsub("_.*","",colnames(Mcap_complete)))
 
-Pact_meta <- data.frame(row.names = colnames(Pact_complete), Method = gsub("_.*","",colnames(Pact_complete)))
+Mcap_meta <- data.frame(row.names = colnames(Mcap_5x), Method = gsub("_.*","",colnames(Mcap_5x)))
+Pact_meta <- data.frame(row.names = colnames(Pact_5x), Method = gsub("_.*","",colnames(Pact_5x)))
+
+
+#Pact_meta <- data.frame(row.names = colnames(Pact_complete), Method = gsub("_.*","",colnames(Pact_complete)))
 ```
 
 run PCA on union bed methylation data
 ```{r}
 set.seed(101)
-Mcap_pca <- prcomp(t(Mcap_complete))
-Pact_pca <- prcomp(t(Pact_complete))
+Mcap_5x_pca <- prcomp(t(Mcap_5x))
+Mcap_10x_pca <- prcomp(t(Mcap_10x))
+Mcap_50x_pca <- prcomp(t(Mcap_50x))
+Mcap_100x_pca <- prcomp(t(Mcap_100x))
+
+
+Pact_5x_pca <- prcomp(t(Pact_5x))
+Pact_10x_pca <- prcomp(t(Pact_10x))
+Pact_50x_pca <- prcomp(t(Pact_50x))
+Pact_100x_pca <- prcomp(t(Pact_100x))
+
+#Pact_pca <- prcomp(t(Pact_complete))
 ```
 
 add method for plotting
 ```{r}
-Mcap_pca_meta <- merge(Mcap_meta,Mcap_pca$x, by = "row.names")
-Pact_pca_meta <- merge(Pact_meta,Pact_pca$x, by = "row.names")
+Mcap_5x_pca_meta <- merge(Mcap_meta,Mcap_5x_pca$x, by = "row.names")
+Mcap_10x_pca_meta <- merge(Mcap_meta,Mcap_10x_pca$x, by = "row.names")
+Mcap_50x_pca_meta <- merge(Mcap_meta,Mcap_50x_pca$x, by = "row.names")
+Mcap_100x_pca_meta <- merge(Mcap_meta,Mcap_100x_pca$x, by = "row.names")
+
+Pact_5x_pca_meta <- merge(Pact_meta,Pact_5x_pca$x, by = "row.names")
+Pact_10x_pca_meta <- merge(Pact_meta,Pact_10x_pca$x, by = "row.names")
+Pact_50x_pca_meta <- merge(Pact_meta,Pact_50x_pca$x, by = "row.names")
+Pact_100x_pca_meta <- merge(Pact_meta,Pact_100x_pca$x, by = "row.names")
+
+
+
+#Pact_pca_meta <- merge(Pact_meta,Pact_pca$x, by = "row.names")
 ```
 
 
@@ -119,14 +163,30 @@ plot PC 1 and 2 scores
 
 ```{r}
 #PCA of union bed for Mcap
-a <- ggplot(Mcap_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Mcap_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("M.capitata")))
+#a <- ggplot(Mcap_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Mcap_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("M.capitata")))
+
+a <- ggplot(Mcap_5x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_5x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-700,900) + ylim(-550,450) +xlab(paste0("PC1 (",round(summary(Mcap_5x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle("read threshold: 5x") +  theme(plot.title = element_text(hjust = 0.5))
+
+b <- ggplot(Mcap_10x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_10x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-700,900) + ylim(-550,450)+ xlab(paste0("PC1 (",round(summary(Mcap_10x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle("read threshold: 10x") +  theme(plot.title = element_text(hjust = 0.5))
+
+c <- ggplot(Mcap_50x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_50x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-700,900) + ylim(-550,450)+ xlab(paste0("PC1 (",round(summary(Mcap_50x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle("read threshold: 50x") +  theme(plot.title = element_text(hjust = 0.5))
+
+d <- ggplot(Mcap_100x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Mcap_100x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-700,900) + ylim(-550,450)+ xlab(paste0("PC1 (",round(summary(Mcap_100x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle("read threshold: 100x") +  theme(plot.title = element_text(hjust = 0.5))
+
+e <- ggplot(Pact_5x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_5x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-4000,8000) + ylim(-3500,2500) +xlab(paste0("PC1 (",round(summary(Pact_5x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") 
+
+f <- ggplot(Pact_10x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_10x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-4000,8000) + ylim(-3500,2500)+ xlab(paste0("PC1 (",round(summary(Pact_10x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") 
+
+g <- ggplot(Pact_50x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_50x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-4000,8000) + ylim(-3500,2500) + xlab(paste0("PC1 (",round(summary(Pact_50x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") 
+
+h <- ggplot(Pact_100x_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_100x_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlim(-4000,8000) + ylim(-3500,2500)+ xlab(paste0("PC1 (",round(summary(Pact_100x_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") 
 
 #PCA of union bed for Pact
-b <- ggplot(Pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Pact_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("P.acuta")))
+#b <- ggplot(Pact_pca_meta, aes(PC1, PC2)) + geom_point(aes(color = Method), size = 3) + scale_color_manual(values = c("#FD8D3C","#9E9AC8","#74C476")) + theme_bw() + ylab(paste0("PC2 (", round(summary(Pact_pca)[[6]][[5]]*100,2),"% variation explained)")) + xlab(paste0("PC1 (",round(summary(Pact_pca)[[6]][[2]]*100,2),"% variation explained)")) + labs(color = "method") + ggtitle(expression(italic("P.acuta")))
 
-figure <- ggarrange(a, b, labels = c("A", "B"), ncol = 2,common.legend = TRUE, legend = "bottom")
+figure <- ggarrange(a, b,c,d,e,f,g,h, labels = "AUTO" , ncol = 4,nrow = 2,common.legend = TRUE, legend = "top")
 
-jpeg("OLD_Output/PCA_5xUnionBedCpG_Methylation.jpg", width = 8, height = 4, units = "in", res = 300)
+jpeg("OLD_Output/5x-100xCpG_Methylation.jpg", width = 15, height = 8, units = "in", res = 300)
 figure
 dev.off()
 
@@ -134,5 +194,4 @@ dev.off()
 #ggplot(pact_pca_meta, aes(PC1, PC2, label = Sample)) + geom_point(aes(color = Group)) + geom_text(size = 1.5,hjust=1,vjust=-1) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + theme_bw() + ylab("PC2") + xlab("PC1")
 
 ```
-
 
