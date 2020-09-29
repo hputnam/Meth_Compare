@@ -19,6 +19,7 @@ library(stats)
 library(gridExtra)
 library(psych)
 library(colorRamps)
+library(itsadug)
 
 ```
 
@@ -33,7 +34,7 @@ add border color to histogram
 
 #add colramp argument to "panel.smoother" code
   # if (smoother) {
-#              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(colorRamps::matlab.like2(10)))
+#              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(colorRamps::topo.colors(100)))
          }
 
 ```
@@ -82,7 +83,7 @@ par(mfrow =c(2,1),cex.axis = 1.5)
 jpeg('output/intermediate-files/CorrPlots_CommonDataset/legend.jpg', width=6, height=5, units = "in", res = 300)
 par(cex.axis = 1.5,mar=c(5.1,3.1,4.1,10))
 emptyPlot(1,1, main='Test plot')
-gradientLegend(valRange=c(0,1), n.seg = c(0.25,0.5,0.75),pos=.5,side=4, color=colorRamps::matlab.like2(10))
+gradientLegend(valRange=c(0,1), n.seg = c(0.25,0.5,0.75),pos=.5,side=4, color=topo.colors(100))
 dev.off()
 
 
@@ -106,38 +107,23 @@ dev.off()
 
 ```
 
-Save plots in 'output' dir
-```{r}
-#create corr plot for Mcap
-a <- pairs.panels(mcap.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE,smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
-
-#create corr plot for Pact
-b <- pairs.panels(pact.corrs, smooth=TRUE, scale=TRUE, cex.cor = 3, density=FALSE, show.points=FALSE, ellipses=FALSE, smoother=TRUE, gap=0.5, hist.col="gray80", breaks = 20)
-
-jpeg("output/figures/Fig_6.jpg", width = 5, height = 10, units = "in", res = 300)
-ggarrange(a,b,nrow = 2,labels = "AUTO")
-dev.off()
 
 
-
-```
-
-
-```{r}
-mcap.corrs_w1_w2 <- mcap.corrs[,c(1,2)]
-mcap.corrs_w1_w3 <- mcap.corrs[,c(1,3)]
-mcap.corrs_w2_w3 <- mcap.corrs[,c(2,3)]
+<!-- ```{r} -->
+<!-- mcap.corrs_w1_w2 <- mcap.corrs[,c(1,2)] -->
+<!-- mcap.corrs_w1_w3 <- mcap.corrs[,c(1,3)] -->
+<!-- mcap.corrs_w2_w3 <- mcap.corrs[,c(2,3)] -->
 
 
-k <- 11
-my.cols <- wes_palette("Zissou1", 100, type = "continuous")
-pdf('OLD_Output/corrplot2.pdf', width=10, height=10)
-par(mfrow=c(2,2))
-smoothScatter(mcap.corrs1, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
-smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
-smoothScatter(mcap.corrs2, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
-smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1)
-dev.off()
-# 
+<!-- k <- 11 -->
+<!-- my.cols <- wes_palette("Zissou1", 100, type = "continuous") -->
+<!-- pdf('OLD_Output/corrplot2.pdf', width=10, height=10) -->
+<!-- par(mfrow=c(2,2)) -->
+<!-- smoothScatter(mcap.corrs1, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1) -->
+<!-- smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1) -->
+<!-- smoothScatter(mcap.corrs2, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1) -->
+<!-- smoothScatter(mcap.corrs3, nrpoints = Inf, colramp=colorRampPalette(my.cols), pch=16, cex=.1) -->
+<!-- dev.off() -->
+<!-- #  -->
 
-```
+<!-- ``` -->
