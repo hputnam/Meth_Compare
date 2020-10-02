@@ -17,27 +17,6 @@ library(ggpubr)
 
 ```
 
-edit fread function so that curl does not check SSL certificate
-```{r}
-trace("fread", edit = T)
-
-# to lines 84-85
-#add 'handle = curl::handle_setopt(curl::new_handle(), ssl_verifypeer=0L)' to the curl_download command
-
-#original lines 84-85
-#84 curl::curl_download(input, tmpFile, mode = "wb", 
-#85 quiet = !showProgress)
-
-
-#editted lines 84-85 
-#84 curl::curl_download(input, tmpFile, mode = "wb", 
-#85 quiet = !showProgress, handle = curl::handle_setopt(curl::new_handle(), ssl_verifypeer=0L))
-
-#click save
-
-#this will allow links to be downloaded from Gannet with expired SSL certificates
-```
-
 
 read in data
 ```{r}
@@ -425,8 +404,13 @@ plot coverage
 # dev.off()
 
 #mean fraction of CpGs covered x method with sd
-c <- ggplot(Pact_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+cc <- ggplot(Pact_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
 
+#inset (zoomed in on 5x and 10x CpG coverage)
+ccc <- ggplot(Pact_Sample_CpG_avg[which(Pact_Sample_CpG_avg$coverage==5|Pact_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
+
+#plot plus inset (zoomed in on 5x and 10x CpG coverage)
+c <- cc + annotation_custom(ggplotGrob(ccc), xmin = 15, xmax = 50, ymin = 0.25, ymax = 0.88)
 
 # fraction of genome covered by pooled samples
 #jpeg("Output/Pact_GenomecovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
@@ -452,8 +436,13 @@ d <- ggplot(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$cove
 #dev.off()
 
 #mean fraction of CpGs covered x method with sd
-a <- ggplot(Mcap_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+aa <- ggplot(Mcap_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
 
+
+
+aaa <- ggplot(Mcap_Sample_CpG_avg[which(Mcap_Sample_CpG_avg$coverage==5|Mcap_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
+
+a <- aa + annotation_custom(ggplotGrob(aaa), xmin = 10, xmax = 50, ymin = 0.15, ymax = 0.7)
 
 # fraction of genome covered by pooled samples
 #jpeg("Output/Mcap_GenomecovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
