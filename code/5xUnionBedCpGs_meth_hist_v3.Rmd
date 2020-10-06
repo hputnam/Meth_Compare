@@ -147,11 +147,11 @@ i <- ggplot(Mcap_cov_perc_STACKED_wgbsZOOM,aes(x = method, y = perc_CpG*100, fil
 
 jpeg("OLD_Output/Mcap_Pact_5xCpGmeth_overlapMethods_StackedBars_colbyMethod_3x_multi.jpg", width = 10, height = 12, units = "in", res = 300)
 ggarrange(
-  d,                # First row with line plot
+  g,                # First row with line plot
   # Second row with box and dot plots
-  ggarrange(e, f, ncol = 2, labels = c("B", "C"),legend = "none"), 
-  ggarrange(g, ncol = 1, labels = "D", legend = "none"),
-  ggarrange(h, i, ncol = 2, labels = c("E", "F"),legend = "none"), 
+  ggarrange(h, i, ncol = 2, labels = c("B", "C"),legend = "none"), 
+  ggarrange(d, ncol = 1, labels = "D", legend = "none"),
+  ggarrange(e, f, ncol = 2, labels = c("E", "F"),legend = "none"), 
   nrow = 4, 
   labels = "A",       # Label of the line plot
   common.legend = TRUE, heights = c(1.5,1)
