@@ -28,9 +28,11 @@ Mcap <- read.table("../data/Mcap_union_5x.bedgraph", sep = "\t", header = TRUE, 
 head(Mcap)
 str(Mcap)
 
+```
+
+```{r}
 #load in all genes gff from a genome
-Mcap.cytoband <- read.table("../genome-feature-files/Mcap.GFFannotation.genes.gff", sep = "\t",  
-                            header = FALSE)
+Mcap.cytoband <- read.table("../genome-feature-files/Mcap.GFFannotation.genes.gff", sep = "\t",  header = FALSE)
 
 #remove extra coloumns from gene gff
 Mcap.cytoband.df <- Mcap.cytoband[,c(1,4,5,6,9)]
@@ -40,58 +42,110 @@ head(Mcap.cytoband.df)
 #look at distinct numner of scaffolds
 n_distinct(Mcap.cytoband$V1)
 
-#subset the columns of data
-Mcap.gene.cytoband <- Mcap.cytoband[,c(1,4,5,6,7)]
-Mcap.gene.cytoband$V4 <-as.numeric(Mcap.gene.cytoband$V4)
-Mcap.gene.cytoband$V5 <- as.numeric(Mcap.gene.cytoband$V5)
+Mcap.gene.cytoband <- Mcap.cytoband[,c(1,4,5,6,7)] #subset the columns of data
+Mcap.gene.cytoband$V4 <-as.numeric(Mcap.gene.cytoband$V4) #make start numeric
+Mcap.gene.cytoband$V5 <- as.numeric(Mcap.gene.cytoband$V5) #make stop numeric
 Mcap.gene.cytoband$V6 <- as.numeric(0.5)
 Mcap.gene.cytoband$V7 <- as.numeric(1.0)
 
 #examine scaffolds for the number of genes in a scaffold 
-Mcap.sizes <- Mcap.cytoband %>% 
-  group_by(V1) %>% 
-  summarise(count=n()) %>%
-  arrange(-count)
-Mcap.sizes[1,1]
+# Mcap.sizes <- Mcap.cytoband %>% 
+#   group_by(V1) %>% 
+#   summarise(count=n()) %>%
+#   arrange(-count)
+# Mcap.sizes[1,1]
 
-#filter the gene information for the scaffold with the highest number of genes
-Mcap.gene.cytoband <- Mcap.gene.cytoband %>%
-  filter(V1 == 2)
+# write.csv(Mcap.sizes,"../Output/Circos_plots/genesperscaff.csv")
+
+#identify scaffold lengths
+Mcap.scaffold.lengths <- read.table("../data/Mcap.genome_assembly-sequence-lengths.txt", sep = "\t",  header = FALSE)
+
+Mcap.scaffold.lengths <- Mcap.scaffold.lengths %>% arrange(desc(V2))
+head(Mcap.scaffold.lengths)
+
+#plot the top 10 longest scaffolds
+for (i in 1:10) {
+
+# #filter the gene information for the scaffold with the highest number of genes
+Mcap.gene.cytoband.perscaff <- Mcap.gene.cytoband %>%
+  filter(V1 == Mcap.scaffold.lengths$V1[i])
 
 #filter the CpG data for the scaffold with the highest number of genes
 Mcap_union <- Mcap %>%
-  filter(chrom== 2)
+  filter(chrom== Mcap.scaffold.lengths$V1[i])
 str(Mcap_union)
 
 #add a top row to start the scaffold at 0
-Mcap.gene.cytoband.head <- c(2,0,1,0,1)
+Mcap.gene.cytoband.head <- c(Mcap.scaffold.lengths$V1[i],0,1,0,1)
 
 #identify scaffold lengths
-Mcap.scaffold.lengths <- read.table("../data/Mcap.genome_assembly-sequence-lengths.txt", sep = "\t",  header = FALSE) %>%
-  filter(V1 == 2)
+Mcap.scaffold.lengths.ind <- Mcap.scaffold.lengths %>%
+  filter(V1 == Mcap.scaffold.lengths$V1[i])
 
 #add a bottom row to stop the scaffold at max length
-Mcap.gene.cytoband.tail <- c(2,Mcap.scaffold.lengths[1,2]-1,Mcap.scaffold.lengths[1,2],0,1)
+Mcap.gene.cytoband.tail <- c(Mcap.scaffold.lengths$V1[i],Mcap.scaffold.lengths.ind[1,2]-1,Mcap.scaffold.lengths.ind[1,2],0,1)
 
 #combine top, data, and bottom rows
-Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband.head, Mcap.gene.cytoband)
-Mcap.gene.cytoband <- rbind(Mcap.gene.cytoband,Mcap.gene.cytoband.tail)
-str(Mcap.gene.cytoband)
+Mcap.gene.cytoband.perscaff <- rbind(Mcap.gene.cytoband.head, Mcap.gene.cytoband.perscaff)
+Mcap.gene.cytoband.perscaff <- rbind(Mcap.gene.cytoband.perscaff,Mcap.gene.cytoband.tail)
+str(Mcap.gene.cytoband.perscaff)
 
 #scale the data from 0-1
 Mcap_union.WGBS <- Mcap_union %>% mutate(avg = rowMeans(.[4:6], na.rm=TRUE))
 Mcap_union.WGBS <- Mcap_union.WGBS[,c(1,2,3,13)]
 Mcap_union.WGBS$avg <- Mcap_union.WGBS$avg/100
 Mcap_union.WGBS$avg[is.nan(Mcap_union.WGBS$avg)] <- NA
-Mcap_union.RRBS <- Mcap_union %>% mutate(avg = rowMeans(.[7:9], na.rm=TRUE))
-Mcap_union.RRBS <- Mcap_union.RRBS[,c(1,2,3,13)]
-Mcap_union.RRBS$avg <- Mcap_union.RRBS$avg/100
-Mcap_union.RRBS$avg[is.nan(Mcap_union.RRBS$avg)] <- NA
-Mcap_union.MBDBS <- Mcap_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
-Mcap_union.MBDBS <- Mcap_union.MBDBS[,c(1,2,3,13)]
-Mcap_union.MBDBS$avg <- Mcap_union.MBDBS$avg/100
-Mcap_union.MBDBS$avg[is.nan(Mcap_union.MBDBS$avg)] <- NA
+# Mcap_union.RRBS <- Mcap_union %>% mutate(avg = rowMeans(.[7:9], na.rm=TRUE))
+# Mcap_union.RRBS <- Mcap_union.RRBS[,c(1,2,3,13)]
+# Mcap_union.RRBS$avg <- Mcap_union.RRBS$avg/100
+# Mcap_union.RRBS$avg[is.nan(Mcap_union.RRBS$avg)] <- NA
+# Mcap_union.MBDBS <- Mcap_union %>% mutate(avg = rowMeans(.[10:12], na.rm=TRUE))
+# Mcap_union.MBDBS <- Mcap_union.MBDBS[,c(1,2,3,13)]
+# Mcap_union.MBDBS$avg <- Mcap_union.MBDBS$avg/100
+# Mcap_union.MBDBS$avg[is.nan(Mcap_union.MBDBS$avg)] <- NA
 
+pdf(file = paste0("../Output/Circos_plots/",i,"Mcap_Circos_scaff",Mcap.sizes$V1[i],"_top10scaffsbylength.pdf"), width=6, height=10)
+
+#set plotting parameters for pdf
+par(mfrow=c(1,1))
+
+#clear 
+circos.clear()
+
+#Montipora
+set.seed(123)
+
+#set plotting parameters for circlize
+circos.par("track.height" = 0.4, start.degree = 90, gap.degree = 20, cell.padding = c(0.01,1,0.01,1))
+
+#add outer scaffold band
+circos.initializeWithIdeogram(Mcap.gene.cytoband.perscaff, species = NULL, sort.chr = TRUE)
+#add data track
+circos.genomicTrack(Mcap_union.WGBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+                    panel.fun = function(region, value, ...) {
+                      circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#31A354")
+                    })
+#labal y axis of data track
+circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+# #add data track
+# circos.genomicTrack(Mcap_union.RRBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+#                     panel.fun = function(region, value, ...) {
+#                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#756BB1")
+#                     })
+# #labal y axis of data track
+# circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+# #add data track
+# circos.genomicTrack(Mcap_union.MBDBS, stack=FALSE, ylim=c(0,1), track.height = 0.1,
+#                     panel.fun = function(region, value, ...) {
+#                       circos.genomicPoints(region, value, pch = 16, cex = 0.1, col="#E6550D")
+#                     })
+# #labal y axis of data track
+# circos.yaxis(side="left", labels = TRUE, tick=TRUE, at=c(0,0.5,1))
+#add legend
+lgd = Legend(at = c("WGBS", "RRBS", "MBDBS"), legend_gp=gpar(fill=c("#31A354","#756BB1","#E6550D")))
+draw(lgd,  just = c("bottom"))
+dev.off()
+}
 ```
 
 Pocillopora acuta
