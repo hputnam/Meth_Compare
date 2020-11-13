@@ -1241,3 +1241,9 @@ output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_u
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-Meth.bed
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth.bed
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth.bed
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-MBDBS.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-RRBS.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-total.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x.bedgraph
