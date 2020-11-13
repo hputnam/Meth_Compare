@@ -1205,3 +1205,9 @@ analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvM_TG50p.bed-mcInt
 analyses/CorrPlots_CommonDataset/Pact_Mcap_DMC_bedfiles/Mcap_WvR_TG50p.bed-mcIntergenic
 *.cov
 .DS_Store
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap-5xbedgraph-GANNET-md5sum-hashes.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap-5xbedgraph-GANNET-md5sum-paths.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap-5xbedgraph-GANNET-md5sum.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact-5xbedgraph-GANNET-md5sum-hashes.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact-5xbedgraph-GANNET-md5sum-paths.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact-5xbedgraph-GANNET-md5sum.txt
