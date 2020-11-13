@@ -1213,3 +1213,4 @@ output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact-5xbedgraph-G
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact-5xbedgraph-GANNET-md5sum.txt
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x.bedgraph
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages.bedgraph
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-total.bedgraph
