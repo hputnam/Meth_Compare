@@ -1221,3 +1221,11 @@ output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_u
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-Meth
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-total.bedgraph-Meth
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-Meth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-unMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-WGBS.bedgraph-sparseMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-total.bedgraph-unMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-total.bedgraph-sparseMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-unMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-RRBS.bedgraph-sparseMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-unMeth
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-MBDBS.bedgraph-sparseMeth
