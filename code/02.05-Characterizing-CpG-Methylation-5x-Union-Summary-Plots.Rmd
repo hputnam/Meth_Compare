@@ -17,6 +17,9 @@ require(RColorBrewer) #Load RColorBrewer
 
 #install.packages("dichromat")
 require(dichromat)
+
+#install.packages("broom")
+require(broom)
 ```
 
 # Session information
@@ -32,26 +35,26 @@ sessionInfo()
 ### Import file counts
 
 ```{r}
-McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-McapAll <- McapAll[-4,] #Remove last row (total lines for all files)
+McapAll <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapAll <- McapAll[-c(4:5),] #Remove last rows (total lines for average information and for all files)
 tail(McapAll) #Confirm import
 ```
 
 ```{r}
-McapMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-McapMeth <- McapMeth[-4,] #Remove last row (total lines for all files)
+McapMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapMeth <- McapMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(McapMeth) #Confirm import
 ```
 
 ```{r}
-McapSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-McapSparseMeth <- McapSparseMeth[-4,] #Remove last row (total lines for all files)
+McapSparseMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapSparseMeth <- McapSparseMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(McapSparseMeth) #Confirm import
 ```
 
 ```{r}
-McapUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-McapUnMeth <- McapUnMeth[-4,] #Remove last row (total lines for all files)
+McapUnMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapUnMeth <- McapUnMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(McapUnMeth) #Confirm import
 ```
 
@@ -74,7 +77,7 @@ tail(McapCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(McapCpGType, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ### Create plot
@@ -99,7 +102,7 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 ```
 
 ```{r}
-#pdf("../Output/Mcap_union-CpG-Type.pdf", height = 8.5, width = 11)
+pdf("../output/supplemental-material/SF6.pdf", height = 8.5, width = 11)
 par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(McapCpGTypePercents), 
@@ -131,7 +134,7 @@ legend(x = 0.54, y = 0.87,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
-#dev.off() #Turn off plotting device
+dev.off() #Turn off plotting device
 ```
 
 ## Pact
