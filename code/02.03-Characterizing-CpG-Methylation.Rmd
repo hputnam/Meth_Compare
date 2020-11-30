@@ -19,8 +19,6 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("compositions") #Compositional data analysis package
 #install.packages("vegan") #Multivariate analysis package
 #install.packages("cluster") #Multivariate analysis package
-#install.packages("glmmTMB") #Linear modeling package
-#install.packages("emmeans")
 ```
 
 ```{r}
@@ -29,8 +27,6 @@ require(dichromat)
 require(compositions)
 require(vegan)
 require(cluster)
-require(glmmTMB)
-require(emmeans)
 ```
 
 # Session information
