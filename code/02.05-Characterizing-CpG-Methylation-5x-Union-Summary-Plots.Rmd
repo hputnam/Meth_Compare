@@ -73,6 +73,7 @@ McapCpGType$percentMeth <- (McapCpGType$Meth / McapCpGType$totalLines) * 100 #Ca
 McapCpGType$percentSparseMeth <- (McapCpGType$sparseMeth / McapCpGType$totalLines) * 100 #Calculate percent sparsely methylated loci
 McapCpGType$percentUnMeth <- (McapCpGType$unMeth / McapCpGType$totalLines) * 100 #Calculate percent unmethylated loci
 McapCpGType <- McapCpGType[,c(1, 2, 5, 3, 6, 4, 7)] #Reorganize columns
+head(McapCpGType)
 tail(McapCpGType) #Confirm calculations
 ```
 
@@ -83,7 +84,7 @@ write.table(McapCpGType, "../output/intermediate-files/02-Characterizing-CpG-Met
 ### Create plot
 
 ```{r}
-McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only percent information
+McapCpGTypePercents <- McapCpGType[,c(5,6,7)] #Keep only percent information
 head(McapCpGTypePercents) #Confirm changes
 ```
 
@@ -102,7 +103,7 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 ```
 
 ```{r}
-pdf("../output/supplemental-material/SF6.pdf", height = 8.5, width = 11)
+#pdf("../output/supplemental-material/SF6A.pdf", height = 8.5, width = 11)
 par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(McapCpGTypePercents), 
@@ -134,7 +135,7 @@ legend(x = 0.54, y = 0.87,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
-dev.off() #Turn off plotting device
+#dev.off() #Turn off plotting device
 ```
 
 ## Pact
@@ -142,26 +143,26 @@ dev.off() #Turn off plotting device
 ### Import file counts
 
 ```{r}
-PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactAll <- PactAll[-4,] #Remove last row (total lines for all files)
+PactAll <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- PactAll[-c(4:5),] #Remove last row (total lines for all files)
 tail(PactAll) #Confirm import
 ```
 
 ```{r}
-PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactMeth <- PactMeth[-4,] #Remove last row (total lines for all files)
+PactMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- PactMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(PactMeth) #Confirm import
 ```
 
 ```{r}
-PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactSparseMeth <- PactSparseMeth[-4,] #Remove last row (total lines for all files)
+PactSparseMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- PactSparseMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(PactSparseMeth) #Confirm import
 ```
 
 ```{r}
-PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
-PactUnMeth <- PactUnMeth[-4,] #Remove last row (total lines for all files)
+PactUnMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- PactUnMeth[-c(4:5),] #Remove last row (total lines for all files)
 tail(PactUnMeth) #Confirm import
 ```
 
@@ -184,7 +185,7 @@ tail(PactCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(PactCpGType, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ### Create plot
@@ -195,7 +196,7 @@ head(PactCpGTypePercents) #Confirm changes
 ```
 
 ```{r}
-#pdf("../Output/Pact_union-CpG-Type.pdf", height = 8.5, width = 11)
+pdf("../output/supplemental-material/SF6B.pdf", height = 8.5, width = 11)
 par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(PactCpGTypePercents), 
@@ -227,13 +228,13 @@ legend(x = 0.54, y = 0.87,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
 
-#dev.off() #Turn off plotting device
+dev.off() #Turn off plotting device
 ```
 
 ## Create multipanel plot
 
 ```{r}
-#pdf("../Output/Union-CpG-Type-Multipanel.pdf", height = 8.5, width = 11)
+pdf("../output/supplemental-material/SF6.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
