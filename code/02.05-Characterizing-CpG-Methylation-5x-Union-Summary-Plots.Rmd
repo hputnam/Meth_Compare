@@ -297,13 +297,13 @@ text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that
 ### Import file counts
 
 ```{r}
-McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
 McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
 tail(McapGenomeFeatures) #Check import
 ```
 
 ```{r}
-McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapGeneOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 McapGeneOverlaps <- McapGeneOverlaps[-13,] #Remove final row
 tail(McapGeneOverlaps) #Confirm import
 ```

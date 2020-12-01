@@ -1271,3 +1271,10 @@ output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_u
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-sparseMeth.bed
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph-unMeth.bed
 output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union_5x-averages-WGBS.bedgraph.bed
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-CDS-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Downstream-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Flanks-Upstream-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Gene-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Intergenic-Overlaps.txt
+output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Intron-Overlaps.txt
