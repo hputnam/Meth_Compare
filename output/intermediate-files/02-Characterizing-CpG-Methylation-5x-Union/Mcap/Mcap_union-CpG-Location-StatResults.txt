@@ -1,0 +1,6 @@
+statistic	p.value	parameter	method	GenomeFeature	p.adj	comparison
+1	29494.200375159	0	1	Pearson's Chi-squared test with Yates' continuity correction	CDS	0	WGBS vs. RRBS
+2	986.540611811971	1.51311357018703e-216	1	Pearson's Chi-squared test with Yates' continuity correction	Introns	2.52185595031171e-216	WGBS vs. RRBS
+3	17.8770942245105	2.35640280875614e-05	1	Pearson's Chi-squared test with Yates' continuity correction	Upstream.Flanks	2.35640280875614e-05	WGBS vs. RRBS
+4	504.716012488768	8.95098216793945e-112	1	Pearson's Chi-squared test with Yates' continuity correction	Downstream.Flanks	1.11887277099243e-111	WGBS vs. RRBS
+5	20107.9529113912	0	1	Pearson's Chi-squared test with Yates' continuity correction	Intergenic	0	WGBS vs. RRBS
