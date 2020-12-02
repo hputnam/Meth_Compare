@@ -431,14 +431,77 @@ McapCpGLocationWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods c
 head(McapCpGLocationWGRR) #Confirm changes
 ```
 
+#### WGBS vs. MBDBS
+
 ```{r}
-write.table(McapCpGLocationWGRR, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Location-StatResults.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save statistical output
+McapCpGLocationWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- McapCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for method 1
+  Method2Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 3
+  Method1NotFeature <- sum(McapCpGLocationStatTest[1,-i]) #Variable for # other CpG types for method 1
+  Method2NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 3
+  ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(1,3)])) #Assign row names: method 1, method 3
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
+  McapCpGLocationWGMB <- rbind(McapCpGLocationWGMB, ctResults) #Add test statistics to master table
+}
 ```
 
-#### WGBS vs. MBDBS
+```{r}
+head(McapCpGLocationWGMB) #Look at statistical output
+```
+
+```{r}
+McapCpGLocationWGMB$p.adj <- p.adjust(McapCpGLocationWGMB$p.value, method = "fdr") #Correct p-value using FDR
+McapCpGLocationWGMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
+head(McapCpGLocationWGMB) #Confirm changes
+```
 
 #### RRBS vs. MBDBS
 
+```{r}
+McapCpGLocationRRMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- McapCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 2
+  Method2Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 3
+  Method1NotFeature <- sum(McapCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 2
+  Method2NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 3
+  ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(2,3)])) #Assign row names: method 2, method 3
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
+  McapCpGLocationRRMB <- rbind(McapCpGLocationRRMB, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+head(McapCpGLocationRRMB) #Look at statistical output
+```
+
+```{r}
+McapCpGLocationRRMB$p.adj <- p.adjust(McapCpGLocationRRMB$p.value, method = "fdr") #Correct p-value using FDR
+McapCpGLocationRRMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
+head(McapCpGLocationRRMB) #Confirm changes
+```
+
+#### Save statistical output
+
+```{r}
+McapCpGLocationStatOutput <- cbind(McapCpGLocationWGRR,
+                                   McapCpGLocationWGMB,
+                                   McapCpGLocationRRMB) #Combine tables from each group of contingency tests
+head(McapCpGLocationStatOutput)
+```
+
+
+```{r}
+write.table(McapCpGLocationStatOutput, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Location-StatResults.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save statistical output
+```
 
 ### Create plot
 
