@@ -864,200 +864,199 @@ write.table(PactFeatureOverlaps, "../output/intermediate-files/02-Characterizing
 #### Format data
 
 ```{r}
-McapCpGLocationStatTest <- data.frame(t(McapFeatureOverlaps[,c(1, 13, 9, 5)])) #Subset all CpG and library preparation methods, transpose, and save as a dataframe
-McapCpGLocationStatTest <- McapCpGLocationStatTest[,-c(1, 4)] #Remove gene and flank information
-head(McapCpGLocationStatTest) #Confirm formatting
+PactCpGLocationStatTest <- data.frame(t(PactFeatureOverlaps[,c(1, 13, 9, 5)])) #Subset all CpG and library preparation methods, transpose, and save as a dataframe
+PactCpGLocationStatTest <- PactCpGLocationStatTest[,-c(1, 4)] #Remove gene and flank information
+head(PactCpGLocationStatTest) #Confirm formatting
 ```
 
 #### All vs. WGBS
 
 ```{r}
-McapCpGLocationAllWG <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
-  Method2Feature <- McapCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
-  Method1NotFeature <- sum(McapCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
-  Method2NotFeature <- sum(McapCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
+PactCpGLocationAllWG <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
+  Method2Feature <- PactCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
+  Method1NotFeature <- sum(PactCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
+  Method2NotFeature <- sum(PactCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(1,2)])) #Assign row names: genomic CpGs with data, method 1
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(1,2)])) #Assign row names: genomic CpGs with data, method 1
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationAllWG <- rbind(McapCpGLocationAllWG, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationAllWG <- rbind(PactCpGLocationAllWG, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationAllWG) #Look at statistical output
+head(PactCpGLocationAllWG) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationAllWG$p.adj <- p.adjust(McapCpGLocationAllWG$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationAllWG$comparison <- rep("all vs. WGBS", times = 5) #Add methods compared
-head(McapCpGLocationAllWG) #Confirm changes
+PactCpGLocationAllWG$p.adj <- p.adjust(PactCpGLocationAllWG$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationAllWG$comparison <- rep("all vs. WGBS", times = 5) #Add methods compared
+head(PactCpGLocationAllWG) #Confirm changes
 ```
 
 #### All vs. RRBS
 
 ```{r}
-McapCpGLocationAllRR <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
-  Method2Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
-  Method1NotFeature <- sum(McapCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
-  Method2NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
+PactCpGLocationAllRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
+  Method2Feature <- PactCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
+  Method1NotFeature <- sum(PactCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
+  Method2NotFeature <- sum(PactCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(1,3)])) #Assign row names: genomic CpGs with data, method 2
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(1,3)])) #Assign row names: genomic CpGs with data, method 2
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationAllRR <- rbind(McapCpGLocationAllRR, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationAllRR <- rbind(PactCpGLocationAllRR, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationAllRR) #Look at statistical output
+head(PactCpGLocationAllRR) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationAllRR$p.adj <- p.adjust(McapCpGLocationAllRR$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationAllRR$comparison <- rep("all vs. RRBS", times = 5) #Add methods compared
-head(McapCpGLocationAllRR) #Confirm changes
+PactCpGLocationAllRR$p.adj <- p.adjust(PactCpGLocationAllRR$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationAllRR$comparison <- rep("all vs. RRBS", times = 5) #Add methods compared
+head(PactCpGLocationAllRR) #Confirm changes
 ```
 
 #### All vs. MBDBS
 
-
 ```{r}
-McapCpGLocationAllMB <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
-  Method2Feature <- McapCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
-  Method1NotFeature <- sum(McapCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
-  Method2NotFeature <- sum(McapCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
+PactCpGLocationAllMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[1,i] #Variable for # genome feature overlaps for genomic CpGs with data
+  Method2Feature <- PactCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
+  Method1NotFeature <- sum(PactCpGLocationStatTest[1,-i]) #Variable for # other CpG types for genomic CpGs with data
+  Method2NotFeature <- sum(PactCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(1,4)])) #Assign row names: genomic CpGs with data, method 3
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(1,4)])) #Assign row names: genomic CpGs with data, method 3
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationAllMB <- rbind(McapCpGLocationAllMB, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationAllMB <- rbind(PactCpGLocationAllMB, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationAllMB) #Look at statistical output
+head(PactCpGLocationAllMB) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationAllMB$p.adj <- p.adjust(McapCpGLocationAllMB$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationAllMB$comparison <- rep("all vs. RRBS", times = 5) #Add methods compared
-head(McapCpGLocationAllMB) #Confirm changes
+PactCpGLocationAllMB$p.adj <- p.adjust(PactCpGLocationAllMB$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationAllMB$comparison <- rep("all vs. RRBS", times = 5) #Add methods compared
+head(PactCpGLocationAllMB) #Confirm changes
 ```
 
 #### WGBS vs. RRBS
 
 ```{r}
-McapCpGLocationWGRR <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
-  Method2Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
-  Method1NotFeature <- sum(McapCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
-  Method2NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
+PactCpGLocationWGRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
+  Method2Feature <- PactCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
+  Method1NotFeature <- sum(PactCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
+  Method2NotFeature <- sum(PactCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(2,3)])) #Assign row names: method 1, method 2
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(2,3)])) #Assign row names: method 1, method 2
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationWGRR <- rbind(McapCpGLocationWGRR, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationWGRR <- rbind(PactCpGLocationWGRR, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationWGRR) #Look at statistical output
+head(PactCpGLocationWGRR) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationWGRR$p.adj <- p.adjust(McapCpGLocationWGRR$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods compared
-head(McapCpGLocationWGRR) #Confirm changes
+PactCpGLocationWGRR$p.adj <- p.adjust(PactCpGLocationWGRR$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods compared
+head(PactCpGLocationWGRR) #Confirm changes
 ```
 
 #### WGBS vs. MBDBS
 
 ```{r}
-McapCpGLocationWGMB <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
-  Method2Feature <- McapCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
-  Method1NotFeature <- sum(McapCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
-  Method2NotFeature <- sum(McapCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
+PactCpGLocationWGMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
+  Method2Feature <- PactCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
+  Method1NotFeature <- sum(PactCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
+  Method2NotFeature <- sum(PactCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(2,4)])) #Assign row names: method 1, method 3
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(2,4)])) #Assign row names: method 1, method 3
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationWGMB <- rbind(McapCpGLocationWGMB, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationWGMB <- rbind(PactCpGLocationWGMB, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationWGMB) #Look at statistical output
+head(PactCpGLocationWGMB) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationWGMB$p.adj <- p.adjust(McapCpGLocationWGMB$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationWGMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
-head(McapCpGLocationWGMB) #Confirm changes
+PactCpGLocationWGMB$p.adj <- p.adjust(PactCpGLocationWGMB$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationWGMB$comparison <- rep("WGBS vs. MBDBS", times = 5) #Add methods compared
+head(PactCpGLocationWGMB) #Confirm changes
 ```
 
 #### RRBS vs. MBDBS
 
 ```{r}
-McapCpGLocationRRMB <- data.frame() #Create empty dataframe to store chi-squared results
-for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
-  Method1Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
-  Method2Feature <- McapCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
-  Method1NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
-  Method2NotFeature <- sum(McapCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
+PactCpGLocationRRMB <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(PactCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- PactCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
+  Method2Feature <- PactCpGLocationStatTest[4,i] #Variable for # genome feature overlaps for method 3
+  Method1NotFeature <- sum(PactCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
+  Method2NotFeature <- sum(PactCpGLocationStatTest[4,-i]) #Variable for # other CpG types for method 3
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
-  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
-  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(3,4)])) #Assign row names: method 2, method 3
+  colnames(ct) <- c(as.character(colnames(PactCpGLocationStatTest[i])), paste0("Not", colnames(PactCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(PactCpGLocationStatTest)[c(3,4)])) #Assign row names: method 2, method 3
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
-  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
-  McapCpGLocationRRMB <- rbind(McapCpGLocationRRMB, ctResults) #Add test statistics to master table
+  ctResults$GenomeFeature <- as.character(colnames(PactCpGLocationStatTest)[i]) #Add CpG type to results
+  PactCpGLocationRRMB <- rbind(PactCpGLocationRRMB, ctResults) #Add test statistics to master table
 }
 ```
 
 ```{r}
-head(McapCpGLocationRRMB) #Look at statistical output
+head(PactCpGLocationRRMB) #Look at statistical output
 ```
 
 ```{r}
-McapCpGLocationRRMB$p.adj <- p.adjust(McapCpGLocationRRMB$p.value, method = "fdr") #Correct p-value using FDR
-McapCpGLocationRRMB$comparison <- rep("RRBS vs. MBDBS", times = 5) #Add methods compared
-head(McapCpGLocationRRMB) #Confirm changes
+PactCpGLocationRRMB$p.adj <- p.adjust(PactCpGLocationRRMB$p.value, method = "fdr") #Correct p-value using FDR
+PactCpGLocationRRMB$comparison <- rep("RRBS vs. MBDBS", times = 5) #Add methods compared
+head(PactCpGLocationRRMB) #Confirm changes
 ```
 
 #### Save statistical output
 
 ```{r}
-McapCpGLocationStatOutput <- rbind(McapCpGLocationAllWG,
-                                   McapCpGLocationAllRR,
-                                   McapCpGLocationAllMB,
-                                   McapCpGLocationWGRR,
-                                   McapCpGLocationWGMB,
-                                   McapCpGLocationRRMB) #Combine tables from each group of contingency tests
-head(McapCpGLocationStatOutput) #Confirm formatting
+PactCpGLocationStatOutput <- rbind(PactCpGLocationAllWG,
+                                   PactCpGLocationAllRR,
+                                   PactCpGLocationAllMB,
+                                   PactCpGLocationWGRR,
+                                   PactCpGLocationWGMB,
+                                   PactCpGLocationRRMB) #Combine tables from each group of contingency tests
+head(PactCpGLocationStatOutput) #Confirm formatting
 ```
 
 ```{r}
-write.table(McapCpGLocationStatOutput, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Location-StatResults.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save statistical output
+write.table(PactCpGLocationStatOutput, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Pact/Pact_union-CpG-Location-StatResults.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save statistical output
 ```
 
 ### Create plot
