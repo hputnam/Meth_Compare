@@ -492,10 +492,10 @@ head(McapCpGLocationRRMB) #Confirm changes
 #### Save statistical output
 
 ```{r}
-McapCpGLocationStatOutput <- cbind(McapCpGLocationWGRR,
+McapCpGLocationStatOutput <- rbind(McapCpGLocationWGRR,
                                    McapCpGLocationWGMB,
                                    McapCpGLocationRRMB) #Combine tables from each group of contingency tests
-head(McapCpGLocationStatOutput)
+head(McapCpGLocationStatOutput) #Confirm formatting
 ```
 
 
