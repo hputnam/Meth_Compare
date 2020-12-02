@@ -297,7 +297,7 @@ text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that
 ### Import file counts
 
 ```{r}
-McapGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
 McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
 tail(McapGenomeFeatures) #Check import
 ```
@@ -309,37 +309,37 @@ tail(McapGeneOverlaps) #Confirm import
 ```
 
 ```{r}
-McapCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapCDSOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
 McapCDSOverlaps <- McapCDSOverlaps[-13,] #Remove final row
 tail(McapCDSOverlaps) #Confirm import
 ```
 
 ```{r}
-McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapIntronsOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapIntronsOverlaps <- McapIntronsOverlaps[-13,] #Remove final row
 tail(McapIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapFlanksOverlaps <- McapFlanksOverlaps[-13,] #Remove final row
 tail(McapFlanksOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksUpstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-13,] #Remove final row
 tail(McapFlanksUpstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksDownstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapFlanksDownstreamOverlaps <- McapFlanksDownstreamOverlaps[-13,] #Remove final row
 tail(McapFlanksDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapIntergenicOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union_5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 McapIntergenicOverlaps <- McapIntergenicOverlaps[-13,] #Remove final row
 tail(McapIntergenicOverlaps) #Confirm import
 ```
@@ -389,8 +389,12 @@ tail(McapFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
-write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(McapFeatureOverlaps, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
+
+### Contingency tests
+
+
 
 ### Create plot
 
@@ -403,7 +407,7 @@ head(McapFeatureOverlapsPercents) #Check calculations
 ```
 
 ```{r}
-write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(McapFeatureOverlapsPercents, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ```{r}
@@ -419,9 +423,6 @@ barplot(t(t(McapFeatureOverlapsPercents)), col = dichromat(c(rev(RColorBrewer::b
 #### All data
 
 ```{r}
-#pdf("../Output/Mcap_union-CpG-Features.pdf", height = 8.5, width = 11)
-par(mar = c(2,5,0,1), oma = c(1, 1, 0, 11)) #Change figure boundaries
-
 barplot(t(t(McapFeatureOverlapsPercents[,c(1,13,9,5)])), 
         col= "white", 
         axes = FALSE, 
@@ -450,14 +451,12 @@ legend(x = 0.57, y = 0.87,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
 ```
 
 #### CpG feature overlap by methylation status
 
 ```{r}
-#pdf("../Output/Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
+pdf("../output/supplemental-material//Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
 #High methylation
@@ -525,7 +524,7 @@ legend(x = 0.73, y = 0.97,
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
 
-#dev.off() #Turn off plotting device
+dev.off() #Turn off plotting device
 ```
 
 ### Create comparative barplots
