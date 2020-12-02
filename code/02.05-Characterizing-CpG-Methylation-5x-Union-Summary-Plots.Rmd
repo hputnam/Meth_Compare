@@ -397,12 +397,12 @@ write.table(McapFeatureOverlaps, "../output/intermediate-files/02-Characterizing
 #### Format data
 
 ```{r}
-McapCpGLocationStatTest <- data.frame(t(McapFeatureOverlaps[,c(13, 9, 5)])) #Subset library preparation methods, transpose, and save as a dataframe
+McapCpGLocationStatTest <- data.frame(t(McapFeatureOverlaps[,c(1, 13, 9, 5)])) #Subset all CpG and library preparation methods, transpose, and save as a dataframe
 McapCpGLocationStatTest <- McapCpGLocationStatTest[,-c(1, 4)] #Remove gene and flank information
 head(McapCpGLocationStatTest) #Confirm formatting
 ```
 
-#### WGBS vs. RRBS
+#### All vs. WGBS
 
 ```{r}
 McapCpGLocationWGRR <- data.frame() #Create empty dataframe to store chi-squared results
@@ -414,6 +414,39 @@ for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
   ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
   colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
   rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[1:2])) #Assign row names: method 1, method 2
+  print(ct) #Confirm table is correct
+  ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
+  ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
+  McapCpGLocationWGRR <- rbind(McapCpGLocationWGRR, ctResults) #Add test statistics to master table
+}
+```
+
+```{r}
+head(McapCpGLocationWGRR) #Look at statistical output
+```
+
+```{r}
+McapCpGLocationWGRR$p.adj <- p.adjust(McapCpGLocationWGRR$p.value, method = "fdr") #Correct p-value using FDR
+McapCpGLocationWGRR$comparison <- rep("WGBS vs. RRBS", times = 5) #Add methods compared
+head(McapCpGLocationWGRR) #Confirm changes
+```
+
+#### All vs. RRBS
+
+#### All vs. MBDBS
+
+#### WGBS vs. RRBS
+
+```{r}
+McapCpGLocationWGRR <- data.frame() #Create empty dataframe to store chi-squared results
+for(i in 1:ncol(McapCpGLocationStatTest)) { #For each genome feature
+  Method1Feature <- McapCpGLocationStatTest[2,i] #Variable for # genome feature overlaps for method 1
+  Method2Feature <- McapCpGLocationStatTest[3,i] #Variable for # genome feature overlaps for method 2
+  Method1NotFeature <- sum(McapCpGLocationStatTest[2,-i]) #Variable for # other CpG types for method 1
+  Method2NotFeature <- sum(McapCpGLocationStatTest[3,-i]) #Variable for # other CpG types for method 2
+  ct <- matrix(c(Method1Feature, Method2Feature, Method1NotFeature, Method2NotFeature), ncol = 2) #Create contingency table
+  colnames(ct) <- c(as.character(colnames(McapCpGLocationStatTest[i])), paste0("Not", colnames(McapCpGLocationStatTest[i]))) #Assign column names: type, not type
+  rownames(ct) <- c(as.character(row.names(McapCpGLocationStatTest)[c(2,3)])) #Assign row names: method 1, method 2
   print(ct) #Confirm table is correct
   ctResults <- data.frame(broom::tidy(chisq.test(ct))) #Create dataframe storing chi-sq stats results. Use broom::tidy to extract results from test output
   ctResults$GenomeFeature <- as.character(colnames(McapCpGLocationStatTest)[i]) #Add CpG type to results
@@ -497,7 +530,6 @@ McapCpGLocationStatOutput <- rbind(McapCpGLocationWGRR,
                                    McapCpGLocationRRMB) #Combine tables from each group of contingency tests
 head(McapCpGLocationStatOutput) #Confirm formatting
 ```
-
 
 ```{r}
 write.table(McapCpGLocationStatOutput, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x-Union/Mcap/Mcap_union-CpG-Location-StatResults.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save statistical output
