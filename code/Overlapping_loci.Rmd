@@ -1,0 +1,213 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "10/23/2020"
+output: html_document
+---
+
+load libraries
+```{r}
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(tidyr)
+```
+
+
+```{r}
+
+#replaced the ", " with "_" with sed and awk
+
+#sed 's/, /_/g' Mcap_cov_perc_group_3x.csv | awk -F"," '{OFS=FS=","}{print $1,$2,$3,$4,$5,$6,$7,$9}' > Mcap_cov_perc_group_3x_underscore.csv
+
+#sed 's/, /_/g' Pact_cov_perc_group_3x.csv | awk -F"," '{OFS=FS=","}{print $1,$2,$3,$4,$5,$6,$7,$9}' > Pact_cov_perc_group_3x_underscore.csv
+
+Pact_cov_perc <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc.txt", sep = ",", stringsAsFactors = F)) 
+
+Mcap_cov_perc <- data.frame(fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc.txt", sep = ",", stringsAsFactors = F)) 
+
+```
+
+
+Filter for loci with 5x 
+```{r}
+Pact_cov_perc <- Pact_cov_perc[which(Pact_cov_perc$reads >=5),]
+
+Mcap_cov_perc <- Mcap_cov_perc[which(Mcap_cov_perc$reads >=5),]
+
+
+```
+
+
+Summarize data (total loci for each group and method)
+```{r}
+#Pact_meth_stats <- Pact_cov_perc  %>% group_by(loci,method) %>% summarise(medn_meth = median(perc_meth),indivd = n())
+
+#filter for loci with coverage in all three samples/method
+#Pact_meth_stats_3x <- Pact_meth_stats[which(Pact_meth_stats$indivd==3),]
+
+
+
+```
+
+```{r}
+
+uniqMethod.FUN <- function(x){paste(sort(unique(unlist(strsplit(x, split =", "), use.names = F))), collapse = ", ")}
+
+
+#Pact_cov_perc_group <- Pact_meth_stats %>% group_by(loci) %>% mutate(group = toString(method))
+
+#Pact_cov_group <- Pact_cov_perc[,c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+Pact_cov_group_ind_1 <- Pact_cov_perc[grep("1|4|7",Pact_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+Pact_cov_group_ind_2 <- Pact_cov_perc[grep("2|5|8",Pact_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+Pact_cov_group_ind_3 <- Pact_cov_perc[grep("3|6|9",Pact_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+
+Mcap_cov_group_ind_1 <- Mcap_cov_perc[grep("1|4|7",Mcap_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+Mcap_cov_group_ind_2 <- Mcap_cov_perc[grep("2|5|8",Mcap_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+Mcap_cov_group_ind_3 <- Mcap_cov_perc[grep("3|6|9",Mcap_cov_perc$Sample),c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+#Mcap_cov_group <- Mcap_cov_perc[,c("Sample","loci", "method", "reads")] %>% group_by(loci) %>% mutate(group = toString(method))
+
+
+#Pact_cov_perc_group$group_simp <- sapply(Pact_cov_perc_group$group, uniqMethod.FUN, USE.NAMES = F)
+
+#Pact_cov_group$group_simp <- sapply(Pact_cov_group$group, uniqMethod.FUN, USE.NAMES = F)
+
+Pact_cov_group_ind_1$group_simp <- sapply(Pact_cov_group_ind_1$group, uniqMethod.FUN, USE.NAMES = F)
+
+Pact_cov_group_ind_2$group_simp <- sapply(Pact_cov_group_ind_2$group, uniqMethod.FUN, USE.NAMES = F)
+
+Pact_cov_group_ind_3$group_simp <- sapply(Pact_cov_group_ind_3$group, uniqMethod.FUN, USE.NAMES = F)
+
+Mcap_cov_group_ind_1$group_simp <- sapply(Mcap_cov_group_ind_1$group, uniqMethod.FUN, USE.NAMES = F)
+
+Mcap_cov_group_ind_2$group_simp <- sapply(Mcap_cov_group_ind_2$group, uniqMethod.FUN, USE.NAMES = F)
+
+Mcap_cov_group_ind_3$group_simp <- sapply(Mcap_cov_group_ind_3$group, uniqMethod.FUN, USE.NAMES = F)
+
+
+
+#Mcap_cov_group$group_simp <- sapply(Mcap_cov_group$group, uniqMethod.FUN, USE.NAMES = F)
+
+#total CpGs for different overlapping groups
+#Pact_cov_STACKED <- data.frame(Pact_cov_group) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Pact_cov_STACKED_ind_1 <- data.frame(Pact_cov_group_ind_1) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Pact_cov_STACKED_ind_2 <- data.frame(Pact_cov_group_ind_2) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Pact_cov_STACKED_ind_3 <- data.frame(Pact_cov_group_ind_3) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Pact_cov_STACKED_ind_1_sumry <- unique(Pact_cov_STACKED_ind_1[,c("group_simp", "count")])
+Pact_cov_STACKED_ind_1_sumry$ind <- "1"
+
+Pact_cov_STACKED_ind_2_sumry <- unique(Pact_cov_STACKED_ind_2[,c("group_simp", "count")])
+Pact_cov_STACKED_ind_2_sumry$ind <- "2"
+
+Pact_cov_STACKED_ind_3_sumry <- unique(Pact_cov_STACKED_ind_3[,c("group_simp", "count")])
+Pact_cov_STACKED_ind_3_sumry$ind <- "3"
+
+
+Pact_cov_STACKED_all_ind_sumry <- rbind(Pact_cov_STACKED_ind_1_sumry,Pact_cov_STACKED_ind_2_sumry,Pact_cov_STACKED_ind_3_sumry)
+
+
+Pact_cov_STACKED_all_ind_sumry_sumry <- Pact_cov_STACKED_all_ind_sumry %>% group_by(group_simp) %>% summarise(mean = mean(count), stdev = sd(count))
+
+Pact_cov_STACKED_all_ind_sumry_sumry$group_simp <- factor(Pact_cov_STACKED_all_ind_sumry_sumry$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS", "MBD, WGBS","RRBS, WGBS", "MBD, RRBS, WGBS"))
+
+#add column to distinguish loci identified by a single method versus overlapping loci
+Pact_cov_STACKED_all_ind_sumry_sumry$loci.class <- c("method-specific CpG loci", "common CpG loci", "common CpG loci", "common CpG loci","method-specific CpG loci", "common CpG loci", "method-specific CpG loci")
+
+Pact_cov_STACKED_all_ind_sumry_sumry$loci.class <- factor(Pact_cov_STACKED_all_ind_sumry_sumry$loci.class,levels=c('method-specific CpG loci','common CpG loci'))
+
+
+Mcap_cov_STACKED_ind_1 <- data.frame(Mcap_cov_group_ind_1) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Mcap_cov_STACKED_ind_2 <- data.frame(Mcap_cov_group_ind_2) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Mcap_cov_STACKED_ind_3 <- data.frame(Mcap_cov_group_ind_3) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+Mcap_cov_STACKED_ind_1_sumry <- unique(Mcap_cov_STACKED_ind_1[,c("group_simp", "count")])
+Mcap_cov_STACKED_ind_1_sumry$ind <- "1"
+
+Mcap_cov_STACKED_ind_2_sumry <- unique(Mcap_cov_STACKED_ind_2[,c("group_simp", "count")])
+Mcap_cov_STACKED_ind_2_sumry$ind <- "2"
+
+Mcap_cov_STACKED_ind_3_sumry <- unique(Mcap_cov_STACKED_ind_3[,c("group_simp", "count")])
+Mcap_cov_STACKED_ind_3_sumry$ind <- "3"
+
+
+Mcap_cov_STACKED_all_ind_sumry <- rbind(Mcap_cov_STACKED_ind_1_sumry,Mcap_cov_STACKED_ind_2_sumry,Mcap_cov_STACKED_ind_3_sumry)
+
+
+Mcap_cov_STACKED_all_ind_sumry_sumry <- Mcap_cov_STACKED_all_ind_sumry %>% group_by(group_simp) %>% summarise(mean = mean(count), stdev = sd(count))
+
+Mcap_cov_STACKED_all_ind_sumry_sumry$group_simp <- factor(Mcap_cov_STACKED_all_ind_sumry_sumry$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS", "MBD, WGBS","RRBS, WGBS", "MBD, RRBS, WGBS"))
+
+#add column to distinguish loci identified by a single method versus overlapping loci
+Mcap_cov_STACKED_all_ind_sumry_sumry$loci.class <- c("method-specific CpG loci", "common CpG loci", "common CpG loci", "common CpG loci","method-specific CpG loci", "common CpG loci", "method-specific CpG loci")
+
+Mcap_cov_STACKED_all_ind_sumry_sumry$loci.class <- factor(Mcap_cov_STACKED_all_ind_sumry_sumry$loci.class,levels=c('method-specific CpG loci','common CpG loci'))
+
+
+Pact_cov_STACKED_all_ind_sumry_sumry$species <-"P. acuta"
+Mcap_cov_STACKED_all_ind_sumry_sumry$species <- "M. capitata"
+
+cov_STACKED_all_ind_sumry_sumry <- rbind(Mcap_cov_STACKED_all_ind_sumry_sumry,Pact_cov_STACKED_all_ind_sumry_sumry)
+
+write.table(cov_STACKED_all_ind_sumry_sumry, "output/intermediate-files/Coverage_analysis/overlap_vs_methodSpecific_loci.txt",sep = "\t", row.names = F, quote = F)
+
+cov_STACKED_all_ind_sumry_sumry <- read.table("../output/intermediate-files/Coverage_analysis/overlap_vs_methodSpecific_loci.txt", sep = "\t", stringsAsFactors = F, header = T)
+
+cov_STACKED_all_ind_sumry_sumry$loci.class <- factor(cov_STACKED_all_ind_sumry_sumry$loci.class,levels=c('method-specific CpG loci','common CpG loci'))
+
+cov_STACKED_all_ind_sumry_sumry$group_simp <- gsub("MBD", "MBDBS", cov_STACKED_all_ind_sumry_sumry$group_simp)
+
+cov_STACKED_all_ind_sumry_sumry$group_simp <- factor(cov_STACKED_all_ind_sumry_sumry$group_simp, levels = c("MBDBS", "RRBS", "WGBS", "MBDBS, RRBS", "MBDBS, WGBS","RRBS, WGBS", "MBDBS, RRBS, WGBS"))
+
+jpeg("../output/intermediate-files/Coverage_analysis/overlap_vs_methodSpecific_loci.jpg", width = 10, height = 4, units = "in", res = 300 )
+ggplot(cov_STACKED_all_ind_sumry_sumry, aes(x = group_simp, y = mean)) + geom_bar(stat = "identity", color = "black", fill = "gray35",position = position_dodge(0.9), aes(alpha = species)) + geom_errorbar(aes(ymin = mean - stdev, ymax = mean + stdev, group = interaction(group_simp,species)), width = 0.2, position = position_dodge(0.9), color = "black")+ theme_bw() + theme(axis.text.x = element_text(angle = 30, hjust=0.75 ,vjust = 0.75),strip.background = element_rect(colour="black", fill="white"), strip.text.x = element_text(size = 10, face = "bold"), axis.title = element_text(size = 10, face = "bold"), panel.spacing.x=unit(1, "lines")) + ylab("number of CpG loci (mean, n=3)") + xlab("methods") + facet_wrap(~loci.class, scale = "free") + scale_y_continuous(labels = function(x) format(x, scientific = TRUE, digits = 1)) + scale_alpha_discrete(range = c(1,0.3)) + geom_text(aes(y=mean + stdev + 300000, label=as.integer(mean), group = interaction(group_simp,species)), position = position_dodge(0.9), size = 2.5)
+dev.off()
+
+
+Mcap_cov_STACKED <- data.frame(Mcap_cov_group) %>% group_by(Sample,group_simp, method) %>% summarise(count=n()) 
+
+
+#create table for bar plot
+Mcap_cov_STACKED_sumry <- Mcap_cov_STACKED %>% group_by(group_simp) %>% summarise(num_samples = n(), meanCpGs = mean(count), sdCpGs = sd(count), meanCpGperMbGenome = mean(count)/28.684519, sdCpGperMbGenome = sd(count)/9.15562) %>% mutate(species = "M. capitata")
+
+Pact_cov_STACKED_sumry <- Pact_cov_STACKED %>% group_by(group_simp) %>% summarise(num_samples = n(), meanCpGs = mean(count), sdCpGs = sd(count), meanCpGperMbGenome = mean(count)/9.15562, sdCpGperMbGenome = sd(count)/9.15562) %>% mutate(species = "P. acuta")
+
+
+
+cov_STACKED_sumry <- rbind(Mcap_cov_STACKED_sumry, Pact_cov_STACKED_sumry)
+
+ggplot(cov_STACKED_sumry, aes(x = group_simp, y = meanCpGs, fill = species)) + geom_bar(stat = "identity", position = "dodge")
+
+
+#filter for loci with coverage in all three samples/method
+#Pact_cov_perc_STACKED_3x <- data.frame(Pact_cov_perc_group[which(Pact_cov_perc_group$indivd ==3),]) %>% group_by(group_simp, method) %>% summarise(count=n()) 
+
+#order group_simp
+
+Pact_cov_perc_STACKED$group_simp <- factor(
+Pact_cov_perc_STACKED$group_simp, levels = c("MBD", "RRBS", "WGBS", "MBD, RRBS","MBD, WGBS", "RRBS, WGBS", "MBD, RRBS, WGBS"))
+```
+
+
+add genome info to df
+```{r}
+
+9155620 -
+  
+#mcap
+28684519
+
+```

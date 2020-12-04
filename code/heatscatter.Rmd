@@ -34,7 +34,7 @@ add border color to histogram
 
 #add colramp argument to "panel.smoother" code
   # if (smoother) {
-#              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(colorRamps::topo.colors(100)))
+#              smoothScatter(x, y, add = TRUE, nrpoints = 0, colramp = colorRampPalette(topo.colors(100))
          }
 
 ```
@@ -49,6 +49,10 @@ pact.corrs <- read.table("OLD_Output/Pact_union5xCpG_PCAinput.tsv")
 #order colums the same
 mcap.corrs <- mcap.corrs[,order(colnames(mcap.corrs))]
 pact.corrs <- pact.corrs[,order(colnames(pact.corrs))]
+
+#simplify colnames
+colnames(mcap.corrs) <- rep(c("Individual_1", "Individual_2","Individual_3"),3)
+colnames(pact.corrs) <- rep(c("Individual_1", "Individual_2","Individual_3"),3)
 
 #create one pdf file that plots will be saved in
 #pdf('OLD_Output/corrplot1.pdf', width=10, height=10)
