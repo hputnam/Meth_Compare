@@ -1,0 +1,15 @@
+group_simp	mean	stdev	loci.class	species
+MBD	115878	109590.093379831	method-specific CpG loci	M. capitata
+MBD, RRBS	22270.6666666667	22676.3150739562	common CpG loci	M. capitata
+MBD, RRBS, WGBS	40786.3333333333	20706.4795253402	common CpG loci	M. capitata
+MBD, WGBS	147525.333333333	75802.2225091938	common CpG loci	M. capitata
+RRBS	1957338.33333333	314478.54538956	method-specific CpG loci	M. capitata
+RRBS, WGBS	979094	392035.034412742	common CpG loci	M. capitata
+WGBS	4840829	2075271.50068033	method-specific CpG loci	M. capitata
+MBD	146838.333333333	89367.2517778931	method-specific CpG loci	P. acuta
+MBD, RRBS	25698.3333333333	20309.4055632688	common CpG loci	P. acuta
+MBD, RRBS, WGBS	516475.333333333	327858.242106758	common CpG loci	P. acuta
+MBD, WGBS	1281734.66666667	820148.949597775	common CpG loci	P. acuta
+RRBS	237290.333333333	74461.5285656515	method-specific CpG loci	P. acuta
+RRBS, WGBS	821918.666666667	273963.304413809	common CpG loci	P. acuta
+WGBS	3303724.33333333	1249514.98106359	method-specific CpG loci	P. acuta

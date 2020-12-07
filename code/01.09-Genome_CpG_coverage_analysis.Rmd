@@ -14,6 +14,7 @@ library(ggplot2)
 library(dplyr)
 library(drc)
 library(ggpubr)
+library(tidyr)
 
 ```
 
@@ -290,13 +291,20 @@ Pact_all_stacked$depth <- factor(Pact_all_stacked$depth, levels = c("200", "150"
 
 #CpG sample data
 #reformat to long
-Pact_Sample_CpG_stacked <- tidyr::gather(Pact_Sample_CpG, "coverage", "percent_CpG", 2:15)
+Pact_Sample_CpG_stacked <- tidyr::gather(Pact_Sample_CpG, "coverage", "num_CpG", 2:15)
 #remove X from coverage column
 Pact_Sample_CpG_stacked$coverage <- gsub("x","", Pact_Sample_CpG_stacked$coverage)
 #make coverage a numeric class
 Pact_Sample_CpG_stacked$coverage <- as.numeric(Pact_Sample_CpG_stacked$coverage)
 #calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
-Pact_Sample_CpG_stacked$percent_CpG <- (Pact_Sample_CpG_stacked$percent_CpG/9155620)
+Pact_Sample_CpG_stacked$CpGs_per_M_genome_CpGs <- (Pact_Sample_CpG_stacked$num_CpG/9.155620)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
+Pact_Sample_CpG_stacked$fraction_genome_CpGs <- (Pact_Sample_CpG_stacked$num_CpG/9155620)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
+Pact_Sample_CpG_stacked$CpGs_per_Mb_genome <- (Pact_Sample_CpG_stacked$num_CpG/336.684533)
+
+
+
 #convert MBD to MBDBS
 Pact_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Pact_Sample_CpG_stacked$method)
 
@@ -342,13 +350,18 @@ Mcap_all_stacked$depth <- factor(Mcap_all_stacked$depth, levels = c("200", "150"
 
 #CpG sample data
 #reformat to long
-Mcap_Sample_CpG_stacked <- tidyr::gather(Mcap_Sample_CpG, "coverage", "percent_CpG", 2:15)
+Mcap_Sample_CpG_stacked <- tidyr::gather(Mcap_Sample_CpG, "coverage", "num_CpG", 2:15)
 #remove X from coverage column
 Mcap_Sample_CpG_stacked$coverage <- gsub("x","", Mcap_Sample_CpG_stacked$coverage)
 #make coverage a numeric class
 Mcap_Sample_CpG_stacked$coverage <- as.numeric(Mcap_Sample_CpG_stacked$coverage)
-#calculate percent CpG by dividing number of CpG by total number CpG in genome (9155620)
-Mcap_Sample_CpG_stacked$percent_CpG <- (Mcap_Sample_CpG_stacked$percent_CpG/28684519)
+#calculate percent CpG by dividing number of CpG by M CpG in genome (28.684519)
+Mcap_Sample_CpG_stacked$CpGs_per_M_genome_CpGs <- (Mcap_Sample_CpG_stacked$num_CpG/28.684519)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (28684519)
+Mcap_Sample_CpG_stacked$fraction_genome_CpGs <- (Mcap_Sample_CpG_stacked$num_CpG/28684519)
+#calculate percent CpG by dividing number of CpG by total number CpG in genome (885.704498)
+Mcap_Sample_CpG_stacked$CpGs_per_Mb_genome <- (Mcap_Sample_CpG_stacked$num_CpG/885.704498)
+
 #convert MBD to MBDBS
 Mcap_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Mcap_Sample_CpG_stacked$method)
 
@@ -373,17 +386,21 @@ Mcap_pool_Sample_CpG_stacked$method <- gsub("MBD", "MBDBS", Mcap_pool_Sample_CpG
 
 calculate average and sd for Genome and CpGs covered, subset to 50x coverage
 ```{r}
-#Mcap genome
-Mcap_samples_avg <- Mcap_samples_stacked %>% group_by(method, coverage) %>% summarise(mean = mean(percent_genome), sd = sd(percent_genome))
+#calculate the mean and stdev for each normalized CpG metric 
 
-#Pact genome
-Pact_samples_avg <- Pact_samples_stacked %>% group_by(method, coverage) %>% summarise(mean = mean(percent_genome), sd = sd(percent_genome))
+Mcap_Sample_CpG_stacked_cmpr <- Mcap_Sample_CpG_stacked[which(Mcap_Sample_CpG_stacked$coverage<=50),] %>% pivot_longer(names_to = "metric", values_to = "value",cols = num_CpG:CpGs_per_Mb_genome) %>% group_by(method,coverage,metric) %>% summarise(mean = mean(value), sd = sd(value))
 
-#Mcap CpGs
-Mcap_Sample_CpG_avg <- data.frame(Mcap_Sample_CpG_stacked[which(Mcap_Sample_CpG_stacked$coverage<=50),]) %>% group_by(method, coverage) %>% summarise(mean = mean(percent_CpG), sd = sd(percent_CpG))
+#calculate the mean and stdev for each normalized CpG metric 
 
-#Pact CpGs
-Pact_Sample_CpG_avg <- data.frame(Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage<=50),]) %>% group_by(method, coverage) %>% summarise(mean = mean(percent_CpG), sd = sd(percent_CpG))
+Pact_Sample_CpG_stacked_cmpr <- Pact_Sample_CpG_stacked[which(Pact_Sample_CpG_stacked$coverage<=50),] %>% pivot_longer(names_to = "metric", values_to = "value",cols = num_CpG:CpGs_per_Mb_genome) %>% group_by(method,coverage,metric) %>% summarise(mean = mean(value), sd = sd(value))
+
+#create a column to specify species prior to combining dfs
+Pact_Sample_CpG_stacked_cmpr$species <- "P. acuta"
+Mcap_Sample_CpG_stacked_cmpr$species <- "M. capitata"
+
+#combine Pact and Mcap data into one df
+Mcap_Pact_Sample_CpG_stacked_cmpr <- rbind(Mcap_Sample_CpG_stacked_cmpr,Pact_Sample_CpG_stacked_cmpr)
+
 
 ```
 
@@ -404,13 +421,13 @@ plot coverage
 # dev.off()
 
 #mean fraction of CpGs covered x method with sd
-cc <- ggplot(Pact_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+#cc <- ggplot(Pact_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + ggtitle("P. acuta") +  theme_bw() + theme(text = element_text(size=16), plot.title = element_text(face = "italic"))
 
 #inset (zoomed in on 5x and 10x CpG coverage)
-ccc <- ggplot(Pact_Sample_CpG_avg[which(Pact_Sample_CpG_avg$coverage==5|Pact_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
+#ccc <- ggplot(Pact_Sample_CpG_avg[which(Pact_Sample_CpG_avg$coverage==5|Pact_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
 
 #plot plus inset (zoomed in on 5x and 10x CpG coverage)
-c <- cc + annotation_custom(ggplotGrob(ccc), xmin = 15, xmax = 50, ymin = 0.25, ymax = 0.88)
+#c <- cc + annotation_custom(ggplotGrob(ccc), xmin = 15, xmax = 50, ymin = 0.25, ymax = 0.88)
 
 # fraction of genome covered by pooled samples
 #jpeg("Output/Pact_GenomecovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
@@ -420,7 +437,7 @@ c <- cc + annotation_custom(ggplotGrob(ccc), xmin = 15, xmax = 50, ymin = 0.25, 
 # fraction of CpGs covered by pooled samples
 
 #jpeg("Output/Pact_CpGcovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
-d <- ggplot(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage<=50),], aes(x = coverage, y= percent_CpG, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ xlab("coverage (X)") + ylab("fraction of CpGs") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16)) + theme(strip.background =element_rect(fill="white"))
+d <- ggplot(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$coverage<=50),], aes(x = coverage, y= percent_CpG, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ ggtitle("P. acuta") + xlab("coverage (X)") + ylab("fraction of CpGs") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16), plot.title = element_text(face = "italic")) + theme(strip.background =element_rect(fill="white"))
 #dev.off()
 
 #Mcap
@@ -436,13 +453,13 @@ d <- ggplot(Pact_pool_Sample_CpG_stacked[which(Pact_pool_Sample_CpG_stacked$cove
 #dev.off()
 
 #mean fraction of CpGs covered x method with sd
-aa <- ggplot(Mcap_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=16))
+#aa <- ggplot(Mcap_Sample_CpG_avg, aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_x_continuous(breaks = seq(0,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + ggtitle("M. capitata") + theme_bw() + theme(text = element_text(size=16),plot.title = element_text(face = "italic"))
 
 
 
-aaa <- ggplot(Mcap_Sample_CpG_avg[which(Mcap_Sample_CpG_avg$coverage==5|Mcap_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
+#aaa <- ggplot(Mcap_Sample_CpG_avg[which(Mcap_Sample_CpG_avg$coverage==5|Mcap_Sample_CpG_avg$coverage==10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) + geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("fraction of CpGs") + theme_bw() + theme(text = element_text(size=12),legend.position = "none") + scale_x_continuous(breaks = c(5,10))
 
-a <- aa + annotation_custom(ggplotGrob(aaa), xmin = 10, xmax = 50, ymin = 0.15, ymax = 0.7)
+#a <- aa + annotation_custom(ggplotGrob(aaa), xmin = 15, xmax = 50, ymin = 0.2, ymax = 0.7)
 
 # fraction of genome covered by pooled samples
 #jpeg("Output/Mcap_GenomecovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
@@ -452,12 +469,79 @@ a <- aa + annotation_custom(ggplotGrob(aaa), xmin = 10, xmax = 50, ymin = 0.15, 
 # fraction of CpGs covered by pooled samples
 
 #jpeg("Output/Mcap_CpGcovXmethod_pooled_subsamples.jpg", width = 9, height = 3, units = "in", res = 300)
-b <- ggplot(Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage<=50),], aes(x = coverage, y= percent_CpG, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ xlab("coverage (X)") + ylab("fraction of CpGs") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16)) + theme(strip.background =element_rect(fill="white"))
+b <- ggplot(Mcap_pool_Sample_CpG_stacked[which(Mcap_pool_Sample_CpG_stacked$coverage<=50),], aes(x = coverage, y= percent_CpG, group = paste(method, depth, sep = "_"),color = depth)) + geom_line(size = 1, alpha = 0.8) + facet_wrap(~method)+  scale_x_continuous(breaks = seq(0,100,10))+ xlab("coverage (X)") + ylab("fraction of CpGs") + ggtitle("M. capitata") + labs(color = "depth (M reads)") + scale_color_grey() + theme_bw() + theme(text = element_text(size=16), plot.title = element_text(face = "italic")) + theme(strip.background =element_rect(fill="white"))
 #dev.off()
 
-jpeg("OLD_Output/Mcap_Pact_gnm-wide_CpGcov.jpg", width = 15, height = 7, units = "in", res = 300)
-ggarrange(a,b,c,d, labels = c("A", "B", "C", "D"),font.label = list(size = 24),nrow = 2,ncol = 2,align = "hv",widths = c(1,2))
+#jpeg("OLD_Output/Mcap_Pact_gnm-wide_CpGcov.jpg", width = 9, height = 5, units = "in", res = 300)
+#ggarrange(a,c, labels = c("A", "B"),font.label = list(size = 24),ncol = 2, common.legend = T, legend = "bottom", vjust = 1)
+#dev.off()
+
+jpeg("OLD_Output/Mcap_Pact_gnm-wide_CpGcov_depth.jpg", width = 15, height = 4, units = "in", res = 300)
+ggarrange(b,d, labels = c("A", "B"),font.label = list(size = 24),ncol = 2, common.legend = T, legend = "top", vjust = 1)
 dev.off()
+
+
+
+
+
+#mean fraction of CpGs covered x method with sd
+#ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "rel_mbgnm_CpG" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage <=10),], aes(x = coverage, y = mean, color = method)) + geom_line(size = 1, alpha = 1) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("coverage (X)") + ylab("CpGs per Mb genome") + ggtitle("M. capitata") +  theme_bw() + theme(text = element_text(size=16), plot.title = element_text(face = "italic")) + facet_wrap(~species)
+
+
+# plot the different CpG normalizaitons to see if they influence the trends
+
+jpeg("OLD_Output/Mcap_Pact_diff_CpG_normalizaitons.jpg", width = 8, height = 6, units = "in", res = 300)
+ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr, aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10,20,30,40,50)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("read depth") + ylab("relative CpGs") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white")) + facet_wrap(~metric, scale = "free")
+dev.off()
+       
+       
+#Since normalization do not influence the trends,
+# plot the fraction of all CpGs in the genome for each method
+
+#This is the MBDBS plot for Mcap and Pact for CpGs with read depth up to 15x
+cccc <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" &Mcap_Pact_Sample_CpG_stacked_cmpr$coverage <=15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "MBDBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10,15)) + scale_y_continuous(limits = c(0.00,1.00)) +  scale_fill_manual(values = c("#E6550D")) + scale_color_manual(values = c("#E6550D")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(),legend.position = "none") + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta"))))
+
+#This is the inset MBDBS plot for Mcap and Pact for CpGs with read depth from 20x-50x
+ccccc <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage >15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "MBDBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = seq(20,50,10)) + scale_y_continuous(breaks = seq(0,0.10, by = 0.05),limits = c(0.00,0.10)) + scale_fill_manual(values = c("#E6550D")) + scale_color_manual(values = c("#E6550D")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(), legend.position = "none", axis.title.x = element_blank(), axis.title.y = element_blank()) + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta")))) 
+
+# This create the plot object of the MBDBS plot and inset plot
+cccccc <- cccc + annotation_custom(ggplotGrob(ccccc), xmin = 5, xmax = 15.5, ymin = 0.50, ymax = 1.00)
+
+#This is the RRBS plot for Mcap and Pact for CpGs with read depth up to 15x
+dddd <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" &Mcap_Pact_Sample_CpG_stacked_cmpr$coverage <=15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "RRBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10,15)) + scale_y_continuous(limits = c(0.00,1.00)) +  scale_fill_manual(values = c("#756BB1")) + scale_color_manual(values = c("#756BB1")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(),legend.position = "none") + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta"))))
+ 
+#This is the inset RRBS plot for Mcap and Pact for CpGs with read depth from 20x-50x
+ddddd <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage >15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "RRBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = seq(20,50,10)) + scale_y_continuous(breaks = seq(0,0.10, by = 0.05),limits = c(0.00,0.10)) + scale_fill_manual(values = c("#756BB1")) + scale_color_manual(values = c("#756BB1")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(), legend.position = "none", axis.title.x = element_blank(), axis.title.y = element_blank()) + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta")))) 
+
+# This create the plot object of the RRBS plot and inset plot
+dddddd <- dddd + annotation_custom(ggplotGrob(ddddd), xmin = 5, xmax = 15.5, ymin = 0.50, ymax = 1.00)
+
+#This is the inset WGBS plot for Mcap and Pact for CpGs with read depth up to 15x
+eeee <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" &Mcap_Pact_Sample_CpG_stacked_cmpr$coverage <=15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "WGBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10,15)) + scale_y_continuous(limits = c(0.00,1.00)) +  scale_fill_manual(values = c("#31A354")) + scale_color_manual(values = c("#31A354")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(),legend.position = "none") + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta"))))
+  
+#This is the inset WGBS plot for Mcap and Pact for CpGs with read depth from 20x-50x
+eeeee <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage >15 & Mcap_Pact_Sample_CpG_stacked_cmpr$method == "WGBS"),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = seq(20,50,10)) + scale_y_continuous(breaks = seq(0,0.10, by = 0.05),limits = c(0.00,0.10)) + scale_fill_manual(values = c("#31A354")) + scale_color_manual(values = c("#31A354")) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank(), legend.position = "none", axis.title.x = element_blank(), axis.title.y = element_blank()) + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta")))) 
+
+# This create the plot object of the WGBS plot and inset plot
+eeeeee <- eeee + annotation_custom(ggplotGrob(eeeee), xmin = 9, xmax = 15.5, ymin = 0.50, ymax = 1.00)
+
+#This create figure 2; to create figure 2 legend, see code below
+jpeg("output/intermediate-files/Coverage_analysis/Mcap_Pact_gnm-wide_CpGcov_labeled.jpg", width = 15, height = 5, units = "in", res = 300)
+ggarrange(cccccc,dddddd,eeeeee,ncol = 3, vjust = 1, labels = c("A", "B", "C"),font.label = list(size = 20))      
+dev.off()
+
+
+#below are alternate plots where all are facetted and plotted in one plot area
+#cccc <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage <=10),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = c(1,5,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + labs(x = "read depth", y = "fraction of all CpGs in the genome") +  theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),strip.text.x = element_blank()) + facet_wrap(~method, nrow = 3) + scale_linetype_manual(values = c(1,4), labels = c(expression(italic("M. capitata")),expression(italic("P. acuta"))))
+       
+       
+#dddd <- ggplot(Mcap_Pact_Sample_CpG_stacked_cmpr[which(Mcap_Pact_Sample_CpG_stacked_cmpr$metric == "fraction_genome_CpGs" & Mcap_Pact_Sample_CpG_stacked_cmpr$coverage >10),], aes(x = coverage, y = mean, color = method, group = interaction(method,species))) + geom_line(size = 1, alpha = 1, aes(linetype = species)) +geom_ribbon(aes(ymin=mean-sd,ymax=mean + sd,fill=method),color="grey70",alpha=0.5, size = 0.1)+ scale_x_continuous(breaks = seq(20,50,10)) + scale_fill_manual(values = c("#E6550D", "#756BB1","#31A354")) + scale_color_manual(values = c("#E6550D", "#756BB1","#31A354" )) + xlab("read depth") + ylab("fraction of CpGs")+ facet_wrap(~method, nrow = 3) + theme_bw() + theme(text = element_text(size=16), strip.background =element_rect(fill="white"),axis.title.x=element_blank(),axis.title.y=element_blank(),panel.spacing = unit(8, "lines"),strip.text.x = element_blank()) 
+
+### LEGEND FOR FIGURE 2 ####
+#This plot is where I got the legend from
+#jpeg("OLD_Output/Mcap_Pact_gnm-wide_CpGcov_facet.jpg", width = 8, height = 10, units = "in", res = 300)
+#ggarrange(cccc,dddd,ncol = 2, common.legend = T, legend = "top", vjust = 1, widths = c(2,1),heights = c(2.5,1))      
+#dev.off()
 
 ```
 

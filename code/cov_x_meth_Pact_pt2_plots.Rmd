@@ -1,0 +1,64 @@
+---
+title: "Untitled"
+author: "Shelly Trigg"
+date: "10/9/2020"
+output: html_document
+---
+
+```{r}
+#MBD vs WGBS data with coverage cutoffs
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread( "https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+
+Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+
+#RRBS vs WGBS data with coverage cutoffs
+Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+
+Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+
+#all loci from different methods binned by cov and meth
+Pact_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_sum.csv", stringsAsFactors = F)
+
+Mcap_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_sum", stringsAsFactors = F)
+
+
+```
+
+
+```{r}
+# specify interval/bin labels
+cov_tags <- c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]")
+
+```
+
+```{r}
+#order coverage by lowest to greatest
+Mcap_cov_perc_group_3x_sum$cov_tag <- factor(Mcap_cov_perc_group_3x_sum$cov_tag, levels = c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]"))
+
+Pact_cov_perc_group_3x_sum$cov_tag <- factor(Pact_cov_perc_group_3x_sum$cov_tag, levels = c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]"))
+
+```
+
+plots
+```{r}
+a <- ggplot(data = Mcap_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation (median, n=3)", y = "number of reads (median, n=3)", fill = "number of\nCpGs (log10)", title = "M. capitata") + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+b <- ggplot(data = Pact_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation (median, n=3)", y = "number of reads (median, n=3)", fill = "number of\nCpGs (log10)", title = "P. acuta") + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+
+d <- ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+c <- ggplot(data = Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBD data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+f <- ggplot(data = Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+e <- ggplot(data = Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
+
+jpeg("output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_covXmeth.jpg", width = 9, height = 7.5, units = "in", res = 300 )
+ggarrange(a,b, nrow =2 ,labels = "AUTO",common.legend = F)
+dev.off()
+
+jpeg("output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_thresholds.jpg", width = 15, height = 12, units = "in", res = 300 )
+ggarrange(a,b,c,d,e,f, nrow = 3, ncol = 2 ,labels = "AUTO",common.legend = F)
+dev.off()
+```
