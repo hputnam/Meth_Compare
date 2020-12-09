@@ -253,7 +253,7 @@ plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that ar
 
 ```{r}
 McapGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
-McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
+McapGenomeFeatures <- McapGenomeFeatures[-c(8:9),] #Remove final row
 tail(McapGenomeFeatures) #Check import
 ```
 
@@ -429,6 +429,12 @@ vec.McapFeatureOverlapsPCoA #Look at statistical results
 ##### Global PERMANOVA
 
 ```{r}
+sampleInformation <- c(rep("WGBS", times = 3),
+                       rep("RRBS", times = 3),
+                       rep("MBDBS", times = 3)) #Create a vector with grouping information
+```
+
+```{r}
 McapFeatureOverlapsTest <- adonis(dissimMcapFeatureOverlapsTrans ~ sampleInformation) #Conduct PERMANOVA by method
 McapFeatureOverlapsTest #Look at test output.
 ```
@@ -480,6 +486,34 @@ McapFeatureOverlapsRRMB <- vegdist(McapFeatureOverlapsTrans[c(4:9),], "euclidean
 ```{r}
 McapFeatureOverlapsRRMBTest <- adonis(McapFeatureOverlapsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise PERMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsRRMBTest
+```
+
+### Create summary table
+
+```{r}
+McapFeatureOverlapsStatResults <- data.frame("species" = rep("Mcap", times = 4),
+                                             "contrast" = c("global", "WGBS vs. RRBS", "WGBS vs. MBDBS", "RRBS vs. MBDBS"),
+                                             "PERMANOVA-R2" = rep(0, times = 4),
+                                             "Adonis-P-value" = rep(0, times = 4),
+                                             "Beta-disp-F-stat" = rep("N/A", times = 4),
+                                             "ANOVA-P-value" = rep("N/A", times = 4)) #Create an empty dataframe for stat test results
+head(McapFeatureOverlapsStatResults) #Confirm dataframe creation
+```
+
+```{r}
+#PERMANOVA stats
+McapFeatureOverlapsStatResults$PERMANOVA.R2[1] <- McapFeatureOverlapsTest$aov.tab$R2[1] #Global PERMANOVA stat
+McapFeatureOverlapsStatResults$PERMANOVA.R2[2] <- McapFeatureOverlapsWGRRTest$aov.tab$R2[1] #WGBS vs. RRBS PERMANOVA stat
+McapFeatureOverlapsStatResults$PERMANOVA.R2[3] <- McapFeatureOverlapsWGMBTest$aov.tab$R2[1] #WGBS vs. MBDBS PERMANOVA stat
+McapFeatureOverlapsStatResults$PERMANOVA.R2[4] <- McapFeatureOverlapsRRMBTest$aov.tab$R2[1] #RRBS vs. MBDBS PERMANOVA stat
+
+#Adonis P-values
+McapFeatureOverlapsStatResults$Adonis.P.value[1] <- McapFeatureOverlapsTest$aov.tab$`Pr(>F)`[1] #Global PERMANOVA P-value
+McapFeatureOverlapsStatResults$Adonis.P.value[2] <- McapFeatureOverlapsWGRRTest$aov.tab$`Pr(>F)`[1] #Global PERMANOVA P-value
+McapFeatureOverlapsStatResults$Adonis.P.value[3] <- McapFeatureOverlapsWGMBTest$aov.tab$`Pr(>F)`[1] #Global PERMANOVA P-value
+McapFeatureOverlapsStatResults$Adonis.P.value[4] <- McapFeatureOverlapsRRMBTest$aov.tab$`Pr(>F)`[1] #Global PERMANOVA P-value
+
+head(McapFeatureOverlapsStatResults) #Confirm formatting
 ```
 
 ## Pact
@@ -828,7 +862,7 @@ mtext(side = 2, text = "PCoA 2 (15.0%)", line = 3, cex = 1) #Add y-axis label
 
 title(expression(paste(bold("D. "), bolditalic("P. acuta"))), cex = 1.5, adj = 0, line = 1) #Add panel and species name
 
-#dev.off()
+dev.off()
 ```
 
 
