@@ -252,49 +252,49 @@ plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that ar
 ### Import file counts
 
 ```{r}
-McapGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+McapGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
 McapGenomeFeatures <- McapGenomeFeatures[-8,] #Remove final row
 tail(McapGenomeFeatures) #Check import
 ```
 
 ```{r}
-McapGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+McapGeneOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 McapGeneOverlaps <- McapGeneOverlaps[-37,] #Remove final row
 tail(McapGeneOverlaps) #Confirm import
 ```
 
 ```{r}
-McapCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+McapCDSOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
 McapCDSOverlaps <- McapCDSOverlaps[-37,] #Remove final row
 tail(McapCDSOverlaps) #Confirm import
 ```
 
 ```{r}
-McapIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapIntronsOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntrons-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapIntronsOverlaps <- McapIntronsOverlaps[-37,] #Remove final row
 tail(McapIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
+McapFlanksOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flank overlaps
 McapFlanksOverlaps <- McapFlanksOverlaps[-37,] #Remove final row
 tail(McapFlanksOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
+McapFlanksUpstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flank overlaps
 McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-37,] #Remove final row
 tail(McapFlanksUpstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-McapFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+McapFlanksDownstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 McapFlanksUpstreamOverlaps <- McapFlanksUpstreamOverlaps[-37,] #Remove final row
 tail(McapFlanksDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-McapIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+McapIntergenicOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-mcIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 McapIntergenicOverlaps <- McapIntergenicOverlaps[-37,] #Remove final row
 tail(McapIntergenicOverlaps) #Confirm import
 ```
@@ -368,7 +368,7 @@ tail(McapFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
-write.table(McapFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(McapFeatureOverlaps, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ```{r}
@@ -380,7 +380,7 @@ head(McapFeatureOverlapsPercents) #Check calculations
 ```
 
 ```{r}
-write.table(McapFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(McapFeatureOverlapsPercents, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ### Multivariate data analysis with compositional data
@@ -487,49 +487,49 @@ McapFeatureOverlapsRRMBTest
 ### Import file counts
 
 ```{r}
-PactGenomeFeatures <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
+PactGenomeFeatures <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-CGMotif-Overlaps-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with CG motif and feature track overlaps
 PactGenomeFeatures <- PactGenomeFeatures[-8,] #Remove final row
 tail(PactGenomeFeatures) #Check import
 ```
 
 ```{r}
-PactGeneOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
+PactGeneOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paGenes-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-gene overlaps
 PactGeneOverlaps <- PactGeneOverlaps[-37,] #Remove final row
 tail(PactGeneOverlaps) #Confirm import
 ```
 
 ```{r}
-PactCDSOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
+PactCDSOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paCDS-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-CDS overlaps
 PactCDSOverlaps <- PactCDSOverlaps[-37,] #Remove final row
 tail(PactCDSOverlaps) #Confirm import
 ```
 
 ```{r}
-PactIntronsOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
+PactIntronsOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntron-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Introns overlaps
 PactIntronsOverlaps <- PactIntronsOverlaps[-37,] #Remove final row
 tail(PactIntronsOverlaps) #Confirm import
 ```
 
 ```{r}
-PactFlanksOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flanks overlaps
+PactFlanksOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanks-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-flanks overlaps
 PactFlanksOverlaps <- PactFlanksOverlaps[-37,] #Remove final row
 tail(PactFlanksOverlaps) #Confirm import
 ```
 
 ```{r}
-PactFlanksUpstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
+PactFlanksUpstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksUpstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-upstream flanks overlaps
 PactFlanksUpstreamOverlaps <- PactFlanksUpstreamOverlaps[-37,] #Remove final row
 tail(PactFlanksUpstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-PactFlanksDownstreamOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
+PactFlanksDownstreamOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paFlanksDownstream-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-downstream flanks overlaps
 PactFlanksDownstreamOverlaps <- PactFlanksDownstreamOverlaps[-37,] #Remove final row
 tail(PactFlanksDownstreamOverlaps) #Confirm import
 ```
 
 ```{r}
-PactIntergenicOverlaps <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
+PactIntergenicOverlaps <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-paIntergenic-counts.txt", header = FALSE, col.names = c("counts", "filename")) #Import file with all file-Intergenic overlaps
 PactIntergenicOverlaps <- PactIntergenicOverlaps[-37,] #Remove final row
 tail(PactIntergenicOverlaps) #Confirm import
 ```
@@ -603,7 +603,7 @@ tail(PactFeatureOverlaps) #Check summary table
 ```
 
 ```{r}
-write.table(PactFeatureOverlaps, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(PactFeatureOverlaps, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Counts.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ```{r}
@@ -615,7 +615,7 @@ head(PactFeatureOverlapsPercents) #Check calculations
 ```
 
 ```{r}
-write.table(PactFeatureOverlapsPercents, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
+write.table(PactFeatureOverlapsPercents, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact_union-Genomic-Location-Percents.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save file
 ```
 
 ### Multivariate data analysis with compositional data
@@ -754,7 +754,7 @@ tail(plotCustomization) #Confirm dataframe creation
 ## Create plot
 
 ```{r}
-#pdf("../Output/Supp-PCoA-Multipanel.pdf", height = 8.5, width = 11) #Save plot
+pdf("../output/supplemental-material/SF5.pdf", height = 8.5, width = 11) #Save plot
 par(mfrow = c(2, 2), oma = c(3, 3, 2, 0), mar = c(3, 3, 4, 5)) #Set up parameters for multipanel plot
 
 #Mcap methylation status
