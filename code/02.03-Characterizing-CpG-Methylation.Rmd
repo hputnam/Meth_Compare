@@ -42,25 +42,25 @@ sessionInfo()
 ### Import file counts
 
 ```{r}
-McapAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapAll <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 McapAll <- McapAll[-10,] #Remove last row (total lines for all files)
 tail(McapAll) #Confirm import
 ```
 
 ```{r}
-McapMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 McapMeth <- McapMeth[-10,] #Remove last row (total lines for all files)
 tail(McapMeth) #Confirm import
 ```
 
 ```{r}
-McapSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapSparseMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 McapSparseMeth <- McapSparseMeth[-10,] #Remove last row (total lines for all files)
 tail(McapSparseMeth) #Confirm import
 ```
 
 ```{r}
-McapUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+McapUnMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 McapUnMeth <- McapUnMeth[-10,] #Remove last row (total lines for all files)
 tail(McapUnMeth) #Confirm import
 ```
@@ -86,58 +86,6 @@ tail(McapCpGType) #Confirm calculations
 write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
-### Reorganize data
-
-```{r}
-McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
-head(McapCpGTypePercents) #Check reorganization
-```
-
-```{r}
-#Create test plots
-
-barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, RRBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, MBD-BSSeq
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-```
-
-### Create multipanel figure with all samples
-
-```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
-
-par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
-
-barplot(t(McapCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
-
-barplot(t(McapCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
-mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
-
-barplot(t(McapCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
-mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(McapCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
-barplot(t(McapCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
-barplot(t(McapCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
-mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
-
-barplot(t(McapCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
-barplot(t(McapCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
-barplot(t(McapCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
-
-#dev.off() #Turn off plotting device
-```
-
 ### Multivariate data analysis with compositional data
 
 We are interested in how sequencing method affects the proportion, or composition, of CpGs in various methylation statuses and genomic features. For this reason, I will use a combined compositional analysis and multivariate approach. For each sample, I will have separate columns for each methylation status.
@@ -145,11 +93,16 @@ We are interested in how sequencing method affects the proportion, or compositio
 #### Format data
 
 ```{r}
+McapCpGTypePercents <- McapCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
+head(McapCpGTypePercents) #Check reorganization
+```
+
+```{r}
 McapCpGPercentsTrans <- data.frame(clr(McapCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
 tail(McapCpGPercentsTrans) # Confirm transformation
 ```
 
-#### PCoA and perMANOVA
+#### PCoA
 
 ##### Conduct PCoA
 
@@ -181,26 +134,6 @@ vec.McapCpGPercentsPCoA <- envfit(scores(McapCpGPercentsPCoA), McapCpGPercentsTr
 vec.McapCpGPercentsPCoA #Look at statistical results
 ```
 
-##### Global perMANOVA
-
-```{r}
-sampleInformation <- c(rep("WGBS", times = 3),
-                       rep("RRBS", times = 3),
-                       rep("MBDBS", times = 3)) #Create a vector with grouping information
-```
-
-```{r}
-McapCpGPercentsTest <- adonis(dissimMcapCpGPercentsTrans ~ sampleInformation) #Conduct perMANOVA by method
-McapCpGPercentsTest #Look at test output.
-```
-
-##### Beta dispersion model
-
-```{r}
-disp.McapCpGPercentsTrans <- betadisper(dissimMcapCpGPercentsTrans,group=sampleInformation,type='centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
-anova(disp.McapCpGPercentsTrans) #Variance is the same across all groups. Significance in perMANOVA due to centroid differences, not variance
-```
-
 ##### Create plot
 
 ```{r}
@@ -208,65 +141,30 @@ ordiplot(McapCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites"
 plot(vec.McapCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
 ```
 
-#### Pairwise perMANVOA
-
-##### WGBS vs. RRBS
-
-```{r}
-McapCpGPercentsWGRR <- vegdist(McapCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapCpGPercentsWGRRTest <- adonis(McapCpGPercentsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapCpGPercentsWGRRTest
-```
-
-##### WGBS vs. MBD-BS
-
-```{r}
-McapCpGPercentsWGMB <- vegdist(McapCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapCpGPercentsWGMBTest <- adonis(McapCpGPercentsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-McapCpGPercentsWGMBTest
-```
-
-##### RRBS vs. MBD-BS
-
-```{r}
-McapCpGPercentsRRMB <- vegdist(McapCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-McapCpGPercentsRRMBTest <- adonis(McapCpGPercentsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
-McapCpGPercentsRRMBTest
-```
-
 ## Pact
 
 ### Import file counts
 
 ```{r}
-PactAll <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactAll <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-bedgraph-counts.txt", header = FALSE, col.names = c("totalLines", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 PactAll <- PactAll[-10,] #Remove last row (total lines for all files)
 tail(PactAll) #Confirm import
 ```
 
 ```{r}
-PactMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-Meth-counts.txt", header = FALSE, col.names = c("Meth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 PactMeth <- PactMeth[-10,] #Remove last row (total lines for all files)
 tail(PactMeth) #Confirm import
 ```
 
 ```{r}
-PactSparseMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactSparseMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-sparseMeth-counts.txt", header = FALSE, col.names = c("sparseMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 PactSparseMeth <- PactSparseMeth[-10,] #Remove last row (total lines for all files)
 tail(PactSparseMeth) #Confirm import
 ```
 
 ```{r}
-PactUnMeth <- read.table("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
+PactUnMeth <- read.table("../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-5x-unMeth-counts.txt", header = FALSE, col.names = c("unMeth", "filename")) #Import file using space as a delimiter. Columns are the number of lines and the filename
 PactUnMeth <- PactUnMeth[-10,] #Remove last row (total lines for all files)
 tail(PactUnMeth) #Confirm import
 ```
@@ -289,64 +187,7 @@ tail(PactCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(PactCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
-```
-
-```{r}
-PactCpGType <- read.delim("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", header = TRUE) #Import summary table
-head(PactCpGType) #Check import
-```
-
-### Reorganize data
-
-```{r}
-PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
-tail(PactCpGTypePercents) #Check reorganization
-```
-
-```{r}
-#Create test plots
-
-barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, WGBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, RRBS
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-
-barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)")), axes = FALSE) #Sample 1, MBD-BSSeqc(expression("High (">="50%)"), "Moderate (10-50%)", expression("Weak ("<="10%)"))
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80")
-```
-
-### Create multipanel figure with all samples
-
-```{r}
-#pdf("../analyses/Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.pdf", height = 8.5, width = 11) #Save file as pdf
-
-par(mfcol = c(3,3), mar = c(2, 2, 2, 0), oma = c(5, 5, 2, 0)) #Fill in multipanel plot by column and adjust inner and outer margins
-
-barplot(t(PactCpGTypePercents[1,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, WGBS
-mtext(side = 3, "WBGS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(PactCpGTypePercents[4,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 1, RRBS
-mtext(side = 3, "RRBS", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-mtext(side = 2, outer = TRUE, "% 5x CpG with Data", cex = 1.5, line = 2) #Add y-axis label
-
-barplot(t(PactCpGTypePercents[7,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 1, MBD-BSSeq
-mtext(side = 3, "MBD-BSSeq", adj = 0, line = 1) #Add sequencing information
-axis(side = 2, at = seq(0, 100, by = 25), las = 2, col = "grey80", cex.axis = 1.3) #Add y-axis
-
-barplot(t(PactCpGTypePercents[2,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, WGBS
-barplot(t(PactCpGTypePercents[5,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 2, RRBS
-barplot(t(PactCpGTypePercents[8,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 2, MBD-BSSeq
-mtext(side = 1, outer = TRUE, "% Methylation", cex = 1.5, line = 2) #Add x-axis label
-
-barplot(t(PactCpGTypePercents[3,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, WGBS
-barplot(t(PactCpGTypePercents[6,]), beside = TRUE, ylim = c(0,100), names.arg = FALSE, axes = FALSE) #Sample 3, RRBS
-barplot(t(PactCpGTypePercents[9,]), beside = TRUE, ylim = c(0,100), names.arg = c(expression("">= "50%"), "10-50%", "< 10%"), cex.names = 1.3, axes = FALSE) #Sample 3, MBD-BSSeq
-
-#dev.off() #Turn off plotting device
+write.table(PactCpGType, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Pact/Pact-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ### Multivariate data analysis with compositional data
@@ -356,11 +197,16 @@ We are interested in how sequencing method affects the proportion, or compositio
 #### Format data
 
 ```{r}
+PactCpGTypePercents <- PactCpGType[,c(3,5,7)] #Keep only columns with % total CpG information
+tail(PactCpGTypePercents) #Check reorganization
+```
+
+```{r}
 PactCpGPercentsTrans <- data.frame(clr(PactCpGTypePercents / 100)) #Use centered log-ratio transformation on proportion data
 tail(PactCpGPercentsTrans) # Confirm transformation
 ```
 
-#### PCoA and perMANOVA
+#### PCoA
 
 ##### Conduct PCoA
 
@@ -392,75 +238,11 @@ vec.PactCpGPercentsPCoA <- envfit(scores(PactCpGPercentsPCoA), PactCpGPercentsTr
 vec.PactCpGPercentsPCoA #Look at statistical results
 ```
 
-##### Global perMANOVA
-
-```{r}
-PactCpGPercentsTest <- adonis(dissimPactCpGPercentsTrans ~ sampleInformation) #Conduct perMANOVA by method
-PactCpGPercentsTest #Look at test output.
-```
-
-##### Beta dispersion model
-
-```{r}
-disp.PactCpGPercentsTrans <- betadisper(dissimPactCpGPercentsTrans,group=sampleInformation,type='centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
-anova(disp.PactCpGPercentsTrans) #Variance is different between groups. Significance in perMANOVA can be due to centroid and variance differences.
-```
-
 ##### Create plot
 
 ```{r}
 ordiplot(PactCpGPercentsPCoA, choices = c(1,2), type = "text", display = "sites", xlab = "PC 1 (97.9%)", ylab = "PC 2 (2.1%)") #Plot basic PCoA
 plot(vec.PactCpGPercentsPCoA, p.max = 0.05, col = "blue") #Plot loadings that are significant at the 0.05 level
-```
-
-#### Pairwise perMANVOA
-
-##### WGBS vs. RRBS
-
-```{r}
-PactCpGPercentsWGRR <- vegdist(PactCpGPercentsTrans[c(1:3, 4:6),], "euclidean") #Subset WGBS and RRBS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactCpGPercentsWGRRTest <- adonis(PactCpGPercentsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactCpGPercentsWGRRTest
-```
-
-```{r}
-disp.PactCpGPercentsWGRR <- betadisper(PactCpGPercentsWGRR, group = sampleInformation[1:6], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
-anova(disp.PactCpGPercentsWGRR) #Variance is the same between groups.
-```
-
-##### WGBS vs. MBD-BS
-
-```{r}
-PactCpGPercentsWGMB <- vegdist(PactCpGPercentsTrans[c(1:3, 7:9),], "euclidean") #Subset WGBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactCpGPercentsWGMBTest <- adonis(PactCpGPercentsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
-PactCpGPercentsWGMBTest
-```
-
-```{r}
-disp.PactCpGPercentsWGMB <- betadisper(PactCpGPercentsWGMB, group = sampleInformation[c(1:3, 7:9)], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
-anova(disp.PactCpGPercentsWGMB) #Variance is significantly different between groups.
-```
-
-##### RRBS vs. MBD-BS
-
-```{r}
-PactCpGPercentsRRMB <- vegdist(PactCpGPercentsTrans[c(4:9),], "euclidean") #Subset RRBS and MBD-BS data and calculate dissimilarity matrix
-```
-
-```{r}
-PactCpGPercentsRRMBTest <- adonis(PactCpGPercentsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
-PactCpGPercentsRRMBTest
-```
-
-```{r}
-disp.PactCpGPercentsRRMB <- betadisper(PactCpGPercentsRRMB, group = sampleInformation[c(4:9)], type = 'centroid') #Run a beta dispersion model to assess if differences are due to differences in group centroid or variance
-anova(disp.PactCpGPercentsRRMB) #Variance is marginally different between groups.
 ```
 
 # CpG genomic location
@@ -612,7 +394,7 @@ McapFeatureOverlapsTrans <- data.frame(clr(t(McapFeatureOverlapsPercents[,seq(5,
 tail(McapFeatureOverlapsTrans) # Confirm transformation
 ```
 
-#### PCoA and perMANOVA
+#### PCoA and PERMANOVA
 
 ##### Conduct PCoA
 
@@ -644,10 +426,10 @@ vec.McapFeatureOverlapsPCoA <- envfit(scores(McapFeatureOverlapsPCoA), McapFeatu
 vec.McapFeatureOverlapsPCoA #Look at statistical results
 ```
 
-##### Global perMANOVA
+##### Global PERMANOVA
 
 ```{r}
-McapFeatureOverlapsTest <- adonis(dissimMcapFeatureOverlapsTrans ~ sampleInformation) #Conduct perMANOVA by method
+McapFeatureOverlapsTest <- adonis(dissimMcapFeatureOverlapsTrans ~ sampleInformation) #Conduct PERMANOVA by method
 McapFeatureOverlapsTest #Look at test output.
 ```
 
@@ -655,7 +437,7 @@ McapFeatureOverlapsTest #Look at test output.
 
 ```{r}
 disp.McapFeatureOverlapsTrans <- betadisper(dissimMcapFeatureOverlapsTrans, group = sampleInformation, type = 'centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
-anova(disp.McapFeatureOverlapsTrans) #Variance is the same between groups. Significance in perMANOVA due to centroid differences, not variance
+anova(disp.McapFeatureOverlapsTrans) #Variance is the same between groups. Significance in PERMANOVA due to centroid differences, not variance
 ```
 
 ##### Create plot
@@ -674,7 +456,7 @@ McapFeatureOverlapsWGRR <- vegdist(McapFeatureOverlapsTrans[c(1:3, 4:6),], "eucl
 ```
 
 ```{r}
-McapFeatureOverlapsWGRRTest <- adonis(McapFeatureOverlapsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsWGRRTest <- adonis(McapFeatureOverlapsWGRR ~ sampleInformation[1:6]) #Conduct pairwise PERMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsWGRRTest
 ```
 
@@ -685,7 +467,7 @@ McapFeatureOverlapsWGMB <- vegdist(McapFeatureOverlapsTrans[c(1:3, 7:9),], "eucl
 ```
 
 ```{r}
-McapFeatureOverlapsWGMBTest <- adonis(McapFeatureOverlapsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsWGMBTest <- adonis(McapFeatureOverlapsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise PERMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsWGMBTest
 ```
 
@@ -696,7 +478,7 @@ McapFeatureOverlapsRRMB <- vegdist(McapFeatureOverlapsTrans[c(4:9),], "euclidean
 ```
 
 ```{r}
-McapFeatureOverlapsRRMBTest <- adonis(McapFeatureOverlapsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+McapFeatureOverlapsRRMBTest <- adonis(McapFeatureOverlapsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise PERMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
 McapFeatureOverlapsRRMBTest
 ```
 
@@ -847,7 +629,7 @@ PactFeatureOverlapsTrans <- data.frame(clr(t(PactFeatureOverlapsPercents[,seq(5,
 tail(PactFeatureOverlapsTrans) # Confirm transformation
 ```
 
-#### PCoA and perMANOVA
+#### PCoA and PERMANOVA
 
 ##### Conduct PCoA
 
@@ -879,10 +661,10 @@ vec.PactFeatureOverlapsPCoA <- envfit(scores(PactFeatureOverlapsPCoA), PactFeatu
 vec.PactFeatureOverlapsPCoA #Look at statistical results
 ```
 
-##### Global perMANOVA
+##### Global PERMANOVA
 
 ```{r}
-PactFeatureOverlapsTest <- adonis(dissimPactFeatureOverlapsTrans ~ sampleInformation) #Conduct perMANOVA by method
+PactFeatureOverlapsTest <- adonis(dissimPactFeatureOverlapsTrans ~ sampleInformation) #Conduct PERMANOVA by method
 PactFeatureOverlapsTest #Look at test output.
 ```
 
@@ -890,7 +672,7 @@ PactFeatureOverlapsTest #Look at test output.
 
 ```{r}
 disp.PactFeatureOverlapsTrans <- betadisper(dissimPactFeatureOverlapsTrans, group = sampleInformation, type = 'centroid') #Run a beta dispersion model to assess if significant differences are due to differences in group centroid or variance
-anova(disp.PactFeatureOverlapsTrans) #Variance is different between groups. Significance in perMANOVA is due to either centroid or variance differences
+anova(disp.PactFeatureOverlapsTrans) #Variance is different between groups. Significance in PERMANOVA is due to either centroid or variance differences
 ```
 
 ##### Create plot
@@ -909,7 +691,7 @@ PactFeatureOverlapsWGRR <- vegdist(PactFeatureOverlapsTrans[c(1:3, 4:6),], "eucl
 ```
 
 ```{r}
-PactFeatureOverlapsWGRRTest <- adonis(PactFeatureOverlapsWGRR ~ sampleInformation[1:6]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsWGRRTest <- adonis(PactFeatureOverlapsWGRR ~ sampleInformation[1:6]) #Conduct pairwise PERMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsWGRRTest
 ```
 
@@ -925,7 +707,7 @@ PactFeatureOverlapsWGMB <- vegdist(PactFeatureOverlapsTrans[c(1:3, 7:9),], "eucl
 ```
 
 ```{r}
-PactFeatureOverlapsWGMBTest <- adonis(PactFeatureOverlapsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise perMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsWGMBTest <- adonis(PactFeatureOverlapsWGMB ~ sampleInformation[c(1:3, 7:9)]) #Conduct pairwise PERMANOVA for WGBS and MBD-BS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsWGMBTest
 ```
 
@@ -941,7 +723,7 @@ PactFeatureOverlapsRRMB <- vegdist(PactFeatureOverlapsTrans[c(4:9),], "euclidean
 ```
 
 ```{r}
-PactFeatureOverlapsRRMBTest <- adonis(PactFeatureOverlapsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise perMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
+PactFeatureOverlapsRRMBTest <- adonis(PactFeatureOverlapsRRMB ~ sampleInformation[c(4:9)]) #Conduct pairwise PERMANOVA for WGBS and RRBS data. Only use sequencing method metadata for these samples
 PactFeatureOverlapsRRMBTest
 ```
 
