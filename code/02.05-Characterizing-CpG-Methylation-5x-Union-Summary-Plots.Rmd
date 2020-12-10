@@ -103,7 +103,6 @@ barplot(t(McapCpGTypePercents), col = dichromat(c(rev(RColorBrewer::brewer.pal(3
 ```
 
 ```{r}
-#pdf("../output/supplemental-material/SF6A.pdf", height = 8.5, width = 11)
 par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(McapCpGTypePercents), 
@@ -134,8 +133,6 @@ legend(x = 0.54, y = 0.87,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
 ```
 
 ## Pact
@@ -196,7 +193,6 @@ head(PactCpGTypePercents) #Confirm changes
 ```
 
 ```{r}
-pdf("../output/supplemental-material/SF6B.pdf", height = 8.5, width = 11)
 par(mar = c(2,5,0,1), oma = c(1, 1, 0, 12)) #Change figure boundaries
 
 barplot(t(PactCpGTypePercents), 
@@ -227,14 +223,11 @@ legend(x = 0.54, y = 0.87,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.77, y = 0.879, cex = 1.5) #Add legend title that is aligned with legend
-
-dev.off() #Turn off plotting device
 ```
 
 ## Create multipanel plot
 
 ```{r}
-pdf("../output/supplemental-material/SF6.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,1,0), oma = c(2, 1, 0, 12), mfrow = c(2,1)) #Change figure boundaries
 
 #Mcap
@@ -286,8 +279,6 @@ legend(x = 0.57, y = 0.90,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Methylation Status", x = 0.80, y = 0.92, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
 ```
 
 # CpG feature overlaps
@@ -653,7 +644,6 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #### CpG feature overlap by methylation status
 
 ```{r}
-pdf("../output/supplemental-material//Mcap_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
 #High methylation
@@ -720,8 +710,6 @@ legend(x = 0.73, y = 0.97,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
-
-dev.off() #Turn off plotting device
 ```
 
 ### Create comparative barplots
@@ -1109,7 +1097,6 @@ text("Genome Feature", x = 0.785, y = 0.879, cex = 1.5) #Add legend title that i
 #### CpG feature overlap by methylation status
 
 ```{r}
-#pdf("../output/supplemental-material/Pact_union-CpG-Features-MethStatus.pdf", height = 8.5, width = 11)
 par(mar = c(1,5,0,1), oma = c(4, 1, 1, 11), mfcol = c(3,1)) #Change figure boundaries
 
 #High methylation
@@ -1176,8 +1163,6 @@ legend(x = 0.73, y = 0.97,
        cex = 1.5, 
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 text("Genome Feature", x = 0.87, y = 0.97, cex = 1.5) #Add legend title that is aligned with legend
-
-#dev.off() #Turn off plotting device
 ```
 
 ### Create comparative barplots
@@ -1215,7 +1200,26 @@ legend("topright",
        x.intersp = 0.7, xjust = 0) #Place a legend in the top right of the figure with no box
 ```
 
-## Create multipanel plot
+## Summary information
+
+This includes a multipanel plot (main text) and statistical output (supplemental material)
+
+### Combined statistical output table
+
+```{r}
+CpGLocationStatOutput <- rbind(McapCpGLocationStatOutput, 
+                               PactCpGLocationStatOutput) #Combine tables
+CpGLocationStatOutput$species <- c(rep("Mcap", times = 30),
+                                   rep("Pact", times = 30)) #Add species information
+CpGLocationStatOutput <- CpGLocationStatOutput[,c(8,4,7,5,1,6)] #Rearrange columns
+head(CpGLocationStatOutput) #Confirm table creation
+```
+
+```{r}
+write.csv(CpGLocationStatOutput, "../output/supplemental-material/ST7.csv",  quote = FALSE, row.names = FALSE) #Save file
+```
+
+### Multipanel plot
 
 ```{r}
 #pdf("../output/Fig_5.pdf", height = 8.5, width = 11)
@@ -1273,4 +1277,3 @@ text("Genome Feature", x = 0.785, y = 0.92, cex = 1.5) #Add legend title that is
 
 #dev.off() #Turn off plotting device
 ```
-
