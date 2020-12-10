@@ -83,7 +83,7 @@ tail(McapCpGType) #Confirm calculations
 ```
 
 ```{r}
-write.table(McapCpGType, "../analyses/Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
+write.table(McapCpGType, "../output/intermediate-files/02-Characterizing-CpG-Methylation-5x/Mcap/Mcap-CpG-Type.txt", sep = "\t", quote = FALSE, row.names = TRUE) #Save summary table
 ```
 
 ### Multivariate data analysis with compositional data
@@ -828,7 +828,7 @@ head(FeatureOverlapStatResults) #Confirm table creation
 ```
 
 ```{r}
-write.table(FeatureOverlapStatResults, "../output/supplemental-material/ST6.txt", sep = "\t", quote = FALSE, row.names = FALSE) #Save file
+write.csv(FeatureOverlapStatResults, "../output/supplemental-material/ST6.csv",  quote = FALSE, row.names = FALSE) #Save file
 ```
 
 ## Multipanel PCoA plot
