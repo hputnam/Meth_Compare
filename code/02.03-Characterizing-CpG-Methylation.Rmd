@@ -495,8 +495,8 @@ McapFeatureOverlapsStatResults <- data.frame("species" = rep("Mcap", times = 4),
                                              "contrast" = c("global", "WGBS vs. RRBS", "WGBS vs. MBDBS", "RRBS vs. MBDBS"),
                                              "PERMANOVA-R2" = rep(0, times = 4),
                                              "Adonis-P-value" = rep(0, times = 4),
-                                             "Beta-disp-F-stat" = rep("N/A", times = 4),
-                                             "ANOVA-P-value" = rep("N/A", times = 4)) #Create an empty dataframe for stat test results
+                                             "Beta-disp-F-stat" = rep(0, times = 4),
+                                             "ANOVA-P-value" = rep(0, times = 4)) #Create an empty dataframe for stat test results
 head(McapFeatureOverlapsStatResults) #Confirm dataframe creation
 ```
 
@@ -766,11 +766,74 @@ disp.PactFeatureOverlapsRRMB <- betadisper(PactFeatureOverlapsRRMB, group = samp
 anova(disp.PactFeatureOverlapsRRMB) #Variance is different between groups.
 ```
 
-# Multipanel PCoA plot
+### Create summary table
 
-This will be part of the supplementary material.
+```{r}
+PactFeatureOverlapsStatResults <- data.frame("species" = rep("Pact", times = 4),
+                                             "contrast" = c("global", "WGBS vs. RRBS", "WGBS vs. MBDBS", "RRBS vs. MBDBS"),
+                                             "PERMANOVA-R2" = rep(0, times = 4),
+                                             "Adonis-P-value" = rep(0, times = 4),
+                                             "Beta-disp-F-stat" = rep(0, times = 4),
+                                             "ANOVA-P-value" = rep(0, times = 4)) #Create an empty dataframe for stat test results
+head(PactFeatureOverlapsStatResults) #Confirm dataframe creation
+```
 
-## Plot customization
+```{r}
+anova(disp.PactFeatureOverlapsTrans)[[5]][1]
+
+
+```
+
+
+```{r}
+#PERMANOVA stats
+PactFeatureOverlapsStatResults$PERMANOVA.R2[1] <- PactFeatureOverlapsTest$aov.tab$R2[1] #Global PERMANOVA stat
+PactFeatureOverlapsStatResults$PERMANOVA.R2[2] <- PactFeatureOverlapsWGRRTest$aov.tab$R2[1] #WGBS vs. RRBS PERMANOVA stat
+PactFeatureOverlapsStatResults$PERMANOVA.R2[3] <- PactFeatureOverlapsWGMBTest$aov.tab$R2[1] #WGBS vs. MBDBS PERMANOVA stat
+PactFeatureOverlapsStatResults$PERMANOVA.R2[4] <- PactFeatureOverlapsRRMBTest$aov.tab$R2[1] #RRBS vs. MBDBS PERMANOVA stat
+
+#Adonis P-values
+PactFeatureOverlapsStatResults$Adonis.P.value[1] <- PactFeatureOverlapsTest$aov.tab$`Pr(>F)`[1] #Global PERMANOVA P-value
+PactFeatureOverlapsStatResults$Adonis.P.value[2] <- PactFeatureOverlapsWGRRTest$aov.tab$`Pr(>F)`[1] #WGBS vs. RRBS PERMANOVA P-value
+PactFeatureOverlapsStatResults$Adonis.P.value[3] <- PactFeatureOverlapsWGMBTest$aov.tab$`Pr(>F)`[1] #WGBS vs. MBDBS PERMANOVA P-value
+PactFeatureOverlapsStatResults$Adonis.P.value[4] <- PactFeatureOverlapsRRMBTest$aov.tab$`Pr(>F)`[1] #RRBS vs. MBDBS PERMANOVA P-value
+
+#Beta dispersion test F-statistic
+PactFeatureOverlapsStatResults$Beta.disp.F.stat[1] <- anova(disp.PactFeatureOverlapsTrans)[[4]][1] #Global beta dispersion test
+PactFeatureOverlapsStatResults$Beta.disp.F.stat[2] <- anova(disp.PactFeatureOverlapsWGRR)[[4]][1] #WGBS vs. RRBS beta dispersion test
+PactFeatureOverlapsStatResults$Beta.disp.F.stat[3] <- anova(disp.PactFeatureOverlapsWGMB)[[4]][1] #WGBS vs. MBDBS beta dispersion test
+PactFeatureOverlapsStatResults$Beta.disp.F.stat[4] <- anova(disp.PactFeatureOverlapsRRMB)[[4]][1] #RRBS vs. MBDBS beta dispersion test
+
+#ANOVA P-value
+PactFeatureOverlapsStatResults$ANOVA.P.value[1] <- anova(disp.PactFeatureOverlapsTrans)[[5]][1] #Global beta dispersion test
+PactFeatureOverlapsStatResults$ANOVA.P.value[2] <- anova(disp.PactFeatureOverlapsWGRR)[[5]][1] #WGBS vs. RRBS beta dispersion test
+PactFeatureOverlapsStatResults$ANOVA.P.value[3] <- anova(disp.PactFeatureOverlapsWGMB)[[5]][1] #WGBS vs. MBDBS beta dispersion test
+PactFeatureOverlapsStatResults$ANOVA.P.value[4] <- anova(disp.PactFeatureOverlapsRRMB)[[5]][1] #RRBS vs. MBDBS beta dispersion test
+
+head(PactFeatureOverlapsStatResults) #Confirm formatting
+```
+
+# Supplementary material
+
+This will include a multipanel PCoA plot and a table with statistical output
+
+## Statistical output table
+
+```{r}
+FeatureOverlapStatResults <- rbind(McapFeatureOverlapsStatResults,
+                                   PactFeatureOverlapsStatResults) #Combine tables
+FeatureOverlapStatResults$Beta.disp.F.stat[1:4] <- "NA" #Replace 0 with NA
+FeatureOverlapStatResults$ANOVA.P.value[1:4] <- "NA" #Replace 0 with NA
+head(FeatureOverlapStatResults) #Confirm table creation
+```
+
+```{r}
+write.table(FeatureOverlapStatResults, "../output/supplemental-material/ST6.txt", sep = "\t", quote = FALSE, row.names = FALSE) #Save file
+```
+
+## Multipanel PCoA plot
+
+### Plot customization
 
 ```{r}
 plotColors <- c(rev(RColorBrewer::brewer.pal(3, "Greens")), 
@@ -785,7 +848,7 @@ plotCustomization <- data.frame("Mcap" = 10:18,
 tail(plotCustomization) #Confirm dataframe creation
 ```
 
-## Create plot
+### Create plot
 
 ```{r}
 pdf("../output/supplemental-material/SF5.pdf", height = 8.5, width = 11) #Save plot
