@@ -14,3 +14,5 @@
 - [ST3](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST3.csv): Supplementary Table 3: C1 alignment statistics
 - [ST4](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST4.csv): Supplementary Table 4: Lambda conversion efficiency and alignment statistics
 - [ST5](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST5.csv): Supplementary Table 5: Bisulfite conversion efficiency comparisons
+- [ST6](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST6.csv): Supplementary Table 6: Genomic feature PERMANOVA results
+- [ST7](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST7.csv): Supplementary Table 7: Genomic feature contingency test results
