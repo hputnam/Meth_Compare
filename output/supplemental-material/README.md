@@ -3,10 +3,12 @@
 **[Supplemental_Material.pdf](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/Supplemental_Material.pdf)**: PDF of all supplementary material
 
 ### Supplementary Figures
-- [SF1.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF1.png): Supplementary Figure 1: Summary of sequencing depth and alignments for all libraries.
+- [SF1.jpg](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF1.png): Supplementary Figure 1: Summary of sequencing depth and alignments for all libraries.
 - [SF2.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF2.png): Supplementary Figure 2: Bisulfite conversion efficiency.
-- [SF3.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF3.png): Supplementary Figure 3: PCA of CpG methylation for loci covered at 5x read depth by all M. capitata and P. acuta samples.
+- [SF3.jpg](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF3.png): Supplementary Figure 3: PCA of CpG methylation for loci covered at 5x read depth by all M. capitata and P. acuta samples.
 - [SF4.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF4.png): Supplementary Figure 4: Estimated fraction of genome-wide CpG loci covered by at least 5 reads with different sequencing depths for each species. 
+- [SF5.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF5.png): PCoA for methylation status and genomic location. 
+- [SF6.png](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/SF6.png): Supplementary Figure 6: Methylation status of CpGs covered by each method
 
 ### Supplementary Tables
 - [ST1](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST1.csv): Supplementary Table 1: Trimming statistics
