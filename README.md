@@ -8,9 +8,9 @@ Shelly A Trigg\*1, Yaamini R Venkataraman\*1, Mackenzie R Gavery2, Steven B Robe
 3 Rutgers  
 4 Department of Marine and Environmental Sciences, Northeastern University, 430 Nahant Road, Nahant, MA 01908  
 5 Florida International University, Environmental Epigenetics Laboratory, Institute of Environment 3000 NE 151 St. North Miami, FL, 33181, USA  
-6Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA  
+6 Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA  
 
-+corresponding author: hputnam@uri.edu
++ corresponding author: hputnam@uri.edu  
 \* equal contribution
 
 Keywords:  bisulfite sequencing, coral, epigenetics, marine invertebrate
