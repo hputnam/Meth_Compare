@@ -13,19 +13,19 @@ library(data.table)
 
 ```{r}
 #MBD vs WGBS data with coverage cutoffs
-Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread( "https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread( "https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20201220/Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
 
-Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20201220/Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
 
 #RRBS vs WGBS data with coverage cutoffs
-Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+#Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
 
-Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
+#Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs.csv", stringsAsFactors = F)
 
 #all loci from different methods binned by cov and meth
-Pact_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Pact_cov_perc_group_3x_sum.csv", stringsAsFactors = F)
+Pact_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20201220/Pact_cov_perc_group_3x_sum.csv", stringsAsFactors = F)
 
-Mcap_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20200910/Mcap_cov_perc_group_3x_sum", stringsAsFactors = F)
+Mcap_cov_perc_group_3x_sum <- fread("https://gannet.fish.washington.edu/metacarcinus/FROGER_meth_compare/20201220/Mcap_cov_perc_group_3x_sum", stringsAsFactors = F)
 
 
 ```
@@ -43,18 +43,120 @@ Mcap_cov_perc_group_3x_sum$cov_tag <- factor(Mcap_cov_perc_group_3x_sum$cov_tag,
 
 Pact_cov_perc_group_3x_sum$cov_tag <- factor(Pact_cov_perc_group_3x_sum$cov_tag, levels = c("[1-5]","[5-10]","[10-20]", "[20-30]", "[30-40]", "[40-50]", "[50-100]", "[100-500]", "[500-1000]", "[>1000]"))
 
-#create a column for exponential notation
-Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs)
+#change MBD to MBDBS
+Mcap_cov_perc_group_3x_sum$method <- gsub("MBD", "MBDBS", Mcap_cov_perc_group_3x_sum$method)
 
-Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs)
+Pact_cov_perc_group_3x_sum$method <- gsub("MBD", "MBDBS", Pact_cov_perc_group_3x_sum$method)
+```
 
-Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs)
+
+add percentages to plots
+```{r}
+#calculate loci percentages excluding loci with less than 5 reads 
+Pact_cov_perc_group_3x_sum_perc <- Pact_cov_perc_group_3x_sum[which(Pact_cov_perc_group_3x_sum$cov_tag!= "[1-5]"),] %>% group_by(method) %>% mutate(perc_CpGs = CpGs/sum(CpGs) *100)
+
+#combine percentage data back with count and methylation data
+Pact_cov_perc_group_3x_sum_perc <- merge(Pact_cov_perc_group_3x_sum,Pact_cov_perc_group_3x_sum_perc, by = c("method", "cov_tag", "meth_tag", "CpGs"), all.x = T)
+
+#plot
+b <- ggplot(data = Pact_cov_perc_group_3x_sum_perc, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation (median, n=3)", y = "number of reads (median, n=3)", fill = "number of\nCpGs (log10)", title = "P. acuta") + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = round(perc_CpGs,1)), color = "gold3", size = 2.5, fontface = "bold")
+
+#calculate loci percentages excluding loci with less than 5 reads 
+Mcap_cov_perc_group_3x_sum_perc <- Mcap_cov_perc_group_3x_sum[which(Mcap_cov_perc_group_3x_sum$cov_tag!= "[1-5]"),] %>% group_by(method) %>% mutate(perc_CpGs = CpGs/sum(CpGs) *100)
+
+#combine percentage data back with count and methylation data
+Mcap_cov_perc_group_3x_sum_perc <- merge(Mcap_cov_perc_group_3x_sum,Mcap_cov_perc_group_3x_sum_perc, by = c("method", "cov_tag", "meth_tag", "CpGs"), all.x = T)
+
+#plot
+a <- ggplot(data = Mcap_cov_perc_group_3x_sum_perc, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation (median, n=3)", y = "number of reads (median, n=3)", fill = "number of\nCpGs (log10)", title = "M. capitata") + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = round(perc_CpGs,1)), color = "gold3", size = 2.5, fontface = "bold")
 
 
-Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs)
+#calculate loci percentages excluding loci with less than 5 reads 
+Pact_cov_perc_group_3x_sum_cutoffs_perc <-  Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag!= "[1-5]" & Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag!= "[0]"),] %>% group_by(id) %>% mutate(perc_CpGs = CpGs/sum(CpGs) *100)
+
+#combine percentage data back with count and methylation data
+Pact_cov_perc_group_3x_sum_cutoffs_perc <- merge(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs,Pact_cov_perc_group_3x_sum_cutoffs_perc, by = c("id","mbd_cov_tag", "wgbs_meth_tag", "CpGs", "perc_CpG"), all.x = T)
+
+#plot
+d <- ggplot(data = Pact_cov_perc_group_3x_sum_cutoffs_perc, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = round(perc_CpGs,1)), color = "gold3", size = 3, fontface = "bold")
+
+
+#calculate loci percentages excluding loci with less than 5 reads 
+Mcap_cov_perc_group_3x_sum_cutoffs_perc <-  Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag!= "[1-5]" & Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag!= "[0]"),] %>% group_by(id) %>% mutate(perc_CpGs = CpGs/sum(CpGs) *100)
+
+#combine percentage data back with count and methylation data
+Mcap_cov_perc_group_3x_sum_cutoffs_perc <- merge(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs,Mcap_cov_perc_group_3x_sum_cutoffs_perc, by = c("id","mbd_cov_tag", "wgbs_meth_tag", "CpGs", "perc_CpG"), all.x = T)
+
+#plot
+c <- ggplot(data = Mcap_cov_perc_group_3x_sum_cutoffs_perc, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = round(perc_CpGs,1)), color = "gold3", size = 3, fontface = "bold")
+
+jpeg("../../Meth_Compare/output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_covXmeth.jpg", width = 9, height = 6, units = "in", res = 500 )
+ggarrange(a,b, nrow = 2, ncol = 1 ,labels = "AUTO",common.legend = F)
+dev.off()
+
+jpeg("../../Meth_Compare/output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_thresholds.jpg", width = 15, height = 16, units = "in", res = 500 )
+ggarrange(c,d, nrow = 2, ncol = 1 ,labels = "AUTO",common.legend = F)
+dev.off()
+
+# #create a column for exponential notation
+# Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs)
+# 
+# Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs)
+# 
+# Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$CpGs)
+# 
+# 
+# Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$exCpGs <- ifelse(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs >999,format(as.numeric(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs),scientific = T, digits = 2,trim = T),Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$CpGs)
+# 
+# 
+# #create a column for total perc
+# Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(totPerc = CpGs / sum(CpGs) * 100)
+# 
+# Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(totPerc = CpGs / sum(CpGs) * 100)
+# 
+# Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(totPerc = CpGs / sum(CpGs) * 100)
+# 
+# Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs <- Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs %>% group_by(id, wgbs_meth_tag) %>% mutate(totPerc = CpGs / sum(CpGs) * 100)
+# 
+# #convert perc to sci notation if < 0.1
+# Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc <- ifelse(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc < 0.1,format(as.numeric(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc),scientific = T, digits = 2,trim = T),round(Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc,1))
+# 
+# Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc <- ifelse(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc < 0.1,format(as.numeric(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc),scientific = T, digits = 2,trim = T),round(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc,1))
+# 
+# Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc <- ifelse(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc < 0.1,format(as.numeric(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc),scientific = T, digits = 2,trim = T),round(Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs$totPerc,1))
+# 
+# Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc <- ifelse(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc < 0.1,format(as.numeric(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc),scientific = T, digits = 2,trim = T),round(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$totPerc,1))
 
 
 ```
+
+
+total CpGs and percent CpGs covered by WGBS but not MBD, and covered by both
+```{r}
+Mcap_WGBS_covered <- data.frame(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" &  Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]" &  Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag == "[0]" | Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" & Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]" &  Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag == "[1-5]"),])
+
+sum(Mcap_WGBS_covered$CpGs)
+
+Mcap_WGBS <- data.frame(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" & Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]"),])
+
+sum(Mcap_WGBS$CpGs)
+
+sum(Mcap_WGBS_covered$CpGs)/sum(Mcap_WGBS$CpGs)* (100)
+
+
+
+Pact_WGBS_covered <- data.frame(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" &  Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]" &  Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag == "[0]" | Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" & Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]" &  Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$mbd_cov_tag == "[1-5]"),])
+
+sum(Pact_WGBS_covered$CpGs)
+
+Pact_WGBS <- data.frame(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs[which(Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$id == "WGBS_5x" & Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs$wgbs_meth_tag == "[0-10%]"),])
+
+sum(Pact_WGBS$CpGs)
+
+sum(Pact_WGBS_covered$CpGs)/sum(Pact_WGBS$CpGs)* (100)
+
+```
+
 
 plots
 ```{r}
@@ -63,19 +165,19 @@ a <- ggplot(data = Mcap_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill
 b <- ggplot(data = Pact_cov_perc_group_3x_sum, aes(x = meth_tag, y=cov_tag, fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + facet_wrap(~method)  + labs(x = "% methylation (median, n=3)", y = "number of reads (median, n=3)", fill = "number of\nCpGs (log10)", title = "P. acuta") + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic"))
 
 
-d <- ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = exCpGs), color = "gold3", size = 0.75, fontface = "bold")
+d <- ggplot(data = Pact_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = paste0(totPerc,"%")), color = "gold3", size = 0.6, fontface = "bold")
 
-c <- ggplot(data = Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = exCpGs), color = "gold3", size = 0.75, fontface = "bold")
+c <- ggplot(data = Mcap_cov_perc_group_3x_mbd_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(mbd_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from MBDBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + theme(plot.title = element_text(face = "italic")) +  geom_text(aes(label = paste0(totPerc,"%")), color = "gold3", size = 0.6, fontface = "bold")
 
-f <- ggplot(data = Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = exCpGs), color = "gold3", size = 0.75, fontface = "bold")
+f <- ggplot(data = Pact_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "P. acuta") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) +  geom_text(aes(label = paste0(totPerc,"%")), color = "gold3", size = 0.6, fontface = "bold")
 
-e <- ggplot(data = Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) + geom_text(aes(label = exCpGs), color = "gold3", size = 0.75, fontface = "bold")
+e <- ggplot(data = Mcap_cov_perc_group_3x_RRBS_rel_sum_wgbs_cutoffs, aes(x=wgbs_meth_tag, y=factor(RRBS_cov_tag, levels = c("[0]",cov_tags)), fill=log(CpGs,10))) + geom_tile() +  theme(axis.text.x = element_text(size = 7, angle = 60, hjust = 1)) + labs(x = "% methylation\n(from WGBS data)", y = "number of reads\n(from RRBS data)", fill = "number of\nCpGs (log10)", title = "M. capitata") + facet_wrap(~factor(id, levels = c("WGBS_1x","WGBS_5x","WGBS_10x","WGBS_20x","WGBS_30x","WGBS_40x","WGBS_50x","WGBS_100x")), nrow = 2) + scale_fill_continuous(high = "#132B43", low = "#b5dfff") + theme(plot.title = element_text(face = "italic")) +  geom_text(aes(label = paste0(totPerc,"%")), color = "gold3", size = 0.6, fontface = "bold")
 
 jpeg("output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_covXmeth.jpg", width = 9, height = 7.5, units = "in", res = 300 )
 ggarrange(a,b, nrow =2 ,labels = "AUTO",common.legend = F)
 dev.off()
 
-jpeg("output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_thresholds.jpg", width = 15, height = 8, units = "in", res = 500 )
+jpeg("../../Meth_Compare/output/intermediate-files/Coverage_analysis/Mcap_Pact_meth_heatmap_thresholds.jpg", width = 15, height = 8, units = "in", res = 500 )
 ggarrange(c,d,e,f, nrow = 2, ncol = 2 ,labels = "AUTO",common.legend = F)
 dev.off()
 ```
