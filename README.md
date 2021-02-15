@@ -1,4 +1,8 @@
-# Analysis of DNA methylation in invertebrates requires consideration of genome characteristics and methylation landscape
+## Data and code
+associated with the manuscript:
+
+
+**"Analysis of DNA methylation in invertebrates requires consideration of genome characteristics and methylation landscape"**
 
 Shelly A Trigg\*1, Yaamini R Venkataraman\*1, Mackenzie R Gavery2, Steven B Roberts1, Debashish Bhattacharya3, Alan Downey-Wall4, Jose Eirin-Lopez5, Kevin M Johnson6, Katie E Lotterhos4, Jonathan B. Puritz7 and Hollie M Putnam7+ 
 
