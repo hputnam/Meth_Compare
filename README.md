@@ -4,17 +4,17 @@ associated with the manuscript:
 
 **"Analysis of DNA methylation in invertebrates requires consideration of genome characteristics and methylation landscape"**
 
-Shelly A Trigg\*<sup>1</sup>, Yaamini R Venkataraman\*<sup>1</sup>, Mackenzie R Gavery<sup>2</sup>, Steven B Roberts<sup>1</sup>, Debashish Bhattacharya<sup>3</sup>, Alan Downey-Wall<sup>4</sup>, Jose Eirin-Lopez<sup>5</sup>, Kevin M Johnson<sup>6</sup>, Katie E Lotterhos<sup>4</sup>, Jonathan B. Puritz<sup>7</sup> and Hollie M Putnam<sup>7</sup>+ 
+Shelly A Trigg\*<sup>1</sup>, Yaamini R Venkataraman\*<sup>1</sup>, Mackenzie R Gavery<sup>2</sup>, Steven B Roberts<sup>1</sup>, Debashish Bhattacharya<sup>3</sup>, Alan Downey-Wall<sup>4</sup>, Jose Eirin-Lopez<sup>5</sup>, Kevin M Johnson<sup>6,7</sup>, Katie E Lotterhos<sup>4</sup>, Jonathan B. Puritz<sup>8</sup> and Hollie M Putnam<sup>8</sup>+ 
 
 
-1 University of Washington, School of Aquatic and Fishery Sciences 1122 NE Boat St. Seattle, WA, 98195, USA  
-2 Environmental and Fisheries Sciences Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle, WA, 98112, USA  
-3 Department of Biochemistry and Microbiology, Rutgers University, New Brunswick, NJ 08901 USA  
-4 Department of Marine and Environmental Sciences, Northeastern University, 430 Nahant Road, Nahant, MA 01908  
-5 Florida International University, Environmental Epigenetics Laboratory, Institute of Environment 3000 NE 151 St. North Miami, FL, 33181, USA  
-6 Center for Coastal Marine Sciences, California Polytechnic State University, San Luis Obispo, CA, 93407, USA  
-7 California Sea Grant, University of California San Diego, La Jolla, CA, 92093
-8 Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA  
+<sup>1</sup> University of Washington, School of Aquatic and Fishery Sciences 1122 NE Boat St. Seattle, WA, 98195, USA  
+<sup>2</sup> Environmental and Fisheries Sciences Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle, WA, 98112, USA  
+<sup>3</sup> Department of Biochemistry and Microbiology, Rutgers University, New Brunswick, NJ 08901 USA  
+<sup>4</sup> Department of Marine and Environmental Sciences, Northeastern University, 430 Nahant Road, Nahant, MA 01908  
+<sup>5</sup> Florida International University, Environmental Epigenetics Laboratory, Institute of Environment 3000 NE 151 St. North Miami, FL, 33181, USA  
+<sup>6</sup> Center for Coastal Marine Sciences, California Polytechnic State University, San Luis Obispo, CA, 93407, USA  
+<sup>7</sup> California Sea Grant, University of California San Diego, La Jolla, CA, 92093  
+<sup>8</sup> Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA  
 
 \+ corresponding author: hputnam@uri.edu  
 \* equal contribution
