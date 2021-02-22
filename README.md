@@ -7,12 +7,16 @@ associated with the manuscript:
 Shelly A Trigg\*1, Yaamini R Venkataraman\*1, Mackenzie R Gavery2, Steven B Roberts1, Debashish Bhattacharya3, Alan Downey-Wall4, Jose Eirin-Lopez5, Kevin M Johnson6, Katie E Lotterhos4, Jonathan B. Puritz7 and Hollie M Putnam7+ 
 
 
-1 University of Washington, School of Aquatic and Fishery Sciences 1122 NE Boat St. Seattle, WA, 98195, USA  
-2 Environmental and Fisheries Sciences Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle, WA, 98112, USA  
-3 Rutgers  
-4 Department of Marine and Environmental Sciences, Northeastern University, 430 Nahant Road, Nahant, MA 01908  
-5 Florida International University, Environmental Epigenetics Laboratory, Institute of Environment 3000 NE 151 St. North Miami, FL, 33181, USA  
-6 Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA  
+1 University of Washington, School of Aquatic and Fishery Sciences 1122 NE Boat St. Seattle, WA, 98195, USA
+2 Environmental and Fisheries Sciences Division, Northwest Fisheries Science Center, National Marine Fisheries Service, National Oceanic and Atmospheric Administration, 2725 Montlake Blvd E, Seattle, WA, 98112, USA
+3 Department of Biochemistry and Microbiology, Rutgers University, New Brunswick, NJ 08901 USA
+4 Department of Marine and Environmental Sciences, Northeastern University, 430 Nahant Road, Nahant, MA 01908
+5 Florida International University, Environmental Epigenetics Laboratory, Institute of Environment 3000 NE 151 St. North Miami, FL, 33181, USA
+6 Center for Coastal Marine Sciences, California Polytechnic State University, San Luis Obispo, CA, 93407, USA
+7 California Sea Grant, University of California San Diego, La Jolla, CA, 92093
+8 Department of Biological Sciences, University of Rhode Island, Kingston, RI 02881, USA
++corresponding author: hputnam@uri.edu
+* equal contribution
 
 + corresponding author: hputnam@uri.edu  
 \* equal contribution
