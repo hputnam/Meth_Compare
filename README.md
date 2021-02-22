@@ -35,9 +35,10 @@ Keywords:  bisulfite sequencing, coral, epigenetics, marine invertebrate
 - [code](https://github.com/hputnam/Meth_Compare/tree/master/code): Bash scripts, R Markdown files, and Jupyter notebooks used to analyze data. Files are organized by corresponding methods sections.
 - [output](https://github.com/hputnam/Meth_Compare/tree/master/output): Individual subdirectories for each analysis along with intermediate output
     - [intermediate-files](https://github.com/hputnam/Meth_Compare/tree/master/output/intermediate-files)
-         - _subdirectories_
     - [figures](https://github.com/hputnam/Meth_Compare/tree/master/output/figures): Figures in the manuscript main text
     - [supplemental-material](https://github.com/hputnam/Meth_Compare/tree/master/output/supplemental-material): supplemental material referenced in manuscript
+
+[Raw Sequence Data NCBI PRJNA691891](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA691891)
 
 ## Abstract
 
@@ -45,7 +46,7 @@ _**Background**_
 Elucidating genome to phenome pathways is essential for our understanding of biology, ecology, and evolution. There has been a growing focus on gene expression regulation through DNA methylation in marine invertebrates that need to rapidly respond to changing environmental factors and anthropogenic impacts. However, limited understanding of potential methodological biases hampers genome-wide DNA methylation studies in non-model organisms.
 
 _**Results**_  
-We compare three methods for quantifying DNA methylation at single base pair resolution — Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS), and Methyl-CpG Binding Domain Bisulfite Sequencing (MBDBS) — using multiple individuals from two reef-building coral species with contrasting environmental sensitivity. All methods reveal substantially greater methylation in *M. capitata* (11.4%) than the more sensitive *P. acuta* (2.9%), and the majority of CpG methylation in both species occurs in gene bodies and flanking regions. In both species, MBDBS has the greatest capacity for detecting CpGs in coding regions at our sequencing depth, however MBDBS may be limited by intra-sample methylation heterogeneity. RRBS yields robust information for specific loci albeit without enrichment of any particular genome feature and with significantly reduced genome coverage.
+We compare three methods for quantifying DNA methylation at single base pair resolution — Whole Genome Bisulfite Sequencing (WGBS), Reduced Representation Bisulfite Sequencing (RRBS), and Methyl-CpG Binding Domain Bisulfite Sequencing (MBDBS) — using multiple individuals from two reef-building coral species with contrasting environmental sensitivity. All methods reveal substantially greater methylation in *M. capitata* (11.4%) than the more sensitive *P. acuta* (2.9%), and the majority of CpG methylation in both species occurs in gene bodies and flanking regions. In both species, MBDBS has the greatest capacity for detecting CpGs in coding regions at our sequencing depth, however MBDBS may be limited by intra-sample methylation heterogeneity. RRBS yields robust information for specific loci, albeit without enrichment of any particular genome feature and with significantly reduced genome coverage.
 
 _**Conclusions**_  
 Relative genome size strongly influences the number and location of CpGs detected by each method when sequencing depth is limited, providing nuances in cross-species comparisons. These findings reinforce the role and importance of DNA methylation underlying environmental sensitivity in critical marine invertebrate taxa, and provide a resource for important considerations when examining the functional role of DNA methylation.
