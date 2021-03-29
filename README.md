@@ -2,7 +2,7 @@
 associated with the manuscript:
 
 
-**"Analysis of DNA methylation in invertebrates requires consideration of genome characteristics and methylation landscape"**
+**"Invertebrate methylomes provide insight into mechanisms of environmental tolerance and reveal methodological biases"**
 
 Shelly A Trigg\*<sup>1</sup>, Yaamini R Venkataraman\*<sup>1</sup>, Mackenzie R Gavery<sup>2</sup>, Steven B Roberts<sup>1</sup>, Debashish Bhattacharya<sup>3</sup>, Alan Downey-Wall<sup>4</sup>, Jose Eirin-Lopez<sup>5</sup>, Kevin M Johnson<sup>6,7</sup>, Katie E Lotterhos<sup>4</sup>, Jonathan B. Puritz<sup>8</sup> and Hollie M Putnam<sup>8</sup>+ 
 
