@@ -12,9 +12,9 @@
 
 ### Supplementary Tables
 - [ST1](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST1.csv): Supplementary Table 1: Trimming statistics
-- [ST2](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST2.csv): Supplementary Table 2: Alignment statistics
+- [ST2](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST2.csv): Supplementary Table 2: Coral alignment statistics
 - [ST3](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST3.csv): Supplementary Table 3: C1 alignment statistics
-- [ST4](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST4.csv): Supplementary Table 4: Lambda conversion efficiency and alignment statistics
+- [ST4](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST4.csv): Supplementary Table 4: E. coli conversion efficiency and E. coli alignment statistics
 - [ST5](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST5.csv): Supplementary Table 5: Bisulfite conversion efficiency comparisons
 - [ST6](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST6.csv): Supplementary Table 6: Results from PERMANOVA and beta-dispersion tests for genomic location
 - [ST7](https://github.com/hputnam/Meth_Compare/blob/master/output/supplemental-material/ST7.csv): Supplementary Table 7: Contingency test results for _M. capitata_ and _P. acuta_
