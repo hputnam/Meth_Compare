@@ -163,126 +163,12 @@ Pact.MeanGene.Wide.annot <-left_join(Pact.genes,Pact.MeanGene.Wide, by="gene", k
 Pact.genesums <- colSums(!is.na(Pact.MeanGene.Wide.annot))
 Pact.geneprop <-Pact.genesums/Pact.genesums[4]
 Pact.geneprop
-```
-
-Pacuta Automated placement of GO terms into GOSlim categories
-```{r}
 
 #Identify all the GO per gene and presence or absence of methylation data for each gene and method
 Pact.GO.Method <- full_join(Pact.GO.terms, Pact.MeanGene.Wide.annot, by="gene", keep =FALSE)
 
-slim <- getOBOCollection("http://current.geneontology.org/ontology/subsets/goslim_generic.obo") #get GO database
-
-#Genome
-Pact.GO.queries <- Pact.GO.terms$GO.Term
-Pact.GO_collection <- GOCollection(dput(as.character(Pact.GO.queries))) #Make library of query terms
-Pact.slims_bp <- data.frame(goSlim(Pact.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Pact.slims_bp$category <- row.names(Pact.slims_bp) #save rownames as category
-Pact.slims_mf <- data.frame(goSlim(Pact.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Pact.slims_mf$category <- row.names(Pact.slims_mf) #save rownames as category
-
-#WGBS
-Pact.WGBS.GO <- Pact.GO.Method[, c("gene", "GO.Term", "WGBS")]
-Pact.WGBS.GO <- na.omit(Pact.WGBS.GO)
-Pact.WGBS.GO.queries <- Pact.WGBS.GO$GO.Term
-
-Pact.WGBS.GO_collection <- GOCollection(dput(as.character(Pact.WGBS.GO.queries))) #Make library of query terms
-Pact.WGBS.slims_bp <- data.frame(goSlim(Pact.WGBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Pact.WGBS.slims_bp$category <- row.names(Pact.WGBS.slims_bp) #save rownames as category
-Pact.WGBS.slims_mf <- data.frame(goSlim(Pact.WGBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Pact.WGBS.slims_mf$category <- row.names(Pact.WGBS.slims_mf) #save rownames as category
-
-#RRBS
-Pact.RRBS.GO <- Pact.GO.Method[, c("gene", "GO.Term", "RRBS")]
-Pact.RRBS.GO <- na.omit(Pact.RRBS.GO)
-Pact.RRBS.GO.queries <- Pact.RRBS.GO$GO.Term
-
-Pact.RRBS.GO_collection <- GOCollection(dput(as.character(Pact.RRBS.GO.queries))) #Make library of query terms
-Pact.RRBS.slims_bp <- data.frame(goSlim(Pact.RRBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Pact.RRBS.slims_bp$category <- row.names(Pact.RRBS.slims_bp) #save rownames as category
-Pact.RRBS.slims_mf <- data.frame(goSlim(Pact.RRBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Pact.RRBS.slims_mf$category <- row.names(Pact.RRBS.slims_mf) #save rownames as category
-
-#MBDBS
-Pact.MBDBS.GO <- Pact.GO.Method[, c("gene", "GO.Term", "MBDBS")]
-Pact.MBDBS.GO <- na.omit(Pact.MBDBS.GO)
-Pact.MBDBS.GO.queries <- Pact.MBDBS.GO$GO.Term
-
-Pact.MBDBS.GO_collection <- GOCollection(dput(as.character(Pact.MBDBS.GO.queries))) #Make library of query terms
-Pact.MBDBS.slims_bp <- data.frame(goSlim(Pact.MBDBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Pact.MBDBS.slims_bp$category <- row.names(Pact.MBDBS.slims_bp) #save rownames as category
-Pact.MBDBS.slims_mf <- data.frame(goSlim(Pact.MBDBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Pact.MBDBS.slims_mf$category <- row.names(Pact.MBDBS.slims_mf) #save rownames as category
 ```
 
-Pacuta GOSlim BP comparison by Method
-```{r}
-Pact.SlimBP.compare <- full_join(Pact.slims_bp,Pact.WGBS.slims_bp, by="category", keep=FALSE)
-Pact.SlimBP.compare <- full_join(Pact.SlimBP.compare,Pact.RRBS.slims_bp, by="category", keep=FALSE)
-Pact.SlimBP.compare <- full_join(Pact.SlimBP.compare,Pact.MBDBS.slims_bp, by="category", keep=FALSE)
-Pact.SlimBP.compare <- Pact.SlimBP.compare[,c("Term.x", "category", "Count.x","Count.y","Count.x.x","Count.y.y")]
-colnames(Pact.SlimBP.compare) <- c("Term", "category", "Count.Genome","Count.WGBS","Count.RRBS","Count.MBDBS")
-Pact.SlimBP.compare$WGBS.percent <- Pact.SlimBP.compare$Count.WGBS/Pact.SlimBP.compare$Count.Genome
-Pact.SlimBP.compare$RRBS.percent <- Pact.SlimBP.compare$Count.RRBS/Pact.SlimBP.compare$Count.Genome
-Pact.SlimBP.compare$MBDBS.percent <- Pact.SlimBP.compare$Count.MBDBS/Pact.SlimBP.compare$Count.Genome
-Pact.SlimBP.compare <- Pact.SlimBP.compare %>% filter(Count.Genome!=0)
-Pact.SlimBP.compare$GOcat <- "BP"
-Pact.SlimBP.compare.long <- pivot_longer(Pact.SlimBP.compare, cols = WGBS.percent:MBDBS.percent, values_to = "proportion")
-Pact.SlimBP.compare.long$name <- gsub(".percent","",Pact.SlimBP.compare.long$name)
-
-```
-
-Pacuta GOSlim MF comparison by Method
-```{r}
-Pact.SlimMF.compare <- full_join(Pact.slims_mf,Pact.WGBS.slims_mf, by="category", keep=FALSE)
-Pact.SlimMF.compare <- full_join(Pact.SlimMF.compare,Pact.RRBS.slims_mf, by="category", keep=FALSE)
-Pact.SlimMF.compare <- full_join(Pact.SlimMF.compare,Pact.MBDBS.slims_mf, by="category", keep=FALSE)
-Pact.SlimMF.compare <- Pact.SlimMF.compare[,c("Term.x", "category", "Count.x","Count.y","Count.x.x","Count.y.y")]
-colnames(Pact.SlimMF.compare) <- c("Term", "category", "Count.Genome","Count.WGBS","Count.RRBS","Count.MBDBS")
-Pact.SlimMF.compare$WGBS.percent <- Pact.SlimMF.compare$Count.WGBS/Pact.SlimMF.compare$Count.Genome
-Pact.SlimMF.compare$RRBS.percent <- Pact.SlimMF.compare$Count.RRBS/Pact.SlimMF.compare$Count.Genome
-Pact.SlimMF.compare$MBDBS.percent <- Pact.SlimMF.compare$Count.MBDBS/Pact.SlimMF.compare$Count.Genome
-Pact.SlimMF.compare <- Pact.SlimMF.compare %>% filter(Count.Genome!=0)
-Pact.SlimMF.compare$GOcat <- "MF"
-Pact.SlimMF.compare.long <- pivot_longer(Pact.SlimMF.compare, cols = WGBS.percent:MBDBS.percent, values_to = "proportion")
-Pact.SlimMF.compare.long$name <- gsub(".percent","",Pact.SlimMF.compare.long$name)
-
-```
-
-Pacuta Plotting Slims
-```{r}
-Pact.all.slims <- rbind(Pact.SlimBP.compare.long, Pact.SlimMF.compare.long)
-
-
-ggplot(Pact.SlimBP.compare.long, aes(x=name, y=proportion))+
-  geom_bar(stat='identity')+
-  facet_wrap(~category)
-max(Pact.SlimBP.compare.long$proportion)
-
-ggplot(Pact.SlimMF.compare.long, aes(x=name, y=proportion))+
-  geom_bar(stat='identity')+
-  facet_wrap(~category)
-max(Pact.SlimMF.compare.long$proportion)
-
-
-```
-
-Pacuta Chi-Square test of independence
-```{r}
-
-Pact.SlimMF.compare.cs <- Pact.SlimMF.compare[,c(2,4,5,6)]  
-rownames(Pact.SlimMF.compare.cs) <- Pact.SlimMF.compare.cs$category
-Pact.SlimMF.compare.cs <- Pact.SlimMF.compare.cs[,c(2,3,4)]  
-Pact.MF <- chisq.test(Pact.SlimMF.compare.cs)
-Pact.MF
-
-Pact.SlimBP.compare.cs <- Pact.SlimBP.compare[,c(2,4,5,6)]  
-rownames(Pact.SlimBP.compare.cs) <- Pact.SlimBP.compare.cs$category
-Pact.SlimBP.compare.cs <- Pact.SlimBP.compare.cs[,c(2,3,4)]  
-Pact.BP <- chisq.test(Pact.SlimBP.compare.cs)
-Pact.BP
-```      
-        
 Pact Gene Ontology Enrichment
 ```{r}
 #Make ID and length vectors
@@ -346,6 +232,7 @@ Pact.GOwall.RRBS.MF <- Pact.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(ov
 nrow(Pact.GOwall.RRBS.MF)
 Pact.GOwall.MBDBS.MF <- Pact.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
 nrow(Pact.GOwall.MBDBS.MF)
+Pact.MFgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
 colnames(Pact.MFgoterms) <- c("category", "Term")
   
 Pact.GO.MF <- full_join(Pact.GOwall.WGBS.MF,Pact.GOwall.RRBS.MF, by="category", keep=FALSE)
@@ -384,6 +271,7 @@ Pact.GOwall.RRBS.BP <- Pact.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(ov
 nrow(Pact.GOwall.RRBS.BP)
 Pact.GOwall.MBDBS.BP <- Pact.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
 nrow(Pact.GOwall.MBDBS.BP)
+Pact.BPgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
 colnames(Pact.BPgoterms) <- c("category", "Term")
   
 Pact.GO.BP <- full_join(Pact.GOwall.WGBS.BP,Pact.GOwall.RRBS.BP, by="category", keep=FALSE)
@@ -443,124 +331,6 @@ Mcap.genesums <- colSums(!is.na(Mcap.MeanGene.Wide.annot))
 Mcap.geneprop <-Mcap.genesums/Mcap.genesums[4]
 Mcap.geneprop
 ```
-
-Mcapitata Automated placement of GO terms into GOSlim categories
-```{r}
-
-#Identify all the GO per gene and presence or absence of methylation data for each gene and method
-Mcap.GO.Method <- full_join(Mcap.GO.terms, Mcap.MeanGene.Wide.annot, by="gene", keep =FALSE)
-
-slim <- getOBOCollection("http://current.geneontology.org/ontology/subsets/goslim_generic.obo") #get GO database
-
-#Genome
-Mcap.GO.queries <- Mcap.GO.terms$GO.Term
-Mcap.GO_collection <- GOCollection(dput(as.character(Mcap.GO.queries))) #Make library of query terms
-Mcap.slims_bp <- data.frame(goSlim(Mcap.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Mcap.slims_bp$category <- row.names(Mcap.slims_bp) #save rownames as category
-Mcap.slims_mf <- data.frame(goSlim(Mcap.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Mcap.slims_mf$category <- row.names(Mcap.slims_mf) #save rownames as category
-
-#WGBS
-Mcap.WGBS.GO <- Mcap.GO.Method[, c("gene", "GO.Term", "WGBS")]
-Mcap.WGBS.GO <- na.omit(Mcap.WGBS.GO)
-Mcap.WGBS.GO.queries <- Mcap.WGBS.GO$GO.Term
-
-Mcap.WGBS.GO_collection <- GOCollection(dput(as.character(Mcap.WGBS.GO.queries))) #Make library of query terms
-Mcap.WGBS.slims_bp <- data.frame(goSlim(Mcap.WGBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Mcap.WGBS.slims_bp$category <- row.names(Mcap.WGBS.slims_bp) #save rownames as category
-Mcap.WGBS.slims_mf <- data.frame(goSlim(Mcap.WGBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Mcap.WGBS.slims_mf$category <- row.names(Mcap.WGBS.slims_mf) #save rownames as category
-
-#RRBS
-Mcap.RRBS.GO <- Mcap.GO.Method[, c("gene", "GO.Term", "RRBS")]
-Mcap.RRBS.GO <- na.omit(Mcap.RRBS.GO)
-Mcap.RRBS.GO.queries <- Mcap.RRBS.GO$GO.Term
-
-Mcap.RRBS.GO_collection <- GOCollection(dput(as.character(Mcap.RRBS.GO.queries))) #Make library of query terms
-Mcap.RRBS.slims_bp <- data.frame(goSlim(Mcap.RRBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Mcap.RRBS.slims_bp$category <- row.names(Mcap.RRBS.slims_bp) #save rownames as category
-Mcap.RRBS.slims_mf <- data.frame(goSlim(Mcap.RRBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Mcap.RRBS.slims_mf$category <- row.names(Mcap.RRBS.slims_mf) #save rownames as category
-
-#MBDBS
-Mcap.MBDBS.GO <- Mcap.GO.Method[, c("gene", "GO.Term", "MBDBS")]
-Mcap.MBDBS.GO <- na.omit(Mcap.MBDBS.GO)
-Mcap.MBDBS.GO.queries <- Mcap.MBDBS.GO$GO.Term
-
-Mcap.MBDBS.GO_collection <- GOCollection(dput(as.character(Mcap.MBDBS.GO.queries))) #Make library of query terms
-Mcap.MBDBS.slims_bp <- data.frame(goSlim(Mcap.MBDBS.GO_collection, slim, "BP")) #Find common parent terms to slim down our list
-Mcap.MBDBS.slims_bp$category <- row.names(Mcap.MBDBS.slims_bp) #save rownames as category
-Mcap.MBDBS.slims_mf <- data.frame(goSlim(Mcap.MBDBS.GO_collection, slim, "MF")) #Find common parent terms to slim down our list
-Mcap.MBDBS.slims_mf$category <- row.names(Mcap.MBDBS.slims_mf) #save rownames as category
-```
-
-Mcapitata GOSlim BP comparison by Method
-```{r}
-Mcap.SlimBP.compare <- full_join(Mcap.slims_bp,Mcap.WGBS.slims_bp, by="category", keep=FALSE)
-Mcap.SlimBP.compare <- full_join(Mcap.SlimBP.compare,Mcap.RRBS.slims_bp, by="category", keep=FALSE)
-Mcap.SlimBP.compare <- full_join(Mcap.SlimBP.compare,Mcap.MBDBS.slims_bp, by="category", keep=FALSE)
-Mcap.SlimBP.compare <- Mcap.SlimBP.compare[,c("Term.x", "category", "Count.x","Count.y","Count.x.x","Count.y.y")]
-colnames(Mcap.SlimBP.compare) <- c("Term", "category", "Count.Genome","Count.WGBS","Count.RRBS","Count.MBDBS")
-Mcap.SlimBP.compare$WGBS.percent <- Mcap.SlimBP.compare$Count.WGBS/Mcap.SlimBP.compare$Count.Genome
-Mcap.SlimBP.compare$RRBS.percent <- Mcap.SlimBP.compare$Count.RRBS/Mcap.SlimBP.compare$Count.Genome
-Mcap.SlimBP.compare$MBDBS.percent <- Mcap.SlimBP.compare$Count.MBDBS/Mcap.SlimBP.compare$Count.Genome
-Mcap.SlimBP.compare <- Mcap.SlimBP.compare %>% filter(Count.Genome!=0)
-Mcap.SlimBP.compare$GOcat <- "BP"
-Mcap.SlimBP.compare.long <- pivot_longer(Mcap.SlimBP.compare, cols = WGBS.percent:MBDBS.percent, values_to = "proportion")
-Mcap.SlimBP.compare.long$name <- gsub(".percent","",Mcap.SlimBP.compare.long$name)
-
-```
-
-Mcapitata GOSlim MF comparison by Method
-```{r}
-Mcap.SlimMF.compare <- full_join(Mcap.slims_mf,Mcap.WGBS.slims_mf, by="category", keep=FALSE)
-Mcap.SlimMF.compare <- full_join(Mcap.SlimMF.compare,Mcap.RRBS.slims_mf, by="category", keep=FALSE)
-Mcap.SlimMF.compare <- full_join(Mcap.SlimMF.compare,Mcap.MBDBS.slims_mf, by="category", keep=FALSE)
-Mcap.SlimMF.compare <- Mcap.SlimMF.compare[,c("Term.x", "category", "Count.x","Count.y","Count.x.x","Count.y.y")]
-colnames(Mcap.SlimMF.compare) <- c("Term", "category", "Count.Genome","Count.WGBS","Count.RRBS","Count.MBDBS")
-Mcap.SlimMF.compare$WGBS.percent <- Mcap.SlimMF.compare$Count.WGBS/Mcap.SlimMF.compare$Count.Genome
-Mcap.SlimMF.compare$RRBS.percent <- Mcap.SlimMF.compare$Count.RRBS/Mcap.SlimMF.compare$Count.Genome
-Mcap.SlimMF.compare$MBDBS.percent <- Mcap.SlimMF.compare$Count.MBDBS/Mcap.SlimMF.compare$Count.Genome
-Mcap.SlimMF.compare <- Mcap.SlimMF.compare %>% filter(Count.Genome!=0)
-Mcap.SlimMF.compare$GOcat <- "MF"
-Mcap.SlimMF.compare.long <- pivot_longer(Mcap.SlimMF.compare, cols = WGBS.percent:MBDBS.percent, values_to = "proportion")
-Mcap.SlimMF.compare.long$name <- gsub(".percent","",Mcap.SlimMF.compare.long$name)
-
-```
-
-Mcapitata Plotting Slims
-```{r}
-Mcap.all.slims <- rbind(Mcap.SlimBP.compare.long, Mcap.SlimMF.compare.long)
-
-
-ggplot(Mcap.SlimBP.compare.long, aes(x=name, y=proportion))+
-  geom_bar(stat='identity')+
-  facet_wrap(~category)
-max(Mcap.SlimBP.compare.long$proportion)
-
-ggplot(Mcap.SlimMF.compare.long, aes(x=name, y=proportion))+
-  geom_bar(stat='identity')+
-  facet_wrap(~category)
-max(Mcap.SlimMF.compare.long$proportion)
-
-
-```
-
-Mcapitata Chi-Square test of independence
-```{r}
-
-Mcap.SlimMF.compare.cs <- Mcap.SlimMF.compare[,c(2,4,5,6)]  
-rownames(Mcap.SlimMF.compare.cs) <- Mcap.SlimMF.compare.cs$category
-Mcap.SlimMF.compare.cs <- Mcap.SlimMF.compare.cs[,c(2,3,4)]  
-Mcap.MF <- chisq.test(Mcap.SlimMF.compare.cs)
-Mcap.MF
-
-Mcap.SlimBP.compare.cs <- Mcap.SlimBP.compare[,c(2,4,5,6)]  
-rownames(Mcap.SlimBP.compare.cs) <- Mcap.SlimBP.compare.cs$category
-Mcap.SlimBP.compare.cs <- Mcap.SlimBP.compare.cs[,c(2,3,4)]  
-Mcap.BP <- chisq.test(Mcap.SlimBP.compare.cs)
-Mcap.BP
-```   
 
 
 Mcap Gene Ontology Enrichment
@@ -625,6 +395,7 @@ Mcap.GOwall.RRBS.MF <- Mcap.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(ov
 nrow(Mcap.GOwall.RRBS.MF)
 Mcap.GOwall.MBDBS.MF <- Mcap.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
 nrow(Mcap.GOwall.MBDBS.MF)
+Mcap.MFgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
 colnames(Mcap.MFgoterms) <- c("category", "Term")
   
 Mcap.GO.MF <- full_join(Mcap.GOwall.WGBS.MF,Mcap.GOwall.RRBS.MF, by="category", keep=FALSE)
@@ -663,6 +434,7 @@ Mcap.GOwall.RRBS.BP <- Mcap.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(ov
 nrow(Mcap.GOwall.RRBS.BP)
 Mcap.GOwall.MBDBS.BP <- Mcap.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
 nrow(Mcap.GOwall.MBDBS.BP)
+Mcap.BPgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
 colnames(Mcap.BPgoterms) <- c("category", "Term")
   
 Mcap.GO.BP <- full_join(Mcap.GOwall.WGBS.BP,Mcap.GOwall.RRBS.BP, by="category", keep=FALSE)
