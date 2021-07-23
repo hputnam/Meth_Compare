@@ -340,10 +340,12 @@ Pact.GOwall.MBDBS <- goseq(Pact.pwf.MBDBS, Pact.IDvector, gene2cat=Pact.GO.ref.G
 
 Pacuta Plotting enriched MF terms
 ```{r}
-Pact.GOwall.WGBS.MF <- Pact.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05) 
+Pact.GOwall.WGBS.MF <- Pact.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.WGBS.MF)
 Pact.GOwall.RRBS.MF <- Pact.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.RRBS.MF)
 Pact.GOwall.MBDBS.MF <- Pact.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
-Pact.MFgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
+nrow(Pact.GOwall.MBDBS.MF)
 colnames(Pact.MFgoterms) <- c("category", "Term")
   
 Pact.GO.MF <- full_join(Pact.GOwall.WGBS.MF,Pact.GOwall.RRBS.MF, by="category", keep=FALSE)
@@ -352,6 +354,7 @@ Pact.GO.MF <- Pact.GO.MF[,c("category", "over_represented_pvalue.x","over_repres
 colnames(Pact.GO.MF) <- c("category", "WGBS","RRBS","MBDBS")
 Pact.GO.MF <- left_join(Pact.GO.MF,Pact.MFgoterms, by="category", keep=FALSE)
 Pact.GO.MF$GOterm_desc <- paste0(Pact.GO.MF$category, " ", Pact.GO.MF$Term)
+colSums(!is.na(Pact.GO.MF))
 Pact.GO.MF.long <- pivot_longer(Pact.GO.MF, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
 Pact.GO.MF.long <- Pact.GO.MF.long %>% mutate(term = fct_reorder(GOterm_desc, Pact.GO.MF.long$category))
 Pact.GO.MF.long$ord <-seq(1:nrow(Pact.GO.MF.long))
@@ -375,10 +378,12 @@ Pact.MFplot <- Pact.GO.MF.long %>% ggplot(aes(x = name, y = reorder(GOterm_desc,
  
 Pacuta Plotting enriched BP terms        
 ```{r}
-Pact.GOwall.WGBS.BP <- Pact.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05) 
+Pact.GOwall.WGBS.BP <- Pact.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.WGBS.BP)
 Pact.GOwall.RRBS.BP <- Pact.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.RRBS.BP)
 Pact.GOwall.MBDBS.BP <- Pact.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
-Pact.BPgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
+nrow(Pact.GOwall.MBDBS.BP)
 colnames(Pact.BPgoterms) <- c("category", "Term")
   
 Pact.GO.BP <- full_join(Pact.GOwall.WGBS.BP,Pact.GOwall.RRBS.BP, by="category", keep=FALSE)
@@ -387,6 +392,7 @@ Pact.GO.BP <- Pact.GO.BP[,c("category", "over_represented_pvalue.x","over_repres
 colnames(Pact.GO.BP) <- c("category", "WGBS","RRBS","MBDBS")
 Pact.GO.BP <- left_join(Pact.GO.BP,Pact.BPgoterms, by="category", keep=FALSE)
 Pact.GO.BP$GOterm_desc <- paste0(Pact.GO.BP$category, " ", Pact.GO.BP$Term)
+colSums(!is.na(Pact.GO.BP))
 Pact.GO.BP.long <- pivot_longer(Pact.GO.BP, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
 Pact.GO.BP.long <- Pact.GO.BP.long %>% mutate(term = fct_reorder(GOterm_desc, Pact.GO.BP.long$category))
 Pact.GO.BP.long$ord <-seq(1:nrow(Pact.GO.BP.long))
@@ -613,10 +619,12 @@ Mcap.GOwall.MBDBS <- goseq(Mcap.pwf.MBDBS, Mcap.IDvector, gene2cat=Mcap.GO.ref.G
 ```
 Mcapitata Plotting enriched MF terms   
 ```{r}
-Mcap.GOwall.WGBS.MF <- Mcap.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05) 
+Mcap.GOwall.WGBS.MF <- Mcap.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.WGBS.MF)
 Mcap.GOwall.RRBS.MF <- Mcap.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.RRBS.MF)
 Mcap.GOwall.MBDBS.MF <- Mcap.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
-Mcap.MFgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
+nrow(Mcap.GOwall.MBDBS.MF)
 colnames(Mcap.MFgoterms) <- c("category", "Term")
   
 Mcap.GO.MF <- full_join(Mcap.GOwall.WGBS.MF,Mcap.GOwall.RRBS.MF, by="category", keep=FALSE)
@@ -625,6 +633,7 @@ Mcap.GO.MF <- Mcap.GO.MF[,c("category", "over_represented_pvalue.x","over_repres
 colnames(Mcap.GO.MF) <- c("category", "WGBS","RRBS","MBDBS")
 Mcap.GO.MF <- left_join(Mcap.GO.MF,Mcap.MFgoterms, by="category", keep=FALSE)
 Mcap.GO.MF$GOterm_desc <- paste0(Mcap.GO.MF$category, " ", Mcap.GO.MF$Term)
+colSums(!is.na(Mcap.GO.MF))
 Mcap.GO.MF.long <- pivot_longer(Mcap.GO.MF, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
 Mcap.GO.MF.long <- Mcap.GO.MF.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.MF.long$category))
 Mcap.GO.MF.long$ord <-seq(1:nrow(Mcap.GO.MF.long))
@@ -648,10 +657,12 @@ Mcap.MFplot <- Mcap.GO.MF.long  %>%  ggplot(aes(x = name, y = reorder(GOterm_des
 
 Mcapitata Plotting enriched BP terms        
 ```{r}
-Mcap.GOwall.WGBS.BP <- Mcap.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05) 
+Mcap.GOwall.WGBS.BP <- Mcap.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.WGBS.BP)
 Mcap.GOwall.RRBS.BP <- Mcap.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.RRBS.BP)
 Mcap.GOwall.MBDBS.BP <- Mcap.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
-Mcap.BPgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
+nrow(Mcap.GOwall.MBDBS.BP)
 colnames(Mcap.BPgoterms) <- c("category", "Term")
   
 Mcap.GO.BP <- full_join(Mcap.GOwall.WGBS.BP,Mcap.GOwall.RRBS.BP, by="category", keep=FALSE)
@@ -660,6 +671,7 @@ Mcap.GO.BP <- Mcap.GO.BP[,c("category", "over_represented_pvalue.x","over_repres
 colnames(Mcap.GO.BP) <- c("category", "WGBS","RRBS","MBDBS")
 Mcap.GO.BP <- left_join(Mcap.GO.BP,Mcap.BPgoterms, by="category", keep=FALSE)
 Mcap.GO.BP$GOterm_desc <- paste0(Mcap.GO.BP$category, " ", Mcap.GO.BP$Term)
+colSums(!is.na(Mcap.GO.BP))
 Mcap.GO.BP.long <- pivot_longer(Mcap.GO.BP, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
 Mcap.GO.BP.long <- Mcap.GO.BP.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.BP.long$category))
 Mcap.GO.BP.long$ord <-seq(1:nrow(Mcap.GO.BP.long))
