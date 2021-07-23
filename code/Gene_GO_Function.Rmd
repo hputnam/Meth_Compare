@@ -437,7 +437,7 @@ Mcap.MeanGene <- Mcap.meth.data.T %>% group_by(gene,Method) %>% summarise(mean =
 
 Mcap.MeanGene.Wide <- Mcap.MeanGene %>% pivot_wider(names_from=Method, values_from=mean)
 
-Mcap.MeanGene.Wide.annot <-left_join(Mcap.genes,Mcap.MeanGene.Wide, by="gene", keep =FALSE)
+Mcap.MeanGene.Wide.annot <-full_join(Mcap.genes,Mcap.MeanGene.Wide, by="gene", keep =FALSE)
 
 Mcap.genesums <- colSums(!is.na(Mcap.MeanGene.Wide.annot))
 Mcap.geneprop <-Mcap.genesums/Mcap.genesums[4]
