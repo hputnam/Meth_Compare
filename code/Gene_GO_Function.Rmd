@@ -698,19 +698,19 @@ Plotting enrichment of the missing genes by GO and library prep method and writi
 ```{r}
 #BP figure arrangement
 FigureBP <- Mcap.BPplot + Pact.BPplot
-ggsave(file="output/supplemental-material/SFx_BP_01.jpg", FigureBP, width = 40, height = 40, units = c("in"))
+ggsave(file="output/supplemental-material/SF6.jpg", FigureBP, width = 40, height = 40, units = c("in"))
 #ggsave(file="BP.png", FigureBP, width = 40, height = 40, units = c("in"))
 
 #MF figure arrangement
 FigureMF <- Mcap.MFplot + Pact.MFplot
-ggsave(file="output/supplemental-material/SFx_MF_01.jpg", FigureMF, width = 40, height = 40, units = c("in"))
+ggsave(file="output/supplemental-material/SF7.jpg", FigureMF, width = 40, height = 40, units = c("in"))
 #ggsave(file="MF.png", FigureMF, width = 40, height = 40, units = c("in"))
 
 #write out Goseq results files with P<0.05 terms
-write.csv(Pact.GO.MF, "output/supplemental-material/ST_Pact.GO.MF.csv")
-write.csv(Pact.GO.BP, "output/supplemental-material/ST_Pact.GO.BP.csv")
-write.csv(Mcap.GO.MF, "output/supplemental-material/ST_Mcap.GO.MF.csv")
-write.csv(Mcap.GO.BP, "output/supplemental-material/ST_Mcap.GO.BP.csv")
+write.csv(Pact.GO.MF, "output/supplemental-material/ST8_Pact.GO.MF.csv")
+write.csv(Pact.GO.BP, "output/supplemental-material/ST9_Pact.GO.BP.csv")
+write.csv(Mcap.GO.MF, "output/supplemental-material/ST6_Mcap.GO.MF.csv")
+write.csv(Mcap.GO.BP, "output/supplemental-material/ST7_Mcap.GO.BP.csv")
 
 
 ```
