@@ -20,31 +20,30 @@ library(patchwork)
 ```{r}
 #load sample information
 sample.info <- read.csv("metadata/Coral.Sample.Info.csv", header=T, sep=",", na.string="NA", stringsAsFactors = F) #read in info
-samp <- sample.info$Sample.ID # set sample info
 
 #Load Pact gene gff
 Pact.genes <- read.csv(file="genome-feature-files/Pact_Structural_annotation_abintio.gff", header=FALSE, sep="\t", skip=22) #load sample info
-Pact.genes <- filter(Pact.genes, V3 == "gene")
-Pact.genes$V1 <- gsub("cov", "_cov", Pact.genes$V1)
+Pact.genes <- filter(Pact.genes, V3 == "gene") #filter for genes only
+Pact.genes$V1 <- gsub("cov", "_cov", Pact.genes$V1) #fix name formae
 write.table(Pact.genes, file="genome-feature-files/Pact.GFFannotation.Genes.gff", sep="\t", 
             col.names = FALSE, row.names=FALSE, quote=FALSE)
-Pact.genes <- Pact.genes[,c(1,4,5,9)]
-colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene")
-Pact.genes.length <- Pact.genes
-Pact.genes.length$length <- Pact.genes$gene.stop-Pact.genes$gene.start
+Pact.genes <- Pact.genes[,c(1,4,5,9)] #select columns of interest
+colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene") #rename columns
+Pact.genes.length <- Pact.genes #generate dataframes of gene length
+Pact.genes.length$length <- Pact.genes$gene.stop-Pact.genes$gene.start #caculate gene length
   
 #Load Pact Annotation Info
 Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
 colnames(Pact.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
 Pact.annot <- Pact.annot %>% 
-  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
+  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids, which is a single annotation per gene
 
-#Identify full set of GO terms
-Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
-splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
-Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
-Pact.GO.terms <- Pact.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
-colnames(Pact.GO.terms) <- c("gene", "GO.Term")
+# #Identify full set of GO terms
+# Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
+# splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
+# Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+# Pact.GO.terms <- Pact.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+# colnames(Pact.GO.terms) <- c("gene", "GO.Term")
 
 #Load Mcap Annotation Info
 Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
@@ -165,7 +164,7 @@ Pact.geneprop <-Pact.genesums/Pact.genesums[4]
 Pact.geneprop
 
 #Identify all the GO per gene and presence or absence of methylation data for each gene and method
-Pact.GO.Method <- full_join(Pact.GO.terms, Pact.MeanGene.Wide.annot, by="gene", keep =FALSE)
+#Pact.GO.Method <- full_join(Pact.GO.terms, Pact.MeanGene.Wide.annot, by="gene", keep =FALSE)
 
 ```
 
@@ -178,21 +177,19 @@ dim(Pact.GO.ref)
 Pact.IDvector <- Pact.GO.ref$gene
 Pact.lengthVector <- Pact.GO.ref$length 
 
-`%notin%` <- Negate(`%in%`)
-
 Pact.WGBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,4)] %>% filter(!is.na(WGBS)) 
 Pact.WGBS.genes<-as.vector(Pact.WGBS.genes.meanmeth$gene)
-Pact.WGBS.genes=as.integer(Pact.GO.ref$gene%notin%Pact.WGBS.genes)
+Pact.WGBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.WGBS.genes)
 sum(Pact.WGBS.genes)
 
 Pact.RRBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,3)] %>% filter(!is.na(RRBS)) 
 Pact.RRBS.genes<-as.vector(Pact.RRBS.genes.meanmeth$gene)
-Pact.RRBS.genes=as.integer(Pact.GO.ref$gene%notin%Pact.RRBS.genes)
+Pact.RRBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.RRBS.genes)
 sum(Pact.RRBS.genes)
 
 Pact.MBDBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,2)] %>% filter(!is.na(MBDBS)) 
 Pact.MBDBS.genes<-as.vector(Pact.MBDBS.genes.meanmeth$gene)
-Pact.MBDBS.genes=as.integer(Pact.GO.ref$gene%notin%Pact.MBDBS.genes)
+Pact.MBDBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.MBDBS.genes)
 sum(Pact.MBDBS.genes)
 
 #Calculate Probability Weighting Function based on a given set of biased data which is gene length
@@ -212,7 +209,7 @@ Pact.GO.ref <-Pact.GO.ref[,c(1,2,15)]
 Pact.GO.ref$GO.IDs <- as.character(Pact.GO.ref$GO.IDs)
 Pact.GO.ref$GO.IDs <- replace_na(Pact.GO.ref$GO.IDs, "unknown")
 Pact.GO.ref <- Pact.GO.ref[,c(1,3)]
-splitted <- strsplit(as.character(Pact.GO.ref$GO.IDs), "; ") #slit into multiple GO ids
+splitted <- strsplit(as.character(Pact.GO.ref$GO.IDs), "; ") #split into multiple GO ids
 Pact.GO.ref.GOs <- data.frame(v1 = rep.int(Pact.GO.ref$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
 colnames(Pact.GO.ref.GOs) <- c("gene", "GO.Term")
 
@@ -342,21 +339,19 @@ dim(Mcap.GO.ref)
 Mcap.IDvector <- Mcap.GO.ref$gene
 Mcap.lengthVector <- Mcap.GO.ref$length 
 
-`%notin%` <- Negate(`%in%`)
-
 Mcap.WGBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,4)] %>% filter(!is.na(WGBS)) 
 Mcap.WGBS.genes<-as.vector(Mcap.WGBS.genes.meanmeth$gene)
-Mcap.WGBS.genes=as.integer(Mcap.GO.ref$gene%notin%Mcap.WGBS.genes)
+Mcap.WGBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.WGBS.genes)
 sum(Mcap.WGBS.genes)
 
 Mcap.RRBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,3)] %>% filter(!is.na(RRBS)) 
 Mcap.RRBS.genes<-as.vector(Mcap.RRBS.genes.meanmeth$gene)
-Mcap.RRBS.genes=as.integer(Mcap.GO.ref$gene%notin%Mcap.RRBS.genes)
+Mcap.RRBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.RRBS.genes)
 sum(Mcap.RRBS.genes)
 
 Mcap.MBDBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,2)] %>% filter(!is.na(MBDBS)) 
 Mcap.MBDBS.genes<-as.vector(Mcap.MBDBS.genes.meanmeth$gene)
-Mcap.MBDBS.genes=as.integer(Mcap.GO.ref$gene%notin%Mcap.MBDBS.genes)
+Mcap.MBDBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.MBDBS.genes)
 sum(Mcap.MBDBS.genes)
 
 #Calculate Probability Weighting Function based on a given set of biased data which is gene length
@@ -376,7 +371,7 @@ Mcap.GO.ref <-Mcap.GO.ref[,c(1,2,15)]
 Mcap.GO.ref$GO.IDs <- as.character(Mcap.GO.ref$GO.IDs)
 Mcap.GO.ref$GO.IDs <- replace_na(Mcap.GO.ref$GO.IDs, "unknown")
 Mcap.GO.ref <- Mcap.GO.ref[,c(1,3)]
-splitted <- strsplit(as.character(Mcap.GO.ref$GO.IDs), "; ") #slit into multiple GO ids
+splitted <- strsplit(as.character(Mcap.GO.ref$GO.IDs), "; ") #split into multiple GO ids
 Mcap.GO.ref.GOs <- data.frame(v1 = rep.int(Mcap.GO.ref$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
 colnames(Mcap.GO.ref.GOs) <- c("gene", "GO.Term")
 
@@ -409,7 +404,7 @@ Mcap.GO.MF.long <- pivot_longer(Mcap.GO.MF, cols = WGBS:MBDBS, values_to = "over
 Mcap.GO.MF.long <- Mcap.GO.MF.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.MF.long$category))
 Mcap.GO.MF.long$ord <-seq(1:nrow(Mcap.GO.MF.long))
 
-Mcap.MFplot <- Mcap.GO.MF.long  %>%  ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) + 
+Mcap.MFplot <- Mcap.GO.MF.long  %>% filter(over_represented_pvalue<.01)%>%  ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) + 
   geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
   scale_y_discrete(position = "right") +
   scale_fill_continuous(na.value = 'white')+
@@ -448,7 +443,7 @@ Mcap.GO.BP.long <- pivot_longer(Mcap.GO.BP, cols = WGBS:MBDBS, values_to = "over
 Mcap.GO.BP.long <- Mcap.GO.BP.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.BP.long$category))
 Mcap.GO.BP.long$ord <-seq(1:nrow(Mcap.GO.BP.long))
 
-Mcap.BPplot <- Mcap.GO.BP.long  %>%  ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) +  
+Mcap.BPplot <- Mcap.GO.BP.long %>% filter(over_represented_pvalue<.01) %>%   ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) +  
   geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
   scale_y_discrete(position = "right") +
   scale_fill_continuous(na.value = 'white')+
