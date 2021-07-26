@@ -253,7 +253,7 @@ Pact.MFplot <- Pact.GO.MF.long %>% ggplot(aes(x = name, y = reorder(GOterm_desc,
   strip.text.x = element_text(size = 24, face = "bold"),
   axis.title = element_blank(),
   axis.text.x = element_text(size = 24), 
-  axis.text.y = element_text(size = 12), 
+  axis.text.y = element_text(size = 10), 
   legend.title = element_text(size = 12), legend.text = element_text(size = 11),
   plot.title = element_text(size = 40, face = "bold.italic"))+
   ggtitle('B) P. acuta')
@@ -292,7 +292,7 @@ Pact.BPplot <- Pact.GO.BP.long  %>%  ggplot(aes(x = name, y = reorder(GOterm_des
   strip.text.x = element_text(size = 12, face = "bold"),
   axis.title = element_blank(),
   axis.text.x = element_text(size = 24), 
-  axis.text.y = element_text(size = 12), 
+  axis.text.y = element_text(size = 6), 
   legend.title = element_text(size = 12), legend.text = element_text(size = 11),
   plot.title = element_text(size = 40, face = "bold.italic"))+
   ggtitle('B) P. acuta')
@@ -449,11 +449,11 @@ Mcap.BPplot <- Mcap.GO.BP.long %>% filter(over_represented_pvalue<.01) %>%   ggp
   scale_fill_continuous(na.value = 'white')+
   theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
   panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
-  strip.text.y.left = element_text(angle=0, size = 8, face = "bold"),
+  strip.text.y.left = element_text(angle=0, size = 4, face = "bold"),
   strip.text.x = element_text(size = 12, face = "bold"),
   axis.title = element_blank(),
   axis.text.x = element_text(size = 24), 
-  axis.text.y = element_text(size = 12), 
+  axis.text.y = element_text(size = 6), 
   legend.title = element_text(size = 12), legend.text = element_text(size = 11),
   plot.title = element_text(size = 40, face = "bold.italic"))+
   ggtitle('A) M. capitata')
@@ -474,10 +474,10 @@ ggsave(file="output/supplemental-material/SF7.jpg", FigureMF, width = 40, height
 #ggsave(file="MF.png", FigureMF, width = 40, height = 40, units = c("in"))
 
 #write out Goseq results files with P<0.05 terms
-write.csv(Pact.GO.MF, "output/supplemental-material/ST8_Pact.GO.MF.csv")
-write.csv(Pact.GO.BP, "output/supplemental-material/ST9_Pact.GO.BP.csv")
-write.csv(Mcap.GO.MF, "output/supplemental-material/ST6_Mcap.GO.MF.csv")
-write.csv(Mcap.GO.BP, "output/supplemental-material/ST7_Mcap.GO.BP.csv")
+write.csv(Pact.GO.MF, "output/supplemental-material/ST8.csv")
+write.csv(Pact.GO.BP, "output/supplemental-material/ST9.csv")
+write.csv(Mcap.GO.MF, "output/supplemental-material/ST6.csv")
+write.csv(Mcap.GO.BP, "output/supplemental-material/ST7.csv")
 
 
 ```
