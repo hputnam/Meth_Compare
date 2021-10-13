@@ -1,0 +1,483 @@
+---
+title: "DEG"
+author: "HM Putnam"
+date: "7/16/2021"
+output: html_document
+---
+Load Libraries
+```{r message = FALSE, warning = FALSE}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)
+library(tidyr)
+library(genefilter)
+library(GSEABase)
+library(goseq)
+library(patchwork)
+```
+
+## Loading genomic and annotation data
+```{r}
+#load sample information
+sample.info <- read.csv("metadata/Coral.Sample.Info.csv", header=T, sep=",", na.string="NA", stringsAsFactors = F) #read in info
+
+#Load Pact gene gff
+Pact.genes <- read.csv(file="genome-feature-files/Pact_Structural_annotation_abintio.gff", header=FALSE, sep="\t", skip=22) #load sample info
+Pact.genes <- filter(Pact.genes, V3 == "gene") #filter for genes only
+Pact.genes$V1 <- gsub("cov", "_cov", Pact.genes$V1) #fix name formae
+write.table(Pact.genes, file="genome-feature-files/Pact.GFFannotation.Genes.gff", sep="\t", 
+            col.names = FALSE, row.names=FALSE, quote=FALSE)
+Pact.genes <- Pact.genes[,c(1,4,5,9)] #select columns of interest
+colnames(Pact.genes) <- c("scaffold",  "gene.start","gene.stop", "gene") #rename columns
+Pact.genes.length <- Pact.genes #generate dataframes of gene length
+Pact.genes.length$length <- Pact.genes$gene.stop-Pact.genes$gene.start #caculate gene length
+  
+#Load Pact Annotation Info
+Pact.annot <-  read.csv(file="genome-feature-files/Pact-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
+colnames(Pact.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+Pact.annot <- Pact.annot %>% 
+  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids, which is a single annotation per gene
+
+# #Identify full set of GO terms
+# Pact.GO <- Pact.annot[,c(2,14)] #identify GOids
+# splitted <- strsplit(as.character(Pact.GO$GO.IDs), "; ") #slit into multiple GO ids
+# Pact.GOs <- data.frame(v1 = rep.int(Pact.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+# Pact.GO.terms <- Pact.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+# colnames(Pact.GO.terms) <- c("gene", "GO.Term")
+
+#Load Mcap Annotation Info
+Mcap.annot <-  read.csv(file="genome-feature-files/Mcap-GO-KO-Kegg.tab", header=FALSE, sep="\t") 
+colnames(Mcap.annot) <- c("Uniprot", "gene", "eval", "Prot.ID", "Rev", "Prot.Name.Long", "Prot.Name.Short", "Taxa", "Num", "GO1", "GO2", "GO3", "GO4", "GO.IDs","KEGG", "KEGG.Path")  
+Mcap.annot <- Mcap.annot %>% 
+  distinct(gene, .keep_all = TRUE) #keep only distinct gene ids
+Mcap.annot$gene <- gsub("augustus.", "", Mcap.annot$gene) #remove excess characters from gene name
+Mcap.annot$gene <- gsub(".t1", "", Mcap.annot$gene) #remove excess characters from gene name
+
+#Identify Mcap full set of GO terms
+Mcap.GO <- Mcap.annot[,c(2,14)] #identify GOids
+splitted <- strsplit(as.character(Mcap.GO$GO.IDs), "; ") #slit into multiple GO ids
+Mcap.GOs <- data.frame(v1 = rep.int(Mcap.GO$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+Mcap.GO.terms <- Mcap.GOs %>% distinct(v2, .keep_all = TRUE) #keep only distinct GO terms
+length(unique(Mcap.GO.terms$v2)) #view number of go terms
+colnames(Mcap.GO.terms) <- c("gene", "GO.Term")
+
+#Load Mcap gene gff
+Mcap.genes <- read.csv(file="genome-feature-files/Mcap.GFFannotation.gff", header=FALSE, sep="\t") 
+Mcap.genes <- filter(Mcap.genes, V3 == "gene")
+#load sample info
+colnames(Mcap.genes) <- c("scaffold", "AUGUSTUS", "id", "gene.start","gene.stop", "pos1", "pos2","pos3", "gene")
+Mcap.genes$gene <- gsub("ID=", "", Mcap.genes$gene)
+Mcap.genes$gene <- gsub(";.*", "", Mcap.genes$gene)
+#Mcap.genes <- Mcap.genes[,c(1,4,5,9)]
+#colnames(Mcap.genes) <- c("scaffold",  "gene.start","gene.stop", "gene")
+Mcap.genes.length <- Mcap.genes
+Mcap.genes.length$length <- Mcap.genes$gene.stop-Mcap.genes$gene.start
+  
+
+#write output of gene gff only
+write.table(Mcap.genes, file="genome-feature-files/Mcap.GFFannotation.genes.gff", sep="\t", 
+            col.names = FALSE, row.names=FALSE, quote=FALSE)
+Mcap.genes <- Mcap.genes[,c(1,4,5,9)]
+
+```
+
+Obtain the genes from the Pacuta genomes that have CpG data with 5x coverage
+```{bash}
+#download methylation data
+
+mkdir genome-feature-files/Pact_tab
+wget https://osf.io/sz6ma/download -O genome-feature-files/Pact_tab/Meth1_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/3je2f/download -O genome-feature-files/Pact_tab/Meth2_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/qwbg3/download -O genome-feature-files/Pact_tab/Meth3_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/nemxy/download -O genome-feature-files/Pact_tab/Meth4_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/zq3vr/download -O genome-feature-files/Pact_tab/Meth5_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/exa6k/download -O genome-feature-files/Pact_tab/Meth6_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/43xeh/download -O genome-feature-files/Pact_tab/Meth7_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/khpum/download -O genome-feature-files/Pact_tab/Meth8_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/4ba5p/download -O genome-feature-files/Pact_tab/Meth9_R1_001_val_1_bismark_bt2_pe._5x.tab
+
+#Intersect Pact CpG with genes
+for f in genome-feature-files/Pact_tab/*5x.tab
+do
+intersectBed \
+-wb \
+-a ${f} \
+-b genome-feature-files/Pact.GFFannotation.genes.gff \
+> ${f}_gene
+done
+```
+
+Obtain the genes from the Mcapitata genomes that have CpG data with 5x coverage
+```{bash}
+#download methylation data
+
+mkdir genome-feature-files/Pact_tab
+wget https://osf.io/5hsg3/download -O genome-feature-files/Mcap_tab/Meth10_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/fw4c3/download -O genome-feature-files/Mcap_tab/Meth11_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/a9yft/download -O genome-feature-files/Mcap_tab/Meth12_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/zqt73/download -O genome-feature-files/Mcap_tab/Meth13_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/95a2t/download -O genome-feature-files/Mcap_tab/Meth14_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/ujtbp/download -O genome-feature-files/Mcap_tab/Meth15_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/4p5hw/download -O genome-feature-files/Mcap_tab/Meth16_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/7pygc/download -O genome-feature-files/Mcap_tab/Meth17_R1_001_val_1_bismark_bt2_pe._5x.tab
+wget https://osf.io/5nzvp/download -O genome-feature-files/Mcap_tab/Meth18_R1_001_val_1_bismark_bt2_pe._5x.tab
+
+#Intersect Pact CpG with genes
+for f in genome-feature-files/Mcap_tab/*5x.tab
+do
+intersectBed \
+-wb \
+-a ${f} \
+-b genome-feature-files/Mcap.GFFannotation.genes.gff \
+> ${f}_gene
+done
+```
+
+
+
+#Pocillopora acuta analysis
+Load the methylation data for the Pacuta samples
+```{r}
+Pact.meth.data.T <- list.files(path = "genome-feature-files/Pact_tab", pattern = "tab_gene$", full.names=TRUE) %>%
+  set_names(.) %>%
+  map_dfr(read.csv,.id="Sample.ID", header=FALSE, sep="\t", na.string="NA", stringsAsFactors = FALSE) %>%
+  dplyr::select(-c(V3,V7:V14)) %>%
+  group_by(Sample.ID)
+colnames(Pact.meth.data.T) <- c("Sample.ID", "scaffold", "position","per.meth","meth","unmeth","gene")
+
+Pact.meth.data.T$Sample.ID <- gsub("genome-feature-files/Pact_tab/","",Pact.meth.data.T$Sample.ID) #remove extra characters
+Pact.meth.data.T$Sample.ID <- gsub("_.*","",Pact.meth.data.T$Sample.ID) #remove extra characters
+
+Pact.meth.data.T <- merge(Pact.meth.data.T,sample.info, by="Sample.ID")
+```
+
+Pacuta Mean Methylation per Gene for each Method
+```{r}
+Pact.MeanGene <- Pact.meth.data.T %>% group_by(gene,Method) %>% summarise(mean = mean(per.meth))
+
+Pact.MeanGene.Wide <- Pact.MeanGene %>% pivot_wider(names_from=Method, values_from=mean)
+
+Pact.MeanGene.Wide.annot <-left_join(Pact.genes,Pact.MeanGene.Wide, by="gene", keep =FALSE)
+
+Pact.genesums <- colSums(!is.na(Pact.MeanGene.Wide.annot))
+Pact.geneprop <-Pact.genesums/Pact.genesums[4]
+Pact.geneprop
+
+#Identify all the GO per gene and presence or absence of methylation data for each gene and method
+#Pact.GO.Method <- full_join(Pact.GO.terms, Pact.MeanGene.Wide.annot, by="gene", keep =FALSE)
+
+```
+
+Pact Gene Ontology Enrichment
+```{r}
+#Make ID and length vectors
+
+Pact.GO.ref <- subset(Pact.genes.length, select= c(gene, length)) #Select all genes and lengths
+dim(Pact.GO.ref)
+Pact.IDvector <- Pact.GO.ref$gene
+Pact.lengthVector <- Pact.GO.ref$length 
+
+Pact.WGBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,4)] %>% filter(!is.na(WGBS)) 
+Pact.WGBS.genes<-as.vector(Pact.WGBS.genes.meanmeth$gene)
+Pact.WGBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.WGBS.genes)
+sum(Pact.WGBS.genes)
+
+Pact.RRBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,3)] %>% filter(!is.na(RRBS)) 
+Pact.RRBS.genes<-as.vector(Pact.RRBS.genes.meanmeth$gene)
+Pact.RRBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.RRBS.genes)
+sum(Pact.RRBS.genes)
+
+Pact.MBDBS.genes.meanmeth<- Pact.MeanGene.Wide[,c(1,2)] %>% filter(!is.na(MBDBS)) 
+Pact.MBDBS.genes<-as.vector(Pact.MBDBS.genes.meanmeth$gene)
+Pact.MBDBS.genes=as.integer(Pact.GO.ref$gene%in%Pact.MBDBS.genes)
+sum(Pact.MBDBS.genes)
+
+#Calculate Probability Weighting Function based on a given set of biased data which is gene length
+Pact.pwf.WGBS<-nullp(Pact.WGBS.genes, Pact.IDvector, bias.data=Pact.lengthVector) #weight vector by length of gene
+rownames(Pact.pwf.WGBS) <- Pact.IDvector
+Pact.pwf.RRBS<-nullp(Pact.RRBS.genes, Pact.IDvector, bias.data=Pact.lengthVector) #weight vector by length of gene
+rownames(Pact.pwf.RRBS) <- Pact.IDvector
+Pact.pwf.MBDBS<-nullp(Pact.MBDBS.genes, Pact.IDvector, bias.data=Pact.lengthVector) #weight vector by length of gene
+rownames(Pact.pwf.MBDBS) <- Pact.IDvector
+```
+
+Pact Identify enriched GO terms
+```{r}
+#Identify GO terms
+Pact.GO.ref <- left_join(Pact.GO.ref, Pact.annot, by="gene", keep=FALSE)
+Pact.GO.ref <-Pact.GO.ref[,c(1,2,15)]
+Pact.GO.ref$GO.IDs <- as.character(Pact.GO.ref$GO.IDs)
+Pact.GO.ref$GO.IDs <- replace_na(Pact.GO.ref$GO.IDs, "unknown")
+Pact.GO.ref <- Pact.GO.ref[,c(1,3)]
+splitted <- strsplit(as.character(Pact.GO.ref$GO.IDs), "; ") #split into multiple GO ids
+Pact.GO.ref.GOs <- data.frame(v1 = rep.int(Pact.GO.ref$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+colnames(Pact.GO.ref.GOs) <- c("gene", "GO.Term")
+
+Pact.GOwall.WGBS <- goseq(Pact.pwf.WGBS, Pact.IDvector, gene2cat=Pact.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+Pact.GOwall.RRBS <- goseq(Pact.pwf.RRBS, Pact.IDvector, gene2cat=Pact.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+Pact.GOwall.MBDBS <- goseq(Pact.pwf.MBDBS, Pact.IDvector, gene2cat=Pact.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+```
+
+Pacuta Plotting enriched MF terms
+```{r}
+Pact.GOwall.WGBS.MF <- Pact.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.WGBS.MF)
+Pact.GOwall.RRBS.MF <- Pact.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.RRBS.MF)
+Pact.GOwall.MBDBS.MF <- Pact.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.MBDBS.MF)
+Pact.MFgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
+colnames(Pact.MFgoterms) <- c("category", "Term")
+  
+Pact.GO.MF <- full_join(Pact.GOwall.WGBS.MF,Pact.GOwall.RRBS.MF, by="category", keep=FALSE)
+Pact.GO.MF <- full_join(Pact.GO.MF,Pact.GOwall.MBDBS.MF, by="category", keep=FALSE)
+Pact.GO.MF <- Pact.GO.MF[,c("category", "over_represented_pvalue.x","over_represented_pvalue.y","over_represented_pvalue")]
+colnames(Pact.GO.MF) <- c("category", "WGBS","RRBS","MBDBS")
+Pact.GO.MF <- left_join(Pact.GO.MF,Pact.MFgoterms, by="category", keep=FALSE)
+Pact.GO.MF$GOterm_desc <- paste0(Pact.GO.MF$category, " ", Pact.GO.MF$Term)
+colSums(!is.na(Pact.GO.MF))
+Pact.GO.MF.long <- pivot_longer(Pact.GO.MF, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
+Pact.GO.MF.long <- Pact.GO.MF.long %>% mutate(term = fct_reorder(GOterm_desc, Pact.GO.MF.long$category))
+Pact.GO.MF.long$ord <-seq(1:nrow(Pact.GO.MF.long))
+
+Pact.MFplot <- Pact.GO.MF.long %>% ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) + 
+  geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
+  scale_y_discrete(position = "right") +
+  scale_fill_continuous(na.value = 'white')+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+  strip.text.y.left = element_text(angle=0, size = 8, face = "bold"),
+  strip.text.x = element_text(size = 24, face = "bold"),
+  axis.title = element_blank(),
+  axis.text.x = element_text(size = 24), 
+  axis.text.y = element_text(size = 10), 
+  legend.title = element_text(size = 12), legend.text = element_text(size = 11),
+  plot.title = element_text(size = 40, face = "bold.italic"))+
+  ggtitle('B) P. acuta')
+
+```        
+ 
+Pacuta Plotting enriched BP terms        
+```{r}
+Pact.GOwall.WGBS.BP <- Pact.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.WGBS.BP)
+Pact.GOwall.RRBS.BP <- Pact.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.RRBS.BP)
+Pact.GOwall.MBDBS.BP <- Pact.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Pact.GOwall.MBDBS.BP)
+Pact.BPgoterms <- as.data.frame(cbind(Pact.GOwall.WGBS$category, Pact.GOwall.WGBS$term))
+colnames(Pact.BPgoterms) <- c("category", "Term")
+  
+Pact.GO.BP <- full_join(Pact.GOwall.WGBS.BP,Pact.GOwall.RRBS.BP, by="category", keep=FALSE)
+Pact.GO.BP <- full_join(Pact.GO.BP,Pact.GOwall.MBDBS.BP, by="category", keep=FALSE)
+Pact.GO.BP <- Pact.GO.BP[,c("category", "over_represented_pvalue.x","over_represented_pvalue.y","over_represented_pvalue")]
+colnames(Pact.GO.BP) <- c("category", "WGBS","RRBS","MBDBS")
+Pact.GO.BP <- left_join(Pact.GO.BP,Pact.BPgoterms, by="category", keep=FALSE)
+Pact.GO.BP$GOterm_desc <- paste0(Pact.GO.BP$category, " ", Pact.GO.BP$Term)
+colSums(!is.na(Pact.GO.BP))
+Pact.GO.BP.long <- pivot_longer(Pact.GO.BP, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
+Pact.GO.BP.long <- Pact.GO.BP.long %>% mutate(term = fct_reorder(GOterm_desc, Pact.GO.BP.long$category))
+Pact.GO.BP.long$ord <-seq(1:nrow(Pact.GO.BP.long))
+
+Pact.BPplot <- Pact.GO.BP.long  %>%  ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) + 
+  geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
+  scale_y_discrete(position = "right") +
+  scale_fill_continuous(na.value = 'white')+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+  strip.text.y.left = element_text(angle=0, size = 8, face = "bold"),
+  strip.text.x = element_text(size = 12, face = "bold"),
+  axis.title = element_blank(),
+  axis.text.x = element_text(size = 24), 
+  axis.text.y = element_text(size = 6), 
+  legend.title = element_text(size = 12), legend.text = element_text(size = 11),
+  plot.title = element_text(size = 40, face = "bold.italic"))+
+  ggtitle('B) P. acuta')
+
+``` 
+        
+
+# Montipora capitata analysis
+Load the methylation data for the Mcapitata samples
+```{r}
+Mcap.meth.data.T <- list.files(path = "genome-feature-files/Mcap_tab", pattern = "tab_gene$", full.names=TRUE) %>%
+  set_names(.) %>%
+  map_dfr(read.csv,.id="Sample.ID", header=FALSE, sep="\t", na.string="NA", stringsAsFactors = FALSE) %>%
+  dplyr::select(-c(V3,V7:V14)) %>%
+  group_by(Sample.ID)
+colnames(Mcap.meth.data.T) <- c("Sample.ID", "scaffold", "position","per.meth","meth","unmeth","gene")
+
+Mcap.meth.data.T$Sample.ID <- gsub("genome-feature-files/Mcap_tab/","",Mcap.meth.data.T$Sample.ID) #remove extra characters
+Mcap.meth.data.T$Sample.ID <- gsub("_.*","",Mcap.meth.data.T$Sample.ID) #remove extra characters
+
+Mcap.meth.data.T <- merge(Mcap.meth.data.T,sample.info, by="Sample.ID")
+```
+
+Mcapitata Mean Methylation per Gene for each Method
+```{r}
+Mcap.MeanGene <- Mcap.meth.data.T %>% group_by(gene,Method) %>% summarise(mean = mean(per.meth))
+
+Mcap.MeanGene.Wide <- Mcap.MeanGene %>% pivot_wider(names_from=Method, values_from=mean)
+
+Mcap.MeanGene.Wide.annot <-full_join(Mcap.genes,Mcap.MeanGene.Wide, by="gene", keep =FALSE)
+
+Mcap.genesums <- colSums(!is.na(Mcap.MeanGene.Wide.annot))
+Mcap.geneprop <-Mcap.genesums/Mcap.genesums[4]
+Mcap.geneprop
+```
+
+
+Mcap Gene Ontology Enrichment
+```{r}
+#Make ID and length vectors
+
+Mcap.GO.ref <- subset(Mcap.genes.length, select= c(gene, length)) #Select all genes and lengths
+dim(Mcap.GO.ref)
+Mcap.IDvector <- Mcap.GO.ref$gene
+Mcap.lengthVector <- Mcap.GO.ref$length 
+
+Mcap.WGBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,4)] %>% filter(!is.na(WGBS)) 
+Mcap.WGBS.genes<-as.vector(Mcap.WGBS.genes.meanmeth$gene)
+Mcap.WGBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.WGBS.genes)
+sum(Mcap.WGBS.genes)
+
+Mcap.RRBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,3)] %>% filter(!is.na(RRBS)) 
+Mcap.RRBS.genes<-as.vector(Mcap.RRBS.genes.meanmeth$gene)
+Mcap.RRBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.RRBS.genes)
+sum(Mcap.RRBS.genes)
+
+Mcap.MBDBS.genes.meanmeth<- Mcap.MeanGene.Wide[,c(1,2)] %>% filter(!is.na(MBDBS)) 
+Mcap.MBDBS.genes<-as.vector(Mcap.MBDBS.genes.meanmeth$gene)
+Mcap.MBDBS.genes=as.integer(Mcap.GO.ref$gene%in%Mcap.MBDBS.genes)
+sum(Mcap.MBDBS.genes)
+
+#Calculate Probability Weighting Function based on a given set of biased data which is gene length
+Mcap.pwf.WGBS<-nullp(Mcap.WGBS.genes, Mcap.IDvector, bias.data=Mcap.lengthVector) #weight vector by length of gene
+rownames(Mcap.pwf.WGBS) <- Mcap.IDvector
+Mcap.pwf.RRBS<-nullp(Mcap.RRBS.genes, Mcap.IDvector, bias.data=Mcap.lengthVector) #weight vector by length of gene
+rownames(Mcap.pwf.RRBS) <- Mcap.IDvector
+Mcap.pwf.MBDBS<-nullp(Mcap.MBDBS.genes, Mcap.IDvector, bias.data=Mcap.lengthVector) #weight vector by length of gene
+rownames(Mcap.pwf.MBDBS) <- Mcap.IDvector
+```
+
+Mcapitata Identify enriched GO terms
+```{r}
+#Identify GO terms
+Mcap.GO.ref <- left_join(Mcap.GO.ref, Mcap.annot, by="gene", keep=FALSE)
+Mcap.GO.ref <-Mcap.GO.ref[,c(1,2,15)]
+Mcap.GO.ref$GO.IDs <- as.character(Mcap.GO.ref$GO.IDs)
+Mcap.GO.ref$GO.IDs <- replace_na(Mcap.GO.ref$GO.IDs, "unknown")
+Mcap.GO.ref <- Mcap.GO.ref[,c(1,3)]
+splitted <- strsplit(as.character(Mcap.GO.ref$GO.IDs), "; ") #split into multiple GO ids
+Mcap.GO.ref.GOs <- data.frame(v1 = rep.int(Mcap.GO.ref$gene, sapply(splitted, length)), v2 = unlist(splitted)) #list all GOs with each gene
+colnames(Mcap.GO.ref.GOs) <- c("gene", "GO.Term")
+
+Mcap.GOwall.WGBS <- goseq(Mcap.pwf.WGBS, Mcap.IDvector, gene2cat=Mcap.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+Mcap.GOwall.RRBS <- goseq(Mcap.pwf.RRBS, Mcap.IDvector, gene2cat=Mcap.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+Mcap.GOwall.MBDBS <- goseq(Mcap.pwf.MBDBS, Mcap.IDvector, gene2cat=Mcap.GO.ref.GOs, test.cats=c("GO:BP", "GO:MF"), method="Wallenius", use_genes_without_cat=TRUE)
+
+```
+Mcapitata Plotting enriched MF terms   
+```{r}
+Mcap.GOwall.WGBS.MF <- Mcap.GOwall.WGBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.WGBS.MF)
+Mcap.GOwall.RRBS.MF <- Mcap.GOwall.RRBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.RRBS.MF)
+Mcap.GOwall.MBDBS.MF <- Mcap.GOwall.MBDBS %>% filter(ontology=="MF") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.MBDBS.MF)
+Mcap.MFgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
+colnames(Mcap.MFgoterms) <- c("category", "Term")
+  
+Mcap.GO.MF <- full_join(Mcap.GOwall.WGBS.MF,Mcap.GOwall.RRBS.MF, by="category", keep=FALSE)
+Mcap.GO.MF <- full_join(Mcap.GO.MF,Mcap.GOwall.MBDBS.MF, by="category", keep=FALSE)
+Mcap.GO.MF <- Mcap.GO.MF[,c("category", "over_represented_pvalue.x","over_represented_pvalue.y","over_represented_pvalue")]
+colnames(Mcap.GO.MF) <- c("category", "WGBS","RRBS","MBDBS")
+Mcap.GO.MF <- left_join(Mcap.GO.MF,Mcap.MFgoterms, by="category", keep=FALSE)
+Mcap.GO.MF$GOterm_desc <- paste0(Mcap.GO.MF$category, " ", Mcap.GO.MF$Term)
+colSums(!is.na(Mcap.GO.MF))
+Mcap.GO.MF.long <- pivot_longer(Mcap.GO.MF, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
+Mcap.GO.MF.long <- Mcap.GO.MF.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.MF.long$category))
+Mcap.GO.MF.long$ord <-seq(1:nrow(Mcap.GO.MF.long))
+
+Mcap.MFplot <- Mcap.GO.MF.long  %>% filter(over_represented_pvalue<.01)%>%  ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) + 
+  geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
+  scale_y_discrete(position = "right") +
+  scale_fill_continuous(na.value = 'white')+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+  strip.text.y.left = element_text(angle=0, size = 8, face = "bold"),
+  strip.text.x = element_text(size = 24, face = "bold"),
+  axis.title = element_blank(),
+  axis.text.x = element_text(size = 24), 
+  axis.text.y = element_text(size = 12), 
+  legend.title = element_text(size = 12), legend.text = element_text(size = 11),
+  plot.title = element_text(size = 40, face = "bold.italic"))+
+  ggtitle('A) M. capitata')
+
+```       
+
+Mcapitata Plotting enriched BP terms        
+```{r}
+Mcap.GOwall.WGBS.BP <- Mcap.GOwall.WGBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.WGBS.BP)
+Mcap.GOwall.RRBS.BP <- Mcap.GOwall.RRBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.RRBS.BP)
+Mcap.GOwall.MBDBS.BP <- Mcap.GOwall.MBDBS %>% filter(ontology=="BP") %>% filter(over_represented_pvalue<0.05)
+nrow(Mcap.GOwall.MBDBS.BP)
+Mcap.BPgoterms <- as.data.frame(cbind(Mcap.GOwall.WGBS$category, Mcap.GOwall.WGBS$term))
+colnames(Mcap.BPgoterms) <- c("category", "Term")
+  
+Mcap.GO.BP <- full_join(Mcap.GOwall.WGBS.BP,Mcap.GOwall.RRBS.BP, by="category", keep=FALSE)
+Mcap.GO.BP <- full_join(Mcap.GO.BP,Mcap.GOwall.MBDBS.BP, by="category", keep=FALSE)
+Mcap.GO.BP <- Mcap.GO.BP[,c("category", "over_represented_pvalue.x","over_represented_pvalue.y","over_represented_pvalue")]
+colnames(Mcap.GO.BP) <- c("category", "WGBS","RRBS","MBDBS")
+Mcap.GO.BP <- left_join(Mcap.GO.BP,Mcap.BPgoterms, by="category", keep=FALSE)
+Mcap.GO.BP$GOterm_desc <- paste0(Mcap.GO.BP$category, " ", Mcap.GO.BP$Term)
+colSums(!is.na(Mcap.GO.BP))
+Mcap.GO.BP.long <- pivot_longer(Mcap.GO.BP, cols = WGBS:MBDBS, values_to = "over_represented_pvalue")
+Mcap.GO.BP.long <- Mcap.GO.BP.long %>% mutate(term = fct_reorder(GOterm_desc, Mcap.GO.BP.long$category))
+Mcap.GO.BP.long$ord <-seq(1:nrow(Mcap.GO.BP.long))
+
+Mcap.BPplot <- Mcap.GO.BP.long %>% filter(over_represented_pvalue<.01) %>%   ggplot(aes(x = name, y = reorder(GOterm_desc, ord))) +  
+  geom_tile(aes(fill=over_represented_pvalue, width = 1)) + 
+  scale_y_discrete(position = "right") +
+  scale_fill_continuous(na.value = 'white')+
+  theme_bw() + theme(panel.border = element_blank(), panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank(), axis.line = element_line(colour = "black"),
+  strip.text.y.left = element_text(angle=0, size = 4, face = "bold"),
+  strip.text.x = element_text(size = 12, face = "bold"),
+  axis.title = element_blank(),
+  axis.text.x = element_text(size = 24), 
+  axis.text.y = element_text(size = 6), 
+  legend.title = element_text(size = 12), legend.text = element_text(size = 11),
+  plot.title = element_text(size = 40, face = "bold.italic"))+
+  ggtitle('A) M. capitata')
+
+``` 
+
+
+Plotting enrichment of the missing genes by GO and library prep method and writing out tables
+```{r}
+#BP figure arrangement
+FigureBP <- Mcap.BPplot + Pact.BPplot
+ggsave(file="output/supplemental-material/SF6.jpg", FigureBP, width = 40, height = 40, units = c("in"))
+#ggsave(file="BP.png", FigureBP, width = 40, height = 40, units = c("in"))
+
+#MF figure arrangement
+FigureMF <- Mcap.MFplot + Pact.MFplot
+ggsave(file="output/supplemental-material/SF7.jpg", FigureMF, width = 40, height = 40, units = c("in"))
+#ggsave(file="MF.png", FigureMF, width = 40, height = 40, units = c("in"))
+
+#write out Goseq results files with P<0.05 terms
+write.csv(Pact.GO.MF, "output/supplemental-material/ST8.csv")
+write.csv(Pact.GO.BP, "output/supplemental-material/ST9.csv")
+write.csv(Mcap.GO.MF, "output/supplemental-material/ST6.csv")
+write.csv(Mcap.GO.BP, "output/supplemental-material/ST7.csv")
+
+
+```
